@@ -32,9 +32,6 @@ public class MainActivity
                   AddMedicationDialog.AddMedicationListener,
                   SeekBar.OnSeekBarChangeListener{
 
-  //  private final int IRR_ANX_SEEKBAR_MAXIMUM = 3;
-  //  private final int HOURS_SLEPT_MAXIMUM = 24;
-
     private int hoursSleptValue;
     private int irrValue;
     private int anxValue;
