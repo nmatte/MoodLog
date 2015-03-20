@@ -1,6 +1,7 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:orientation="vertical"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
@@ -8,55 +9,98 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/irritabilityTextView"
-        android:text="Irritability"/>
-
-    <SeekBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/irrSeekBar"
-        android:layout_below="@id/irritabilityTextView"/>
+        android:text="Mood level(s)"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/anxietyTextView"
+        android:textSize="@dimen/abc_text_size_large_material"
+        android:text="How was your mood today?"
+        android:clickable="true"
+        android:onClick="showMoodSelector"/>
+
+<!--
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="How was your mood today?"
+        android:id="@+id/moodSelectorButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="showMoodSelector"
+        android:layout_below="@+id/hoursSleptSeekBar" />
+
+-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hours slept last night"
+        android:id="@+id/hoursSleptLabel" />
+
+
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/hoursSleptSeekBar"
+        android:layout_below="@id/hoursSleptLabel"
+        android:max="24"
+        android:progress="8"
+        />
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/irritabilityLabel"
+        android:text="Irritability"
+        />
+
+    <SeekBar
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/irrSeekBar"
+        android:layout_below="@id/irritabilityLabel"
+        android:max="3"
+        android:layout_alignRight="@+id/anxietyLabel"
+        android:layout_alignLeft="@+id/anxietyLabel"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/anxietyLabel"
         android:text="Anxiety"
         android:layout_below="@+id/irrSeekBar"/>
 
     <SeekBar
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:id="@+id/anxSeekBar"
-        android:layout_below="@id/anxietyTextView"/>
+        android:layout_below="@id/anxietyLabel"
+        android:max="3"
+        android:layout_alignRight="@+id/anxietyLabel"
+        android:layout_alignLeft="@+id/anxietyLabel"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Medication"
         android:id="@+id/medTextView"
-        android:layout_below="@id/anxSeekBar"/>
+        android:layout_below="@id/anxSeekBar"
+        />
 
     <ListView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:choiceMode="multipleChoice"
         android:clickable="true"
-        android:layout_above="@+id/addMedicationButton"
         android:layout_below="@+id/medTextView" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Medication"
-        android:id="@+id/addMedicationButton"
-        android:onClick="addMedication"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
 
-</RelativeLayout>
+
+</LinearLayout>

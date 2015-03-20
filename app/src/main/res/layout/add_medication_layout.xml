@@ -5,10 +5,10 @@
     <!-- TODO add proper padding -->
 
     <EditText
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/nameEditText"
         android:layout_weight="1"
-        android:hint="name and dosage"
+        android:hint="Name and dosage"
         />
 </LinearLayout>
