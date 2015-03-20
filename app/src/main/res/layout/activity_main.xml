@@ -19,18 +19,6 @@
         android:clickable="true"
         android:onClick="showMoodSelector"/>
 
-<!--
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="How was your mood today?"
-        android:id="@+id/moodSelectorButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="showMoodSelector"
-        android:layout_below="@+id/hoursSleptSeekBar" />
-
--->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +31,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/hoursSleptSeekBar"
-        android:layout_below="@id/hoursSleptLabel"
         android:max="24"
         android:progress="8"
         />
@@ -61,7 +48,6 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:id="@+id/irrSeekBar"
-        android:layout_below="@id/irritabilityLabel"
         android:max="3"
         android:layout_alignRight="@+id/anxietyLabel"
         android:layout_alignLeft="@+id/anxietyLabel"/>
@@ -71,13 +57,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/anxietyLabel"
         android:text="Anxiety"
-        android:layout_below="@+id/irrSeekBar"/>
+        />
 
     <SeekBar
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:id="@+id/anxSeekBar"
-        android:layout_below="@id/anxietyLabel"
         android:max="3"
         android:layout_alignRight="@+id/anxietyLabel"
         android:layout_alignLeft="@+id/anxietyLabel"/>
@@ -87,7 +72,6 @@
         android:layout_height="wrap_content"
         android:text="Medication"
         android:id="@+id/medTextView"
-        android:layout_below="@id/anxSeekBar"
         />
 
     <ListView
