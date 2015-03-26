@@ -1,4 +1,4 @@
-package com.nmatte.mood.moodlog;
+package com.nmatte.mood.medications;
 
 import android.app.Activity;
 import android.app.AlertDialog;

@@ -54,8 +54,14 @@ public class SelectorAdapter extends BaseAdapter{
 
         textView.setBackgroundColor(currentColor);
         textView.setText(currentLabel);
+        textView.getLayoutParams().height = parent.getMeasuredHeight()/boxes.length;
+
+
 
         notifyDataSetChanged();
+
+        int foo = parent.getMeasuredHeight();
+        int bar = parent.getHeight();
 
 
         return rowView;

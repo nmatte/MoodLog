@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="GraphColumnView">
+        <attr name = "moodString" format="string"/>
+    </declare-styleable>
+    <declare-styleable name="CustomNumberPicker">
+        <attr name = "label" format="string"/>
+        <attr name = "defaultNum" format="integer"/>
+        <attr name = "max" format="integer"/>
+    </declare-styleable>
+
+</resources>

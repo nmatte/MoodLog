@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="300dp"
+        android:layout_height="fill_parent"
+        android:id="@+id/landLeftSide"
+        android:layout_alignParentLeft="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/abc_text_size_large_material"
+            android:text="Mood level(s)"
+            android:clickable="true"
+            android:onClick="showMoodSelector"/>
+
+        <com.nmatte.mood.moodlog.GraphColumnView
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/moodPreview"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hours slept last night"
+            android:id="@+id/hoursSleptLabel" />
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/hoursSleptSeekBar"
+            android:max="24"
+            android:progress="8"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/irritabilityLabel"
+            android:text="Irritability"
+            />
+
+        <SeekBar
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/irrSeekBar"
+            android:max="3"
+            android:layout_alignRight="@+id/anxietyLabel"
+            android:layout_alignLeft="@+id/anxietyLabel"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/anxietyLabel"
+            android:text="Anxiety"
+            />
+
+        <SeekBar
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/anxSeekBar"
+            android:max="3"
+            android:layout_alignRight="@+id/anxietyLabel"
+            android:layout_alignLeft="@+id/anxietyLabel"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show info"
+            android:onClick="showInfo"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="300dp"
+        android:layout_height="fill_parent"
+        android:id="@+id/landRightSide"
+        android:layout_alignParentRight="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Medication"
+            android:id="@+id/medTextView"
+            />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView"
+            android:choiceMode="multipleChoice"
+            android:clickable="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_toRightOf="@+id/linearLayout"
+            android:layout_toEndOf="@+id/linearLayout" />
+
+    </LinearLayout>
+
+</RelativeLayout>

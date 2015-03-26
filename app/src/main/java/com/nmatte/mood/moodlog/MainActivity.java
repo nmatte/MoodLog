@@ -4,20 +4,23 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CursorAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SeekBar;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.nmatte.mood.logbookentries.LogbookEntry;
+import com.nmatte.mood.medications.AddMedicationDialog;
+import com.nmatte.mood.medications.DeleteMedicationDialog;
+import com.nmatte.mood.medications.MedListAdapter;
+import com.nmatte.mood.medications.MedTableHelper;
+import com.nmatte.mood.medications.Medication;
 
 import static java.lang.Integer.parseInt;
 
@@ -32,9 +35,7 @@ public class MainActivity
                   AddMedicationDialog.AddMedicationListener,
                   SeekBar.OnSeekBarChangeListener{
 
-    private int hoursSleptValue;
-    private int irrValue;
-    private int anxValue;
+    private LogbookEntry currentEntry;
 
     TextView irrLabel;
     TextView anxLabel;
@@ -46,6 +47,7 @@ public class MainActivity
     MedTableHelper MTHelper;
     ListView listView;
     ArrayAdapter<String> medNames;
+    MedListAdapter medAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +67,10 @@ public class MainActivity
         anxSeekBar.setOnSeekBarChangeListener(this);
         hoursSleptSeekBar.setOnSeekBarChangeListener(this);
 
+        currentEntry = new LogbookEntry();
+
 
         listView = (ListView) findViewById(R.id.listView);
-
         // Listener for long press on an item in the medication list (to delete)
         AdapterView.OnItemLongClickListener l = new AdapterView.OnItemLongClickListener() {
             @Override
@@ -77,11 +80,10 @@ public class MainActivity
             }
         };
         listView.setOnItemLongClickListener(l);
-        medNames = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice);
-        medNames.addAll(MTHelper.getMedNames());
         View v = this.getLayoutInflater().inflate(R.layout.medication_list_footer,null);
         listView.addFooterView(v);
-        listView.setAdapter(medNames);
+        medAdapter = new MedListAdapter(MTHelper.getMedications(),this);
+        listView.setAdapter(medAdapter);
 
 
     }
@@ -114,10 +116,15 @@ public class MainActivity
 
 
     private void deleteMedAtPosition(int position) {
-        String name = MTHelper.getMedNames().get(position);
+   //     String name = MTHelper.getMedNames().get(position);
+        Medication m = (Medication) listView.getAdapter().getItem(position);
+        String name = m.getName();
+        long id = m.getID();
+
 
         Bundle b = new Bundle();
         b.putCharSequence("name",name);
+        b.putLong("id",id);
 
         DialogFragment dialog = new DeleteMedicationDialog();
         dialog.setArguments(b);
@@ -127,14 +134,16 @@ public class MainActivity
     @Override
     public void onDeleteDialogPositiveClick(String name) {
         MTHelper.deleteMedication(name);
-        medNames.clear();
-        medNames.addAll(MTHelper.getMedNames());
-        medNames.notifyDataSetChanged();
+        medAdapter.setMedications(MTHelper.getMedications());
+        medAdapter.notifyDataSetChanged();
+      //  medNames.clear();
+       // medNames.addAll(MTHelper.getMedNames());
+      //  medNames.notifyDataSetChanged();
 
     }
 
     // From the add medication button. Starts add medication dialog.
-    // TODO: request keyboard focus for dialog
+    // TODO: request keyboard focus for dialog?
     public void addMedication(View view) {
         DialogFragment dialog = new AddMedicationDialog();
         dialog.show(getFragmentManager(), "Add Med Dialog");
@@ -144,10 +153,11 @@ public class MainActivity
     @Override
     public void onAddDialogPositiveClick(String name) {
         MTHelper.addMedication(name);
-        medNames.clear();
-        medNames.addAll(MTHelper.getMedNames());
-        medNames.notifyDataSetChanged();
-
+        medAdapter.setMedications(MTHelper.getMedications());
+        medAdapter.notifyDataSetChanged();
+       // medNames.clear();
+     //   medNames.addAll(MTHelper.getMedNames());
+   //     medNames.notifyDataSetChanged();
     }
 
     // Seekbar listeners
@@ -156,16 +166,16 @@ public class MainActivity
 
         switch (seekBar.getId()){
             case R.id.irrSeekBar:
-                irrValue = progress;
-                irrLabel.setText("Irritability: " + irrValue);
+                currentEntry.setIrrValue(progress);
+                irrLabel.setText("Irritability: " + progress);
                 break;
             case R.id.anxSeekBar:
-                anxValue = progress;
-                anxLabel.setText("Anxiety: " + anxValue);
+                currentEntry.setAnxValue(progress);
+                anxLabel.setText("Anxiety: " + progress);
                 break;
             case R.id.hoursSleptSeekBar:
-                hoursSleptValue = progress;
-                hoursSleptLabel.setText("Hours slept last night: " + hoursSleptValue);
+                currentEntry.setHoursSleptValue(progress);
+                hoursSleptLabel.setText("Hours slept last night: " + progress);
                 break;
         }
 
@@ -192,12 +202,19 @@ public class MainActivity
         String result = "";
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK){
-            result = (String) data.getCharSequenceExtra("result");
-        } else {
-            result = "No result";
+
+            result =(String) data.getCharSequenceExtra("result");
+            currentEntry.setMoodString(result);
+            GraphColumnView gcv = (GraphColumnView) findViewById(R.id.moodPreview);
+            gcv.setMoodString(currentEntry.getMoodString());
         }
 
 
-        Toast.makeText(this,""+result,Toast.LENGTH_SHORT).show();
+    }
+
+    public void showInfo(View view) {
+
+        String text = currentEntry.getSummaryString();
+        Toast.makeText(this, text,Toast.LENGTH_SHORT).show();
     }
 }

@@ -1,4 +1,7 @@
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
@@ -6,18 +9,49 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-    <TextView
+<!--
+    <com.nmatte.mood.moodlog.CustomNumberPicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mood level(s)"/>
+        custom:max="3"
+        custom:label="Anxiety"
+        />
+
+    <com.nmatte.mood.moodlog.CustomNumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        custom:max="3"
+        custom:label="Irritability"
+        />
+
+    <com.nmatte.mood.moodlog.CustomNumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        custom:max="24"
+        custom:label="Hours slept"
+        />
+
+    -->
+
+
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/abc_text_size_large_material"
-        android:text="How was your mood today?"
+        android:text="Mood level(s)"
         android:clickable="true"
         android:onClick="showMoodSelector"/>
+
+
+
+    <com.nmatte.mood.moodlog.GraphColumnView
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:id="@+id/moodPreview"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -83,6 +117,14 @@
         android:choiceMode="multipleChoice"
         android:clickable="true"
         android:layout_below="@+id/medTextView" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show info"
+        android:onClick="showInfo"/>
+
+
 
 
 
