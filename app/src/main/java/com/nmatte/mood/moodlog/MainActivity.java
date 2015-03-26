@@ -32,14 +32,14 @@ import static java.lang.Integer.parseInt;
 public class MainActivity
        extends ActionBarActivity
        implements DeleteMedicationDialog.DeleteMedicationListener,
-                  AddMedicationDialog.AddMedicationListener,
-                  SeekBar.OnSeekBarChangeListener{
+                  AddMedicationDialog.AddMedicationListener
+                  {
+
+    private CustomNumberPicker anxPicker;
+    private CustomNumberPicker irrPicker;
+    private CustomNumberPicker hoursPicker;
 
     private LogbookEntry currentEntry;
-
-    TextView irrLabel;
-    TextView anxLabel;
-    TextView hoursSleptLabel;
 
     static final int GET_MOOD_STRING = 1;
 
@@ -55,19 +55,13 @@ public class MainActivity
         setContentView(R.layout.activity_main);
         MTHelper = new MedTableHelper(this);
 
-        irrLabel = (TextView) findViewById(R.id.irritabilityLabel);
-        anxLabel = (TextView) findViewById(R.id.anxietyLabel);
-        hoursSleptLabel = (TextView) findViewById(R.id.hoursSleptLabel);
-
-        SeekBar irrSeekBar = (SeekBar) findViewById(R.id.irrSeekBar);
-        SeekBar anxSeekBar = (SeekBar) findViewById(R.id.anxSeekBar);
-        SeekBar hoursSleptSeekBar = (SeekBar) findViewById(R.id.hoursSleptSeekBar);
-
-        irrSeekBar.setOnSeekBarChangeListener(this);
-        anxSeekBar.setOnSeekBarChangeListener(this);
-        hoursSleptSeekBar.setOnSeekBarChangeListener(this);
-
         currentEntry = new LogbookEntry();
+
+        anxPicker = (CustomNumberPicker) findViewById(R.id.anxPicker);
+        irrPicker = (CustomNumberPicker) findViewById(R.id.irrPicker);
+        hoursPicker = (CustomNumberPicker) findViewById(R.id.hoursPicker);
+
+
 
 
         listView = (ListView) findViewById(R.id.listView);
@@ -160,36 +154,9 @@ public class MainActivity
    //     medNames.notifyDataSetChanged();
     }
 
-    // Seekbar listeners
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        switch (seekBar.getId()){
-            case R.id.irrSeekBar:
-                currentEntry.setIrrValue(progress);
-                irrLabel.setText("Irritability: " + progress);
-                break;
-            case R.id.anxSeekBar:
-                currentEntry.setAnxValue(progress);
-                anxLabel.setText("Anxiety: " + progress);
-                break;
-            case R.id.hoursSleptSeekBar:
-                currentEntry.setHoursSleptValue(progress);
-                hoursSleptLabel.setText("Hours slept last night: " + progress);
-                break;
-        }
 
-    }
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        //no-op
-     }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        //no-op
-    }
 
     // Start mood selector dialog.
     public void showMoodSelector(View v){
@@ -213,6 +180,10 @@ public class MainActivity
     }
 
     public void showInfo(View view) {
+
+        currentEntry.setAnxValue(anxPicker.getCurrentNum());
+        currentEntry.setIrrValue(irrPicker.getCurrentNum());
+        currentEntry.setHoursSleptValue(hoursPicker.getCurrentNum());
 
         String text = currentEntry.getSummaryString();
         Toast.makeText(this, text,Toast.LENGTH_SHORT).show();

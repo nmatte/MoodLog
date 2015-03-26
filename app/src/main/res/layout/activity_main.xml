@@ -9,30 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-<!--
-    <com.nmatte.mood.moodlog.CustomNumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        custom:max="3"
-        custom:label="Anxiety"
-        />
-
-    <com.nmatte.mood.moodlog.CustomNumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        custom:max="3"
-        custom:label="Irritability"
-        />
-
-    <com.nmatte.mood.moodlog.CustomNumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        custom:max="24"
-        custom:label="Hours slept"
-        />
-
-    -->
-
 
 
 
@@ -46,60 +22,48 @@
 
 
 
+
+
     <com.nmatte.mood.moodlog.GraphColumnView
         android:layout_width="match_parent"
         android:layout_height="25dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:layout_marginLeft="5dp"
         android:id="@+id/moodPreview"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Hours slept last night"
-        android:id="@+id/hoursSleptLabel" />
+    <View style="@style/Divider"/>
 
-
-
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/hoursSleptSeekBar"
-        android:max="24"
-        android:progress="8"
-        />
-
-
-
-    <TextView
+    <com.nmatte.mood.moodlog.CustomNumberPicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/irritabilityLabel"
-        android:text="Irritability"
+        custom:max="3"
+        custom:label="Anxiety 0-3"
+        android:id="@+id/anxPicker"
         />
 
-    <SeekBar
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/irrSeekBar"
-        android:max="3"
-        android:layout_alignRight="@+id/anxietyLabel"
-        android:layout_alignLeft="@+id/anxietyLabel"/>
+    <View style="@style/Divider"/>
 
-    <TextView
+    <com.nmatte.mood.moodlog.CustomNumberPicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/anxietyLabel"
-        android:text="Anxiety"
+        custom:max="3"
+        custom:label="Irritability 0-3"
+        android:id="@+id/irrPicker"
         />
 
-    <SeekBar
-        android:layout_width="100dp"
+    <View style="@style/Divider"/>
+
+    <com.nmatte.mood.moodlog.CustomNumberPicker
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/anxSeekBar"
-        android:max="3"
-        android:layout_alignRight="@+id/anxietyLabel"
-        android:layout_alignLeft="@+id/anxietyLabel"/>
+        custom:max="24"
+        custom:defaultNum="8"
+        custom:label="Hours slept"
+        android:id="@+id/hoursPicker"
+        />
+
+    <View style="@style/Divider"/>
+
+
 
     <TextView
         android:layout_width="wrap_content"
