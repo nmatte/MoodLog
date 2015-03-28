@@ -53,7 +53,7 @@ public class SelectorActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         switch(id){
-            case (R.id.action_done):
+            case (R.id.action_done2):
                 doneSelecting();
                 return true;
             default:

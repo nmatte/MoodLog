@@ -1,6 +1,7 @@
 package com.nmatte.mood.moodlog;
 
 import android.app.DialogFragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -46,6 +47,9 @@ public class MainActivity
     ListView listView;
     ArrayAdapter<String> medNames;
     MedListAdapter medAdapter;
+    SelectorFragment selector;
+
+    boolean foo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,10 @@ public class MainActivity
 
 
 
+        selector = new SelectorFragment();
+
+
+
     }
 
 
@@ -103,12 +111,22 @@ public class MainActivity
             return true;
         }
 
+        if(id == R.id.action_done){
+            hideFragment();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.action_done).setVisible(foo);
+        return true;
+    }
 
-
-    private void deleteMedAtPosition(int position) {
+                      private void deleteMedAtPosition(int position) {
    //     String name = MTHelper.getMedNames().get(position);
         Medication m = (Medication) listView.getAdapter().getItem(position);
         String name = m.getName();
@@ -186,5 +204,27 @@ public class MainActivity
 
         String text = currentEntry.getSummaryString();
         Toast.makeText(this, text,Toast.LENGTH_SHORT).show();
+    }
+
+    public void showFragment(View view) {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.animator.expand,R.animator.collapse);
+        transaction.replace(R.id.foo, selector,"foo");
+        transaction.show(selector);
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+        foo = true;
+        invalidateOptionsMenu();
+    }
+
+    public void hideFragment(){
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.animator.expand,R.animator.collapse);
+        transaction.hide(selector);
+        transaction.commit();
+        foo = false;
+        invalidateOptionsMenu();
+
     }
 }
