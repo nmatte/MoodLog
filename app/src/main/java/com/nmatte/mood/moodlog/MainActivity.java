@@ -35,9 +35,7 @@ public class MainActivity
                   AddMedicationDialog.AddMedicationListener
                   {
 
-    private CustomNumberPicker anxPicker;
-    private CustomNumberPicker irrPicker;
-    private CustomNumberPicker hoursPicker;
+    private CustomNumberPicker anxPicker, irrPicker, hoursPicker;
 
     private LogbookEntry currentEntry;
 
@@ -78,6 +76,7 @@ public class MainActivity
         listView.addFooterView(v);
         medAdapter = new MedListAdapter(MTHelper.getMedications(),this);
         listView.setAdapter(medAdapter);
+
 
 
     }

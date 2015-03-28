@@ -46,6 +46,8 @@ public class SelectorAdapter extends BaseAdapter{
         LayoutInflater inflater = activity.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.selector_row,null);
 
+
+
         TextView textView = (TextView) rowView.findViewById(R.id.checkedTextView);
         final CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.checkBox);
 

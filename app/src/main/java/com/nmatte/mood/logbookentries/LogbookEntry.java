@@ -7,10 +7,10 @@ import java.util.Map;
 public class LogbookEntry {
 
     String moodString = "";
-    int date = 0;
-    int irrValue = 0;
-    int anxValue = 0;
-    int hoursSleptValue = 0;
+    int date = 0,
+        irrValue = 0,
+        anxValue = 0,
+        hoursSleptValue = 0;
     HashMap<Integer,Boolean> medications;
 
     public LogbookEntry (){
