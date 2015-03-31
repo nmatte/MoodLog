@@ -3,11 +3,11 @@ package com.nmatte.mood.moodlog;
 import android.app.Fragment;
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
-/**
- * Created by Nathan on 3/27/2015.
- */
 public class SelectorFragment extends ListFragment {
     final int [] colors = {0xFFFFE0D4,0xFFFFBBA7,0xFFFFE1C8,0xFFFFE0AD,0xFFFFF9B3,0xFFDDEDCF,
             0xFFC8E4B2, 0xFFAEDCB6,0xFFC5E7DB,0xFFB5E3E6,0xFFA3E0F7,0xFFABC2E3,0xFFE0DBEC};
@@ -26,11 +26,22 @@ public class SelectorFragment extends ListFragment {
     }
 
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        view.setPivotY(0);
+        return view;
 
+    }
+
+    public String getResultString(){
+        return adapter.getCheckedItems();
     }
 
 }

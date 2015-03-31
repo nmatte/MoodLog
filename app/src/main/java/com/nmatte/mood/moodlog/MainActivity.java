@@ -1,19 +1,14 @@
 package com.nmatte.mood.moodlog;
 
 import android.app.DialogFragment;
-import android.app.FragmentTransaction;
-import android.content.Intent;
+import android.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nmatte.mood.logbookentries.LogbookEntry;
@@ -47,50 +42,34 @@ public class MainActivity
     ListView listView;
     ArrayAdapter<String> medNames;
     MedListAdapter medAdapter;
-    SelectorFragment selector;
 
-    boolean foo;
+    SelectorButtonFragment buttonFragment;
+    SelectorFragment selectorFragment;
+    Fragment primaryFragment;
+
+    boolean doneIsVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MTHelper = new MedTableHelper(this);
-
         currentEntry = new LogbookEntry();
 
-        anxPicker = (CustomNumberPicker) findViewById(R.id.anxPicker);
-        irrPicker = (CustomNumberPicker) findViewById(R.id.irrPicker);
-        hoursPicker = (CustomNumberPicker) findViewById(R.id.hoursPicker);
+        buttonFragment = (SelectorButtonFragment) getFragmentManager().findFragmentById(R.id.buttonFragment);
+        selectorFragment = new SelectorFragment();
+    //    primaryFragment = new PrimaryFragment();
+
+        getFragmentManager().beginTransaction()
+                .add(R.id.frame,selectorFragment)
+                .hide(selectorFragment)
+                .commit();
 
 
 
 
-        listView = (ListView) findViewById(R.id.listView);
-        // Listener for long press on an item in the medication list (to delete)
-        AdapterView.OnItemLongClickListener l = new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                deleteMedAtPosition(position);
-                return true;
-            }
-        };
-        listView.setOnItemLongClickListener(l);
-        View v = this.getLayoutInflater().inflate(R.layout.medication_list_footer,null);
-        listView.addFooterView(v);
-        medAdapter = new MedListAdapter(MTHelper.getMedications(),this);
-        listView.setAdapter(medAdapter);
 
-
-
-        selector = new SelectorFragment();
-
-
-
-    }
-
-
-
+ }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -113,6 +92,14 @@ public class MainActivity
 
         if(id == R.id.action_done){
             hideFragment();
+            currentEntry.setMoodString(selectorFragment.getResultString());
+            buttonFragment.setMoodString(currentEntry.getMoodString());
+
+            return true;
+        }
+
+        if(id == R.id.show_info){
+            showInfo();
             return true;
         }
 
@@ -122,7 +109,7 @@ public class MainActivity
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.action_done).setVisible(foo);
+        menu.findItem(R.id.action_done).setVisible(doneIsVisible);
         return true;
     }
 
@@ -147,9 +134,6 @@ public class MainActivity
         MTHelper.deleteMedication(name);
         medAdapter.setMedications(MTHelper.getMedications());
         medAdapter.notifyDataSetChanged();
-      //  medNames.clear();
-       // medNames.addAll(MTHelper.getMedNames());
-      //  medNames.notifyDataSetChanged();
 
     }
 
@@ -166,37 +150,10 @@ public class MainActivity
         MTHelper.addMedication(name);
         medAdapter.setMedications(MTHelper.getMedications());
         medAdapter.notifyDataSetChanged();
-       // medNames.clear();
-     //   medNames.addAll(MTHelper.getMedNames());
-   //     medNames.notifyDataSetChanged();
     }
 
 
-
-
-
-    // Start mood selector dialog.
-    public void showMoodSelector(View v){
-        Intent intent = new Intent(this, SelectorActivity.class);
-        startActivityForResult(intent,GET_MOOD_STRING);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String result = "";
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK){
-
-            result =(String) data.getCharSequenceExtra("result");
-            currentEntry.setMoodString(result);
-            GraphColumnView gcv = (GraphColumnView) findViewById(R.id.moodPreview);
-            gcv.setMoodString(currentEntry.getMoodString());
-        }
-
-
-    }
-
-    public void showInfo(View view) {
+    public void showInfo() {
 
         currentEntry.setAnxValue(anxPicker.getCurrentNum());
         currentEntry.setIrrValue(irrPicker.getCurrentNum());
@@ -207,23 +164,24 @@ public class MainActivity
     }
 
     public void showFragment(View view) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.animator.expand,R.animator.collapse);
-        transaction.replace(R.id.foo, selector,"foo");
-        transaction.show(selector);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        getFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.animator.expand, R.animator.slide_down)
+                .show(selectorFragment)
 
-        foo = true;
+                .addToBackStack(null)
+                .commit();
+        doneIsVisible = true;
         invalidateOptionsMenu();
     }
 
+
     public void hideFragment(){
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.animator.expand,R.animator.collapse);
-        transaction.hide(selector);
-        transaction.commit();
-        foo = false;
+        getFragmentManager().beginTransaction()
+                .setCustomAnimations(R.animator.expand, R.animator.collapse)
+                .hide(selectorFragment)
+                .commit();
+        doneIsVisible = false;
         invalidateOptionsMenu();
 
     }

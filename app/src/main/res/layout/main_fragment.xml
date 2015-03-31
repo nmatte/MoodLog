@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View style="@style/Divider"/>
+
+    <com.nmatte.mood.moodlog.CustomNumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        custom:max="3"
+        custom:label="Anxiety 0-3"
+        android:id="@+id/anxPicker"
+        />
+
+    <View style="@style/Divider"/>
+
+    <com.nmatte.mood.moodlog.CustomNumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        custom:max="3"
+        custom:label="Irritability 0-3"
+        android:id="@+id/irrPicker"
+        />
+
+    <View style="@style/Divider"/>
+
+    <com.nmatte.mood.moodlog.CustomNumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        custom:max="24"
+        custom:defaultNum="8"
+        custom:label="Hours slept"
+        android:id="@+id/hoursPicker"
+        />
+
+    <View style="@style/Divider"/>
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Medication"
+        android:id="@+id/medTextView"
+        />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:choiceMode="multipleChoice"
+        android:clickable="true" />
+
+</LinearLayout>

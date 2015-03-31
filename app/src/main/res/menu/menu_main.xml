@@ -8,6 +8,9 @@
         android:title="Done"
         app:showAsAction="always"
         android:visible="false"
-
+        />
+    <item android:id="@+id/show_info"
+        android:title="Show"
+        app:showAsAction="ifRoom"
         />
 </menu>

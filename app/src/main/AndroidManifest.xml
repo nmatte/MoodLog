@@ -16,10 +16,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SelectorActivity"
-            android:label="Mood Log" >
-        </activity>
     </application>
 
 </manifest>

@@ -58,32 +58,35 @@ public class GraphColumnView extends View{
         super.onDraw(canvas);
 
         int left = 0;
-        int cellWidth = getWidth()/13;
-        int right = cellWidth;
+        int cellHeight = getHeight()/13;
+        int right = getWidth();
+        int top = 0;
+        int bottom = cellHeight;
 
         Rect smallRect = new Rect();
-        smallRect.top = getHeight()/10;
-        smallRect.bottom = getHeight() - smallRect.top;
+        smallRect.left = getWidth()/10;
+        smallRect.right = getWidth() - smallRect.left;
 
 
         for (int i = 0; i < colors.length; i++){
             Rect r = new Rect();
-            r.top = 0;
-            r.bottom = getHeight();
+            r.top = top;
+            r.bottom = bottom;
             r.left = left;
             r.right = right;
-            paint.setColor(colors[i]);
-            canvas.drawRect(r,paint);
+            paint.setColor(moodChecked[i] ? 0xFF000000: colors[i]);
 
+            canvas.drawRect(r,paint);
+/*
             if(moodChecked[i]){
-                smallRect.left = left + cellWidth/10;
-                smallRect.right = right - cellWidth/10;
+                smallRect.left = left + cellHeight/10;
+                smallRect.right = right - cellHeight/10;
                 paint.setColor(0xFF000000);
                 canvas.drawRect(smallRect,paint);
             }
-
-            left += cellWidth;
-            right += cellWidth;
+*/
+            top += cellHeight;
+            bottom += cellHeight;
 
 
         }

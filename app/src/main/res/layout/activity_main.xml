@@ -9,94 +9,30 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-
-
-    <fragment
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:name="com.nmatte.mood.moodlog.MoodButtonFragment"
-    android:id="@+id/foo"/>
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/abc_text_size_large_material"
-        android:text="Mood level(s)"
-        android:clickable="true"
-        android:onClick="showMoodSelector"/>
-
-
-    <com.nmatte.mood.moodlog.GraphColumnView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:layout_marginLeft="5dp"
-        android:id="@+id/moodPreview"/>
+        android:layout_height="match_parent"
+        android:id="@+id/frame">
 
-    <View style="@style/Divider"/>
-
-    <com.nmatte.mood.moodlog.CustomNumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        custom:max="3"
-        custom:label="Anxiety 0-3"
-        android:id="@+id/anxPicker"
-        />
-
-    <View style="@style/Divider"/>
-
-    <com.nmatte.mood.moodlog.CustomNumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        custom:max="3"
-        custom:label="Irritability 0-3"
-        android:id="@+id/irrPicker"
-        />
-
-    <View style="@style/Divider"/>
-
-    <com.nmatte.mood.moodlog.CustomNumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        custom:max="24"
-        custom:defaultNum="8"
-        custom:label="Hours slept"
-        android:id="@+id/hoursPicker"
-        />
-
-    <View style="@style/Divider"/>
-
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Medication"
-        android:id="@+id/medTextView"
-        />
-
-    <ListView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:choiceMode="multipleChoice"
-        android:clickable="true"
-        android:layout_below="@+id/medTextView" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.nmatte.mood.moodlog.SelectorButtonFragment"
+            android:id="@+id/buttonFragment"/>
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.nmatte.mood.moodlog.PrimaryFragment"
+            android:id="@+id/primaryFragment"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Show info"
-        android:onClick="showInfo"/>
+        </LinearLayout>
 
-
-
-
-
-
-
+    </FrameLayout>
 
 
 
