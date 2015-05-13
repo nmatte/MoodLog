@@ -1,7 +1,7 @@
 package com.nmatte.mood.moodlog;
 
-import android.app.Fragment;
 import android.app.ListFragment;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +23,13 @@ public class SelectorFragment extends ListFragment {
         getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         adapter = new SelectorAdapter(labels,colors,getActivity());
         this.setListAdapter(adapter);
+        getListView().setDivider(new ColorDrawable(0xFF000000));
+        getListView().setDividerHeight(4);
     }
 
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
     }
 

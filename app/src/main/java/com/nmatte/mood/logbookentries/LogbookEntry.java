@@ -1,40 +1,34 @@
 package com.nmatte.mood.logbookentries;
 
 
-import java.util.HashMap;
-import java.util.Map;
+import android.support.v4.util.SimpleArrayMap;
+
+import com.nmatte.mood.medications.Medication;
+
+import java.util.ArrayList;
 
 public class LogbookEntry {
 
-    String moodString = "";
+    ArrayList<Boolean> moods;
     int date = 0,
         irrValue = 0,
         anxValue = 0,
         hoursSleptValue = 0;
-    HashMap<Integer,Boolean> medications;
+    SimpleArrayMap<Medication,Boolean> medications;
 
     public LogbookEntry (){
-        medications = new HashMap<Integer, Boolean>();
-
+        moods = new ArrayList<Boolean>();
+        medications = new SimpleArrayMap<>();
     }
 
     public String getSummaryString(){
-        String summary = moodString + "\n" +
-                         date + "\n" +
+        String summary = date + "\n" +
                          irrValue + "\n" +
                          anxValue + "\n" +
                          hoursSleptValue;
 
         return summary;
 
-    }
-
-    public String getMoodString() {
-        return moodString;
-    }
-
-    public void setMoodString(String moodString) {
-        this.moodString = moodString;
     }
 
     public int getDate() {
@@ -69,5 +63,19 @@ public class LogbookEntry {
         this.hoursSleptValue = hoursSleptValue;
     }
 
+    public ArrayList<Boolean> getMoods() {
+        return moods;
+    }
 
+    public void setMoods(ArrayList<Boolean> moods) {
+        this.moods = moods;
+    }
+
+    public SimpleArrayMap<Medication, Boolean> getMedications() {
+        return medications;
+    }
+
+    public void setMedications(SimpleArrayMap<Medication, Boolean> medications) {
+        this.medications = medications;
+    }
 }

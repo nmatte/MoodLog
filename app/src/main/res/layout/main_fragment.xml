@@ -38,21 +38,22 @@
     <View style="@style/Divider"/>
 
 
-
+<!--
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/abc_text_size_title_material"
         android:text="Medication"
         android:id="@+id/medTextView"
         />
 
-    <ListView
+-->
+    <com.nmatte.mood.medications.MedList
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:choiceMode="multipleChoice"
-        android:clickable="true" />
+        android:id="@+id/medList"
+        android:clickable="true"
+        android:focusable="false"
+        />
 
 </LinearLayout>

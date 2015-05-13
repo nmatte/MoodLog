@@ -1,6 +1,7 @@
 package com.nmatte.mood.moodlog;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-public class SelectorAdapter extends BaseAdapter{
+public class SelectorAdapter extends BaseAdapter {
 
     String [] labels;
     int [] colors;
@@ -41,22 +42,54 @@ public class SelectorAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         String currentLabel = labels[position];
-        int currentColor = colors[position];
+        final int currentColor = colors[position];
 
         LayoutInflater inflater = activity.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.selector_row,null);
 
 
 
-        TextView textView = (TextView) rowView.findViewById(R.id.checkedTextView);
+
+
+        final TextView textView = (TextView) rowView.findViewById(R.id.checkedTextView);
+        final int originalTextColor = textView.getCurrentTextColor();
+
         final CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.checkBox);
+        checkBox.setVisibility(View.INVISIBLE);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                textView.setBackgroundColor((checkBox.isChecked()) ? 0xFF000000 : currentColor);
+                textView.setTextColor(checkBox.isChecked() ? 0xFFFFFFFF : originalTextColor);
+            }
+        });
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkBox.setChecked(!checkBox.isChecked());
+                textView.setBackgroundColor((checkBox.isChecked()) ? 0xFF000000 : currentColor);
+                textView.setTextColor(checkBox.isChecked() ? 0xFFFFFFFF : originalTextColor);
+            }
+        });
 
         boxes[position] = checkBox;
 
 
         textView.setBackgroundColor(currentColor);
         textView.setText(currentLabel);
-        textView.getLayoutParams().height = parent.getMeasuredHeight()/boxes.length;
+
+
+        ViewGroup parentParent = (ViewGroup) activity.findViewById(R.id.mainActivityLayout);
+        int newHeight = ((parentParent.getMeasuredHeight()
+                - parentParent.getPaddingBottom())
+                - parentParent.getPaddingTop())/boxes.length;
+
+        newHeight *= (activity
+                .getResources()
+                .getConfiguration()
+                .orientation == Configuration.ORIENTATION_LANDSCAPE)? 8 : 9;
+        newHeight /= 10;
+        textView.getLayoutParams().height = newHeight;
 
 
 

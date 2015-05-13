@@ -1,24 +1,24 @@
 package com.nmatte.mood.moodlog;
 
 import android.app.DialogFragment;
-import android.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.nmatte.mood.chart.ChartActivity;
 import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.medications.AddMedicationDialog;
 import com.nmatte.mood.medications.DeleteMedicationDialog;
-import com.nmatte.mood.medications.MedListAdapter;
-import com.nmatte.mood.medications.MedTableHelper;
+import com.nmatte.mood.medications.MedList;
 import com.nmatte.mood.medications.Medication;
-
-import static java.lang.Integer.parseInt;
 
 
 // TODO: add log table
@@ -27,25 +27,23 @@ import static java.lang.Integer.parseInt;
 
 public class MainActivity
        extends ActionBarActivity
-       implements DeleteMedicationDialog.DeleteMedicationListener,
-                  AddMedicationDialog.AddMedicationListener
+       implements AddMedicationDialog.AddMedicationListener,
+        DeleteMedicationDialog.DeleteMedicationListener,
+        MedList.MedListLongClickListener
+
                   {
 
-    private CustomNumberPicker anxPicker, irrPicker, hoursPicker;
-
-    private LogbookEntry currentEntry;
+    private LogbookEntry currentEntry = new LogbookEntry();
 
     static final int GET_MOOD_STRING = 1;
 
-
-    MedTableHelper MTHelper;
-    ListView listView;
-    ArrayAdapter<String> medNames;
-    MedListAdapter medAdapter;
+    static final String SELECTOR_FRAGMENT_TAG = "selector",
+            CHART_ACTIVITY = "Monthly Chart",SETTINGS_ACTIVITY="Settings",MAIN_ACTIVITY="Today";
 
     SelectorButtonFragment buttonFragment;
     SelectorFragment selectorFragment;
-    Fragment primaryFragment;
+    MainFragment mainFragment;
+    ListView navList;
 
     boolean doneIsVisible;
 
@@ -53,23 +51,49 @@ public class MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MTHelper = new MedTableHelper(this);
-        currentEntry = new LogbookEntry();
+        navList = (ListView) findViewById(R.id.drawerList);
+        final String [] navItems = new String[] {CHART_ACTIVITY,SETTINGS_ACTIVITY,MAIN_ACTIVITY};
+        navList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
+        View header = getLayoutInflater().inflate(R.layout.navlist_header,null);
+        navList.addHeaderView(header);
+        navList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch(position){
+                    case 0:
+                        break;
+                    case 1:
+                        startChartActivity();
+                        break;
+                }
 
-        buttonFragment = (SelectorButtonFragment) getFragmentManager().findFragmentById(R.id.buttonFragment);
-        selectorFragment = new SelectorFragment();
-    //    primaryFragment = new PrimaryFragment();
-
-        getFragmentManager().beginTransaction()
-                .add(R.id.frame,selectorFragment)
-                .hide(selectorFragment)
-                .commit();
-
-
-
-
-
+            }
+        });
+        initFragments();
  }
+
+     private void startChartActivity(){
+         Intent intent = new Intent(this, ChartActivity.class);
+         startActivity(intent);
+     }
+
+    private void initFragments(){
+        buttonFragment = (SelectorButtonFragment) getFragmentManager().findFragmentById(R.id.buttonFragment);
+        mainFragment = (MainFragment) getFragmentManager().findFragmentById(R.id.mainFragment);
+        selectorFragment = (SelectorFragment) getFragmentManager().findFragmentByTag(SELECTOR_FRAGMENT_TAG);
+        if(selectorFragment == null) {
+            selectorFragment = new SelectorFragment();
+            getFragmentManager().beginTransaction()
+                    .add(R.id.mainFrame, selectorFragment, SELECTOR_FRAGMENT_TAG)
+                    .hide(selectorFragment)
+                    .commit();
+        } else {
+            getFragmentManager()
+                    .beginTransaction()
+                    .hide(selectorFragment)
+                    .commit();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -85,15 +109,11 @@ public class MainActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         if(id == R.id.action_done){
             hideFragment();
-            currentEntry.setMoodString(selectorFragment.getResultString());
-            buttonFragment.setMoodString(currentEntry.getMoodString());
+            updateMoods();
 
             return true;
         }
@@ -106,6 +126,10 @@ public class MainActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private void updateMoods() {
+        // TODO: refactor using ArrayList<Boolean>
+    }
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
@@ -113,29 +137,7 @@ public class MainActivity
         return true;
     }
 
-                      private void deleteMedAtPosition(int position) {
-   //     String name = MTHelper.getMedNames().get(position);
-        Medication m = (Medication) listView.getAdapter().getItem(position);
-        String name = m.getName();
-        long id = m.getID();
 
-
-        Bundle b = new Bundle();
-        b.putCharSequence("name",name);
-        b.putLong("id",id);
-
-        DialogFragment dialog = new DeleteMedicationDialog();
-        dialog.setArguments(b);
-        dialog.show(getFragmentManager(),"Delete Med Dialog");
-    }
-
-    @Override
-    public void onDeleteDialogPositiveClick(String name) {
-        MTHelper.deleteMedication(name);
-        medAdapter.setMedications(MTHelper.getMedications());
-        medAdapter.notifyDataSetChanged();
-
-    }
 
     // From the add medication button. Starts add medication dialog.
     // TODO: request keyboard focus for dialog?
@@ -147,42 +149,55 @@ public class MainActivity
     // Listener for the add medication dialog.
     @Override
     public void onAddDialogPositiveClick(String name) {
-        MTHelper.addMedication(name);
-        medAdapter.setMedications(MTHelper.getMedications());
-        medAdapter.notifyDataSetChanged();
+        mainFragment.addMed(name);
+    }
+
+    public void onDeleteDialogPositiveClick(String name) {
+        mainFragment.deleteMed(name);
     }
 
 
     public void showInfo() {
-
-        currentEntry.setAnxValue(anxPicker.getCurrentNum());
-        currentEntry.setIrrValue(irrPicker.getCurrentNum());
-        currentEntry.setHoursSleptValue(hoursPicker.getCurrentNum());
-
         String text = currentEntry.getSummaryString();
         Toast.makeText(this, text,Toast.LENGTH_SHORT).show();
     }
 
-    public void showFragment(View view) {
-        getFragmentManager()
-                .beginTransaction()
-                .setCustomAnimations(R.animator.expand, R.animator.slide_down)
-                .show(selectorFragment)
 
-                .addToBackStack(null)
-                .commit();
+
+    public void showFragment(View view) {
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        selectorFragment.getView().getLayoutParams().width = buttonFragment.getView().getWidth();
+        getFragmentManager()
+            .beginTransaction()
+            .setCustomAnimations(R.animator.slide_left, R.animator.slide_right)
+            .show(selectorFragment)
+
+            .addToBackStack(null)
+            .commit();
         doneIsVisible = true;
         invalidateOptionsMenu();
-    }
-
+}
 
     public void hideFragment(){
         getFragmentManager().beginTransaction()
-                .setCustomAnimations(R.animator.expand, R.animator.collapse)
+                .setCustomAnimations(R.animator.slide_left, R.animator.slide_right)
                 .hide(selectorFragment)
                 .commit();
         doneIsVisible = false;
         invalidateOptionsMenu();
 
+    }
+
+    @Override
+    public void deleteMedication(Medication m) {
+        String name = m.getName();
+        long id = m.getID();
+        Bundle b = new Bundle();
+        b.putCharSequence("name",name);
+        b.putLong("id",id);
+
+        DialogFragment dialog = new DeleteMedicationDialog();
+        dialog.setArguments(b);
+        dialog.show(getFragmentManager(),"Delete Med Dialog");
     }
 }

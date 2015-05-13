@@ -9,6 +9,7 @@ import android.util.Log;
 import com.nmatte.mood.moodlog.DatabaseHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MedTableHelper {
     DatabaseHelper DBHelper;
@@ -47,7 +48,9 @@ public class MedTableHelper {
         db.close();
     }
 
-    public Medication [] getMedications(){
+    public ArrayList<Medication> getMedicationList(){
+
+        // TODO: refactor using only arraylist
         SQLiteDatabase db = DBHelper.getReadableDatabase();
         String [] columns = new String[] {
                 MedicationContract.MEDICATION_ID_COLUMN,
@@ -71,7 +74,10 @@ public class MedTableHelper {
         c.close();
         db.close();
 
-        return medications;
+
+
+        return (medications == null) ? new ArrayList<Medication>() : new ArrayList<>(Arrays.asList(medications));
+
     }
 
 
