@@ -33,8 +33,6 @@ public class MainFragment extends Fragment  {
         medList.setFooter(footer);
         medList.setMedicationList(MTHelper.getMedicationList());
 
-
-
         return rootView;
 
     }

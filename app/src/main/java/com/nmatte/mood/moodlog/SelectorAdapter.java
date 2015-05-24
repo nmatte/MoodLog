@@ -48,21 +48,9 @@ public class SelectorAdapter extends BaseAdapter {
         View rowView = inflater.inflate(R.layout.selector_row,null);
 
 
-
-
-
         final TextView textView = (TextView) rowView.findViewById(R.id.checkedTextView);
         final int originalTextColor = textView.getCurrentTextColor();
-
-        final CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.checkBox);
-        checkBox.setVisibility(View.INVISIBLE);
-        checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textView.setBackgroundColor((checkBox.isChecked()) ? 0xFF000000 : currentColor);
-                textView.setTextColor(checkBox.isChecked() ? 0xFFFFFFFF : originalTextColor);
-            }
-        });
+/*
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,10 +59,7 @@ public class SelectorAdapter extends BaseAdapter {
                 textView.setTextColor(checkBox.isChecked() ? 0xFFFFFFFF : originalTextColor);
             }
         });
-
-        boxes[position] = checkBox;
-
-
+        */
         textView.setBackgroundColor(currentColor);
         textView.setText(currentLabel);
 

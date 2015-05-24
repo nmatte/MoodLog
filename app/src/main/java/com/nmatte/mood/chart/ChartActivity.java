@@ -43,7 +43,6 @@ public class ChartActivity extends Activity {
         LinearLayout l = new LinearLayout(this);
         scrollView.addView(l);
 
-
         Random RNG = new Random();
         final ColumnView [] columns = new ColumnView[28];
 
@@ -61,8 +60,6 @@ public class ChartActivity extends Activity {
                 for(int i = 0; i < columns.length; i++){
                     columns[i].getLayoutParams().width = (int) width;
                 }
-
-
 
             }
         });
