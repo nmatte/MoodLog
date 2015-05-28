@@ -2,7 +2,6 @@ package com.nmatte.mood.moodlog;
 
 import android.app.DialogFragment;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -40,7 +39,6 @@ public class MainActivity
     static final String SELECTOR_FRAGMENT_TAG = "selector",
             CHART_ACTIVITY = "Monthly Chart",SETTINGS_ACTIVITY="Settings",MAIN_ACTIVITY="Today";
 
-    SelectorButtonFragment buttonFragment;
     SelectorFragment selectorFragment;
     MainFragment mainFragment;
     ListView navList;
@@ -78,21 +76,8 @@ public class MainActivity
      }
 
     private void initFragments(){
-        buttonFragment = (SelectorButtonFragment) getFragmentManager().findFragmentById(R.id.buttonFragment);
         mainFragment = (MainFragment) getFragmentManager().findFragmentById(R.id.mainFragment);
-        selectorFragment = (SelectorFragment) getFragmentManager().findFragmentByTag(SELECTOR_FRAGMENT_TAG);
-        if(selectorFragment == null) {
-            selectorFragment = new SelectorFragment();
-            getFragmentManager().beginTransaction()
-                    .add(R.id.mainFrame, selectorFragment, SELECTOR_FRAGMENT_TAG)
-                    .hide(selectorFragment)
-                    .commit();
-        } else {
-            getFragmentManager()
-                    .beginTransaction()
-                    .hide(selectorFragment)
-                    .commit();
-        }
+        selectorFragment = (SelectorFragment) getFragmentManager().findFragmentById(R.id.selectorFragment);
     }
 
     @Override
@@ -125,7 +110,7 @@ public class MainActivity
     }
 
     private void updateMoods() {
-        // TODO: refactor using ArrayList<Boolean>
+       currentEntry.setMoods(selectorFragment.getCheckedItems());
     }
 
     @Override
@@ -163,26 +148,10 @@ public class MainActivity
 
 
     public void showFragment(View view) {
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-        selectorFragment.getView().getLayoutParams().width = buttonFragment.getView().getWidth();
-        getFragmentManager()
-            .beginTransaction()
-            .setCustomAnimations(R.animator.slide_left, R.animator.slide_right)
-            .show(selectorFragment)
 
-            .addToBackStack(null)
-            .commit();
-        doneIsVisible = true;
-        invalidateOptionsMenu();
 }
 
     public void hideFragment(){
-        getFragmentManager().beginTransaction()
-                .setCustomAnimations(R.animator.slide_left, R.animator.slide_right)
-                .hide(selectorFragment)
-                .commit();
-        doneIsVisible = false;
-        invalidateOptionsMenu();
 
     }
 
@@ -198,4 +167,11 @@ public class MainActivity
         dialog.setArguments(b);
         dialog.show(getFragmentManager(),"Delete Med Dialog");
     }
+
+      public LogbookEntry getE(){
+          mainFragment.updateEntry(currentEntry);
+          currentEntry.setMoods(selectorFragment.getCheckedItems());
+          return currentEntry;
+
+      }
 }

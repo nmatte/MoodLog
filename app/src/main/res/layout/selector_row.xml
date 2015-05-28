@@ -4,14 +4,12 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     >
 
-
-
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="48dp"
         android:text=""
         android:textSize="@dimen/abc_text_size_medium_material"
-        android:id="@+id/checkedTextView"
+        android:id="@+id/textView"
         android:padding="10dp"
         android:gravity="center_vertical"
         android:layout_alignParentLeft="true"

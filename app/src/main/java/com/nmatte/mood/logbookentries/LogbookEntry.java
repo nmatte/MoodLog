@@ -22,7 +22,9 @@ public class LogbookEntry {
     }
 
     public String getSummaryString(){
-        String summary = date + "\n" +
+
+        String summary =LogbookEntryTableHelper.makeMoodString(moods) + "\n" +
+                         date + "\n" +
                          irrValue + "\n" +
                          anxValue + "\n" +
                          hoursSleptValue;
