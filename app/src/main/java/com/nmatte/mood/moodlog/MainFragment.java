@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nmatte.mood.logbookentries.LogbookEntry;
+import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 import com.nmatte.mood.medications.MedList;
 import com.nmatte.mood.medications.MedTableHelper;
 
@@ -20,6 +21,7 @@ public class MainFragment extends Fragment  {
 
     MedList medList;
     MedTableHelper MTHelper;
+    LogbookEntryTableHelper LEHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,12 +36,15 @@ public class MainFragment extends Fragment  {
             @Override
             public void onClick(View v) {
                 MainActivity m = (MainActivity) getActivity();
-                debugView.setText((CharSequence) m.getE().getSummaryString());
+                LogbookEntry e =  m.getE();
+                LEHelper.addOrUpdateEntry(e);
+                debugView.setText((CharSequence) e.getSummaryString());
             }
         });
 
 
         MTHelper = new MedTableHelper(getActivity());
+        LEHelper = new LogbookEntryTableHelper(getActivity());
 
         View footer = inflater.inflate(R.layout.medication_list_footer,null);
         medList.setFooter(footer);
@@ -53,7 +58,7 @@ public class MainFragment extends Fragment  {
         entry.setAnxValue(anxPicker.getCurrentNum());
         entry.setIrrValue(irrPicker.getCurrentNum());
         entry.setHoursSleptValue(hoursPicker.getCurrentNum());
-        entry.setMedications(medList.getCheckedMedications());
+        entry.setMedications(medList.checkedMedications());
         return entry;
     }
 

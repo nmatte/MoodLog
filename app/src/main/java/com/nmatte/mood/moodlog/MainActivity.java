@@ -20,10 +20,6 @@ import com.nmatte.mood.medications.MedList;
 import com.nmatte.mood.medications.Medication;
 
 
-// TODO: add log table
-// TODO: add recyclerview of past dates
-// TODO: add chart view of logs
-
 public class MainActivity
        extends ActionBarActivity
        implements AddMedicationDialog.AddMedicationListener,

@@ -1,40 +1,115 @@
 package com.nmatte.mood.logbookentries;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.nmatte.mood.moodlog.DatabaseHelper;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Nathan on 4/2/2015.
  */
 public class LogbookEntryTableHelper {
+    DatabaseHelper DBHelper;
+    Context context;
 
-    private static boolean [] parseMoodString (String moodString){
-        boolean [] result = new boolean[13];
-
-        for (int i = 0; i < result.length; i++){
-            if(moodString != null && moodString.length() < 2){
-                result[i] = false;
-            } else {
-                String nextInt = moodString.substring(0,2);
-                int indexOfTrue = Integer.parseInt(nextInt);
-                if (i == indexOfTrue){
-                    result[i] = true;
-                    moodString = moodString.substring(2);
-                } else {
-                    result[i] = false;
-                }
-            }
-        }
-        return result;
+    public LogbookEntryTableHelper (Context c){
+        context = c;
+        DBHelper = new DatabaseHelper(c);
     }
 
-    public static String makeMoodString(ArrayList<Boolean> checkedItems){
-        String result = "";
-        for (int i = 0; i < checkedItems.size(); i++){
-            result += checkedItems.get(i)?
-                    (i < 10)? "0" + String.valueOf(i)  : String.valueOf(i)
-                    :
-                    "";
+    public void addOrUpdateEntry(LogbookEntry entry){
+        SQLiteDatabase db = DBHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(LogBookContract.LOGBOOKENTRY_DATE_COLUMN,entry.getDate());
+        values.put(LogBookContract.LOGBOOKENTRY_MOOD_COLUMN,entry.moodString());
+        values.put(LogBookContract.LOGBOOKENTRY_ANXIETY_COLUMN,entry.getAnxValue());
+        values.put(LogBookContract.LOGBOOKENTRY_IRRITABILITY_COLUMN,entry.getIrrValue());
+        values.put(LogBookContract.LOGBOOKENTRY_HOURS_SLEPT_COLUMN,entry.getHoursSleptValue());
+        values.put(LogBookContract.LOGBOOKENTRY_MEDICATION_COLUMN,entry.medicationString());
+
+        try{
+            db.insertWithOnConflict(LogBookContract.LOGBOOKENTRY_TABLE,null,values,SQLiteDatabase.CONFLICT_REPLACE);
+        } catch (Exception e){
+            Log.e("db","",e);
         }
-        return result;
+
+        db.close();
+    }
+
+
+    public LogbookEntry getEntry(long date){
+        SQLiteDatabase db = DBHelper.getReadableDatabase();
+        LogbookEntry e = null;
+        String [] columns = new String[] {
+                LogBookContract.LOGBOOKENTRY_DATE_COLUMN,
+                LogBookContract.LOGBOOKENTRY_MOOD_COLUMN,
+                LogBookContract.LOGBOOKENTRY_IRRITABILITY_COLUMN,
+                LogBookContract.LOGBOOKENTRY_ANXIETY_COLUMN,
+                LogBookContract.LOGBOOKENTRY_HOURS_SLEPT_COLUMN,
+                LogBookContract.LOGBOOKENTRY_MEDICATION_COLUMN
+        };
+        String [] selection = new String[] {String.valueOf(date)};
+
+        Cursor c = db.query(LogBookContract.LOGBOOKENTRY_TABLE, columns,LogBookContract.LOGBOOKENTRY_DATE_COLUMN + "=?",selection,null,null,null);
+        c.moveToFirst();
+        if (c.getCount() > 0){
+            e = new LogbookEntry(
+                    c.getLong(0),
+                    c.getString(1),
+                    c.getInt(2),
+                    c.getInt(3),
+                    c.getInt(4),
+                    c.getString(5));
+        }
+        c.close();
+        db.close();
+        return e;
+    }
+
+    public LogbookEntry getEntryToday(){
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        long date = c.getTimeInMillis();
+        return getEntry(date);
+    }
+
+    public ArrayList<LogbookEntry> getEntryGroup (long startDate, long endDate){
+        ArrayList<LogbookEntry> entries = new ArrayList<>();
+        SQLiteDatabase db = DBHelper.getReadableDatabase();
+
+        String [] columns = new String[] {
+                LogBookContract.LOGBOOKENTRY_DATE_COLUMN,
+                LogBookContract.LOGBOOKENTRY_MOOD_COLUMN,
+                LogBookContract.LOGBOOKENTRY_IRRITABILITY_COLUMN,
+                LogBookContract.LOGBOOKENTRY_ANXIETY_COLUMN,
+                LogBookContract.LOGBOOKENTRY_HOURS_SLEPT_COLUMN,
+                LogBookContract.LOGBOOKENTRY_MEDICATION_COLUMN
+        };
+        String [] selection = new String[] {String.valueOf(startDate), String.valueOf(endDate)};
+
+        Cursor c = db.query(LogBookContract.LOGBOOKENTRY_TABLE, columns,LogBookContract.LOGBOOKENTRY_DATE_COLUMN + "=?",selection,null,null,null);
+        if (c.getCount() > 0){
+            do {
+                entries.add( new LogbookEntry(c.getLong(0),
+                        c.getString(1),
+                        c.getInt(2),
+                        c.getInt(3),
+                        c.getInt(4),
+                        c.getString(5)));
+            } while (c.moveToNext());
+        }
+        c.close();
+        db.close();
+
+        return entries;
     }
 }

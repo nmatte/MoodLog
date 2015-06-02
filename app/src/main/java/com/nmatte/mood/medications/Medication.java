@@ -2,9 +2,9 @@ package com.nmatte.mood.medications;
 
 public class Medication {
     private long ID;
-    private String name = "";
+    private String name;
 
-    public Medication(int ID, String name){
+    public Medication(long ID, String name){
         this.ID = ID;
         this.name = name;
     }
@@ -17,7 +17,7 @@ public class Medication {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(long ID) {
         this.ID = ID;
     }
 

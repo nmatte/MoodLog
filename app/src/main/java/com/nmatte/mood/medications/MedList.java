@@ -1,7 +1,6 @@
 package com.nmatte.mood.medications;
 
 import android.content.Context;
-import android.support.v4.util.SimpleArrayMap;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -76,13 +75,17 @@ public class MedList extends LinearLayout {
         this.footer = footer;
     }
 
-    public SimpleArrayMap getCheckedMedications(){
-        SimpleArrayMap<Medication,Boolean> checkedMeds = new SimpleArrayMap<>();
+    public ArrayList<Medication> checkedMedications(){
+        ArrayList<Medication> result = new ArrayList<>();
+
+        // if there's a footer we don't want to count it
         int count = (footer == null) ? this.getChildCount() : this.getChildCount() - 1;
+
         for(int i = 0; i < count; i++){
             CheckedTextView v = (CheckedTextView) this.getChildAt(i);
-            checkedMeds.put(medList.get(i),v.isChecked());
+            if (v.isChecked())
+                result.add(medList.get(i));
         }
-        return checkedMeds;
+        return result;
     }
 }

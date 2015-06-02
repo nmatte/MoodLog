@@ -121,7 +121,7 @@ public class ColumnView extends View {
                         String text = "";
                         switch (i) {
                             case NUM_INDEX:
-                                text = Integer.toString(entry.getDate() - startDate);
+                                text = Integer.toString((int)entry.getDate() - (int)startDate);
                                 break;
                             case ANX_INDEX:
                                 text = Integer.toString(entry.getAnxValue());
