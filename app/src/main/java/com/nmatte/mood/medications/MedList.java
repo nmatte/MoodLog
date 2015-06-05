@@ -59,6 +59,7 @@ public class MedList extends LinearLayout {
             rowView.setOnLongClickListener(new OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+
                     listener.deleteMedication(m);
                     return true;
                 }
@@ -87,5 +88,17 @@ public class MedList extends LinearLayout {
                 result.add(medList.get(i));
         }
         return result;
+    }
+
+    public void setChecked(ArrayList<Medication> checked){
+        for (Medication checkedMed : checked){
+            for (int i = 0; i < medList.size(); i++){
+                if(medList.get(i).getID() == checkedMed.getID()){
+                    CheckedTextView rowView = (CheckedTextView) this.getChildAt(i);
+                    rowView.setChecked(true);
+                }
+            }
+        }
+
     }
 }

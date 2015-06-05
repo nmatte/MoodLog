@@ -5,23 +5,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.nmatte.mood.logbookentries.LogbookEntry;
-import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 import com.nmatte.mood.medications.MedList;
 import com.nmatte.mood.medications.MedTableHelper;
+import com.nmatte.mood.medications.Medication;
+
+import java.util.ArrayList;
 
 public class MainFragment extends Fragment  {
     CustomNumberPicker irrPicker;
     CustomNumberPicker anxPicker;
     CustomNumberPicker hoursPicker;
-
-    TextView debugView;
-
     MedList medList;
     MedTableHelper MTHelper;
-    LogbookEntryTableHelper LEHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -31,20 +28,8 @@ public class MainFragment extends Fragment  {
         anxPicker = (CustomNumberPicker) rootView.findViewById(R.id.anxPicker);
         hoursPicker = (CustomNumberPicker) rootView.findViewById(R.id.hoursPicker);
         medList = (MedList) rootView.findViewById(R.id.medList);
-        debugView = (TextView) rootView.findViewById(R.id.debugView);
-        debugView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity m = (MainActivity) getActivity();
-                LogbookEntry e =  m.getE();
-                LEHelper.addOrUpdateEntry(e);
-                debugView.setText((CharSequence) e.getSummaryString());
-            }
-        });
-
 
         MTHelper = new MedTableHelper(getActivity());
-        LEHelper = new LogbookEntryTableHelper(getActivity());
 
         View footer = inflater.inflate(R.layout.medication_list_footer,null);
         medList.setFooter(footer);
@@ -63,20 +48,24 @@ public class MainFragment extends Fragment  {
     }
 
     public void deleteMed (String name){
+        ArrayList<Medication> tempList = medList.checkedMedications();
         MTHelper.deleteMedication(name);
         medList.setMedicationList(MTHelper.getMedicationList());
+        medList.setChecked(tempList);
     }
 
     public void addMed (String name){
+        ArrayList<Medication> tempList = medList.checkedMedications();
         MTHelper.addMedication(name);
         medList.setMedicationList(MTHelper.getMedicationList());
-    }
-
-    public void updateDebugView(LogbookEntry e){
-        debugView.setText("currentEntry:\n"+e.getSummaryString());
-
+        medList.setChecked(tempList);
     }
 
 
-
+    public void setValues(LogbookEntry e) {
+        anxPicker.setCurrentNum(e.getAnxValue());
+        irrPicker.setCurrentNum(e.getIrrValue());
+        hoursPicker.setCurrentNum(e.getHoursSleptValue());
+        medList.setChecked(e.getMedications());
+    }
 }

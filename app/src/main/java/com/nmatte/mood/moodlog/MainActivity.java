@@ -40,14 +40,25 @@ public class MainActivity
     SelectorFragment selectorFragment;
     MainFragment mainFragment;
     ListView navList;
+    LogbookEntryTableHelper LEHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        currentEntry = new LogbookEntryTableHelper(getBaseContext()).getEntryToday();
+
         initNavbar();
         initFragments();
+
+        LEHelper = new LogbookEntryTableHelper(this);
+        currentEntry = LEHelper.getEntryToday();
+        if (currentEntry == null) {
+            currentEntry = new LogbookEntry();
+        }
+        else {
+            selectorFragment.setCheckedItems(currentEntry);
+            mainFragment.setValues(currentEntry);
+        }
     }
 
     private void initNavbar(){
@@ -64,7 +75,7 @@ public class MainActivity
         navList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch(position){
+                switch (position) {
                     case 0:
                         break;
                     case 1:
@@ -152,12 +163,25 @@ public class MainActivity
 
         DialogFragment dialog = new DeleteMedicationDialog();
         dialog.setArguments(b);
-        dialog.show(getFragmentManager(),"Delete Med Dialog");
+        dialog.show(getFragmentManager(), "Delete Med Dialog");
     }
 
-    public LogbookEntry getE(){
-        mainFragment.updateEntry(currentEntry);
-        currentEntry.setMoods(selectorFragment.getCheckedItems());
-        return currentEntry;
+    private void updateCurrentEntry(){
+        currentEntry = selectorFragment.updateEntry(currentEntry);
+        currentEntry = mainFragment.updateEntry(currentEntry);
+        currentEntry.setDateCurrent();
     }
+
+    private void saveCurrentEntry(){
+        updateCurrentEntry();
+        LEHelper.addOrUpdateEntry(currentEntry);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveCurrentEntry();
+    }
+
+
 }

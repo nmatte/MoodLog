@@ -2,10 +2,13 @@ package com.nmatte.mood.moodlog;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import com.nmatte.mood.logbookentries.LogbookEntry;
 
 import java.util.ArrayList;
 
@@ -25,6 +28,10 @@ public class SelectorFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+
+        if (colors.length != labels.length){
+            Log.e("selector fragment","selector fragment color array length doesn't match label length");
+        }
 
     }
 
@@ -48,5 +55,18 @@ public class SelectorFragment extends Fragment {
             checkedItems.add(row.getValue());
         }
         return checkedItems;
+    }
+
+    public void setCheckedItems(LogbookEntry e){
+        ArrayList<Boolean> moods = e.getMoods();
+        for (int i = 0; i < moods.size(); i++){
+            SelectorRow row = (SelectorRow) mainLayout.getChildAt(i);
+            row.setValue(moods.get(i));
+        }
+    }
+
+    public LogbookEntry updateEntry (LogbookEntry e){
+        e.setMoods(getCheckedItems());
+        return e;
     }
 }

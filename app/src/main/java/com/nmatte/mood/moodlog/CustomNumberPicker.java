@@ -8,10 +8,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-
-import java.util.zip.Inflater;
-
-
 public class CustomNumberPicker extends RelativeLayout {
     TextView minusButton;
     TextView plusButton;
@@ -68,5 +64,10 @@ public class CustomNumberPicker extends RelativeLayout {
 
     public int getCurrentNum(){
         return currentNum;
+    }
+
+    public void setCurrentNum(int newNum){
+        this.currentNum = newNum;
+        numIndicator.setText(String.valueOf(newNum));
     }
 }

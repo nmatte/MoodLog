@@ -4,6 +4,7 @@ package com.nmatte.mood.logbookentries;
 import com.nmatte.mood.medications.Medication;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -13,7 +14,7 @@ public class LogbookEntry {
     int irrValue = 0,
         anxValue = 0,
         hoursSleptValue = 0;
-    long date = 0;
+    int date = 0;
     ArrayList<Medication> medications;
 
     public LogbookEntry (){
@@ -22,7 +23,7 @@ public class LogbookEntry {
         setDateCurrent();
     }
 
-    public LogbookEntry(long date, String moodString, int irr, int anx, int sleep,  String medString){
+    public LogbookEntry(int date, String moodString, int irr, int anx, int sleep,  String medString){
         this.moods = parseMoodString(moodString);
         this.irrValue = irr;
         this.anxValue = anx;
@@ -34,11 +35,9 @@ public class LogbookEntry {
 
     public void setDateCurrent(){
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        this.date = c.getTimeInMillis();
+        DateFormat df = new SimpleDateFormat("yyyyMMdd");
+        String ds = df.format(c.getTime());
+        this.date = Integer.valueOf(ds);
     }
 
     public String getSummaryString(){
@@ -99,8 +98,7 @@ public class LogbookEntry {
     public String moodString(){
         String result = "";
         for (int i = 0; i < moods.size(); i++){
-            if(moods.get(i))
-                result += String.valueOf(i) + " ";
+            result += moods.get(i) ? "T " : "F ";
         }
         return result;
     }
@@ -114,29 +112,33 @@ public class LogbookEntry {
         return result;
     }
 
-    private ArrayList<Medication> parseMedicationString(String medicationString){
+    private static ArrayList<Medication> parseMedicationString(String medicationString){
         ArrayList<Medication> result = new ArrayList<>();
         for (String med : medicationString.split(" ")){
-            long id = Integer.valueOf(med);
-            result.add(new Medication(id,null));
+            if (!med.equals("")) {
+                long id = Integer.valueOf(med);
+                result.add(new Medication(id, null));
+            }
         }
         return result;
     }
 
     private static ArrayList<Boolean> parseMoodString (String moodString){
         ArrayList<Boolean> result = new ArrayList<>();
-        ArrayList<Integer> moodInts = new ArrayList<>();
-        for (String mood: moodString.split(" ")){
-            moodInts.add(Integer.parseInt(mood));
-        }
-
-        for (int i = 0; i < 13; i++){
-            result.add((moodInts.contains(i)));
+        String [] boolStrings = moodString.split(" ");
+        for (String mood: boolStrings){
+            if (!mood.equals("")) {
+                result.add(mood.equals("T"));
+            }
         }
         return result;
     }
 
     public void setMedications(ArrayList medications) {
         this.medications = medications;
+    }
+
+    public ArrayList<Medication> getMedications() {
+        return medications;
     }
 }

@@ -48,11 +48,6 @@
         android:focusable="false"
         />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/debugView"
-        android:text="currentEntry"/>
 
 </LinearLayout>
 

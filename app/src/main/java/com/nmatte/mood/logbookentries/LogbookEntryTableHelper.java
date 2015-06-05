@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.nmatte.mood.moodlog.DatabaseHelper;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -43,7 +45,7 @@ public class LogbookEntryTableHelper {
     }
 
 
-    public LogbookEntry getEntry(long date){
+    public LogbookEntry getEntry(int date){
         SQLiteDatabase db = DBHelper.getReadableDatabase();
         LogbookEntry e = null;
         String [] columns = new String[] {
@@ -60,7 +62,7 @@ public class LogbookEntryTableHelper {
         c.moveToFirst();
         if (c.getCount() > 0){
             e = new LogbookEntry(
-                    c.getLong(0),
+                    c.getInt(0),
                     c.getString(1),
                     c.getInt(2),
                     c.getInt(3),
@@ -74,15 +76,14 @@ public class LogbookEntryTableHelper {
 
     public LogbookEntry getEntryToday(){
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        long date = c.getTimeInMillis();
+        DateFormat df = new SimpleDateFormat("yyyyMMdd");
+        String ds = df.format(c.getTime());
+        int date = Integer.valueOf(ds);
         return getEntry(date);
     }
 
-    public ArrayList<LogbookEntry> getEntryGroup (long startDate, long endDate){
+    public ArrayList<LogbookEntry> getEntryGroup (int startDate, int endDate){
+        //TODO ensure this works properly
         ArrayList<LogbookEntry> entries = new ArrayList<>();
         SQLiteDatabase db = DBHelper.getReadableDatabase();
 
@@ -99,7 +100,7 @@ public class LogbookEntryTableHelper {
         Cursor c = db.query(LogBookContract.LOGBOOKENTRY_TABLE, columns,LogBookContract.LOGBOOKENTRY_DATE_COLUMN + "=?",selection,null,null,null);
         if (c.getCount() > 0){
             do {
-                entries.add( new LogbookEntry(c.getLong(0),
+                entries.add( new LogbookEntry(c.getInt(0),
                         c.getString(1),
                         c.getInt(2),
                         c.getInt(3),

@@ -12,6 +12,7 @@ public class SelectorRow extends RelativeLayout{
     boolean value = false;
     int BLACK = 0xFF000000;
     int WHITE = 0xFFFFFFFF;
+    int color;
 
 
     public SelectorRow(Context context, AttributeSet attrs) {
@@ -29,6 +30,7 @@ public class SelectorRow extends RelativeLayout{
         textView = (TextView) v.findViewById(R.id.textView);
         textView.setText(text);
         textView.setTextColor(BLACK);
+        this.color = color;
         textView.setBackgroundColor(color);
 
         textView.setOnClickListener(new OnClickListener() {
@@ -44,5 +46,11 @@ public class SelectorRow extends RelativeLayout{
 
     public boolean getValue(){
         return value;
+    }
+
+    public void setValue(boolean newVal){
+        this.value = newVal;
+        textView.setBackgroundColor(value ? BLACK : this.color);
+        textView.setTextColor(value ? WHITE : BLACK);
     }
 }
