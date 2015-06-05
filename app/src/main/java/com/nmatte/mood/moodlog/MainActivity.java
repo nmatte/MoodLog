@@ -10,43 +10,54 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.nmatte.mood.chart.ChartActivity;
 import com.nmatte.mood.logbookentries.LogbookEntry;
+import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 import com.nmatte.mood.medications.AddMedicationDialog;
 import com.nmatte.mood.medications.DeleteMedicationDialog;
 import com.nmatte.mood.medications.MedList;
 import com.nmatte.mood.medications.Medication;
 
+import java.util.ArrayList;
+
 
 public class MainActivity
-       extends ActionBarActivity
-       implements AddMedicationDialog.AddMedicationListener,
+    extends ActionBarActivity
+    implements AddMedicationDialog.AddMedicationListener,
         DeleteMedicationDialog.DeleteMedicationListener,
         MedList.MedListLongClickListener
+{
 
-                  {
+    private LogbookEntry currentEntry;
 
-    private LogbookEntry currentEntry = new LogbookEntry();
-
-    static final int GET_MOOD_STRING = 1;
-
-    static final String SELECTOR_FRAGMENT_TAG = "selector",
-            CHART_ACTIVITY = "Monthly Chart",SETTINGS_ACTIVITY="Settings",MAIN_ACTIVITY="Today";
+    static final String
+        CHART_ACTIVITY = "Monthly Chart",
+        SETTINGS_ACTIVITY="Settings",
+        MAIN_ACTIVITY="Today",
+        HISTORY_ACTIVITY="History";
 
     SelectorFragment selectorFragment;
     MainFragment mainFragment;
     ListView navList;
 
-    boolean doneIsVisible;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        currentEntry = new LogbookEntryTableHelper(getBaseContext()).getEntryToday();
+        initNavbar();
+        initFragments();
+    }
+
+    private void initNavbar(){
         navList = (ListView) findViewById(R.id.drawerList);
-        final String [] navItems = new String[] {CHART_ACTIVITY,SETTINGS_ACTIVITY,MAIN_ACTIVITY};
+        final ArrayList<String> navItems = new ArrayList<>();
+
+        navItems.add(MAIN_ACTIVITY);
+        navItems.add(CHART_ACTIVITY);
+        navItems.add(HISTORY_ACTIVITY);
+        navItems.add(SETTINGS_ACTIVITY);
         navList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
         View header = getLayoutInflater().inflate(R.layout.navlist_header,null);
         navList.addHeaderView(header);
@@ -57,19 +68,34 @@ public class MainActivity
                     case 0:
                         break;
                     case 1:
+                        break;
+                    case 2:
                         startChartActivity();
+                        break;
+                    case 3:
+                        startHistoryActivity();
+                        break;
+                    case 4:
+                        startSettingsActivity();
                         break;
                 }
 
             }
         });
-        initFragments();
- }
+    }
 
-     private void startChartActivity(){
+    private void startChartActivity(){
          Intent intent = new Intent(this, ChartActivity.class);
          startActivity(intent);
-     }
+    }
+
+    private void startHistoryActivity() {
+        //TODO
+    }
+
+    private void startSettingsActivity(){
+        //TODO
+    }
 
     private void initFragments(){
         mainFragment = (MainFragment) getFragmentManager().findFragmentById(R.id.mainFragment);
@@ -90,33 +116,14 @@ public class MainActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if(id == R.id.action_done){
-            hideFragment();
-            updateMoods();
-
-            return true;
-        }
-
-        if(id == R.id.show_info){
-            showInfo();
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
-    }
-
-    private void updateMoods() {
-       currentEntry.setMoods(selectorFragment.getCheckedItems());
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.action_done).setVisible(doneIsVisible);
         return true;
     }
-
-
 
     // From the add medication button. Starts add medication dialog.
     // TODO: request keyboard focus for dialog?
@@ -135,22 +142,6 @@ public class MainActivity
         mainFragment.deleteMed(name);
     }
 
-
-    public void showInfo() {
-        String text = currentEntry.getSummaryString();
-        Toast.makeText(this, text,Toast.LENGTH_SHORT).show();
-    }
-
-
-
-    public void showFragment(View view) {
-
-}
-
-    public void hideFragment(){
-
-    }
-
     @Override
     public void deleteMedication(Medication m) {
         String name = m.getName();
@@ -164,10 +155,9 @@ public class MainActivity
         dialog.show(getFragmentManager(),"Delete Med Dialog");
     }
 
-      public LogbookEntry getE(){
-          mainFragment.updateEntry(currentEntry);
-          currentEntry.setMoods(selectorFragment.getCheckedItems());
-          return currentEntry;
-
-      }
+    public LogbookEntry getE(){
+        mainFragment.updateEntry(currentEntry);
+        currentEntry.setMoods(selectorFragment.getCheckedItems());
+        return currentEntry;
+    }
 }
