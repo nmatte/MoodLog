@@ -4,7 +4,6 @@ package com.nmatte.mood.logbookentries;
 import com.nmatte.mood.medications.Medication;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -18,9 +17,9 @@ public class LogbookEntry {
     ArrayList<Medication> medications;
 
     public LogbookEntry (){
-        moods = new ArrayList<Boolean>();
-        medications = new ArrayList<>();
-        setDateCurrent();
+        this.moods = new ArrayList<Boolean>();
+        this.medications = new ArrayList<>();
+        this.date = LogbookEntryTableHelper.getIntFromDate(Calendar.getInstance());
     }
 
     public LogbookEntry(int date, String moodString, int irr, int anx, int sleep,  String medString){
@@ -33,12 +32,6 @@ public class LogbookEntry {
 
     }
 
-    public void setDateCurrent(){
-        Calendar c = Calendar.getInstance();
-        DateFormat df = new SimpleDateFormat("yyyyMMdd");
-        String ds = df.format(c.getTime());
-        this.date = Integer.valueOf(ds);
-    }
 
     public String getSummaryString(){
         DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT);
@@ -55,7 +48,7 @@ public class LogbookEntry {
 
     }
 
-    public long getDate() {
+    public int getDate() {
         return date;
     }
 

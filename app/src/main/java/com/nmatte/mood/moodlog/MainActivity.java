@@ -20,6 +20,7 @@ import com.nmatte.mood.medications.MedList;
 import com.nmatte.mood.medications.Medication;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class MainActivity
@@ -169,7 +170,7 @@ public class MainActivity
     private void updateCurrentEntry(){
         currentEntry = selectorFragment.updateEntry(currentEntry);
         currentEntry = mainFragment.updateEntry(currentEntry);
-        currentEntry.setDateCurrent();
+        currentEntry.setDate(LogbookEntryTableHelper.getIntFromDate(Calendar.getInstance()));
     }
 
     private void saveCurrentEntry(){

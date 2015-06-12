@@ -13,6 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import static java.lang.Integer.valueOf;
+
 /**
  * Created by Nathan on 4/2/2015.
  */
@@ -75,14 +77,19 @@ public class LogbookEntryTableHelper {
     }
 
     public LogbookEntry getEntryToday(){
-        Calendar c = Calendar.getInstance();
-        DateFormat df = new SimpleDateFormat("yyyyMMdd");
-        String ds = df.format(c.getTime());
-        int date = Integer.valueOf(ds);
-        return getEntry(date);
+        return getEntry(getIntFromDate(Calendar.getInstance()));
     }
 
-    public ArrayList<LogbookEntry> getEntryGroup (int startDate, int endDate){
+    public static int getIntFromDate( Calendar c){
+        DateFormat df = new SimpleDateFormat("yyyyDDD");
+        String ds = df.format(c.getTime());
+        return valueOf(ds);
+
+    }
+
+
+
+    public ArrayList<LogbookEntry> getEntryGroup (Calendar startDate, Calendar endDate){
         //TODO ensure this works properly
         ArrayList<LogbookEntry> entries = new ArrayList<>();
         SQLiteDatabase db = DBHelper.getReadableDatabase();
@@ -95,22 +102,36 @@ public class LogbookEntryTableHelper {
                 LogBookContract.LOGBOOKENTRY_HOURS_SLEPT_COLUMN,
                 LogBookContract.LOGBOOKENTRY_MEDICATION_COLUMN
         };
-        String [] selection = new String[] {String.valueOf(startDate), String.valueOf(endDate)};
+        String [] selection = new String[] {String.valueOf(getIntFromDate(startDate)),String.valueOf(getIntFromDate(endDate))};
 
-        Cursor c = db.query(LogBookContract.LOGBOOKENTRY_TABLE, columns,LogBookContract.LOGBOOKENTRY_DATE_COLUMN + "=?",selection,null,null,null);
+        Cursor c = db.query(LogBookContract.LOGBOOKENTRY_TABLE, columns,LogBookContract.LOGBOOKENTRY_DATE_COLUMN + " BETWEEN ? AND ?",selection,null,null,null);
+        c.moveToFirst();
         if (c.getCount() > 0){
             do {
-                entries.add( new LogbookEntry(c.getInt(0),
-                        c.getString(1),
-                        c.getInt(2),
-                        c.getInt(3),
-                        c.getInt(4),
-                        c.getString(5)));
+                try {
+                    entries.add(new LogbookEntry(c.getInt(0),
+                            c.getString(1),
+                            c.getInt(2),
+                            c.getInt(3),
+                            c.getInt(4),
+                            c.getString(5)));
+                } catch (Exception e){
+                    Log.e("db","",e);
+                }
             } while (c.moveToNext());
         }
         c.close();
         db.close();
 
         return entries;
+    }
+
+    public ArrayList<LogbookEntry> getLast28Days (){
+        ArrayList<LogbookEntry> result;
+        Calendar endDate = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        startDate.add(Calendar.DAY_OF_YEAR,-28);
+        result = this.getEntryGroup(startDate,endDate);
+        return result;
     }
 }

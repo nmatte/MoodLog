@@ -34,7 +34,7 @@ public class ColumnView extends View {
 
 
     private enum DrawMode {
-        LABEL, NONE, ENTRY, BUTTON
+        LABEL, NONE, ENTRY
     }
 
     public ColumnView(Context context, AttributeSet attrs) {
@@ -43,17 +43,23 @@ public class ColumnView extends View {
         initPaints();
     }
 
-    public ColumnView(Context context, LogbookEntry entry, int startDate, String [] labels) {
+    public ColumnView(Context context, LogbookEntry entry, int startDate) {
         super(context);
         if (entry != null) {
             currentMode = DrawMode.ENTRY;
             this.entry = entry;
             this.startDate = startDate;
         }
-        if (labels != null) {
-            currentMode = DrawMode.LABEL;
-            this.labels = labels;
-        }
+        fillColorArray();
+        blackRect = new Rect();
+        initPaints();
+    }
+
+    public ColumnView(Context context, String [] labels){
+        super(context);
+        currentMode = DrawMode.LABEL;
+        this.labels = labels;
+
         fillColorArray();
         blackRect = new Rect();
         initPaints();
@@ -62,17 +68,6 @@ public class ColumnView extends View {
     private void initPaints(){
         paint = new Paint();
         blackPaint = new Paint();
-    }
-
-    public void setButtonMode(){
-        this.currentMode = DrawMode.BUTTON;
-        allColors.clear();
-        for (int color : moodColors) allColors.add(color);
-    }
-
-    public void updateEntry(LogbookEntry e){
-        this.entry = e;
-        invalidate();
     }
 
     private void fillColorArray(){
@@ -92,9 +87,6 @@ public class ColumnView extends View {
         int bottom = height;
 
         blackPaint.setColor(0xFF000000);
-
-
-
 
         blackRect.left = left + getWidth()/10;
         blackRect.right = right - getWidth()/10;
@@ -157,14 +149,6 @@ public class ColumnView extends View {
                     float textY = bottom - height / 6;
                     canvas.drawText(text,textX,textY,blackPaint);
                     break;
-                case BUTTON:
-                    if(entry.getMoods().size() == 0) break;
-                    if(entry.getMoods().get(i)) {
-                        blackRect.top = top + heightDiff;
-                        blackRect.bottom = bottom - heightDiff;
-                        canvas.drawRect(blackRect,blackPaint);
-                    }
-                    break;
                 case NONE:
                     break;
 
@@ -191,7 +175,7 @@ public class ColumnView extends View {
     private Paint adjustTextSize (String text, Paint paint){
         while (paint.measureText(text) > getWidth() * 0.9){
             float currentSize = paint.getTextSize();
-            double newSize = currentSize * 0.85;
+            double newSize = currentSize * 0.7;
             float newSize2 = (float) newSize;
             paint.setTextSize(newSize2);
         }
