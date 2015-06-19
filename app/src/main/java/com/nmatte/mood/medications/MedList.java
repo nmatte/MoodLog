@@ -10,38 +10,49 @@ import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nmatte.mood.moodlog.R;
+
 import java.util.ArrayList;
 
 public class MedList extends LinearLayout {
     private ArrayList<Medication> medList;
     private Context context;
-    private View footer;
+    private boolean readOnlyMode;
+    MedListListener DBListener;
 
-    MedListLongClickListener listener;
-
-    public interface MedListLongClickListener {
-        public void deleteMedication(Medication m);
+    public interface MedListListener {
+        void delete(Medication m);
+        void addNew();
+        ArrayList<Medication> getList();
     }
 
     public MedList(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        medList = new ArrayList<>();
+        init();
+
+    }
+
+    public MedList(Context context, boolean readOnly){
+        super(context);
+        this.context = context;
+        this.readOnlyMode = readOnly;
+        init();
+    }
+
+    private void init(){
         this.setOrientation(VERTICAL);
         try{
-        listener = (MedListLongClickListener) context;
+            DBListener = (MedListListener) context;
         } catch (ClassCastException e){
             Log.e("MedList", "MedList instantiated without listener");
         }
     }
 
-    public void setMedicationList (ArrayList<Medication> meds){
-        medList = meds;
-        updateList();
-    }
 
-    private void updateList() {
+    public void updateList() {
         this.removeAllViews();
+        medList = DBListener.getList();
         LayoutInflater inflater = LayoutInflater.from(context);
         for (final Medication m : medList){
             final CheckedTextView rowView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice,null);
@@ -56,36 +67,41 @@ public class MedList extends LinearLayout {
                     rowView.setChecked(!rowView.isChecked());
                 }
             });
-            rowView.setOnLongClickListener(new OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
 
-                    listener.deleteMedication(m);
-                    return true;
+            if(!readOnlyMode){
+                rowView.setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        DBListener.delete(m);
+                        return true;
+                    }
+                });
+            }
+            this.addView(rowView);
+        }
+        if(!readOnlyMode) {
+            View footer = inflater.inflate(R.layout.medication_list_footer, null);
+            footer.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DBListener.addNew();
                 }
             });
-            this.addView(rowView);
-
+            this.addView(footer);
         }
-        if (footer != null) this.addView(footer);
+
     }
 
-
-
-    public void setFooter(View footer){
-        this.footer = footer;
-    }
 
     public ArrayList<Medication> checkedMedications(){
         ArrayList<Medication> result = new ArrayList<>();
-
         // if there's a footer we don't want to count it
-        int count = (footer == null) ? this.getChildCount() : this.getChildCount() - 1;
-
-        for(int i = 0; i < count; i++){
-            CheckedTextView v = (CheckedTextView) this.getChildAt(i);
-            if (v.isChecked())
-                result.add(medList.get(i));
+        for(int i = 0; i < this.getChildCount(); i++){
+            if(this.getChildAt(i) instanceof CheckedTextView) {
+                CheckedTextView v = (CheckedTextView) this.getChildAt(i);
+                if (v.isChecked())
+                    result.add(medList.get(i));
+            }
         }
         return result;
     }
@@ -99,6 +115,6 @@ public class MedList extends LinearLayout {
                 }
             }
         }
-
     }
+
 }

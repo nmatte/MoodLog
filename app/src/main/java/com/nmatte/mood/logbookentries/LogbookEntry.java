@@ -13,6 +13,7 @@ public class LogbookEntry {
     int irrValue = 0,
         anxValue = 0,
         hoursSleptValue = 0;
+    //TODO change date field to Calendar
     int date = 0;
     ArrayList<Medication> medications;
 

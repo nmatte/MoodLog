@@ -20,6 +20,7 @@
         </activity>
         <activity android:name="com.nmatte.mood.chart.ChartActivity"
             />
+        <activity android:name="com.nmatte.mood.settings.SettingsActivity"/>
     </application>
 
 </manifest>

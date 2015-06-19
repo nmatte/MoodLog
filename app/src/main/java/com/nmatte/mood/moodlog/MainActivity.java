@@ -17,7 +17,9 @@ import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 import com.nmatte.mood.medications.AddMedicationDialog;
 import com.nmatte.mood.medications.DeleteMedicationDialog;
 import com.nmatte.mood.medications.MedList;
+import com.nmatte.mood.medications.MedTableHelper;
 import com.nmatte.mood.medications.Medication;
+import com.nmatte.mood.settings.SettingsActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,7 +29,7 @@ public class MainActivity
     extends ActionBarActivity
     implements AddMedicationDialog.AddMedicationListener,
         DeleteMedicationDialog.DeleteMedicationListener,
-        MedList.MedListLongClickListener
+        MedList.MedListListener
 {
 
     private LogbookEntry currentEntry;
@@ -35,13 +37,13 @@ public class MainActivity
     static final String
         CHART_ACTIVITY = "Monthly Chart",
         SETTINGS_ACTIVITY="Settings",
-        MAIN_ACTIVITY="Today",
-        HISTORY_ACTIVITY="History";
+        MAIN_ACTIVITY="Today";
 
     SelectorFragment selectorFragment;
     MainFragment mainFragment;
     ListView navList;
     LogbookEntryTableHelper LEHelper;
+    MedTableHelper MTHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class MainActivity
         initFragments();
 
         LEHelper = new LogbookEntryTableHelper(this);
+        MTHelper = new MedTableHelper(this);
         currentEntry = LEHelper.getEntryToday();
         if (currentEntry == null) {
             currentEntry = new LogbookEntry();
@@ -68,7 +71,6 @@ public class MainActivity
 
         navItems.add(MAIN_ACTIVITY);
         navItems.add(CHART_ACTIVITY);
-        navItems.add(HISTORY_ACTIVITY);
         navItems.add(SETTINGS_ACTIVITY);
         navList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, navItems));
         View header = getLayoutInflater().inflate(R.layout.navlist_header,null);
@@ -85,9 +87,6 @@ public class MainActivity
                         startChartActivity();
                         break;
                     case 3:
-                        startHistoryActivity();
-                        break;
-                    case 4:
                         startSettingsActivity();
                         break;
                 }
@@ -101,12 +100,9 @@ public class MainActivity
          startActivity(intent);
     }
 
-    private void startHistoryActivity() {
-        //TODO
-    }
-
     private void startSettingsActivity(){
-        //TODO
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     private void initFragments(){
@@ -137,25 +133,23 @@ public class MainActivity
         return true;
     }
 
-    // From the add medication button. Starts add medication dialog.
-    // TODO: request keyboard focus for dialog?
-    public void addMedication(View view) {
-        DialogFragment dialog = new AddMedicationDialog();
-        dialog.show(getFragmentManager(), "Add Med Dialog");
-    }
-
     // Listener for the add medication dialog.
     @Override
     public void onAddDialogPositiveClick(String name) {
-        mainFragment.addMed(name);
+        updateCurrentEntry();
+        MTHelper.addMedication(name);
+        mainFragment.setValues(currentEntry);
+
     }
 
     public void onDeleteDialogPositiveClick(String name) {
-        mainFragment.deleteMed(name);
+        updateCurrentEntry();
+        MTHelper.deleteMedication(name);
+        mainFragment.setValues(currentEntry);
     }
 
     @Override
-    public void deleteMedication(Medication m) {
+    public void delete(Medication m) {
         String name = m.getName();
         long id = m.getID();
         Bundle b = new Bundle();
@@ -165,6 +159,17 @@ public class MainActivity
         DialogFragment dialog = new DeleteMedicationDialog();
         dialog.setArguments(b);
         dialog.show(getFragmentManager(), "Delete Med Dialog");
+    }
+
+    @Override
+    public ArrayList<Medication> getList() {
+        return MTHelper.getMedicationList();
+    }
+
+    @Override
+    public void addNew() {
+        DialogFragment dialog = new AddMedicationDialog();
+        dialog.show(getFragmentManager(), "Add Med Dialog");
     }
 
     private void updateCurrentEntry(){
