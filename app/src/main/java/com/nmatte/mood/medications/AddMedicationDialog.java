@@ -15,10 +15,9 @@ import com.nmatte.mood.moodlog.R;
 
 public class AddMedicationDialog extends DialogFragment {
     AddMedicationListener listener;
-    EditText nameEditText;
 
     public interface AddMedicationListener {
-        public void onAddDialogPositiveClick(String name);
+        void onAddDialogPositiveClick(String name);
     }
 
     @Override
@@ -38,7 +37,7 @@ public class AddMedicationDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.add_medication_layout,null);
-        nameEditText = (EditText) view.findViewById(R.id.nameEditText);
+        final EditText nameEditText = (EditText) view.findViewById(R.id.nameEditText);
         builder.setView(view)
                .setTitle("Add medication")
                .setPositiveButton("Add", new DialogInterface.OnClickListener() {

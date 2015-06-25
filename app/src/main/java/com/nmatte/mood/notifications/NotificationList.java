@@ -25,8 +25,10 @@ public class NotificationList extends LinearLayout {
 
     public interface NotificationListListener {
         void add(MedNotification notification);
+        void newNotificationDialog();
         void delete(MedNotification notification);
-        ArrayList<MedNotification> getList();
+        ArrayList<MedNotification> getMedReminderList();
+        ArrayList<Medication> getMedList();
     }
 
 
@@ -39,31 +41,47 @@ public class NotificationList extends LinearLayout {
         } catch (Exception e){
             Log.e("listener","notificationlist can't find listener",e);
         }
-        notifications = listener.getList();
-        updateList();
     }
 
-    private void updateList(){
+    public void updateList(Context context){
         this.removeAllViews();
+        MedNotificationTableHelper DBHelper = new MedNotificationTableHelper(context);
+        notifications = listener.getMedReminderList();
         LayoutInflater inflater = LayoutInflater.from(context);
         for (int i = 0; i < notifications.size(); i++) {
-            MedNotification notification = notifications.get(i);
+            final MedNotification notification = notifications.get(i);
             View notificationListItem = inflater.inflate(R.layout.notification_list_item,null);
 
             TextView timeText = (TextView) notificationListItem.findViewById(R.id.timeText);
             TextView medicationText = (TextView) notificationListItem.findViewById(R.id.medicationText);
 
             timeText.setText(notification.calendarString());
-            medicationText.setText(notification.medicationString());
+            medicationText.setText(MedNotification.medDisplayString(notification, context));
+
+            notificationListItem.setOnLongClickListener(new OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.delete(notification);
+                    return true;
+                }
+            });
 
             this.addView(notificationListItem);
-
         }
+
+        View footer = inflater.inflate(R.layout.notification_list_footer,null);
+        footer.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.newNotificationDialog();
+            }
+        });
+        this.addView(footer);
 
     }
 
-    private void addNotification(int hour, int minute, ArrayList<Medication> m){
-        notifications = listener.getList();
+    public void addNotification(int hour, int minute, ArrayList<Medication> m){
+        notifications = listener.getMedReminderList();
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY,hour);
         c.set(Calendar.MINUTE,minute);
@@ -77,16 +95,6 @@ public class NotificationList extends LinearLayout {
         listener.add(newNotification);
 
 
-    }
-
-    private int indexToReplaceWith(MedNotification n){
-        int result = 0;
-        for(;result < notifications.size();result++){
-            if (MedNotification.TIME_ORDER.compare(n, notifications.get(result)) < 0){
-                return result;
-            }
-        }
-        return result;
     }
 
     private MedNotification merge (MedNotification n1, MedNotification n2){

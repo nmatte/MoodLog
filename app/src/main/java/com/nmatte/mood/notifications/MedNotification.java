@@ -1,23 +1,46 @@
 package com.nmatte.mood.notifications;
 
+import android.content.Context;
+
+import com.nmatte.mood.medications.MedTableHelper;
 import com.nmatte.mood.medications.Medication;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 
-/**
- * Created by Nathan on 6/17/2015.
- */
 public class MedNotification {
     Calendar time;
+    long intentID;
     ArrayList<Medication> medications;
+    public final int timeID;
 
     MedNotification(Calendar time, ArrayList<Medication> medications){
-        this.time = time;
+        this.intentID = time.getTimeInMillis();
         this.medications = medications;
+        this.timeID = timeAsInt();
+        this.time = time;
     }
+
+    MedNotification(int hour, int minute, ArrayList<Medication> medications){
+        Calendar time = Calendar.getInstance();
+        time.set(Calendar.HOUR_OF_DAY,hour);
+        time.set(Calendar.MINUTE,minute);
+        this.intentID = time.getTimeInMillis();
+        this.medications = medications;
+        this.time = time;
+        this.timeID = timeAsInt();
+    }
+
+    MedNotification(int timeID, long intentID, ArrayList<Medication> medications ){
+        this.intentID = intentID;
+        this.medications = medications;
+        this.timeID = timeID;
+        Calendar temp = Calendar.getInstance();
+        temp.setTimeInMillis(intentID);
+        this.time = temp;
+    }
+
 
     public String calendarString (){
         String result = DateFormat
@@ -26,87 +49,46 @@ public class MedNotification {
         return result;
     }
 
-    public String medicationString (){
-        String result = "";
-        for (Medication m : medications){
-            result += m.getName();
-            if(medications.indexOf(m) < medications.size() - 1)
-                result += "\n";
-        }
-        return result;
-    }
-
-    public boolean isAfter(Calendar otherTime){
-        // determine if time of day is after the other time
-        // should work properly instead of Calendar.compareTo() because
-        // the dates might be different, when only time of day matters
-        int otherHour = otherTime.get(Calendar.HOUR_OF_DAY);
-        int hour = time.get(Calendar.HOUR_OF_DAY);
-
-        boolean result = false;
-        if (hour > otherHour)
-            result = true;
-        else if ((hour == otherHour) && (time.get(Calendar.MINUTE) > otherTime.get(Calendar.MINUTE)))
-            result = true;
-
-        return result;
+    public static boolean equal(MedNotification lhs, MedNotification rhs){
+        return (lhs.timeAsInt() == rhs.timeAsInt());
     }
 
     private int timeAsInt(){
         int hour = time.get(Calendar.HOUR_OF_DAY);
         int minute = time.get(Calendar.MINUTE);
-
-        return (hour * 100) + minute;
+        return hour * 100 + minute;
     }
 
-    static final Comparator<MedNotification> TIME_ORDER = new Comparator<MedNotification>() {
-        @Override
-        public int compare(MedNotification lhs, MedNotification rhs) {
-            return lhs.timeAsInt() - rhs.timeAsInt();
-        }
-    };
-
-    public static boolean equal(MedNotification lhs, MedNotification rhs){
-        return (lhs.timeAsInt() == rhs.timeAsInt());
-    }
-/*
-    public static MedNotification [] mergeSort(MedNotification [] notifications){
-        if (notifications.length < 2)
-            return notifications;
-
-        int midIndex = notifications.length/2;
-
-        MedNotification [] leftSide = mergeSort(Arrays.copyOfRange(notifications,0,midIndex));
-        MedNotification [] rightSide = mergeSort(Arrays.copyOfRange(notifications,midIndex,notifications.length));
-        return merge(leftSide,rightSide);
-    }
-
-    private static MedNotification[] merge(MedNotification[] left, MedNotification[] right){
-        MedNotification[] newNotifications = new MedNotification[left.length + right.length];
-        int l = 0;
-        int r = 0;
-
-        for(int i = 0; i < newNotifications.length; i++){
-            if (l < left.length && r >= right.length){
-                newNotifications[i] = left[l];
-                l++;
-            } else if (r < right.length && l >= left.length){
-                newNotifications[i] = right[r];
-                r++;
-            }
-
-            if ((l < left.length) && (r < right.length)){
-                if (left[l].timeAsInt() < right[r].timeAsInt()){
-                    newNotifications[i] = left[l];
-                    l++;
-                } else {
-                    newNotifications[i] = right[r];
-                    r++;
-                }
-            }
+    public static String medDisplayString(MedNotification notification, Context context) {
+        ArrayList<Long> medicationIDs = new ArrayList<>();
+        for (Medication m : notification.medications){
+            medicationIDs.add(m.getID());
         }
 
-        return newNotifications;
+        String result = "";
+        for (String name : MedTableHelper.mapIDsToNames(medicationIDs,context)){
+            result += name + "\n";
+        }
+        return result;
     }
-*/
+
+    public static String medDisplayString(String idString, Context context){
+        String [] idStrings = idString.split(" ");
+        ArrayList<Long> medicationIDs = new ArrayList<>();
+
+        for (String id : idStrings){
+            long idNumber = Long.valueOf(id);
+            medicationIDs.add(idNumber);
+        }
+        String result = "";
+        for (String name : MedTableHelper.mapIDsToNames(medicationIDs,context)){
+            result += name + "\n";
+        }
+        return result;
+
+    }
+
+    public String medIDString(){
+        return Medication.IDString(medications);
+    }
 }

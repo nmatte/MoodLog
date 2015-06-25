@@ -3,52 +3,50 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="12dp"
-    >
-    <com.nmatte.mood.moodlog.CustomNumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        custom:max="3"
-        custom:label="Anxiety"
-        android:id="@+id/anxPicker"
-        />
-
-    <View style="@style/Divider"/>
-
-    <com.nmatte.mood.moodlog.CustomNumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        custom:max="3"
-        custom:label="Irritability"
-        android:id="@+id/irrPicker"
-        />
-
-    <View style="@style/Divider"/>
-
-    <com.nmatte.mood.moodlog.CustomNumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        custom:max="24"
-        custom:defaultNum="8"
-        custom:label="@string/hours_slept_picker_label"
-        android:id="@+id/hoursPicker"
-        />
-
-    <View style="@style/Divider"/>
-
-    <com.nmatte.mood.medications.MedList
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/medList"
-        android:clickable="true"
-        android:focusable="false"
-        />
+        android:padding="12dp">
+        <com.nmatte.mood.moodlog.CustomNumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            custom:max="3"
+            custom:label="Anxiety"
+            android:id="@+id/anxPicker"/>
+
+        <View style="@style/Divider"/>
+
+        <com.nmatte.mood.moodlog.CustomNumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            custom:max="3"
+            custom:label="Irritability"
+            android:id="@+id/irrPicker"
+            />
+
+        <View style="@style/Divider"/>
+
+        <com.nmatte.mood.moodlog.CustomNumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            custom:max="24"
+            custom:defaultNum="8"
+            custom:label="@string/hours_slept_picker_label"
+            android:id="@+id/hoursPicker"
+            />
+
+        <View style="@style/Divider"/>
+
+        <com.nmatte.mood.medications.MedList
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/medList"
+            android:clickable="true"
+            android:focusable="false"
+            />
 
 
-</LinearLayout>
+    </LinearLayout>
 
 </ScrollView>

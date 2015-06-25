@@ -4,16 +4,15 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test"
-        android:onClick="notificationTest"
-        android:id="@+id/testButton" />
-
-    <com.nmatte.mood.notifications.NotificationList
+    <TimePicker
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/notificationList"/>
+        android:id="@+id/timePicker"/>
+
+    <com.nmatte.mood.medications.MedList
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/medList"
+        android:clickable="true"/>
 
 </LinearLayout>

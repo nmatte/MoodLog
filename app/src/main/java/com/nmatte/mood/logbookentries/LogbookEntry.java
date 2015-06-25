@@ -29,7 +29,7 @@ public class LogbookEntry {
         this.anxValue = anx;
         this.hoursSleptValue = sleep;
         this.date = date;
-        this.medications = parseMedicationString(medString);
+        this.medications = Medication.parseIDString(medString);
 
     }
 
@@ -98,24 +98,11 @@ public class LogbookEntry {
     }
 
     public String medicationString() {
-        String result = "";
-        for (Medication med : medications){
-            String idString = String.valueOf(med.getID());
-            result += idString + " ";
-        }
-        return result;
+
+        return Medication.IDString(medications);
     }
 
-    private static ArrayList<Medication> parseMedicationString(String medicationString){
-        ArrayList<Medication> result = new ArrayList<>();
-        for (String med : medicationString.split(" ")){
-            if (!med.equals("")) {
-                long id = Integer.valueOf(med);
-                result.add(new Medication(id, null));
-            }
-        }
-        return result;
-    }
+
 
     private static ArrayList<Boolean> parseMoodString (String moodString){
         ArrayList<Boolean> result = new ArrayList<>();

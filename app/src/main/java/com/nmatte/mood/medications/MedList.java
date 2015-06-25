@@ -23,7 +23,7 @@ public class MedList extends LinearLayout {
     public interface MedListListener {
         void delete(Medication m);
         void addNew();
-        ArrayList<Medication> getList();
+        ArrayList<Medication> getMedList();
     }
 
     public MedList(Context context, AttributeSet attrs) {
@@ -33,12 +33,11 @@ public class MedList extends LinearLayout {
 
     }
 
-    public MedList(Context context, boolean readOnly){
-        super(context);
-        this.context = context;
-        this.readOnlyMode = readOnly;
-        init();
+    public void setToReadOnly(){
+        readOnlyMode = true;
     }
+
+
 
     private void init(){
         this.setOrientation(VERTICAL);
@@ -52,7 +51,7 @@ public class MedList extends LinearLayout {
 
     public void updateList() {
         this.removeAllViews();
-        medList = DBListener.getList();
+        medList = DBListener.getMedList();
         LayoutInflater inflater = LayoutInflater.from(context);
         for (final Medication m : medList){
             final CheckedTextView rowView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice,null);

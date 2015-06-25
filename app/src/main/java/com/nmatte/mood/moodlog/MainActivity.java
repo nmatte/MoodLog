@@ -162,7 +162,7 @@ public class MainActivity
     }
 
     @Override
-    public ArrayList<Medication> getList() {
+    public ArrayList<Medication> getMedList() {
         return MTHelper.getMedicationList();
     }
 

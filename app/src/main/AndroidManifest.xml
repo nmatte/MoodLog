@@ -21,6 +21,16 @@
         <activity android:name="com.nmatte.mood.chart.ChartActivity"
             />
         <activity android:name="com.nmatte.mood.settings.SettingsActivity"/>
+        
+        <receiver android:name="com.nmatte.mood.notifications.AlarmManagerHelper">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        
+        <service android:name="com.nmatte.mood.notifications.NotificationService"/> 
     </application>
 
+
+    <uses-permission android:name="ANDROID.PERMISSION.RECEIVE_BOOT_COMPLETED"/>
 </manifest>
