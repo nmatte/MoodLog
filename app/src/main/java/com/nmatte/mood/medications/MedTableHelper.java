@@ -19,7 +19,10 @@ public class MedTableHelper {
         this.DBHelper = new DatabaseHelper(context);
     }
 
-    public void addMedication(String name){
+
+
+    public static void addMedication(Context context, String name){
+        DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -34,7 +37,8 @@ public class MedTableHelper {
         db.close();
     }
 
-    public void deleteMedication(String name){
+    public static void deleteMedication(Context context, String name){
+        DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         String whereClause = MedicationContract.MEDICATION_NAME_COLUMN + "=?";
 
@@ -45,31 +49,6 @@ public class MedTableHelper {
         }
 
         db.close();
-    }
-
-    public ArrayList<Medication> getMedicationList(){
-
-        SQLiteDatabase db = DBHelper.getReadableDatabase();
-        String [] columns = new String[] {
-                MedicationContract.MEDICATION_ID_COLUMN,
-                MedicationContract.MEDICATION_NAME_COLUMN
-        };
-
-        Cursor c = db.query(MedicationContract.MEDICATION_TABLE, columns, null, null, null, null,
-                MedicationContract.MEDICATION_ID_COLUMN);
-        c.moveToFirst();
-
-        ArrayList<Medication> medications = new ArrayList<>();
-        if(c.getCount() > 0){
-            do{
-                Medication m = new Medication(c.getInt(0),c.getString(1));
-                medications.add(m);
-            } while(c.moveToNext());
-        }
-        c.close();
-        db.close();
-        return medications;
-
     }
 
     public static ArrayList<Medication> getMedicationList(Context context){

@@ -14,6 +14,7 @@ public class MainFragment extends Fragment  {
     CustomNumberPicker anxPicker;
     CustomNumberPicker hoursPicker;
     MedList medList;
+    SelectorLayout selectorLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -22,24 +23,31 @@ public class MainFragment extends Fragment  {
         anxPicker = (CustomNumberPicker) rootView.findViewById(R.id.anxPicker);
         hoursPicker = (CustomNumberPicker) rootView.findViewById(R.id.hoursPicker);
         medList = (MedList) rootView.findViewById(R.id.medList);
+        selectorLayout = (SelectorLayout) rootView.findViewById(R.id.selectorLayout);
         return rootView;
 
     }
 
-    public LogbookEntry updateEntry(LogbookEntry entry){
+    public LogbookEntry setEntry(LogbookEntry entry){
+        anxPicker.setCurrentNum(entry.getAnxValue());
+        irrPicker.setCurrentNum(entry.getIrrValue());
+        hoursPicker.setCurrentNum(entry.getHoursSleptValue());
+        medList.updateList(getActivity());
+        medList.setChecked(entry.getMedications());
+        selectorLayout.setCheckedItems(entry);
+        return entry;
+    }
+
+    public LogbookEntry getEntry(){
+        LogbookEntry entry = new LogbookEntry();
         entry.setAnxValue(anxPicker.getCurrentNum());
         entry.setIrrValue(irrPicker.getCurrentNum());
         entry.setHoursSleptValue(hoursPicker.getCurrentNum());
         entry.setMedications(medList.checkedMedications());
+        entry.setMoods(selectorLayout.getCheckedItems());
         return entry;
+
     }
 
 
-    public void setValues(LogbookEntry e) {
-        anxPicker.setCurrentNum(e.getAnxValue());
-        irrPicker.setCurrentNum(e.getIrrValue());
-        hoursPicker.setCurrentNum(e.getHoursSleptValue());
-        medList.updateList();
-        medList.setChecked(e.getMedications());
-    }
 }

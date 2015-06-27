@@ -46,7 +46,7 @@ public class AddMedNotificationDialog extends DialogFragment {
         final TimePicker timePicker = (TimePicker) view.findViewById(R.id.timePicker);
         final MedList medList = (MedList) view.findViewById(R.id.medList);
         medList.setToReadOnly();
-        medList.updateList();
+        medList.updateList(getActivity());
         builder.setView(view)
                 .setTitle("New Notification")
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {

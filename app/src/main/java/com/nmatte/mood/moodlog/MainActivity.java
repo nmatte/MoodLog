@@ -38,12 +38,8 @@ public class MainActivity
         CHART_ACTIVITY = "Monthly Chart",
         SETTINGS_ACTIVITY="Settings",
         MAIN_ACTIVITY="Today";
-
-    SelectorFragment selectorFragment;
     MainFragment mainFragment;
     ListView navList;
-    LogbookEntryTableHelper LEHelper;
-    MedTableHelper MTHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,15 +49,12 @@ public class MainActivity
         initNavbar();
         initFragments();
 
-        LEHelper = new LogbookEntryTableHelper(this);
-        MTHelper = new MedTableHelper(this);
-        currentEntry = LEHelper.getEntryToday();
+        currentEntry = LogbookEntryTableHelper.getEntryToday(this);
         if (currentEntry == null) {
             currentEntry = new LogbookEntry();
         }
         else {
-            selectorFragment.setCheckedItems(currentEntry);
-            mainFragment.setValues(currentEntry);
+            mainFragment.setEntry(currentEntry);
         }
     }
 
@@ -107,7 +100,6 @@ public class MainActivity
 
     private void initFragments(){
         mainFragment = (MainFragment) getFragmentManager().findFragmentById(R.id.mainFragment);
-        selectorFragment = (SelectorFragment) getFragmentManager().findFragmentById(R.id.selectorFragment);
     }
 
     @Override
@@ -137,15 +129,15 @@ public class MainActivity
     @Override
     public void onAddDialogPositiveClick(String name) {
         updateCurrentEntry();
-        MTHelper.addMedication(name);
-        mainFragment.setValues(currentEntry);
+        MedTableHelper.addMedication(this, name);
+        mainFragment.setEntry(currentEntry);
 
     }
 
     public void onDeleteDialogPositiveClick(String name) {
         updateCurrentEntry();
-        MTHelper.deleteMedication(name);
-        mainFragment.setValues(currentEntry);
+        MedTableHelper.deleteMedication(this, name);
+        mainFragment.setEntry(currentEntry);
     }
 
     @Override
@@ -163,7 +155,7 @@ public class MainActivity
 
     @Override
     public ArrayList<Medication> getMedList() {
-        return MTHelper.getMedicationList();
+        return MedTableHelper.getMedicationList(this);
     }
 
     @Override
@@ -173,14 +165,13 @@ public class MainActivity
     }
 
     private void updateCurrentEntry(){
-        currentEntry = selectorFragment.updateEntry(currentEntry);
-        currentEntry = mainFragment.updateEntry(currentEntry);
+        currentEntry = mainFragment.getEntry();
         currentEntry.setDate(LogbookEntryTableHelper.getIntFromDate(Calendar.getInstance()));
     }
 
     private void saveCurrentEntry(){
         updateCurrentEntry();
-        LEHelper.addOrUpdateEntry(currentEntry);
+        LogbookEntryTableHelper.addOrUpdateEntry(this, currentEntry);
     }
 
     @Override

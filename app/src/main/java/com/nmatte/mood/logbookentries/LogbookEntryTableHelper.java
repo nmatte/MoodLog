@@ -47,7 +47,8 @@ public class LogbookEntryTableHelper {
     }
 
 
-    public LogbookEntry getEntry(int date){
+    public static LogbookEntry getEntry(Context context, int date){
+        DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getReadableDatabase();
         LogbookEntry e = null;
         String [] columns = new String[] {
@@ -76,8 +77,8 @@ public class LogbookEntryTableHelper {
         return e;
     }
 
-    public LogbookEntry getEntryToday(){
-        return getEntry(getIntFromDate(Calendar.getInstance()));
+    public static LogbookEntry getEntryToday(Context context){
+        return getEntry(context, getIntFromDate(Calendar.getInstance()));
     }
 
     public static int getIntFromDate( Calendar c){
@@ -130,8 +131,28 @@ public class LogbookEntryTableHelper {
         ArrayList<LogbookEntry> result;
         Calendar endDate = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();
-        startDate.add(Calendar.DAY_OF_YEAR,-28);
+        startDate.add(Calendar.DAY_OF_YEAR, -28);
         result = this.getEntryGroup(startDate,endDate);
         return result;
+    }
+
+    public static void addOrUpdateEntry(Context context, LogbookEntry entry) {
+        DatabaseHelper DBHelper = new DatabaseHelper(context);
+        SQLiteDatabase db = DBHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(LogBookContract.LOGBOOKENTRY_DATE_COLUMN,entry.getDate());
+        values.put(LogBookContract.LOGBOOKENTRY_MOOD_COLUMN,entry.moodString());
+        values.put(LogBookContract.LOGBOOKENTRY_ANXIETY_COLUMN,entry.getAnxValue());
+        values.put(LogBookContract.LOGBOOKENTRY_IRRITABILITY_COLUMN,entry.getIrrValue());
+        values.put(LogBookContract.LOGBOOKENTRY_HOURS_SLEPT_COLUMN,entry.getHoursSleptValue());
+        values.put(LogBookContract.LOGBOOKENTRY_MEDICATION_COLUMN,entry.medicationString());
+
+        try{
+            db.insertWithOnConflict(LogBookContract.LOGBOOKENTRY_TABLE,null,values,SQLiteDatabase.CONFLICT_REPLACE);
+        } catch (Exception e){
+            Log.e("db","",e);
+        }
+
+        db.close();
     }
 }

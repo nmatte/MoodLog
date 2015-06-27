@@ -29,8 +29,6 @@ public class SettingsActivity
         AddMedNotificationDialog.AddNotificationListener,
         DeleteMedNotificationDialog.DeleteNotificationListener,
         MedList.MedListListener{
-    MedTableHelper MTHelper;
-    MedNotificationTableHelper MRTHelper;
     NotificationList notificationList;
 
 
@@ -38,8 +36,6 @@ public class SettingsActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        MTHelper = new MedTableHelper(this);
-        MRTHelper = new MedNotificationTableHelper(this);
         notificationList = (NotificationList) findViewById(R.id.notificationList);
         notificationList.updateList(this);
     }
@@ -80,6 +76,7 @@ public class SettingsActivity
 
     @Override
     public ArrayList<MedNotification> getMedReminderList() {
+        MedNotificationTableHelper MRTHelper = new MedNotificationTableHelper(this);
         return MRTHelper.getMedReminderList();
 
     }
@@ -95,12 +92,13 @@ public class SettingsActivity
 
     @Override
     public ArrayList<Medication> getMedList() {
-        return MTHelper.getMedicationList();
+        return MedTableHelper.getMedicationList(this);
     }
 
 
     @Override
     public void onAddDialogPositiveClick(MedNotification notification) {
+        MedNotificationTableHelper MRTHelper = new MedNotificationTableHelper(this);
         MRTHelper.addNotification(notification);
         AlarmManagerHelper.setAlarms(this);
         notificationList.updateList(this);
@@ -108,7 +106,9 @@ public class SettingsActivity
 
     @Override
     public void onDeleteDialogPositiveClick(int timeID) {
+        MedNotificationTableHelper MRTHelper = new MedNotificationTableHelper(this);
         MRTHelper.deleteMedReminder(timeID);
+        AlarmManagerHelper.setAlarms(this);
         notificationList.updateList(this);
     }
 }

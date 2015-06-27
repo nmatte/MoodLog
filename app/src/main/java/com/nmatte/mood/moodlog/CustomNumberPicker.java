@@ -12,7 +12,6 @@ public class CustomNumberPicker extends RelativeLayout {
     TextView minusButton;
     TextView plusButton;
     TextView numIndicator;
-    TextView labelView;
 
     int currentNum;
     int maxNum;
@@ -22,15 +21,9 @@ public class CustomNumberPicker extends RelativeLayout {
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs,R.styleable.CustomNumberPicker,0,0);
 
         View v = inflate(context,R.layout.custom_number_picker,null);
-        labelView = (TextView) v.findViewById(R.id.label);
         minusButton = (TextView) v.findViewById(R.id.minusButton);
         plusButton = (TextView) v.findViewById(R.id.plusButton);
         numIndicator = (TextView) v.findViewById(R.id.numIndicator);
-
-        String label = a.getString(R.styleable.CustomNumberPicker_label);
-        if (label == null)
-            label = "";
-        labelView.setText(label);
 
         currentNum = a.getInt(R.styleable.CustomNumberPicker_defaultNum,0);
 

@@ -11,6 +11,7 @@ import java.util.Calendar;
 
 public class AlarmManagerHelper extends BroadcastReceiver {
     static final String NMATTE_NOTIFICATION_ACTION = "nmatte notification action";
+    static final String MEDICATION_IDS = "medication ids";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -41,7 +42,7 @@ public class AlarmManagerHelper extends BroadcastReceiver {
 
     private static PendingIntent createIntent(Context context, MedNotification notification){
         Intent intent = new Intent(context, NotificationService.class);
-        intent.putExtra("medication ids", notification.medIDString());
+        intent.putExtra(MEDICATION_IDS, notification.medIDString());
         intent.setAction(NMATTE_NOTIFICATION_ACTION);
         return PendingIntent.getService(context, notification.timeID,intent,PendingIntent.FLAG_UPDATE_CURRENT);
     }
