@@ -20,7 +20,6 @@ public class ChartLabelFragment extends Fragment {
             @Override
             public void run() {
                 labelColumn.getLayoutParams().width = 250;
-                labelColumn.getLayoutParams().height = 2000;
             }
         });
         return labelColumn;

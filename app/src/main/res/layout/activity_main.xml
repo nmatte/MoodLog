@@ -7,24 +7,16 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="192dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/mainActivityLayout">
-
-
             <fragment
-                android:layout_width="match_parent"
+                android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:name="com.nmatte.mood.moodlog.MainFragment"
                 android:id="@+id/mainFragment"/>
-        </LinearLayout>
     </ScrollView>
 
     <!-- drawer view -->
     <ListView
-        android:layout_width="240dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/drawerList"
         android:layout_gravity="start"

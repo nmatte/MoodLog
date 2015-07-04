@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 import com.nmatte.mood.moodlog.R;
@@ -22,11 +21,8 @@ public class ChartActivity extends ActionBarActivity {
         LEHelper = new LogbookEntryTableHelper(this);
 
         ChartMainFragment mainFragment = (ChartMainFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
-
-
-        final LinearLayout m = (LinearLayout) findViewById(R.id.mainLayout);
-
         mainFragment.setEntryList(LEHelper.getLast28Days());
+
 
     }
 

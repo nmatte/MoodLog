@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+import com.nmatte.mood.chart.CheckableCellView;
 import com.nmatte.mood.logbookentries.LogbookEntry;
 
 import java.util.ArrayList;
@@ -19,19 +20,16 @@ public class SelectorLayout extends LinearLayout {
         this.setOrientation(VERTICAL);
         int length = (colors.length < labels.length) ? colors.length : labels.length;
         for(int i = 0; i < length; i++) {
-            SelectorRow row = new SelectorRow(getContext(),null,labels[i], colors[i]);
+            CheckableCellView row = new CheckableCellView(getContext(),true,colors[i]);
             this.addView(row);
         }
     }
 
-
-
-
     public ArrayList<Boolean> getCheckedItems(){
         ArrayList<Boolean> checkedItems = new ArrayList<>();
         for (int i = 0; i < colors.length; i++){
-            SelectorRow row = (SelectorRow) this.getChildAt(i);
-            checkedItems.add(row.getValue());
+            CheckableCellView row = (CheckableCellView) this.getChildAt(i);
+            checkedItems.add(row.isChecked());
         }
         return checkedItems;
     }
@@ -39,13 +37,8 @@ public class SelectorLayout extends LinearLayout {
     public void setCheckedItems(LogbookEntry e){
         ArrayList<Boolean> moods = e.getMoods();
         for (int i = 0; i < moods.size(); i++){
-            SelectorRow row = (SelectorRow) this.getChildAt(i);
-            row.setValue(moods.get(i));
+            CheckableCellView row = (CheckableCellView) this.getChildAt(i);
+            row.setChecked(moods.get(i));
         }
-    }
-
-    public LogbookEntry updateEntry (LogbookEntry e){
-        e.setMoods(getCheckedItems());
-        return e;
     }
 }

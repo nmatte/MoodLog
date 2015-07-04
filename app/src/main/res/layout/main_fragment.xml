@@ -4,8 +4,16 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="Today" />
+
+    <com.nmatte.mood.chart.TextCellView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
     <com.nmatte.mood.moodlog.SelectorLayout
@@ -18,9 +26,9 @@
             android:layout_height="wrap_content"
             custom:max="3"
             custom:label="Anxiety"
-            android:id="@+id/anxPicker"/>
-
-        <View style="@style/Divider"/>
+            android:id="@+id/anxPicker"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"/>
 
         <com.nmatte.mood.moodlog.CustomNumberPicker
             android:layout_width="wrap_content"
@@ -30,8 +38,6 @@
             android:id="@+id/irrPicker"
             />
 
-        <View style="@style/Divider"/>
-
         <com.nmatte.mood.moodlog.CustomNumberPicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,8 +46,6 @@
             custom:label="@string/hours_slept_picker_label"
             android:id="@+id/hoursPicker"
             />
-
-        <View style="@style/Divider"/>
 
         <com.nmatte.mood.medications.MedList
             android:layout_width="match_parent"

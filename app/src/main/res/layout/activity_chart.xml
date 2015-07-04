@@ -18,11 +18,29 @@
             android:id="@+id/chartLabelFragment"
             />
 
-        <fragment
-            android:layout_width="wrap_content"
+        <HorizontalScrollView
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:name="com.nmatte.mood.chart.ChartMainFragment"
-            android:id="@+id/chartMainFragment"/>
+            android:id="@id/horizontalScrollView">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <fragment
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:name="com.nmatte.mood.chart.ChartMainFragment"
+                android:id="@+id/chartMainFragment"/>
+
+            <fragment
+                android:layout_width="126dp"
+                android:layout_height="wrap_content"
+                android:name="com.nmatte.mood.moodlog.MainFragment"
+                android:id="@+id/singleEntryFragment"/>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
 
     </LinearLayout>
 </ScrollView>
