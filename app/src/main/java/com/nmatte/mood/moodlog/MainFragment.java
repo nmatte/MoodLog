@@ -33,7 +33,7 @@ public class MainFragment extends Fragment  {
         irrPicker.setCurrentNum(entry.getIrrValue());
         hoursPicker.setCurrentNum(entry.getHoursSleptValue());
         medList.updateList(getActivity());
-        medList.setChecked(entry.getMedications());
+        medList.setCheckedMeds(entry.getMedications());
         selectorLayout.setCheckedItems(entry);
         return entry;
     }
@@ -43,7 +43,7 @@ public class MainFragment extends Fragment  {
         entry.setAnxValue(anxPicker.getCurrentNum());
         entry.setIrrValue(irrPicker.getCurrentNum());
         entry.setHoursSleptValue(hoursPicker.getCurrentNum());
-        entry.setMedications(medList.checkedMedications());
+        entry.setMedications(medList.getCheckedMeds());
         entry.setMoods(selectorLayout.getCheckedItems());
         return entry;
 

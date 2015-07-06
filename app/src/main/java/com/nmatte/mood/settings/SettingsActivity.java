@@ -7,7 +7,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 
-import com.nmatte.mood.medications.MedList;
 import com.nmatte.mood.medications.MedTableHelper;
 import com.nmatte.mood.medications.Medication;
 import com.nmatte.mood.moodlog.R;
@@ -27,8 +26,7 @@ public class SettingsActivity
         extends ActionBarActivity
         implements NotificationList.NotificationListListener,
         AddMedNotificationDialog.AddNotificationListener,
-        DeleteMedNotificationDialog.DeleteNotificationListener,
-        MedList.MedListListener{
+        DeleteMedNotificationDialog.DeleteNotificationListener{
     NotificationList notificationList;
 
 
@@ -81,14 +79,6 @@ public class SettingsActivity
 
     }
 
-    @Override
-    public void delete(Medication medication) {
-        //no-op
-    }
-
-    @Override
-    public void addNew() {
-    }
 
     @Override
     public ArrayList<Medication> getMedList() {

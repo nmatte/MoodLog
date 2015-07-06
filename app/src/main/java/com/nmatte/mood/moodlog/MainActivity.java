@@ -16,7 +16,6 @@ import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 import com.nmatte.mood.medications.AddMedicationDialog;
 import com.nmatte.mood.medications.DeleteMedicationDialog;
-import com.nmatte.mood.medications.MedList;
 import com.nmatte.mood.medications.MedTableHelper;
 import com.nmatte.mood.medications.Medication;
 import com.nmatte.mood.settings.SettingsActivity;
@@ -28,8 +27,7 @@ import java.util.Calendar;
 public class MainActivity
     extends ActionBarActivity
     implements AddMedicationDialog.AddMedicationListener,
-        DeleteMedicationDialog.DeleteMedicationListener,
-        MedList.MedListListener
+        DeleteMedicationDialog.DeleteMedicationListener
 {
 
     private LogbookEntry currentEntry;
@@ -139,8 +137,6 @@ public class MainActivity
         MedTableHelper.deleteMedication(this, name);
         mainFragment.setEntry(currentEntry);
     }
-
-    @Override
     public void delete(Medication m) {
         String name = m.getName();
         long id = m.getID();
@@ -152,13 +148,6 @@ public class MainActivity
         dialog.setArguments(b);
         dialog.show(getFragmentManager(), "Delete Med Dialog");
     }
-
-    @Override
-    public ArrayList<Medication> getMedList() {
-        return MedTableHelper.getMedicationList(this);
-    }
-
-    @Override
     public void addNew() {
         DialogFragment dialog = new AddMedicationDialog();
         dialog.show(getFragmentManager(), "Add Med Dialog");

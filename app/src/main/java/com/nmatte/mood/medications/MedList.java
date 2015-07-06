@@ -1,8 +1,8 @@
 package com.nmatte.mood.medications;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,41 +10,33 @@ import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nmatte.mood.chart.CheckableCellView;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
 
 public class MedList extends LinearLayout {
     private ArrayList<Medication> medList;
-    private boolean readOnlyMode;
-    MedListListener DBListener;
-
-    public interface MedListListener {
-        void delete(Medication m);
-        void addNew();
-        ArrayList<Medication> getMedList();
-    }
+    final private boolean chartStyle;
 
     public MedList(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.medList = MedTableHelper.getMedicationList(context);
+        TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.MedList,0,0);
+        chartStyle = a.getBoolean(R.styleable.MedList_style_chart,false);
         init(context);
-
     }
 
-    public void setToReadOnly(){
-        readOnlyMode = true;
+    public  MedList(Context context, boolean chartStyle ){
+        super(context);
+        this.chartStyle = chartStyle;
     }
 
 
 
     private void init(Context context){
         this.setOrientation(VERTICAL);
-        try{
-            DBListener = (MedListListener) context;
-        } catch (ClassCastException e){
-            Log.e("MedList", "MedList instantiated without listener");
-        }
+
     }
 
 
@@ -53,45 +45,29 @@ public class MedList extends LinearLayout {
         medList = MedTableHelper.getMedicationList(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         for (final Medication m : medList){
-            final CheckedTextView rowView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice,null);
-            TextView label = (TextView) rowView.findViewById(android.R.id.text1);
-            float height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, context.getResources().getDisplayMetrics());
-            label.setHeight((int) height);
-            label.setText(m.getName());
-            rowView.setClickable(true);
-            rowView.setOnClickListener(new OnClickListener() { // smh android I shouldn't have to add this
-                @Override
-                public void onClick(View v) {
-                    rowView.setChecked(!rowView.isChecked());
-                }
-            });
-
-            if(!readOnlyMode){
-                rowView.setOnLongClickListener(new OnLongClickListener() {
+            final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, context.getResources().getDisplayMetrics());
+            if(chartStyle){
+                final CheckableCellView cellView = new CheckableCellView(context,true);
+                this.addView(cellView);
+            } else {
+                final CheckedTextView rowView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, null);
+                TextView label = (TextView) rowView.findViewById(android.R.id.text1);
+                label.setHeight (height);
+                label.setText(m.getName());
+                rowView.setClickable(true);
+                rowView.setOnClickListener(new OnClickListener() {
                     @Override
-                    public boolean onLongClick(View v) {
-                        DBListener.delete(m);
-                        return true;
+                    public void onClick(View v) {
+                        rowView.setChecked(!rowView.isChecked());
                     }
                 });
+                this.addView(rowView);
             }
-            this.addView(rowView);
         }
-        if(!readOnlyMode) {
-            View footer = inflater.inflate(R.layout.medication_list_footer, null);
-            footer.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DBListener.addNew();
-                }
-            });
-            this.addView(footer);
-        }
-
     }
 
 
-    public ArrayList<Medication> checkedMedications(){
+    public ArrayList<Medication> getCheckedMeds(){
         ArrayList<Medication> result = new ArrayList<>();
         // if there's a footer we don't want to count it
         for(int i = 0; i < this.getChildCount(); i++){
@@ -99,17 +75,26 @@ public class MedList extends LinearLayout {
                 CheckedTextView v = (CheckedTextView) this.getChildAt(i);
                 if (v.isChecked())
                     result.add(medList.get(i));
+            } else if (this.getChildAt(i) instanceof CheckableCellView){
+                CheckableCellView v = (CheckableCellView) this.getChildAt(i);
+                if(v.isChecked())
+                    result.add(medList.get(i));
             }
         }
         return result;
     }
 
-    public void setChecked(ArrayList<Medication> checked){
+    public void setCheckedMeds(ArrayList<Medication> checked){
         for (Medication checkedMed : checked){
             for (int i = 0; i < medList.size(); i++){
                 if(medList.get(i).getID() == checkedMed.getID()){
-                    CheckedTextView rowView = (CheckedTextView) this.getChildAt(i);
-                    rowView.setChecked(true);
+                    if(this.getChildAt(i) instanceof  CheckedTextView){
+                        CheckedTextView rowView = (CheckedTextView) this.getChildAt(i);
+                        rowView.setChecked(true);
+                    } else if (this.getChildAt(i) instanceof  CheckableCellView){
+                        CheckableCellView rowView = (CheckableCellView) this.getChildAt(i);
+                        rowView.setChecked(true);
+                    }
                 }
             }
         }

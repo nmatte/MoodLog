@@ -30,6 +30,12 @@ public class CheckableCellView extends CellView {
         init();
     }
 
+    public CheckableCellView(Context context, boolean isEnabled) {
+        super(context);
+        this.isEnabled = isEnabled;
+        init();
+    }
+
     private void init(){
         this.blackPaint = new Paint();
         this.blackPaint.setColor(BLACK);

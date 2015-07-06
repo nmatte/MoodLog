@@ -8,5 +8,8 @@
     <declare-styleable name="TextCellView">
         <attr name = "text" format="string"/>
     </declare-styleable>
+    <declare-styleable name="MedList">
+        <attr name="style_chart" format="boolean"/>
+    </declare-styleable>
 
 </resources>

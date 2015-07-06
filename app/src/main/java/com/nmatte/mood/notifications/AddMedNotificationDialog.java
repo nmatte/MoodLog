@@ -17,9 +17,6 @@ import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
 
-/**
- * Created by Nathan on 6/19/2015.
- */
 public class AddMedNotificationDialog extends DialogFragment {
     AddNotificationListener listener;
 
@@ -45,7 +42,6 @@ public class AddMedNotificationDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.add_notification_dialog, null);
         final TimePicker timePicker = (TimePicker) view.findViewById(R.id.timePicker);
         final MedList medList = (MedList) view.findViewById(R.id.medList);
-        medList.setToReadOnly();
         medList.updateList(getActivity());
         builder.setView(view)
                 .setTitle("New Notification")
@@ -54,7 +50,7 @@ public class AddMedNotificationDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         int hour = timePicker.getCurrentHour();
                         int minute = timePicker.getCurrentMinute();
-                        ArrayList<Medication> medications = medList.checkedMedications();
+                        ArrayList<Medication> medications = medList.getCheckedMeds();
                         listener.onAddDialogPositiveClick(new MedNotification(hour,minute,medications));
                     }
                 })
