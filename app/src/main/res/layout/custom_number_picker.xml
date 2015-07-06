@@ -3,21 +3,6 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content" android:layout_height="match_parent">
 
-    <com.nmatte.mood.chart.TextCellView
-        android:layout_width="42dp"
-        android:layout_height="wrap_content"
-        custom:text="0"
-        />
-
-    <TextView
-        android:layout_width="42dp"
-        android:layout_height="42dp"
-        android:textSize="@dimen/abc_text_size_title_material"
-        android:gravity="center"
-        android:text="0"
-        android:id="@+id/numIndicator"
-        />
-
     <TextView
         android:layout_width="42dp"
         android:layout_height="42dp"
@@ -28,6 +13,14 @@
         android:text="-"
         android:id="@+id/minusButton"
         android:clickable="true"
+        android:layout_gravity="center_vertical"
+        />
+
+    <com.nmatte.mood.chart.TextCellView
+        android:layout_width="42dp"
+        android:layout_height="wrap_content"
+        custom:text="0"
+        android:id="@+id/textCellView"
         />
 
 
@@ -42,5 +35,6 @@
         android:text="+"
         android:id="@+id/plusButton"
         android:clickable="true"
+        android:layout_gravity="center_vertical"
         />
 </LinearLayout>

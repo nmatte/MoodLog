@@ -6,14 +6,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:text="Today" />
-
     <com.nmatte.mood.chart.TextCellView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="48dp"
+        custom:text="Today"/>
 
 
     <com.nmatte.mood.moodlog.SelectorLayout
@@ -26,9 +22,7 @@
             android:layout_height="wrap_content"
             custom:max="3"
             custom:label="Anxiety"
-            android:id="@+id/anxPicker"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"/>
+            android:id="@+id/anxPicker"/>
 
         <com.nmatte.mood.moodlog.CustomNumberPicker
             android:layout_width="wrap_content"

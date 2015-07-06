@@ -100,12 +100,11 @@ public class CellView extends View {
         canvas.drawLine(cellRight, cellTop, cellRight, cellBottom, blackPaint);
     }
 
-    protected static Paint adjustTextSize (int width, String text, Paint paint){
-        while (paint.measureText(text) > width * 0.9){
-            float currentSize = paint.getTextSize();
-            float newSize = currentSize * (float) 0.7;
-            paint.setTextSize(newSize);
+    protected float getAdjustedTextSize (String text){
+        blackPaint.setTextSize(getHeight());
+        while(blackPaint.measureText(text) > getWidth() * 0.8){
+            blackPaint.setTextSize(blackPaint.getTextSize() * (float) 0.7);
         }
-        return paint;
+        return blackPaint.getTextSize();
     }
 }

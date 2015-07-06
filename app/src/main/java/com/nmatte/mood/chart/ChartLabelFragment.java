@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 
 public class ChartLabelFragment extends Fragment {
@@ -22,7 +23,26 @@ public class ChartLabelFragment extends Fragment {
                 labelColumn.getLayoutParams().width = 250;
             }
         });
-        return labelColumn;
+
+
+        final LinearLayout mainLayout = new LinearLayout(getActivity());
+        for (String label : labels){
+            mainLayout.addView(new TextCellView(getActivity(), label));
+        }
+
+        mainLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mainLayout.getLayoutParams().width = 250;
+            }
+        });
+
+
+        return mainLayout;
+
+
+
+
 
     }
 }

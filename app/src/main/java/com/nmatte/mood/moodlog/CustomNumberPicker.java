@@ -7,11 +7,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nmatte.mood.chart.TextCellView;
+
 
 public class CustomNumberPicker extends RelativeLayout {
     TextView minusButton;
     TextView plusButton;
-    TextView numIndicator;
+    TextCellView textCellView;
 
     int currentNum;
     int maxNum;
@@ -23,31 +25,24 @@ public class CustomNumberPicker extends RelativeLayout {
         View v = inflate(context,R.layout.custom_number_picker,null);
         minusButton = (TextView) v.findViewById(R.id.minusButton);
         plusButton = (TextView) v.findViewById(R.id.plusButton);
-        numIndicator = (TextView) v.findViewById(R.id.numIndicator);
-
+        textCellView = (TextCellView) v.findViewById(R.id.textCellView);
         currentNum = a.getInt(R.styleable.CustomNumberPicker_defaultNum,0);
-
-        numIndicator.setText(Integer.toString(currentNum));
-
         maxNum = a.getInt(R.styleable.CustomNumberPicker_max,100);
 
         minusButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (currentNum > 0){
-                    currentNum--;
-                    numIndicator.setText(Integer.toString(currentNum));
+                    setCurrentNum(currentNum - 1);
                 }
 
             }
         });
-
         plusButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (currentNum < maxNum){
-                    currentNum++;
-                    numIndicator.setText(Integer.toString(currentNum));
+                    setCurrentNum(currentNum + 1);
                 }
             }
         });
@@ -61,6 +56,6 @@ public class CustomNumberPicker extends RelativeLayout {
 
     public void setCurrentNum(int newNum){
         this.currentNum = newNum;
-        numIndicator.setText(String.valueOf(newNum));
+        textCellView.setText(String.valueOf(newNum));
     }
 }
