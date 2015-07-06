@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.nmatte.mood.medications.MedTableHelper;
+import com.nmatte.mood.medications.Medication;
+
 
 public class ChartLabelFragment extends Fragment {
     final String [] labels = {"Date","Severe","","Moderate","","Mild","","Normal","","Mild","","Moderate",
@@ -16,18 +19,14 @@ public class ChartLabelFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final ColumnView labelColumn = new ColumnView(getActivity(),labels);
-        labelColumn.post(new Runnable() {
-            @Override
-            public void run() {
-                labelColumn.getLayoutParams().width = 250;
-            }
-        });
-
-
         final LinearLayout mainLayout = new LinearLayout(getActivity());
+        mainLayout.setOrientation(LinearLayout.VERTICAL);
         for (String label : labels){
             mainLayout.addView(new TextCellView(getActivity(), label));
+        }
+
+        for (Medication m : MedTableHelper.getMedicationList(getActivity())){
+            mainLayout.addView(new TextCellView(getActivity(),m.getName()));
         }
 
         mainLayout.post(new Runnable() {
@@ -36,6 +35,8 @@ public class ChartLabelFragment extends Fragment {
                 mainLayout.getLayoutParams().width = 250;
             }
         });
+
+
 
 
         return mainLayout;
