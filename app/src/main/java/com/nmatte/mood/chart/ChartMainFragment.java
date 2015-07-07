@@ -43,13 +43,15 @@ public class ChartMainFragment extends Fragment {
         horizontalLayout.removeAllViews();
         if(entryList.size() > 0) {
             int startDate = entryList.get(0).getDate();
+            int i = 0;
             for (LogbookEntry e : entryList) {
                 //final ColumnView c = new ColumnView(getActivity(), e, startDate);
 
-                ReadonlyColumn c = new ReadonlyColumn(getActivity(),e);
+                ReadonlyColumn c = new ReadonlyColumn(getActivity(),e,i);
 
 
                 horizontalLayout.addView(c);
+                i++;
             }
         }
     }

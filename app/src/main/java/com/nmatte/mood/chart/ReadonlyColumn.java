@@ -11,16 +11,16 @@ public class ReadonlyColumn extends LinearLayout {
         super(context);
     }
 
-    public ReadonlyColumn(Context context, LogbookEntry entry){
+    public ReadonlyColumn(Context context, LogbookEntry entry, int dateNum){
         super(context);
         this.setOrientation(VERTICAL);
+        this.addView(new TextCellView(context, String.valueOf(dateNum)));
+        this.addView(new MoodList(context, false, entry));
         if(entry == null) {
-            this.addView(new MoodList(context,false,null));
             this.addView(new CellView(context));
             this.addView(new CellView(context));
             this.addView(new CellView(context));
         } else {
-            this.addView(new MoodList(context, false, entry));
             String anx = String.valueOf(entry.getAnxValue());
             String irr = String.valueOf(entry.getIrrValue());
             String hours = String.valueOf(entry.getHoursSleptValue());
