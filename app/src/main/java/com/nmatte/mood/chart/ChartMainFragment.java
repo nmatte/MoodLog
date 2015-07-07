@@ -44,7 +44,9 @@ public class ChartMainFragment extends Fragment {
         if(entryList.size() > 0) {
             int startDate = entryList.get(0).getDate();
             for (LogbookEntry e : entryList) {
-                final ColumnView c = new ColumnView(getActivity(), e, startDate);
+                //final ColumnView c = new ColumnView(getActivity(), e, startDate);
+
+                ReadonlyColumn c = new ReadonlyColumn(getActivity(),e);
 
 
                 horizontalLayout.addView(c);

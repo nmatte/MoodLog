@@ -36,7 +36,6 @@ public class MedList extends LinearLayout {
 
     private void init(Context context){
         this.setOrientation(VERTICAL);
-
     }
 
 

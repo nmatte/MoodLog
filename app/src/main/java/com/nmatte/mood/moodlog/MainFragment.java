@@ -14,7 +14,7 @@ public class MainFragment extends Fragment  {
     CustomNumberPicker anxPicker;
     CustomNumberPicker hoursPicker;
     MedList medList;
-    SelectorLayout selectorLayout;
+    MoodList moodList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class MainFragment extends Fragment  {
         anxPicker = (CustomNumberPicker) rootView.findViewById(R.id.anxPicker);
         hoursPicker = (CustomNumberPicker) rootView.findViewById(R.id.hoursPicker);
         medList = (MedList) rootView.findViewById(R.id.medList);
-        selectorLayout = (SelectorLayout) rootView.findViewById(R.id.selectorLayout);
+        moodList = (MoodList) rootView.findViewById(R.id.selectorLayout);
         return rootView;
 
     }
@@ -34,7 +34,7 @@ public class MainFragment extends Fragment  {
         hoursPicker.setCurrentNum(entry.getHoursSleptValue());
         medList.updateList(getActivity());
         medList.setCheckedMeds(entry.getMedications());
-        selectorLayout.setCheckedItems(entry);
+        moodList.setCheckedItems(entry);
         return entry;
     }
 
@@ -44,7 +44,7 @@ public class MainFragment extends Fragment  {
         entry.setIrrValue(irrPicker.getCurrentNum());
         entry.setHoursSleptValue(hoursPicker.getCurrentNum());
         entry.setMedications(medList.getCheckedMeds());
-        entry.setMoods(selectorLayout.getCheckedItems());
+        entry.setMoods(moodList.getCheckedItems());
         return entry;
 
     }
