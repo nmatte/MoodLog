@@ -16,7 +16,7 @@
 
     <!-- drawer view -->
     <ListView
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="match_parent"
         android:id="@+id/drawerList"
         android:layout_gravity="start"

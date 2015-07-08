@@ -21,27 +21,27 @@ public class MedList extends LinearLayout {
 
     public MedList(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.medList = MedTableHelper.getMedicationList(context);
         TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.MedList,0,0);
-        chartStyle = a.getBoolean(R.styleable.MedList_style_chart,false);
+        this.chartStyle = a.getBoolean(R.styleable.MedList_style_chart,false);
         init(context);
     }
 
     public  MedList(Context context, boolean chartStyle ){
         super(context);
         this.chartStyle = chartStyle;
+        init(context);
     }
 
 
 
     private void init(Context context){
         this.setOrientation(VERTICAL);
+        this.medList = MedTableHelper.getMedicationList(context);
     }
 
 
     public void updateList(Context context) {
         this.removeAllViews();
-        medList = MedTableHelper.getMedicationList(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         for (final Medication m : medList){
             final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, context.getResources().getDisplayMetrics());
