@@ -9,9 +9,12 @@ import android.util.Log;
 import com.nmatte.mood.moodlog.DatabaseHelper;
 
 import java.text.DateFormat;
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import static java.lang.Integer.valueOf;
 
@@ -27,24 +30,6 @@ public class LogbookEntryTableHelper {
         DBHelper = new DatabaseHelper(c);
     }
 
-    public void addOrUpdateEntry(LogbookEntry entry){
-        SQLiteDatabase db = DBHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(LogBookContract.LOGBOOKENTRY_DATE_COLUMN,entry.getDate());
-        values.put(LogBookContract.LOGBOOKENTRY_MOOD_COLUMN,entry.moodString());
-        values.put(LogBookContract.LOGBOOKENTRY_ANXIETY_COLUMN,entry.getAnxValue());
-        values.put(LogBookContract.LOGBOOKENTRY_IRRITABILITY_COLUMN,entry.getIrrValue());
-        values.put(LogBookContract.LOGBOOKENTRY_HOURS_SLEPT_COLUMN,entry.getHoursSleptValue());
-        values.put(LogBookContract.LOGBOOKENTRY_MEDICATION_COLUMN,entry.medicationString());
-
-        try{
-            db.insertWithOnConflict(LogBookContract.LOGBOOKENTRY_TABLE,null,values,SQLiteDatabase.CONFLICT_REPLACE);
-        } catch (Exception e){
-            Log.e("db","",e);
-        }
-
-        db.close();
-    }
 
 
     public static LogbookEntry getEntry(Context context, int date){
@@ -140,7 +125,7 @@ public class LogbookEntryTableHelper {
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(LogBookContract.LOGBOOKENTRY_DATE_COLUMN,entry.getDate());
+        values.put(LogBookContract.LOGBOOKENTRY_DATE_COLUMN,entry.getDateAsInt());
         values.put(LogBookContract.LOGBOOKENTRY_MOOD_COLUMN,entry.moodString());
         values.put(LogBookContract.LOGBOOKENTRY_ANXIETY_COLUMN,entry.getAnxValue());
         values.put(LogBookContract.LOGBOOKENTRY_IRRITABILITY_COLUMN,entry.getIrrValue());
@@ -156,3 +141,5 @@ public class LogbookEntryTableHelper {
         db.close();
     }
 }
+
+

@@ -155,7 +155,7 @@ public class MainActivity
 
     private void updateCurrentEntry(){
         currentEntry = mainFragment.getEntry();
-        currentEntry.setDate(LogbookEntryTableHelper.getIntFromDate(Calendar.getInstance()));
+        currentEntry.setDate(Calendar.getInstance());
     }
 
     private void saveCurrentEntry(){

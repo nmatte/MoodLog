@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.nmatte.mood.logbookentries.LogbookEntry;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ChartMainFragment extends Fragment {
     ArrayList<LogbookEntry> entryList;
@@ -36,15 +37,14 @@ public class ChartMainFragment extends Fragment {
 
     public void setEntryList(ArrayList<LogbookEntry> entryList){
         this.entryList = entryList;
-        updateEntryList();
+        refreshColumns();
     }
 
-    public void updateEntryList(){
-        horizontalLayout.removeAllViews();
+    public void refreshColumns(){
+        horizontalLayout.removeAllViews();/*
         if(entryList.size() > 0) {
-            int startDate = entryList.get(0).getDate();
-            int endDate = entryList.get(entryList.size()-1).getDate();
-            int totalDays = endDate + 1 - startDate;
+            Calendar startDate = entryList.get(0).getDate();
+            Calendar endDate = entryList.get(entryList.size()-1).getDate();
             int entryListIndex = 0;
             for (int i = 0; i < totalDays; i++){
                 if(entryListIndex < entryList.size()){
@@ -63,6 +63,6 @@ public class ChartMainFragment extends Fragment {
                     horizontalLayout.addView(new ReadonlyColumn(getActivity(),null,i+1));
                 }
             }
-        }
+        }*/
     }
 }

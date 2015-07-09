@@ -4,6 +4,7 @@ package com.nmatte.mood.logbookentries;
 import com.nmatte.mood.medications.Medication;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -13,22 +14,34 @@ public class LogbookEntry {
     int irrValue = 0,
         anxValue = 0,
         hoursSleptValue = 0;
-    //TODO change date field to Calendar
-    int date = 0;
+    Calendar date;
     ArrayList<Medication> medications;
 
     public LogbookEntry (){
         this.moods = new ArrayList<Boolean>();
         this.medications = new ArrayList<>();
-        this.date = LogbookEntryTableHelper.getIntFromDate(Calendar.getInstance());
+        this.date = Calendar.getInstance();
     }
 
-    public LogbookEntry(int date, String moodString, int irr, int anx, int sleep,  String medString){
+    public LogbookEntry(Calendar date, String moodString, int irr, int anx, int sleep,  String medString){
         this.moods = parseMoodString(moodString);
         this.irrValue = irr;
         this.anxValue = anx;
         this.hoursSleptValue = sleep;
         this.date = date;
+        this.medications = Medication.parseIDString(medString);
+
+    }
+
+    public LogbookEntry(int dateInt, String moodString, int irr, int anx, int sleep,  String medString){
+        this.moods = parseMoodString(moodString);
+        this.irrValue = irr;
+        this.anxValue = anx;
+        this.hoursSleptValue = sleep;
+        Calendar dateCal = Calendar.getInstance();
+        dateCal.set(Calendar.YEAR, dateInt / 1000);
+        dateCal.set(Calendar.DAY_OF_YEAR, dateInt % 1000);
+        this.date = dateCal;
         this.medications = Medication.parseIDString(medString);
 
     }
@@ -49,11 +62,17 @@ public class LogbookEntry {
 
     }
 
-    public int getDate() {
+    public Calendar getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public int getDateAsInt() {
+        String format = "yyyD";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        return Integer.getInteger(dateFormat.format(date));
+    }
+
+    public void setDate(Calendar date) {
         this.date = date;
     }
 
