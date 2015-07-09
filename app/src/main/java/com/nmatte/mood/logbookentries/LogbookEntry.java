@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import static java.lang.Integer.valueOf;
+
 public class LogbookEntry {
 
     ArrayList<Boolean> moods;
@@ -67,9 +69,9 @@ public class LogbookEntry {
     }
 
     public int getDateAsInt() {
-        String format = "yyyD";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-        return Integer.getInteger(dateFormat.format(date));
+        DateFormat df = new SimpleDateFormat("yyyyDDD");
+        String ds = df.format(date.getTime());
+        return valueOf(ds);
     }
 
     public void setDate(Calendar date) {

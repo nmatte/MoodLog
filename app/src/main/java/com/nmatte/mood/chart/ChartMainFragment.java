@@ -12,6 +12,7 @@ import com.nmatte.mood.logbookentries.LogbookEntry;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 
 public class ChartMainFragment extends Fragment {
     ArrayList<LogbookEntry> entryList;
@@ -41,28 +42,40 @@ public class ChartMainFragment extends Fragment {
     }
 
     public void refreshColumns(){
-        horizontalLayout.removeAllViews();/*
-        if(entryList.size() > 0) {
-            Calendar startDate = entryList.get(0).getDate();
-            Calendar endDate = entryList.get(entryList.size()-1).getDate();
-            int entryListIndex = 0;
-            for (int i = 0; i < totalDays; i++){
-                if(entryListIndex < entryList.size()){
-                    LogbookEntry entry = entryList.get(entryListIndex);
-                    ReadonlyColumn c = null;
-                    if ((entry.getDate() - startDate) > i)
-                    {
-                        c = new ReadonlyColumn(getActivity(),null,i+1);
-                    } else {
-                        c = new ReadonlyColumn(getActivity(),entry,i+1);
-                    }
-                    horizontalLayout.addView(c);
-                    entryListIndex++;
+        horizontalLayout.removeAllViews();
+        if (entryListWithBlanks().size() > 0) {
+            Calendar dateRef = entryListWithBlanks().get(0).getDate();
+            for (LogbookEntry e : entryListWithBlanks()) {
+                horizontalLayout.addView(new ReadonlyColumn(getActivity(), e, dateRef));
+            }
+        }
+    }
 
-                } else{
-                    horizontalLayout.addView(new ReadonlyColumn(getActivity(),null,i+1));
+    private ArrayList<LogbookEntry> entryListWithBlanks(){
+        ArrayList<LogbookEntry> result = new ArrayList<>();
+        if (entryList.size() == 1){
+            result.add(entryList.get(0));
+        } else if(entryList.size() > 1) {
+            Calendar dateCursor = entryList.get(0).getDate();
+            Calendar lastDate = entryList.get(entryList.size() -1).getDate();
+            Iterator iterator = entryList.iterator();
+            LogbookEntry currentEntry = (LogbookEntry) iterator.next();
+
+            for(; !dateCursor.after(lastDate); dateCursor.roll(Calendar.DAY_OF_YEAR,1)){
+                int dayOfYear = currentEntry.getDate().get(Calendar.DAY_OF_YEAR);
+                int year = currentEntry.getDate().get(Calendar.YEAR);
+                int cursorDay = dateCursor.get(Calendar.DAY_OF_YEAR);
+                int cursorYear = dateCursor.get(Calendar.YEAR);
+
+                if (dayOfYear == cursorDay && year == cursorYear){
+                    result.add(currentEntry);
+                    if (iterator.hasNext())
+                        currentEntry = (LogbookEntry) iterator.next();
+                } else {
+                    result.add(null);
                 }
             }
-        }*/
+        }
+        return result;
     }
 }
