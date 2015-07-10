@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.logbookentries.LogbookEntry;
+import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,16 +39,14 @@ public class ChartMainFragment extends Fragment {
 
     public void setEntryList(ArrayList<LogbookEntry> entryList){
         this.entryList = entryList;
-        refreshColumns();
     }
 
-    public void refreshColumns(){
+    public void refreshColumns(Calendar startDate, Calendar endDate) {
         horizontalLayout.removeAllViews();
-        ArrayList<LogbookEntry> newList = entryListWithBlanks();
+        ArrayList<LogbookEntry> newList = LogbookEntryTableHelper.getGroupWithBlanks(getActivity(),startDate,endDate);
         if (newList.size() > 0) {
-            Calendar dateRef = newList.get(0).getDate();
             for (LogbookEntry e : newList) {
-                horizontalLayout.addView(new ReadonlyColumn(getActivity(), e, dateRef));
+                horizontalLayout.addView(new ReadonlyColumn(getActivity(), e, startDate));
             }
         }
     }

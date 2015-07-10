@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.nmatte.mood.moodlog.DatabaseHelper;
+import com.nmatte.mood.util.CalendarDatabaseUtil;
 
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
@@ -15,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 
 import static java.lang.Integer.valueOf;
 
@@ -22,13 +24,6 @@ import static java.lang.Integer.valueOf;
  * Created by Nathan on 4/2/2015.
  */
 public class LogbookEntryTableHelper {
-    DatabaseHelper DBHelper;
-    Context context;
-
-    public LogbookEntryTableHelper (Context c){
-        context = c;
-        DBHelper = new DatabaseHelper(c);
-    }
 
 
 
@@ -63,21 +58,15 @@ public class LogbookEntryTableHelper {
     }
 
     public static LogbookEntry getEntryToday(Context context){
-        return getEntry(context, getIntFromDate(Calendar.getInstance()));
-    }
-
-    public static int getIntFromDate( Calendar c){
-        DateFormat df = new SimpleDateFormat("yyyyDDD");
-        String ds = df.format(c.getTime());
-        return valueOf(ds);
-
+        return getEntry(context, CalendarDatabaseUtil.calendarToInt(Calendar.getInstance()));
     }
 
 
 
-    public ArrayList<LogbookEntry> getEntryGroup (Calendar startDate, Calendar endDate){
+    public static ArrayList<LogbookEntry> getEntryGroup (Context context, Calendar startDate, Calendar endDate){
         //TODO ensure this works properly
         ArrayList<LogbookEntry> entries = new ArrayList<>();
+        DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getReadableDatabase();
 
         String [] columns = new String[] {
@@ -88,7 +77,8 @@ public class LogbookEntryTableHelper {
                 LogBookContract.LOGBOOKENTRY_HOURS_SLEPT_COLUMN,
                 LogBookContract.LOGBOOKENTRY_MEDICATION_COLUMN
         };
-        String [] selection = new String[] {String.valueOf(getIntFromDate(startDate)),String.valueOf(getIntFromDate(endDate))};
+        String [] selection = new String[] {String.valueOf(CalendarDatabaseUtil.calendarToInt(startDate)),
+                String.valueOf(CalendarDatabaseUtil.calendarToInt(endDate))};
 
         Cursor c = db.query(LogBookContract.LOGBOOKENTRY_TABLE, columns,LogBookContract.LOGBOOKENTRY_DATE_COLUMN + " BETWEEN ? AND ?",selection,null,null,null);
         c.moveToFirst();
@@ -112,14 +102,49 @@ public class LogbookEntryTableHelper {
         return entries;
     }
 
-    public ArrayList<LogbookEntry> getLast28Days (){
+    public static ArrayList<LogbookEntry> getGroupWithBlanks(Context context, Calendar startDate, Calendar endDate){
+        ArrayList<LogbookEntry> result = new ArrayList<>();
+        ArrayList<LogbookEntry> fullEntries = getEntryGroup(context,startDate,endDate);
+        Iterator<LogbookEntry> it = fullEntries.iterator();
+        ArrayList<Calendar> dates = CalendarDatabaseUtil.datesBetween(startDate, endDate);
+        LogbookEntry currentEntry = null;
+        if (it.hasNext())
+            currentEntry = it.next();
+
+
+        // map an array of dates to an array of entries; null for no entry
+        for (Calendar date : dates){
+            if ((currentEntry != null)){
+                // if the dates match then add to result...
+                if (CalendarDatabaseUtil.sameDayOfYear(date,currentEntry.getDate())){
+                currentEntry.setDate(date);
+                result.add(currentEntry);
+                    // and get next entry to check
+                    if(it.hasNext()){
+                        currentEntry = it.next();
+                    }
+                } else {
+                    // not the same so add a null and move on
+                    result.add(null);
+                }
+            } else {
+                // no more entries so add null
+                result.add(null);
+            }
+        }
+        return result;
+    }
+
+    public static ArrayList<LogbookEntry> getLast28Days (Context context){
         ArrayList<LogbookEntry> result;
         Calendar endDate = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();
         startDate.add(Calendar.DAY_OF_YEAR, -28);
-        result = this.getEntryGroup(startDate,endDate);
+        result = getEntryGroup(context, startDate, endDate);
         return result;
     }
+
+
 
     public static void addOrUpdateEntry(Context context, LogbookEntry entry) {
         DatabaseHelper DBHelper = new DatabaseHelper(context);
