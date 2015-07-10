@@ -43,9 +43,10 @@ public class ChartMainFragment extends Fragment {
 
     public void refreshColumns(){
         horizontalLayout.removeAllViews();
-        if (entryListWithBlanks().size() > 0) {
-            Calendar dateRef = entryListWithBlanks().get(0).getDate();
-            for (LogbookEntry e : entryListWithBlanks()) {
+        ArrayList<LogbookEntry> newList = entryListWithBlanks();
+        if (newList.size() > 0) {
+            Calendar dateRef = newList.get(0).getDate();
+            for (LogbookEntry e : newList) {
                 horizontalLayout.addView(new ReadonlyColumn(getActivity(), e, dateRef));
             }
         }
@@ -61,7 +62,7 @@ public class ChartMainFragment extends Fragment {
             Iterator iterator = entryList.iterator();
             LogbookEntry currentEntry = (LogbookEntry) iterator.next();
 
-            for(; !dateCursor.after(lastDate); dateCursor.roll(Calendar.DAY_OF_YEAR,1)){
+            for(; dateCursor.getTimeInMillis() <= lastDate.getTimeInMillis(); dateCursor.roll(Calendar.DAY_OF_YEAR,1)){
                 int dayOfYear = currentEntry.getDate().get(Calendar.DAY_OF_YEAR);
                 int year = currentEntry.getDate().get(Calendar.YEAR);
                 int cursorDay = dateCursor.get(Calendar.DAY_OF_YEAR);
