@@ -12,14 +12,15 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name="com.nmatte.mood.chart.ChartActivity"
-            />
+        <activity android:name="com.nmatte.mood.chart.ChartActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity android:name="com.nmatte.mood.settings.SettingsActivity"/>
         
         <receiver android:name="com.nmatte.mood.notifications.AlarmManagerHelper">
