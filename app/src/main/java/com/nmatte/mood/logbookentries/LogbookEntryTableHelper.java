@@ -132,7 +132,7 @@ public class LogbookEntryTableHelper {
         Calendar endDate = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();
         startDate.add(Calendar.DAY_OF_YEAR, -28);
-        result = getEntryGroup(context, startDate, endDate);
+        result = getGroupWithBlanks(context, startDate, endDate);
         return result;
     }
 

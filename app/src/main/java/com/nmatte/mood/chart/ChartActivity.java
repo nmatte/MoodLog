@@ -9,6 +9,8 @@ import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 import com.nmatte.mood.moodlog.R;
 
+import java.util.Calendar;
+
 
 public class ChartActivity extends ActionBarActivity {
 
@@ -17,7 +19,13 @@ public class ChartActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
         ChartMainFragment mainFragment = (ChartMainFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
-        mainFragment.setEntryList(LogbookEntryTableHelper.getLast28Days(this));
+
+        Calendar tmpStartDate = Calendar.getInstance();
+        tmpStartDate.roll(Calendar.DAY_OF_YEAR,-5);
+        Calendar endDate = Calendar.getInstance();
+
+
+        mainFragment.refreshColumns(tmpStartDate,endDate);
 
 
     }

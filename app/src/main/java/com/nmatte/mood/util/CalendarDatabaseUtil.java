@@ -12,6 +12,8 @@ public class CalendarDatabaseUtil {
     public static int dayDiff(Calendar startDate, Calendar endDate){
         int result = 0;
 
+        // TODO ensure this works properly for dates across years
+
 
         // swap if out of order
         if (startDate.after(endDate)){
@@ -37,6 +39,39 @@ public class CalendarDatabaseUtil {
 
     public static ArrayList<Calendar> datesBetween(Calendar startDate, Calendar endDate){
         ArrayList<Calendar> result = new ArrayList<>();
+
+
+        // clear all other fields to avoid potential logic errors
+        int startYear = startDate.get(Calendar.YEAR);
+        int startDay = startDate.get(Calendar.DAY_OF_YEAR);
+        startDate.clear();
+        startDate.set(Calendar.YEAR,startYear);
+        startDate.set(Calendar.DAY_OF_YEAR,startDay);
+
+
+        int endYear = endDate.get(Calendar.YEAR);
+        int endDay = endDate.get(Calendar.DAY_OF_YEAR);
+        endDate.clear();
+        endDate.set(Calendar.YEAR,endYear);
+        endDate.set(Calendar.DAY_OF_YEAR,endDay);
+
+
+        // swap dates if out of order
+        if (startDate.after(endDate)){
+            Calendar tmp = (Calendar) startDate.clone();
+            startDate = (Calendar) endDate.clone();
+            endDate = (Calendar) tmp.clone();
+        }
+
+
+        Calendar currentDate = (Calendar) startDate.clone();
+
+        do {
+            Calendar newCalendar = (Calendar) currentDate.clone();
+            result.add(newCalendar);
+            currentDate.roll(Calendar.DAY_OF_YEAR,1);
+        } while(currentDate.before(endDate));
+
 
 
 
