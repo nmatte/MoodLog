@@ -5,23 +5,19 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 import com.nmatte.mood.moodlog.R;
 
 
 public class ChartActivity extends ActionBarActivity {
 
-
-    LogbookEntryTableHelper LEHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
-        LEHelper = new LogbookEntryTableHelper(this);
-
         ChartMainFragment mainFragment = (ChartMainFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
-        mainFragment.setEntryList(LEHelper.getLast28Days());
+        mainFragment.setEntryList(LogbookEntryTableHelper.getLast28Days(this));
 
 
     }

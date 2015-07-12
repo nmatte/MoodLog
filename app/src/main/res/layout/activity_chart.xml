@@ -34,7 +34,7 @@
             <fragment
                 android:layout_width="126dp"
                 android:layout_height="wrap_content"
-                android:name="com.nmatte.mood.moodlog.MainFragment"
+                android:name="com.nmatte.mood.logbookentries.MainFragment"
                 android:id="@+id/singleEntryFragment"/>
 
             </LinearLayout>

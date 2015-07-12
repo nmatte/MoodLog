@@ -10,7 +10,7 @@
             <fragment
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
-                android:name="com.nmatte.mood.moodlog.MainFragment"
+                android:name="com.nmatte.mood.logbookentries.MainFragment"
                 android:id="@+id/mainFragment"/>
     </ScrollView>
 

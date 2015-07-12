@@ -51,31 +51,4 @@ public class ChartMainFragment extends Fragment {
         }
     }
 
-    private ArrayList<LogbookEntry> entryListWithBlanks(){
-        ArrayList<LogbookEntry> result = new ArrayList<>();
-        if (entryList.size() == 1){
-            result.add(entryList.get(0));
-        } else if(entryList.size() > 1) {
-            Calendar dateCursor = entryList.get(0).getDate();
-            Calendar lastDate = entryList.get(entryList.size() -1).getDate();
-            Iterator iterator = entryList.iterator();
-            LogbookEntry currentEntry = (LogbookEntry) iterator.next();
-
-            for(; dateCursor.getTimeInMillis() <= lastDate.getTimeInMillis(); dateCursor.roll(Calendar.DAY_OF_YEAR,1)){
-                int dayOfYear = currentEntry.getDate().get(Calendar.DAY_OF_YEAR);
-                int year = currentEntry.getDate().get(Calendar.YEAR);
-                int cursorDay = dateCursor.get(Calendar.DAY_OF_YEAR);
-                int cursorYear = dateCursor.get(Calendar.YEAR);
-
-                if (dayOfYear == cursorDay && year == cursorYear){
-                    result.add(currentEntry);
-                    if (iterator.hasNext())
-                        currentEntry = (LogbookEntry) iterator.next();
-                } else {
-                    result.add(null);
-                }
-            }
-        }
-        return result;
-    }
 }

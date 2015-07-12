@@ -1,4 +1,4 @@
-package com.nmatte.mood.moodlog;
+package com.nmatte.mood.util;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

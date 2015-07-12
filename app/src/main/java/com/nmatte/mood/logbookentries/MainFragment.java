@@ -1,4 +1,4 @@
-package com.nmatte.mood.moodlog;
+package com.nmatte.mood.logbookentries;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -6,8 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.medications.MedList;
+import com.nmatte.mood.moodlog.CustomNumberPicker;
+import com.nmatte.mood.moodlog.R;
 
 public class MainFragment extends Fragment  {
     CustomNumberPicker irrPicker;

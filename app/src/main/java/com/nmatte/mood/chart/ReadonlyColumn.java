@@ -4,7 +4,7 @@ import android.content.Context;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.logbookentries.LogbookEntry;
-import com.nmatte.mood.moodlog.MoodList;
+import com.nmatte.mood.logbookentries.MoodList;
 
 import java.util.Calendar;
 

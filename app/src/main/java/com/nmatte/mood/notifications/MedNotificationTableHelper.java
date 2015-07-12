@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.nmatte.mood.medications.Medication;
-import com.nmatte.mood.moodlog.DatabaseHelper;
+import com.nmatte.mood.util.DatabaseHelper;
 
 import java.util.ArrayList;
 

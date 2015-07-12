@@ -6,16 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.nmatte.mood.moodlog.DatabaseHelper;
+import com.nmatte.mood.util.DatabaseHelper;
 import com.nmatte.mood.util.CalendarDatabaseUtil;
 
-import java.text.DateFormat;
-import java.text.DateFormatSymbols;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 
 import static java.lang.Integer.valueOf;
@@ -24,9 +19,6 @@ import static java.lang.Integer.valueOf;
  * Created by Nathan on 4/2/2015.
  */
 public class LogbookEntryTableHelper {
-
-
-
     public static LogbookEntry getEntry(Context context, int date){
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getReadableDatabase();
@@ -104,7 +96,7 @@ public class LogbookEntryTableHelper {
 
     public static ArrayList<LogbookEntry> getGroupWithBlanks(Context context, Calendar startDate, Calendar endDate){
         ArrayList<LogbookEntry> result = new ArrayList<>();
-        ArrayList<LogbookEntry> fullEntries = getEntryGroup(context,startDate,endDate);
+        ArrayList<LogbookEntry> fullEntries = getEntryGroup(context, startDate, endDate);
         Iterator<LogbookEntry> it = fullEntries.iterator();
         ArrayList<Calendar> dates = CalendarDatabaseUtil.datesBetween(startDate, endDate);
         LogbookEntry currentEntry = null;

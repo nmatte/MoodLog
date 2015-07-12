@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.nmatte.mood.chart.ChartActivity;
 import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
+import com.nmatte.mood.logbookentries.MainFragment;
 import com.nmatte.mood.medications.AddMedicationDialog;
 import com.nmatte.mood.medications.DeleteMedicationDialog;
 import com.nmatte.mood.medications.MedTableHelper;

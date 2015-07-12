@@ -1,4 +1,4 @@
-package com.nmatte.mood.moodlog;
+package com.nmatte.mood.logbookentries;
 
 import android.content.Context;
 import android.util.AttributeSet;
