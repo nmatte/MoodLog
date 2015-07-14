@@ -1,5 +1,6 @@
 package com.nmatte.mood.chart;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -12,6 +13,8 @@ import com.nmatte.mood.medications.AddMedicationDialog;
 import com.nmatte.mood.medications.DeleteMedicationDialog;
 import com.nmatte.mood.medications.MedTableHelper;
 import com.nmatte.mood.moodlog.R;
+import com.nmatte.mood.settings.PreferencesContract;
+import com.nmatte.mood.util.CalendarDatabaseUtil;
 
 import java.util.Calendar;
 
@@ -30,15 +33,15 @@ public class ChartActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
 
+
+        initStartDate();
         initFragments();
     }
 
     private void initFragments(){
         chartMainFragment = (ChartMainFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
-        Calendar tmpStartDate = Calendar.getInstance();
-        tmpStartDate.roll(Calendar.DAY_OF_YEAR,-5);
         Calendar endDate = Calendar.getInstance();
-        chartMainFragment.refreshColumns(tmpStartDate, endDate);
+        chartMainFragment.refreshColumns(getStartDate(), endDate);
 
         entryFragment = (LogbookEntryFragment) getFragmentManager().findFragmentById(R.id.singleEntryFragment);
         LogbookEntry todayEntry = LogbookEntryTableHelper.getEntryToday(this);
@@ -46,6 +49,33 @@ public class ChartActivity extends ActionBarActivity
             todayEntry = new LogbookEntry();
         }
         entryFragment.setEntry(todayEntry);
+    }
+
+    private void initStartDate(){
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        if (!settings.contains(PreferencesContract.CHART_START_DATE)){
+            Calendar newStartDate = Calendar.getInstance();
+            newStartDate.set(Calendar.DAY_OF_MONTH,newStartDate.getActualMinimum(Calendar.DAY_OF_MONTH));
+
+            settings.edit()
+                    .putInt(PreferencesContract.CHART_START_DATE, CalendarDatabaseUtil.calendarToInt(newStartDate))
+                    .apply();
+        }
+    }
+
+    private Calendar getStartDate(){
+        Calendar result;
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        int dateInt = settings.getInt(PreferencesContract.CHART_START_DATE,0);
+        if (dateInt == 0){
+            Calendar newStartDate = Calendar.getInstance();
+            newStartDate.set(Calendar.DAY_OF_MONTH,newStartDate.getActualMinimum(Calendar.DAY_OF_MONTH));
+            result = newStartDate;
+        } else {
+            result = CalendarDatabaseUtil.intToCalendar(dateInt);
+        }
+
+        return result;
     }
 
 
