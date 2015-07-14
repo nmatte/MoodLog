@@ -15,9 +15,6 @@ import java.util.Iterator;
 
 import static java.lang.Integer.valueOf;
 
-/**
- * Created by Nathan on 4/2/2015.
- */
 public class LogbookEntryTableHelper {
     public static LogbookEntry getEntry(Context context, int date){
         DatabaseHelper DBHelper = new DatabaseHelper(context);

@@ -28,7 +28,9 @@ public class ReadonlyColumn extends LinearLayout {
     public ReadonlyColumn(Context context, LogbookEntry entry, Calendar dateRef){
         super(context);
         this.setOrientation(VERTICAL);
-        int thisDayOfYear = entry.getDate().get(Calendar.DAY_OF_YEAR);
+        int thisDayOfYear = 0;
+        if (entry != null)
+            thisDayOfYear = entry.getDate().get(Calendar.DAY_OF_YEAR);
         int dateRefDay = dateRef.get(Calendar.DAY_OF_YEAR);
         int dateNum = 1;
         if (thisDayOfYear - dateRefDay >= 0){
