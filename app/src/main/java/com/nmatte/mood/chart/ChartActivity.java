@@ -6,28 +6,46 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.nmatte.mood.logbookentries.LogbookEntry;
+import com.nmatte.mood.logbookentries.LogbookEntryFragment;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
+import com.nmatte.mood.medications.AddMedicationDialog;
+import com.nmatte.mood.medications.DeleteMedicationDialog;
+import com.nmatte.mood.medications.MedTableHelper;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.Calendar;
 
 
-public class ChartActivity extends ActionBarActivity {
+public class ChartActivity extends ActionBarActivity
+        implements AddMedicationDialog.AddMedicationListener,
+        DeleteMedicationDialog.DeleteMedicationListener
+{
+
+    LogbookEntryFragment entryFragment;
+    ChartMainFragment chartMainFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
-        ChartMainFragment mainFragment = (ChartMainFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
 
+        initFragments();
+    }
+
+    private void initFragments(){
+        chartMainFragment = (ChartMainFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
         Calendar tmpStartDate = Calendar.getInstance();
         tmpStartDate.roll(Calendar.DAY_OF_YEAR,-5);
         Calendar endDate = Calendar.getInstance();
+        chartMainFragment.refreshColumns(tmpStartDate, endDate);
 
-
-        mainFragment.refreshColumns(tmpStartDate,endDate);
-
-
+        entryFragment = (LogbookEntryFragment) getFragmentManager().findFragmentById(R.id.singleEntryFragment);
+        LogbookEntry todayEntry = LogbookEntryTableHelper.getEntryToday(this);
+        if(todayEntry == null){
+            todayEntry = new LogbookEntry();
+        }
+        entryFragment.setEntry(todayEntry);
     }
 
 
@@ -47,5 +65,25 @@ public class ChartActivity extends ActionBarActivity {
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LogbookEntryTableHelper.addOrUpdateEntry(this,entryFragment.getEntry());
+    }
+
+    @Override
+    public void onAddDialogPositiveClick(String name) {
+        LogbookEntry currentEntry = entryFragment.getEntry();
+        MedTableHelper.addMedication(this, name);
+        entryFragment.setEntry(currentEntry);
+    }
+
+    @Override
+    public void onDeleteDialogPositiveClick(String name) {
+        LogbookEntry currentEntry = entryFragment.getEntry();
+        MedTableHelper.deleteMedication(this, name);
+        entryFragment.setEntry(currentEntry);
     }
 }

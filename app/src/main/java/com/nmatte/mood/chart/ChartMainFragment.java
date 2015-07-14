@@ -34,11 +34,6 @@ public class ChartMainFragment extends Fragment {
         horizontalLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         return horizontalLayout;
-
-    }
-
-    public void setEntryList(ArrayList<LogbookEntry> entryList){
-        this.entryList = entryList;
     }
 
     public void refreshColumns(Calendar startDate, Calendar endDate) {
@@ -52,5 +47,6 @@ public class ChartMainFragment extends Fragment {
             }
         }
     }
+
 
 }

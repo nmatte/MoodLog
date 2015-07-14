@@ -10,7 +10,7 @@ import com.nmatte.mood.medications.MedList;
 import com.nmatte.mood.moodlog.CustomNumberPicker;
 import com.nmatte.mood.moodlog.R;
 
-public class MainFragment extends Fragment  {
+public class LogbookEntryFragment extends Fragment  {
     CustomNumberPicker irrPicker;
     CustomNumberPicker anxPicker;
     CustomNumberPicker hoursPicker;

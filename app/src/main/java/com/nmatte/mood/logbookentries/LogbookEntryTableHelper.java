@@ -124,15 +124,6 @@ public class LogbookEntryTableHelper {
         return result;
     }
 
-    public static ArrayList<LogbookEntry> getLast28Days (Context context){
-        ArrayList<LogbookEntry> result;
-        Calendar endDate = Calendar.getInstance();
-        Calendar startDate = Calendar.getInstance();
-        startDate.add(Calendar.DAY_OF_YEAR, -28);
-        result = getGroupWithBlanks(context, startDate, endDate);
-        return result;
-    }
-
 
 
     public static void addOrUpdateEntry(Context context, LogbookEntry entry) {

@@ -13,8 +13,8 @@ import android.widget.ListView;
 
 import com.nmatte.mood.chart.ChartActivity;
 import com.nmatte.mood.logbookentries.LogbookEntry;
+import com.nmatte.mood.logbookentries.LogbookEntryFragment;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
-import com.nmatte.mood.logbookentries.MainFragment;
 import com.nmatte.mood.medications.AddMedicationDialog;
 import com.nmatte.mood.medications.DeleteMedicationDialog;
 import com.nmatte.mood.medications.MedTableHelper;
@@ -27,17 +27,13 @@ import java.util.Calendar;
 
 public class MainActivity
     extends ActionBarActivity
-    implements AddMedicationDialog.AddMedicationListener,
-        DeleteMedicationDialog.DeleteMedicationListener
 {
 
-    private LogbookEntry currentEntry;
 
     static final String
         CHART_ACTIVITY = "Monthly Chart",
         SETTINGS_ACTIVITY="Settings",
         MAIN_ACTIVITY="Today";
-    MainFragment mainFragment;
     ListView navList;
 
     @Override
@@ -46,15 +42,8 @@ public class MainActivity
         setContentView(R.layout.activity_main);
 
         initNavbar();
-        initFragments();
 
-        currentEntry = LogbookEntryTableHelper.getEntryToday(this);
-        if (currentEntry == null) {
-            currentEntry = new LogbookEntry();
-        }
-        else {
-            mainFragment.setEntry(currentEntry);
-        }
+
     }
 
     private void initNavbar(){
@@ -76,7 +65,6 @@ public class MainActivity
                     case 1:
                         break;
                     case 2:
-                        startChartActivity();
                         break;
                     case 3:
                         startSettingsActivity();
@@ -87,18 +75,9 @@ public class MainActivity
         });
     }
 
-    private void startChartActivity(){
-         Intent intent = new Intent(this, ChartActivity.class);
-         startActivity(intent);
-    }
-
     private void startSettingsActivity(){
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
-    }
-
-    private void initFragments(){
-        mainFragment = (MainFragment) getFragmentManager().findFragmentById(R.id.mainFragment);
     }
 
     @Override
@@ -124,20 +103,7 @@ public class MainActivity
         return true;
     }
 
-    // Listener for the add medication dialog.
-    @Override
-    public void onAddDialogPositiveClick(String name) {
-        updateCurrentEntry();
-        MedTableHelper.addMedication(this, name);
-        mainFragment.setEntry(currentEntry);
 
-    }
-
-    public void onDeleteDialogPositiveClick(String name) {
-        updateCurrentEntry();
-        MedTableHelper.deleteMedication(this, name);
-        mainFragment.setEntry(currentEntry);
-    }
     public void delete(Medication m) {
         String name = m.getName();
         long id = m.getID();
@@ -154,21 +120,8 @@ public class MainActivity
         dialog.show(getFragmentManager(), "Add Med Dialog");
     }
 
-    private void updateCurrentEntry(){
-        currentEntry = mainFragment.getEntry();
-        currentEntry.setDate(Calendar.getInstance());
-    }
 
-    private void saveCurrentEntry(){
-        updateCurrentEntry();
-        LogbookEntryTableHelper.addOrUpdateEntry(this, currentEntry);
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        saveCurrentEntry();
-    }
 
 
 }
