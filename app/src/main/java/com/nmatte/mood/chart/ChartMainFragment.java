@@ -45,8 +45,10 @@ public class ChartMainFragment extends Fragment {
         horizontalLayout.removeAllViews();
         ArrayList<LogbookEntry> newList = LogbookEntryTableHelper.getGroupWithBlanks(getActivity(),startDate,endDate);
         if (newList.size() > 0) {
+            int dateNum = 1;
             for (LogbookEntry e : newList) {
-                horizontalLayout.addView(new ReadonlyColumn(getActivity(), e, startDate));
+                horizontalLayout.addView(new ReadonlyColumn(getActivity(), e, dateNum));
+                dateNum++;
             }
         }
     }
