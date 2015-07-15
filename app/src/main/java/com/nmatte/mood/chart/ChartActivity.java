@@ -41,6 +41,7 @@ public class ChartActivity extends ActionBarActivity
     private void initFragments(){
         chartMainFragment = (ChartMainFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
         Calendar endDate = Calendar.getInstance();
+        chartMainFragment.setRetainInstance(true);
         chartMainFragment.refreshColumns(getStartDate(), endDate);
 
         entryFragment = (LogbookEntryFragment) getFragmentManager().findFragmentById(R.id.singleEntryFragment);
@@ -49,6 +50,7 @@ public class ChartActivity extends ActionBarActivity
             todayEntry = new LogbookEntry();
         }
         entryFragment.setEntry(todayEntry);
+        entryFragment.setRetainInstance(true);
     }
 
     private void initStartDate(){

@@ -18,17 +18,27 @@ import java.util.ArrayList;
 public class MedList extends LinearLayout {
     private ArrayList<Medication> medList;
     final private boolean chartStyle;
+    final private boolean isEnabled;
 
     public MedList(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.MedList,0,0);
         this.chartStyle = a.getBoolean(R.styleable.MedList_style_chart,false);
+        this.isEnabled = a.getBoolean(R.styleable.MedList_is_enabled,true);
         init(context);
     }
 
     public  MedList(Context context, boolean chartStyle ){
         super(context);
         this.chartStyle = chartStyle;
+        this.isEnabled = true;
+        init(context);
+    }
+
+    public  MedList(Context context, boolean chartStyle, boolean isEnabled ){
+        super(context);
+        this.chartStyle = chartStyle;
+        this.isEnabled = isEnabled;
         init(context);
     }
 
@@ -46,7 +56,7 @@ public class MedList extends LinearLayout {
         for (final Medication m : medList){
             final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, context.getResources().getDisplayMetrics());
             if(chartStyle){
-                final CheckableCellView cellView = new CheckableCellView(context,true);
+                final CheckableCellView cellView = new CheckableCellView(context,isEnabled);
                 this.addView(cellView);
             } else {
                 final CheckedTextView rowView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, null);
@@ -57,7 +67,8 @@ public class MedList extends LinearLayout {
                 rowView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        rowView.setChecked(!rowView.isChecked());
+                        if(isEnabled)
+                            rowView.setChecked(!rowView.isChecked());
                     }
                 });
                 this.addView(rowView);

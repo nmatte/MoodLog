@@ -35,15 +35,6 @@ public class ChartLabelFragment extends Fragment {
                 mainLayout.getLayoutParams().width = 250;
             }
         });
-
-
-
-
         return mainLayout;
-
-
-
-
-
     }
 }
