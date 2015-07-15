@@ -11,12 +11,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/mainLayout">
-        <fragment
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:name="com.nmatte.mood.chart.ChartLabelFragment"
-            android:id="@+id/chartLabelFragment"
-            />
+            <fragment
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:name="com.nmatte.mood.chart.ChartLabelFragment"
+                android:id="@+id/chartLabelFragment"
+                />
+
 
         <HorizontalScrollView
             android:layout_width="fill_parent"

@@ -5,12 +5,11 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.CheckableCellView;
-import com.nmatte.mood.logbookentries.LogbookEntry;
 
 import java.util.ArrayList;
 
 public class MoodList extends LinearLayout {
-    final int [] colors = {0xFFFFE0D4,0xFFFFBBA7,0xFFFFE1C8,0xFFFFE0AD,0xFFFFF9B3,0xFFDDEDCF,
+    public static final int [] colors = {0xFFFFE0D4,0xFFFFBBA7,0xFFFFE1C8,0xFFFFE0AD,0xFFFFF9B3,0xFFDDEDCF,
             0xFFC8E4B2, 0xFFAEDCB6,0xFFC5E7DB,0xFFB5E3E6,0xFFA3E0F7,0xFFABC2E3,0xFFE0DBEC};
 
 

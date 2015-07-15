@@ -24,6 +24,12 @@ public class TextCellView extends CellView {
         init();
     }
 
+    public TextCellView(Context context, String text, int backgroundColor){
+        super(context,backgroundColor);
+        this.text = text;
+        init();
+    }
+
     public TextCellView(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.TextCellView,0,0);
@@ -50,9 +56,9 @@ public class TextCellView extends CellView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        String sampleText = text.length() < 2 ? "00" : text;
+        // TODO fix this mess
+        String sampleText = text.length() <= 2 ? "00" : text.length() <= "Irritability".length() ? "Irritability" : text;
         blackPaint.setTextSize(getAdjustedTextSize(sampleText));
-        //blackPaint = adjustTextSize(getWidth(),text,blackPaint);
 
 
 

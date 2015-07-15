@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.nmatte.mood.logbookentries.MoodList;
 import com.nmatte.mood.medications.MedTableHelper;
 import com.nmatte.mood.medications.Medication;
 
@@ -21,20 +22,22 @@ public class ChartLabelFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final LinearLayout mainLayout = new LinearLayout(getActivity());
         mainLayout.setOrientation(LinearLayout.VERTICAL);
+        // TODO fix this mess
+        int i = 0;
         for (String label : labels){
-            mainLayout.addView(new TextCellView(getActivity(), label));
+            if (i < MoodList.colors.length && !label.equals(labels[0])){
+                mainLayout.addView(new TextCellView(getActivity(),label,MoodList.colors[i]));
+                i++;
+            } else {
+                mainLayout.addView(new TextCellView(getActivity(), label));
+            }
         }
 
         for (Medication m : MedTableHelper.getMedicationList(getActivity())){
             mainLayout.addView(new TextCellView(getActivity(),m.getName()));
         }
 
-        mainLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mainLayout.getLayoutParams().width = 250;
-            }
-        });
+
         return mainLayout;
     }
 }
