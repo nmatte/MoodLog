@@ -66,6 +66,9 @@ public class TextCellView extends CellView {
         float textY = (getHeight() * 5 )/ 6;
 
         canvas.drawText(text, textX, textY, blackPaint);
+        if(highlighted){
+            drawHighlight(canvas);
+        }
     }
 
     public String getText (){

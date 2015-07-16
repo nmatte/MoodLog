@@ -1,6 +1,7 @@
 package com.nmatte.mood.chart;
 
 import android.content.Context;
+import android.view.MotionEvent;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.logbookentries.LogbookEntry;
@@ -45,5 +46,33 @@ public class ReadonlyColumn extends LinearLayout {
         medList.updateList(context);
         medList.setCheckedMeds(entry.getMedications());
         this.addView(medList);
+    }
+
+
+
+    private void highlightCells(boolean isHighlighted){
+        for (int i = 0; i < this.getChildCount(); i++){
+            if (this.getChildAt(i) instanceof  CellView){
+                CellView cell = (CellView) this.getChildAt(i);
+                cell.setHighlighted(isHighlighted);
+            }
+
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        if(event.getActionMasked() == MotionEvent.ACTION_DOWN){
+            highlightCells(true);
+            return true;
+        } else if (event.getActionMasked() == MotionEvent.ACTION_CANCEL){
+            highlightCells(false);
+            return true;
+        } else{
+            return false;
+        }
+
+
     }
 }

@@ -71,6 +71,9 @@ public class CheckableCellView extends CellView {
             blackRect.bottom = cellBottom - heightDiff;
             canvas.drawRect(blackRect,blackPaint);
         }
+        if(highlighted){
+            drawHighlight(canvas);
+        }
     }
 
     public boolean isChecked(){

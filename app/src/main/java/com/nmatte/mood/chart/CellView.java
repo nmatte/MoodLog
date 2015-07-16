@@ -3,6 +3,7 @@ package com.nmatte.mood.chart;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -12,7 +13,13 @@ import android.view.View;
 /* base class to draw background and borders */
 public class CellView extends View {
 
+    boolean highlighted  = false;
+
     Paint blackPaint;
+    Paint highlightPaint;
+
+    Rect highlightRect;
+
 
     static final int WHITE = 0xFFFFFFFF;
     static final int BLACK = 0xFF000000;
@@ -41,6 +48,9 @@ public class CellView extends View {
     private void init(){
         blackPaint = new Paint();
         blackPaint.setColor(BLACK);
+        highlightPaint = new Paint();
+        highlightPaint.setColor(0x50878787);
+        highlightRect = new Rect();
     }
 
     @Override
@@ -98,6 +108,21 @@ public class CellView extends View {
         canvas.drawLine(cellLeft, cellTop, cellLeft, cellBottom,blackPaint);
         // right line
         canvas.drawLine(cellRight, cellTop, cellRight, cellBottom, blackPaint);
+    }
+
+    public void setHighlighted(boolean isHighlighted){
+        this.highlighted = isHighlighted;
+        invalidate();
+    }
+
+    protected void drawHighlight(Canvas canvas){
+        if (highlighted){
+            highlightRect.top = 0;
+            highlightRect.bottom = getHeight();
+            highlightRect.left = 0;
+            highlightRect.right = getWidth();
+            canvas.drawRect(highlightRect,highlightPaint);
+        }
     }
 
     protected float getAdjustedTextSize (String text){
