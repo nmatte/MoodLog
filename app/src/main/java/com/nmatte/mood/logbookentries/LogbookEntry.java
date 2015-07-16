@@ -2,13 +2,10 @@ package com.nmatte.mood.logbookentries;
 
 
 import com.nmatte.mood.medications.Medication;
+import com.nmatte.mood.util.CalendarDatabaseUtil;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import static java.lang.Integer.valueOf;
 
 public class LogbookEntry {
 
@@ -49,29 +46,14 @@ public class LogbookEntry {
     }
 
 
-    public String getSummaryString(){
-        DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT);
-        String dateString = format.format(date);
 
-        String summary = moodString() + "\n" +
-                         dateString + "\n" +
-                         irrValue + "\n" +
-                         anxValue + "\n" +
-                         hoursSleptValue + "\n" +
-                         medicationString();
-
-        return summary;
-
-    }
 
     public Calendar getDate() {
         return date;
     }
 
-    public int getDateAsInt() {
-        DateFormat df = new SimpleDateFormat("yyyyDDD");
-        String ds = df.format(date.getTime());
-        return valueOf(ds);
+    public int getDateInt(){
+        return CalendarDatabaseUtil.calendarToInt(date);
     }
 
     public void setDate(Calendar date) {

@@ -6,14 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.nmatte.mood.util.DatabaseHelper;
 import com.nmatte.mood.util.CalendarDatabaseUtil;
+import com.nmatte.mood.util.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
-
-import static java.lang.Integer.valueOf;
 
 public class LogbookEntryTableHelper {
     public static LogbookEntry getEntry(Context context, int date){
@@ -130,7 +128,7 @@ public class LogbookEntryTableHelper {
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(LogBookContract.LOGBOOKENTRY_DATE_COLUMN,entry.getDateAsInt());
+        values.put(LogBookContract.LOGBOOKENTRY_DATE_COLUMN,entry.getDateInt());
         values.put(LogBookContract.LOGBOOKENTRY_MOOD_COLUMN,entry.moodString());
         values.put(LogBookContract.LOGBOOKENTRY_ANXIETY_COLUMN,entry.getAnxValue());
         values.put(LogBookContract.LOGBOOKENTRY_IRRITABILITY_COLUMN,entry.getIrrValue());

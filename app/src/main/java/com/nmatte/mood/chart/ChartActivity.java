@@ -50,7 +50,7 @@ public class ChartActivity extends ActionBarActivity
     private void initFragments(){
         chartMainFragment = (ChartMainFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
         Calendar endDate = Calendar.getInstance();
-        chartMainFragment.setRetainInstance(true);
+        chartMainFragment.setRetainInstance(false);
         chartMainFragment.refreshColumns(getStartDate(), endDate);
 
         entryFragment = (LogbookEntryFragment) getFragmentManager().findFragmentById(R.id.singleEntryFragment);
@@ -59,7 +59,7 @@ public class ChartActivity extends ActionBarActivity
             todayEntry = new LogbookEntry();
         }
         entryFragment.setEntry(todayEntry);
-        entryFragment.setRetainInstance(true);
+        entryFragment.setRetainInstance(false);
     }
 
     private void initStartDate(){
@@ -155,5 +155,10 @@ public class ChartActivity extends ActionBarActivity
         LogbookEntry currentEntry = entryFragment.getEntry();
         MedTableHelper.deleteMedication(this, name);
         entryFragment.setEntry(currentEntry);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }
