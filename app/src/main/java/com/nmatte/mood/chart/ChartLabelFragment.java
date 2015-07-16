@@ -1,6 +1,7 @@
 package com.nmatte.mood.chart;
 
 import android.app.Fragment;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,14 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.nmatte.mood.logbookentries.MoodList;
 import com.nmatte.mood.medications.MedTableHelper;
 import com.nmatte.mood.medications.Medication;
+import com.nmatte.mood.moodlog.R;
 
 
 public class ChartLabelFragment extends Fragment {
-    final String [] labels = {"Date","Severe","","Moderate","","Mild","","Normal","","Mild","","Moderate",
-            "","Severe","Anxiety","Irritability","Hours Slept"};
 
     @Nullable
     @Override
@@ -24,9 +23,12 @@ public class ChartLabelFragment extends Fragment {
         mainLayout.setOrientation(LinearLayout.VERTICAL);
         // TODO fix this mess
         int i = 0;
+        Resources res = getResources();
+        int[] colors = res.getIntArray(R.array.mood_colors);
+        String [] labels = res.getStringArray(R.array.mood_labels);
         for (String label : labels){
-            if (i < MoodList.colors.length && !label.equals(labels[0])){
-                mainLayout.addView(new TextCellView(getActivity(),label,MoodList.colors[i]));
+            if (i < colors.length && !label.equals(labels[0])){
+                mainLayout.addView(new TextCellView(getActivity(),label,colors[i]));
                 i++;
             } else {
                 mainLayout.addView(new TextCellView(getActivity(), label));

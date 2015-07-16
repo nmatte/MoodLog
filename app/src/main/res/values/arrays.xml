@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="mood_colors">
+        <item>0xFFFFE0D4</item>
+        <item>0xFFFFBBA7</item>
+        <item>0xFFFFE1C8</item>
+        <item>0xFFFFE0AD</item>
+        <item>0xFFFFF9B3</item>
+        <item>0xFFDDEDCF</item>
+        <item>0xFFC8E4B2</item>
+        <item>0xFFAEDCB6</item>
+        <item>0xFFC5E7DB</item>
+        <item>0xFFB5E3E6</item>
+        <item>0xFFA3E0F7</item>
+        <item>0xFFABC2E3</item>
+        <item>0xFFE0DBEC</item>
+    </integer-array>
+
+    <string-array name="mood_labels">
+        <item>Date</item>
+        <item>Severe</item>
+        <item> </item>
+        <item>Moderate</item>
+        <item> </item>
+        <item>Mild</item>
+        <item> </item>
+        <item>Normal</item>
+        <item> </item>
+        <item>Mild</item>
+        <item> </item>
+        <item>Moderate</item>
+        <item> </item>
+        <item>Severe</item>
+        <item>Anxiety</item>
+        <item>Irritability</item>
+        <item>Sleep</item>
+
+    </string-array>
+
+
+</resources>

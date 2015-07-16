@@ -39,8 +39,8 @@ public class AddMedicationDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.add_medication_layout,null);
         final EditText nameEditText = (EditText) view.findViewById(R.id.nameEditText);
         builder.setView(view)
-               .setTitle("Add medication")
-               .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+               .setTitle(getString(R.string.add_medication_dialog_title))
+               .setPositiveButton(getString(R.string.add_medication_dialog_add_button), new DialogInterface.OnClickListener() {
                    @Override
                    public void onClick(DialogInterface dialog, int which) {
                        String name = nameEditText.getText().toString();
@@ -51,7 +51,7 @@ public class AddMedicationDialog extends DialogFragment {
                        }
                    }
                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.add_medication_dialog_cancel_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         AddMedicationDialog.this.getDialog().cancel();
