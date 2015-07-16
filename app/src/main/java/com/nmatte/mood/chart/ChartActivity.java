@@ -1,10 +1,15 @@
 package com.nmatte.mood.chart;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.LogbookEntryFragment;
@@ -14,8 +19,10 @@ import com.nmatte.mood.medications.DeleteMedicationDialog;
 import com.nmatte.mood.medications.MedTableHelper;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.settings.PreferencesContract;
+import com.nmatte.mood.settings.SettingsActivity;
 import com.nmatte.mood.util.CalendarDatabaseUtil;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -26,6 +33,7 @@ public class ChartActivity extends ActionBarActivity
 
     LogbookEntryFragment entryFragment;
     ChartMainFragment chartMainFragment;
+    ListView navList;
 
 
     @Override
@@ -36,6 +44,7 @@ public class ChartActivity extends ActionBarActivity
 
         initStartDate();
         initFragments();
+        initNavbar();
     }
 
     private void initFragments(){
@@ -63,6 +72,35 @@ public class ChartActivity extends ActionBarActivity
                     .putInt(PreferencesContract.CHART_START_DATE, CalendarDatabaseUtil.calendarToInt(newStartDate))
                     .apply();
         }
+    }
+
+
+    private void initNavbar(){
+        navList = (ListView) findViewById(R.id.drawerList);
+        final ArrayList<String> navItems = new ArrayList<>();
+        navItems.add("Settings");
+        navList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, navItems));
+        View header = getLayoutInflater().inflate(R.layout.navlist_header, null);
+        navList.addHeaderView(header);
+        navList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        break;
+                    case 1:
+                        startSettingsActivity();
+                        break;
+                }
+
+            }
+        });
+    }
+
+
+    private void startSettingsActivity(){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     private Calendar getStartDate(){

@@ -1,9 +1,19 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+
+    tools:context=".ChartActivity">
+
+
+
+
+
+<ScrollView
     android:layout_width="match_parent"
     android:padding="10dp"
     android:layout_height="match_parent"
-    tools:context=".ChartActivity"
     android:id="@+id/horizontalScrollView">
 
     <LinearLayout
@@ -45,3 +55,15 @@
 
     </LinearLayout>
 </ScrollView>
+    <ListView
+        android:layout_width="180dp"
+        android:layout_height="match_parent"
+        android:id="@+id/drawerList"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:background="#FFFFFF"
+
+        />
+
+
+</android.support.v4.widget.DrawerLayout>
