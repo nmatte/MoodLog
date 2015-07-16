@@ -42,8 +42,8 @@ public class ReadonlyColumn extends LinearLayout {
         this.addView(new TextCellView(context, irr));
         this.addView(new TextCellView(context, hours));
         MedList medList = new MedList(context,true,false);
-        medList.setCheckedMeds(entry.getMedications());
         medList.updateList(context);
+        medList.setCheckedMeds(entry.getMedications());
         this.addView(medList);
     }
 }
