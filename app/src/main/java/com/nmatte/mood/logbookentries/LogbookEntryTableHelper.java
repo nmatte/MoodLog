@@ -112,7 +112,9 @@ public class LogbookEntryTableHelper {
                     }
                 } else {
                     // not the same so add a null and move on
-                    result.add(new LogbookEntry(date));
+                    LogbookEntry newEntry = new LogbookEntry(date);
+                    newEntry.blank = true;
+                    result.add(newEntry);
                 }
             } else {
                 // no more entries so add null

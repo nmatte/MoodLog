@@ -31,8 +31,14 @@ public class ReadonlyColumn extends LinearLayout {
         this.setOrientation(VERTICAL);
         int dateNum = CalendarDatabaseUtil.dayDiff(refDate,entry.getDate());
         this.addView(new TextCellView(context, String.valueOf(dateNum)));
-        this.addView(new MoodList(context, false, entry));
-        init(context);
+        MoodList moodList = new MoodList(context, false, entry);
+        moodList.setEnabled(true);
+        this.addView(moodList);
+        if (entry.isBlank()){
+            initBlank(context);
+        } else {
+            init(context);
+        }
     }
 
     public Intent makeIntent(){
@@ -60,6 +66,7 @@ public class ReadonlyColumn extends LinearLayout {
         this.addView(new TextCellView(context, irr));
         this.addView(new TextCellView(context, hours));
         MedList medList = new MedList(context,true,false);
+        medList.setEnabled(false);
         medList.updateList(context);
         medList.setCheckedMeds(entry.getMedications());
         this.addView(medList);

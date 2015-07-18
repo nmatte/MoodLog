@@ -14,6 +14,7 @@ public class LogbookEntry {
         anxValue = 0,
         hoursSleptValue = 0;
     Calendar date;
+    boolean blank = false;
     ArrayList<Medication> medications;
 
     public LogbookEntry (){
@@ -107,8 +108,11 @@ public class LogbookEntry {
     }
 
     public String medicationString() {
-
         return Medication.IDString(medications);
+    }
+
+    public boolean isBlank(){
+        return blank;
     }
 
 

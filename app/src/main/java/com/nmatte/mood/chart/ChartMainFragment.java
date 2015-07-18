@@ -6,9 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
@@ -41,7 +39,6 @@ public class ChartMainFragment extends Fragment {
         horizontalLayout.removeAllViews();
         horizontalLayout.setClickable(true);
         horizontalLayout.setLongClickable(true);
-        horizontalLayout.setDuplicateParentStateEnabled(true);
 
 
         ArrayList<LogbookEntry> newList = LogbookEntryTableHelper.getGroupWithBlanks(getActivity(),startDate,endDate);
@@ -54,36 +51,20 @@ public class ChartMainFragment extends Fragment {
                 column.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-
-                        Toast.makeText(getActivity(), "long clicked", Toast.LENGTH_SHORT).show();
                         getActivity().startActivity(column.makeIntent());
                         return true;
                     }
                 });
+
                 horizontalLayout.addView(column);
             }
         }
 
 
-        }
-
-    class LongClickListener implements AdapterView.OnItemLongClickListener {
-
-        @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            if (view instanceof ReadonlyColumn){
-                ReadonlyColumn column = (ReadonlyColumn) view;
-                startActivity(column.makeIntent());
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-
-
     }
-    }
+
+
+}
 
 
 
