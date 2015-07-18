@@ -47,6 +47,8 @@ public class MedList extends LinearLayout {
     private void init(Context context){
         this.setOrientation(VERTICAL);
         this.medList = MedTableHelper.getMedicationList(context);
+        this.setClickable(isEnabled);
+        this.setLongClickable(isEnabled);
     }
 
 

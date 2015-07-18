@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.LogbookEntryFragment;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
+import com.nmatte.mood.logbookentries.SingleEntryActivity;
 import com.nmatte.mood.medications.AddMedicationDialog;
 import com.nmatte.mood.medications.DeleteMedicationDialog;
 import com.nmatte.mood.medications.MedTableHelper;
@@ -49,17 +50,28 @@ public class ChartActivity extends ActionBarActivity
 
     private void initFragments(){
         chartMainFragment = (ChartMainFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
-        Calendar endDate = Calendar.getInstance();
         chartMainFragment.setRetainInstance(false);
-        chartMainFragment.refreshColumns(getStartDate(), endDate);
 
         entryFragment = (LogbookEntryFragment) getFragmentManager().findFragmentById(R.id.singleEntryFragment);
+        entryFragment.setRetainInstance(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        refreshFragments();
+    }
+
+    private void refreshFragments(){
+        Calendar endDate = Calendar.getInstance();
+
+        chartMainFragment.refreshColumns(getStartDate(), endDate);
         LogbookEntry todayEntry = LogbookEntryTableHelper.getEntryToday(this);
         if(todayEntry == null){
             todayEntry = new LogbookEntry();
         }
         entryFragment.setEntry(todayEntry);
-        entryFragment.setRetainInstance(false);
     }
 
     private void initStartDate(){
@@ -100,6 +112,13 @@ public class ChartActivity extends ActionBarActivity
 
     private void startSettingsActivity(){
         Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    public void startSingleEntryActivity(Calendar date){
+        Intent intent = new Intent(this, SingleEntryActivity.class);
+        intent.setAction(SingleEntryActivity.INTENT_FROM_OTHER_ACTIVITY);
+        intent.putExtra(SingleEntryActivity.DATE_INT_TAG,CalendarDatabaseUtil.calendarToInt(date));
         startActivity(intent);
     }
 

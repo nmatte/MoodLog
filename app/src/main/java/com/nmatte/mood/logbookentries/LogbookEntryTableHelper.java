@@ -112,11 +112,11 @@ public class LogbookEntryTableHelper {
                     }
                 } else {
                     // not the same so add a null and move on
-                    result.add(null);
+                    result.add(new LogbookEntry(date));
                 }
             } else {
                 // no more entries so add null
-                result.add(null);
+                // result.add(null);
             }
         }
         return result;

@@ -22,6 +22,12 @@ public class LogbookEntry {
         this.date = Calendar.getInstance();
     }
 
+    public LogbookEntry (Calendar date){
+        this.moods = new ArrayList<Boolean>();
+        this.medications = new ArrayList<>();
+        this.date = date;
+    }
+
     public LogbookEntry(Calendar date, String moodString, int irr, int anx, int sleep,  String medString){
         this.moods = parseMoodString(moodString);
         this.irrValue = irr;

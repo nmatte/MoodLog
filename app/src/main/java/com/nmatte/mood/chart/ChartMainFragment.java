@@ -6,14 +6,15 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 
 public class ChartMainFragment extends Fragment {
     ArrayList<LogbookEntry> entryList;
@@ -38,15 +39,51 @@ public class ChartMainFragment extends Fragment {
 
     public void refreshColumns(Calendar startDate, Calendar endDate) {
         horizontalLayout.removeAllViews();
+        horizontalLayout.setClickable(true);
+        horizontalLayout.setLongClickable(true);
+        horizontalLayout.setDuplicateParentStateEnabled(true);
+
+
         ArrayList<LogbookEntry> newList = LogbookEntryTableHelper.getGroupWithBlanks(getActivity(),startDate,endDate);
         if (newList.size() > 0) {
-            int dateNum = 1;
             for (LogbookEntry e : newList) {
-                horizontalLayout.addView(new ReadonlyColumn(getActivity(), e, dateNum));
-                dateNum++;
+                final ReadonlyColumn column = new ReadonlyColumn(getActivity(), e, startDate);
+                column.setClickable(true);
+                column.setLongClickable(true);
+                column.setDuplicateParentStateEnabled(true);
+                column.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+
+                        Toast.makeText(getActivity(), "long clicked", Toast.LENGTH_SHORT).show();
+                        getActivity().startActivity(column.makeIntent());
+                        return true;
+                    }
+                });
+                horizontalLayout.addView(column);
             }
         }
+
+
+        }
+
+    class LongClickListener implements AdapterView.OnItemLongClickListener {
+
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            if (view instanceof ReadonlyColumn){
+                ReadonlyColumn column = (ReadonlyColumn) view;
+                startActivity(column.makeIntent());
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+
+
+    }
     }
 
 
-}
+

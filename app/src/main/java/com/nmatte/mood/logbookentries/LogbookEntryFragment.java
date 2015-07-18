@@ -10,12 +10,16 @@ import com.nmatte.mood.medications.MedList;
 import com.nmatte.mood.moodlog.CustomNumberPicker;
 import com.nmatte.mood.moodlog.R;
 
+import java.util.Calendar;
+
 public class LogbookEntryFragment extends Fragment  {
     CustomNumberPicker irrPicker;
     CustomNumberPicker anxPicker;
     CustomNumberPicker hoursPicker;
     MedList medList;
     MoodList moodList;
+    Calendar date;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,17 +34,21 @@ public class LogbookEntryFragment extends Fragment  {
     }
 
     public LogbookEntry setEntry(LogbookEntry entry){
+        if (entry == null){
+            entry = new LogbookEntry();
+        }
         anxPicker.setCurrentNum(entry.getAnxValue());
         irrPicker.setCurrentNum(entry.getIrrValue());
         hoursPicker.setCurrentNum(entry.getHoursSleptValue());
         medList.updateList(getActivity());
         medList.setCheckedMeds(entry.getMedications());
         moodList.setCheckedItems(entry);
+        date = entry.getDate();
         return entry;
     }
 
     public LogbookEntry getEntry(){
-        LogbookEntry entry = new LogbookEntry();
+        LogbookEntry entry = new LogbookEntry(date);
         entry.setAnxValue(anxPicker.getCurrentNum());
         entry.setIrrValue(irrPicker.getCurrentNum());
         entry.setHoursSleptValue(hoursPicker.getCurrentNum());

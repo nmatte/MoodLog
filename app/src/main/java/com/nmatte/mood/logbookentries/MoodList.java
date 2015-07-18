@@ -29,6 +29,8 @@ public class MoodList extends LinearLayout {
 
     private void init(Context context){
         this.setOrientation(VERTICAL);
+        setClickable(isEnabled);
+        setLongClickable(isEnabled);
         Resources res = getResources();
         int [] colors = res.getIntArray(R.array.mood_colors);
         for(int i = 0; i < colors.length; i++){
