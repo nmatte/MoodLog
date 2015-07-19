@@ -16,7 +16,9 @@
         </intent-filter>
         </activity>
 
-        <activity android:name="com.nmatte.mood.logbookentries.SingleEntryActivity">
+        <activity android:name="com.nmatte.mood.logbookentries.SingleEntryActivity"
+            android:theme="@style/Theme.AppCompat.Dialog">
+
         </activity>
 
 

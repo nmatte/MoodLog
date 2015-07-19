@@ -3,6 +3,7 @@ package com.nmatte.mood.logbookentries;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.util.CalendarDatabaseUtil;
@@ -26,6 +27,14 @@ public class SingleEntryActivity extends Activity {
         initFragments();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+    }
+
     private void initFragments(){
         entryFragment = (LogbookEntryFragment) getFragmentManager().findFragmentById(R.id.singleEntryFragment);
         LogbookEntry entry = LogbookEntryTableHelper.getEntry(this,CalendarDatabaseUtil.calendarToInt(date));
@@ -42,14 +51,16 @@ public class SingleEntryActivity extends Activity {
     }
 
     public void saveAndClose(){
-        LogbookEntryTableHelper.addOrUpdateEntry(this, entryFragment.getEntry());
-        if (getIntent().getAction().equals(INTENT_FROM_OTHER_ACTIVITY)){
-            finish();
-        }
+
+
 
     }
 
     public void testClick(View view) {
-        saveAndClose();
+        if (getIntent().getAction().equals(INTENT_FROM_OTHER_ACTIVITY)){
+            finish();
+        } else {
+            LogbookEntryTableHelper.addOrUpdateEntry(this, entryFragment.getEntry());
+        }
     }
 }

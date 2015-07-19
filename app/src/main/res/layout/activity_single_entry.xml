@@ -9,11 +9,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            android:paddingLeft="48dp"
-            android:paddingRight="48dp">
+            android:orientation="horizontal">
             <fragment
                 android:layout_width="0dp"
                 android:layout_weight="1"

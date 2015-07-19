@@ -2,6 +2,7 @@ package com.nmatte.mood.chart;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.logbookentries.LogbookEntry;
@@ -20,7 +21,7 @@ public class ReadonlyColumn extends LinearLayout {
         entry = new LogbookEntry(Calendar.getInstance());
     }
 
-    public ReadonlyColumn(Context context, LogbookEntry newEntry, Calendar refDate){
+    public ReadonlyColumn(final Context context, LogbookEntry newEntry, Calendar refDate){
         super(context);
         if (newEntry == null){
             this.entry = new LogbookEntry(Calendar.getInstance());
@@ -32,7 +33,16 @@ public class ReadonlyColumn extends LinearLayout {
         int dateNum = CalendarDatabaseUtil.dayDiff(refDate,entry.getDate());
         this.addView(new TextCellView(context, String.valueOf(dateNum)));
         MoodList moodList = new MoodList(context, false, entry);
+        moodList.setLongClickable(true);
         moodList.setEnabled(true);
+        moodList.setDuplicateParentStateEnabled(true);
+        moodList.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                context.startActivity(makeIntent());
+                return true;
+            }
+        });
         this.addView(moodList);
         if (entry.isBlank()){
             initBlank(context);
