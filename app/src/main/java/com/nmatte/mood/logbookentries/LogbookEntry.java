@@ -1,6 +1,9 @@
 package com.nmatte.mood.logbookentries;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.nmatte.mood.medications.Medication;
 import com.nmatte.mood.util.CalendarDatabaseUtil;
 
@@ -16,6 +19,13 @@ public class LogbookEntry {
     Calendar date;
     boolean blank = false;
     ArrayList<Medication> medications;
+
+    public static final String DATE_TAG = "LogbookEntryDate",
+            MOOD_TAG = "LogbookEntryMood",
+            IRR_TAG = "LogbookEntryIrr",
+            ANX_TAG = "LogbookEntryAnx",
+            SLEEP_TAG = "LogbookEntrySleep",
+            MED_TAG = "LogbookEntryMeds";
 
     public LogbookEntry (){
         this.moods = new ArrayList<Boolean>();
@@ -135,4 +145,5 @@ public class LogbookEntry {
     public ArrayList<Medication> getMedications() {
         return medications;
     }
+
 }

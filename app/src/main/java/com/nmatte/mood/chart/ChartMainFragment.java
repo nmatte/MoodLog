@@ -3,6 +3,7 @@ package com.nmatte.mood.chart;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
+import com.nmatte.mood.logbookentries.SingleEntryDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,7 +45,7 @@ public class ChartMainFragment extends Fragment {
 
         ArrayList<LogbookEntry> newList = LogbookEntryTableHelper.getGroupWithBlanks(getActivity(),startDate,endDate);
         if (newList.size() > 0) {
-            for (LogbookEntry e : newList) {
+            for (final LogbookEntry e : newList) {
                 final ReadonlyColumn column = new ReadonlyColumn(getActivity(), e, startDate);
                 column.setClickable(true);
                 column.setLongClickable(true);
@@ -51,7 +53,16 @@ public class ChartMainFragment extends Fragment {
                 column.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        getActivity().startActivity(column.makeIntent());
+                        SingleEntryDialog dialog = new SingleEntryDialog();
+                        Bundle b = new Bundle();
+                        b.putInt(LogbookEntry.DATE_TAG, e.getDateInt());
+                        b.putString(LogbookEntry.MOOD_TAG, e.moodString());
+                        b.putInt(LogbookEntry.IRR_TAG, e.getIrrValue());
+                        b.putInt(LogbookEntry.ANX_TAG,e.getAnxValue());
+                        b.putInt(LogbookEntry.SLEEP_TAG,e.getHoursSleptValue());
+                        b.putString(LogbookEntry.MED_TAG,e.medicationString());
+                        dialog.setArguments(b);
+                        dialog.show(getFragmentManager(),"Single Entry Dialog");
                         return true;
                     }
                 });

@@ -15,6 +15,7 @@ import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.LogbookEntryFragment;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 import com.nmatte.mood.logbookentries.SingleEntryActivity;
+import com.nmatte.mood.logbookentries.SingleEntryDialog;
 import com.nmatte.mood.medications.AddMedicationDialog;
 import com.nmatte.mood.medications.DeleteMedicationDialog;
 import com.nmatte.mood.medications.MedTableHelper;
@@ -29,7 +30,8 @@ import java.util.Calendar;
 
 public class ChartActivity extends ActionBarActivity
         implements AddMedicationDialog.AddMedicationListener,
-        DeleteMedicationDialog.DeleteMedicationListener
+        DeleteMedicationDialog.DeleteMedicationListener,
+        SingleEntryDialog.SingleEntryDialogListener
 {
 
     LogbookEntryFragment entryFragment;
@@ -179,5 +181,10 @@ public class ChartActivity extends ActionBarActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onSaveEntryPositiveClick(LogbookEntry entry) {
+        LogbookEntryTableHelper.addOrUpdateEntry(this,entry);
     }
 }

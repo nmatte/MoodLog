@@ -39,7 +39,6 @@ public class ReadonlyColumn extends LinearLayout {
         moodList.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                context.startActivity(makeIntent());
                 return true;
             }
         });
@@ -49,13 +48,6 @@ public class ReadonlyColumn extends LinearLayout {
         } else {
             init(context);
         }
-    }
-
-    public Intent makeIntent(){
-        Intent intent = new Intent(getContext(), SingleEntryActivity.class);
-        intent.setAction(SingleEntryActivity.INTENT_FROM_OTHER_ACTIVITY);
-        intent.putExtra(SingleEntryActivity.DATE_INT_TAG, entry.getDateInt());
-        return intent;
     }
 
     private void initBlank(Context context){
