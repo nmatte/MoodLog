@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.nmatte.mood.moodlog.R;
 
 
 /* base class to draw background and borders */
@@ -88,18 +89,6 @@ public class CellView extends View {
         int cellBottom = getHeight();
         int cellLeft = 0;
         int cellRight = getWidth();
-
-        //draw borders
-        blackPaint.setStrokeWidth(5);
-
-        // bottom line
-        canvas.drawLine(cellLeft, cellBottom, cellRight, cellBottom, blackPaint);
-        // top line
-        canvas.drawLine(cellLeft, cellTop, cellRight, cellTop, blackPaint);
-        // left line
-        canvas.drawLine(cellLeft, cellTop, cellLeft, cellBottom,blackPaint);
-        // right line
-        canvas.drawLine(cellRight, cellTop, cellRight, cellBottom, blackPaint);
     }
 
 

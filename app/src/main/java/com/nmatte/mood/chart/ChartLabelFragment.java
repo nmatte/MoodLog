@@ -39,6 +39,9 @@ public class ChartLabelFragment extends Fragment {
             mainLayout.addView(new TextCellView(getActivity(),m.getName()));
         }
 
+        mainLayout.addView(inflater.inflate(R.layout.layout_cell,null));
+        mainLayout.addView(inflater.inflate(R.layout.layout_cell, null));
+        mainLayout.addView(inflater.inflate(R.layout.layout_cell,null));
 
         return mainLayout;
     }
