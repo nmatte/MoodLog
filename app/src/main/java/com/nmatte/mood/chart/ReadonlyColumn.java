@@ -1,13 +1,11 @@
 package com.nmatte.mood.chart;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.MoodList;
-import com.nmatte.mood.logbookentries.SingleEntryActivity;
 import com.nmatte.mood.medications.MedList;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.util.CalendarDatabaseUtil;
@@ -52,13 +50,12 @@ public class ReadonlyColumn extends LinearLayout {
     }
 
     private void initBlank(Context context){
-        this.addView(inflate(context,R.layout.layout_cell,null));
-        this.addView(inflate(context,R.layout.layout_cell,null));
-        this.addView(inflate(context,R.layout.layout_cell,null));
+        this.addView(inflate(context,R.layout.layout_text_cell,null));
+        this.addView(inflate(context,R.layout.layout_text_cell,null));
+        this.addView(inflate(context,R.layout.layout_text_cell,null));
         MedList medList = new MedList(context,true,false);
         medList.updateList(context);
         this.addView(medList);
-
     }
 
     private void init(Context context){
