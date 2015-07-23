@@ -50,9 +50,9 @@ public class ReadonlyColumn extends LinearLayout {
     }
 
     private void initBlank(Context context){
-        this.addView(inflate(context,R.layout.layout_text_cell,null));
-        this.addView(inflate(context,R.layout.layout_text_cell,null));
-        this.addView(inflate(context,R.layout.layout_text_cell,null));
+        this.addView(new CellView(context));
+        this.addView(new CellView(context));
+        this.addView(new CellView(context));
         MedList medList = new MedList(context,true,false);
         medList.updateList(context);
         this.addView(medList);

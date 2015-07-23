@@ -3,6 +3,7 @@ package com.nmatte.mood.chart;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -82,8 +83,14 @@ public class CellView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // draw BG color
         canvas.drawColor(backgroundColor);
+        NinePatchDrawable bg =  (NinePatchDrawable) getResources().getDrawable(R.drawable.drop_shadow3);
+        if (bg != null) {
+            bg.setBounds(0, 0, getWidth(), getHeight());
+            bg.draw(canvas);
+        }
+
+        // draw BG color
 
         int cellTop = 0;
         int cellBottom = getHeight();
