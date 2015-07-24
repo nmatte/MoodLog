@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import com.nmatte.mood.chart.CheckableCellView;
+import com.nmatte.mood.chart.cell.CheckableCellView;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;

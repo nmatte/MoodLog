@@ -1,4 +1,4 @@
-package com.nmatte.mood.chart;
+package com.nmatte.mood.chart.cell;
 
 
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.nmatte.mood.chart.cell.CellView;
 
 public class CheckableCellView extends CellView {
     Paint blackPaint;

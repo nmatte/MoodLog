@@ -7,13 +7,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.nmatte.mood.chart.TextCellView;
+import com.nmatte.mood.chart.cell.TextCellView;
 
 
 public class CustomNumberPicker extends RelativeLayout {
     TextView minusButton;
     TextView plusButton;
-    TextCellView textCellView;
+    TextView textCellView;
 
     int currentNum;
     int maxNum;
@@ -25,7 +25,7 @@ public class CustomNumberPicker extends RelativeLayout {
         View v = inflate(context,R.layout.custom_number_picker,null);
         minusButton = (TextView) v.findViewById(R.id.minusButton);
         plusButton = (TextView) v.findViewById(R.id.plusButton);
-        textCellView = (TextCellView) v.findViewById(R.id.textCellView);
+        textCellView = (TextView) v.findViewById(R.id.textCellView);
         currentNum = a.getInt(R.styleable.CustomNumberPicker_defaultNum,0);
         maxNum = a.getInt(R.styleable.CustomNumberPicker_max,100);
 
@@ -34,6 +34,8 @@ public class CustomNumberPicker extends RelativeLayout {
             public void onClick(View v) {
                 if (currentNum > 0){
                     setCurrentNum(currentNum - 1);
+                } else if (currentNum == 0) {
+                    setCurrentNum(maxNum);
                 }
 
             }
@@ -43,6 +45,8 @@ public class CustomNumberPicker extends RelativeLayout {
             public void onClick(View v) {
                 if (currentNum < maxNum){
                     setCurrentNum(currentNum + 1);
+                } else if (currentNum == maxNum){
+                    setCurrentNum(0);
                 }
             }
         });

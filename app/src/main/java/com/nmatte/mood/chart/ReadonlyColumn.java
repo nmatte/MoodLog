@@ -4,10 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.nmatte.mood.chart.cell.CellView;
+import com.nmatte.mood.chart.cell.TextCellView;
 import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.MoodList;
 import com.nmatte.mood.medications.MedList;
-import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.util.CalendarDatabaseUtil;
 
 import java.util.Calendar;

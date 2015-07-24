@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <com.nmatte.mood.chart.TextCellView
+    <com.nmatte.mood.chart.cell.TextCellView
         android:layout_width="match_parent"
         android:layout_height="48dp"
         custom:text="Today"/>
@@ -19,14 +19,14 @@
 
         <com.nmatte.mood.moodlog.CustomNumberPicker
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             custom:max="3"
             custom:label="Anxiety"
             android:id="@+id/anxPicker"/>
 
         <com.nmatte.mood.moodlog.CustomNumberPicker
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             custom:max="3"
             custom:label="Irritability"
             android:id="@+id/irrPicker"
@@ -34,7 +34,7 @@
 
         <com.nmatte.mood.moodlog.CustomNumberPicker
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             custom:max="24"
             custom:defaultNum="8"
             custom:label="@string/hours_slept_picker_label"

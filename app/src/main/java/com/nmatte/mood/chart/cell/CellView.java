@@ -1,4 +1,4 @@
-package com.nmatte.mood.chart;
+package com.nmatte.mood.chart.cell;
 
 import android.content.Context;
 import android.graphics.Canvas;

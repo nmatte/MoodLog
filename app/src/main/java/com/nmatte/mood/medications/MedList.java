@@ -10,7 +10,7 @@ import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.nmatte.mood.chart.CheckableCellView;
+import com.nmatte.mood.chart.cell.CheckableCellView;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;

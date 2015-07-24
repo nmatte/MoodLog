@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.nmatte.mood.chart.cell.TextCellView;
 import com.nmatte.mood.medications.MedTableHelper;
 import com.nmatte.mood.medications.Medication;
 import com.nmatte.mood.moodlog.R;
