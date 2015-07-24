@@ -1,41 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="48dp"
-    android:background="@drawable/drop_shadow3">
+    android:background="@drawable/drop_shadow">
 
 
-    <!-- TODO convert to ImageButton-->
-    <TextView
-        android:layout_width="42dp"
-        android:layout_height="48dp"
-        android:textSize="@dimen/abc_text_size_title_material"
-        android:textStyle="bold"
-        android:background="@color/button_material_light"
-        android:gravity="center"
-        android:text="-"
+    <ImageButton
+        android:layout_width="38dp"
+        android:layout_height="42dp"
+        android:background="@drawable/minus_button"
         android:id="@+id/minusButton"
-        android:clickable="true"
-        android:layout_gravity="center_vertical"
-        />
+        android:layout_alignParentLeft="true"/>
 
     <TextView
-        android:layout_width="30dp"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:text="0"
-        android:id="@+id/textCellView"/>
+        android:id="@+id/textCellView"
+        android:layout_centerInParent="true"/>
 
 
 
-    <TextView
-        android:layout_width="42dp"
-        android:layout_height="48dp"
-        android:textSize="@dimen/abc_text_size_title_material"
-        android:textStyle="bold"
-        android:background="@color/button_material_light"
-        android:gravity="center"
-        android:text="+"
+    <ImageButton
+        android:layout_width="38dp"
+        android:layout_height="42dp"
+        android:background="@drawable/add_button_small"
         android:id="@+id/plusButton"
-        android:clickable="true"
-        android:layout_gravity="center_vertical"
+        android:layout_alignParentRight="true"/>
         />
-</LinearLayout>
+</RelativeLayout>
