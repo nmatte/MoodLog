@@ -20,6 +20,12 @@ public class NumItem extends LogbookItem{
         super(name);
     }
 
+    public NumItem(long id, String name, int maxNum, int defaultNum){
+        super (id,name);
+        this.maxNum = maxNum;
+        this.defaultNum = defaultNum;
+    }
+
     public static String itemDataString(SimpleArrayMap<NumItem,Integer> values){
         String result = "";
         // intended format: "1:3 13:2 14:30" etc
@@ -43,5 +49,21 @@ public class NumItem extends LogbookItem{
                 }
         }
         return result;
+    }
+
+    public int getDefaultNum() {
+        return defaultNum;
+    }
+
+    public void setDefaultNum(int defaultNum) {
+        this.defaultNum = defaultNum;
+    }
+
+    public int getMaxNum() {
+        return maxNum;
+    }
+
+    public void setMaxNum(int maxNum) {
+        this.maxNum = maxNum;
     }
 }

@@ -46,7 +46,7 @@ public class BoolItemList extends LinearLayout {
 
     private void init(Context context){
         this.setOrientation(VERTICAL);
-        this.medList = BoolItemTableHelper.getMedicationList(context);
+        this.medList = BoolItemTableHelper.getAll(context);
         this.setClickable(isEnabled);
         this.setLongClickable(isEnabled);
     }

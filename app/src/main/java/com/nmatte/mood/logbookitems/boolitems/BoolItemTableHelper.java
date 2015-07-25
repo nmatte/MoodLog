@@ -12,33 +12,38 @@ import com.nmatte.mood.util.DatabaseHelper;
 import java.util.ArrayList;
 
 public class BoolItemTableHelper {
-    DatabaseHelper DBHelper;
-    Context context;
-
-    public BoolItemTableHelper(Context context) {
-        this.context = context;
-        this.DBHelper = new DatabaseHelper(context);
-    }
-
-
-
-    public static void addMedication(Context context, String name){
+    public static void addBoolItem(Context context, BoolItem item){
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(LogbookItemContract.BOOL_ITEM_NAME_COLUMN, name);
+        values.put(LogbookItemContract.BOOL_ITEM_NAME_COLUMN, item.getName());
 
         try{
             db.insert(LogbookItemContract.BOOL_ITEM_TABLE,null,values);
         } catch (Exception e){
             Log.e("SQL exception", "error adding medication");
         }
-
         db.close();
     }
 
-    public static void deleteMedication(Context context, String name){
+    public static void updateName(Context context, BoolItem item){
+        DatabaseHelper DBHelper = new DatabaseHelper(context);
+        SQLiteDatabase db = DBHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(LogbookItemContract.BOOL_ID_COLUMN, item.getID());
+        values.put(LogbookItemContract.BOOL_ITEM_NAME_COLUMN, item.getName());
+
+        try{
+            db.insertWithOnConflict(LogbookItemContract.BOOL_ITEM_TABLE,null,values,SQLiteDatabase.CONFLICT_REPLACE);
+        } catch (Exception e){
+            Log.e("db","",e);
+        }
+        db.close();
+    }
+
+    public static void deleteBoolItemWithName(Context context, String name){
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         String whereClause = LogbookItemContract.BOOL_ITEM_NAME_COLUMN + "=?";
@@ -48,11 +53,10 @@ public class BoolItemTableHelper {
         } catch (Exception e) {
             Log.e("SQL exception", "error deleting medication");
         }
-
         db.close();
     }
 
-    public static ArrayList<BoolItem> getMedicationList(Context context){
+    public static ArrayList<BoolItem> getAll(Context context){
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getReadableDatabase();
         String [] columns = new String[] {
@@ -74,18 +78,16 @@ public class BoolItemTableHelper {
         c.close();
         db.close();
         return boolItems;
-
     }
 
     public static ArrayList<String>  mapIDsToNames(ArrayList<Long> ids, Context context) {
         ArrayList<String> result = new ArrayList<>();
 
-        for (BoolItem m : getMedicationList(context)){
+        for (BoolItem m : getAll(context)){
             if (ids.contains(m.getID())){
                 result.add(m.getName());
             }
         }
-
         return result;
     }
 

@@ -17,6 +17,7 @@ import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 import com.nmatte.mood.logbookentries.SingleEntryActivity;
 import com.nmatte.mood.logbookentries.SingleEntryDialog;
 import com.nmatte.mood.logbookitems.boolitems.AddBoolDialog;
+import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.DeleteBoolDialog;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.moodlog.R;
@@ -167,14 +168,14 @@ public class ChartActivity extends ActionBarActivity
     @Override
     public void onAddDialogPositiveClick(String name) {
         LogbookEntry currentEntry = entryFragment.getEntry();
-        BoolItemTableHelper.addMedication(this, name);
+        BoolItemTableHelper.addBoolItem(this, new BoolItem(name));
         entryFragment.setEntry(currentEntry);
     }
 
     @Override
     public void onDeleteDialogPositiveClick(String name) {
         LogbookEntry currentEntry = entryFragment.getEntry();
-        BoolItemTableHelper.deleteMedication(this, name);
+        BoolItemTableHelper.deleteBoolItemWithName(this, name);
         entryFragment.setEntry(currentEntry);
     }
 

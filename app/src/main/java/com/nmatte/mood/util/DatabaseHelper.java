@@ -25,6 +25,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + LogbookItemContract.BOOL_ID_COLUMN + " " + LogbookItemContract.BOOL_ID_TYPE + ", "
                 + LogbookItemContract.BOOL_ITEM_NAME_COLUMN + " " + LogbookItemContract.BOOL_ITEM_TYPE + ")";
 
+            String numItemTableQuery =
+                    "CREATE TABLE IF NOT EXISTS "+ LogbookItemContract.NUM_ITEM_TABLE + " ("
+                            + LogbookItemContract.NUM_ITEM_ID_COLUMN + " " + LogbookItemContract.NUM_ITEM_ID_TYPE + ", "
+                            + LogbookItemContract.NUM_ITEM_NAME_COLUMN + " " + LogbookItemContract.NUM_ITEM_NAME_TYPE + ", "
+                            + LogbookItemContract.NUM_ITEM_MAX_COLUMN + " " + LogbookItemContract.NUM_ITEM_MAX_TYPE + ", "
+                            + LogbookItemContract.NUM_ITEM_DEFAULT_COLUMN + " " + LogbookItemContract.NUM_ITEM_DEFAULT_TYPE + ")";
+
             String logTableQuery =
                 "CREATE TABLE IF NOT EXISTS "+ LogBookContract.LOGBOOKENTRY_TABLE + " ("
                 + LogBookContract.LOGBOOKENTRY_DATE_COLUMN + " " + LogBookContract.LOGBOOKENTRY_DATE_TYPE + ", "
@@ -39,15 +46,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             + MedNotificationContract.MED_REMINDER_TIME_COLUMN + " " + MedNotificationContract.MED_REMINDER_TIME_TYPE + ", "
                             + MedNotificationContract.MED_REMINDER_INTENT_COLUMN + " " + MedNotificationContract.MED_REMINDER_INTENT_TYPE + ", "
                             + MedNotificationContract.MED_REMINDER_MEDICATIONS_COLUMN + " " + MedNotificationContract.MED_REMINDER_MEDICATIONS_TYPE + ")";
+
             db.execSQL(medReminderTableQuery);
-
-
-
-
-
-
             db.execSQL(medTableQuery);
             db.execSQL(logTableQuery);
+            db.execSQL(numItemTableQuery);
 
         } catch(Exception e){
             e.printStackTrace();
@@ -58,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if ((oldVersion == 1) && (newVersion == DATABASE_VERSION)){
+        if ((oldVersion == 1) && (newVersion == 2)){
             String medReminderTableQuery =
                     "CREATE TABLE IF NOT EXISTS " + MedNotificationContract.MED_NOTIFICATION_TABLE + " ("
                             + MedNotificationContract.MED_REMINDER_TIME_COLUMN + " " + MedNotificationContract.MED_REMINDER_TIME_TYPE + ", "

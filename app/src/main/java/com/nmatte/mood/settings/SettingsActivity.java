@@ -82,7 +82,7 @@ public class SettingsActivity
 
     @Override
     public ArrayList<BoolItem> getMedList() {
-        return BoolItemTableHelper.getMedicationList(this);
+        return BoolItemTableHelper.getAll(this);
     }
 
 

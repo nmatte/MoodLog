@@ -10,9 +10,11 @@ public class LogbookItemContract {
 
     public static final String NUM_ITEM_TABLE = "numItems",
             NUM_ITEM_NAME_COLUMN = "numItemName",
-            NUM_ITEM_TYPE = "TEXT UNIQUE",
+            NUM_ITEM_NAME_TYPE = "TEXT UNIQUE",
             NUM_ITEM_ID_COLUMN = "_ID",
             NUM_ITEM_ID_TYPE = "INTEGER PRIMARY KEY AUTOINCREMENT",
-            NUM_ITEM_MAX_NAME = "numMaxValue",
-            NUM_ITEM_MAX_TYPE = "INTEGER";
+            NUM_ITEM_MAX_COLUMN = "numMaxValue",
+            NUM_ITEM_MAX_TYPE = "INTEGER",
+            NUM_ITEM_DEFAULT_COLUMN = "numItemDefault",
+            NUM_ITEM_DEFAULT_TYPE = "INTEGER";
 }

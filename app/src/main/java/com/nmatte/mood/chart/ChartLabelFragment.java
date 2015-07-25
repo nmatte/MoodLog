@@ -36,7 +36,7 @@ public class ChartLabelFragment extends Fragment {
             }
         }
 
-        for (BoolItem m : BoolItemTableHelper.getMedicationList(getActivity())){
+        for (BoolItem m : BoolItemTableHelper.getAll(getActivity())){
             mainLayout.addView(new TextCellView(getActivity(),m.getName()));
         }
 
