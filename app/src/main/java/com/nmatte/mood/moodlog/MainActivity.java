@@ -11,18 +11,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.nmatte.mood.chart.ChartActivity;
-import com.nmatte.mood.logbookentries.LogbookEntry;
-import com.nmatte.mood.logbookentries.LogbookEntryFragment;
-import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
-import com.nmatte.mood.medications.AddMedicationDialog;
-import com.nmatte.mood.medications.DeleteMedicationDialog;
-import com.nmatte.mood.medications.MedTableHelper;
-import com.nmatte.mood.medications.Medication;
+import com.nmatte.mood.logbookitems.boolitems.AddBoolDialog;
+import com.nmatte.mood.logbookitems.boolitems.BoolItem;
+import com.nmatte.mood.logbookitems.boolitems.DeleteBoolDialog;
 import com.nmatte.mood.settings.SettingsActivity;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 
 public class MainActivity
@@ -104,19 +98,19 @@ public class MainActivity
     }
 
 
-    public void delete(Medication m) {
+    public void delete(BoolItem m) {
         String name = m.getName();
         long id = m.getID();
         Bundle b = new Bundle();
         b.putCharSequence("name",name);
         b.putLong("id",id);
 
-        DialogFragment dialog = new DeleteMedicationDialog();
+        DialogFragment dialog = new DeleteBoolDialog();
         dialog.setArguments(b);
         dialog.show(getFragmentManager(), "Delete Med Dialog");
     }
     public void addNew() {
-        DialogFragment dialog = new AddMedicationDialog();
+        DialogFragment dialog = new AddBoolDialog();
         dialog.show(getFragmentManager(), "Add Med Dialog");
     }
 

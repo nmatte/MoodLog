@@ -1,10 +1,7 @@
 package com.nmatte.mood.logbookentries;
 
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.nmatte.mood.medications.Medication;
+import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.util.CalendarDatabaseUtil;
 
 import java.util.ArrayList;
@@ -18,7 +15,7 @@ public class LogbookEntry {
         hoursSleptValue = 0;
     Calendar date;
     boolean blank = false;
-    ArrayList<Medication> medications;
+    ArrayList<BoolItem> boolItems;
 
     public static final String DATE_TAG = "LogbookEntryDate",
             MOOD_TAG = "LogbookEntryMood",
@@ -29,13 +26,13 @@ public class LogbookEntry {
 
     public LogbookEntry (){
         this.moods = new ArrayList<Boolean>();
-        this.medications = new ArrayList<>();
+        this.boolItems = new ArrayList<>();
         this.date = Calendar.getInstance();
     }
 
     public LogbookEntry (Calendar date){
         this.moods = new ArrayList<Boolean>();
-        this.medications = new ArrayList<>();
+        this.boolItems = new ArrayList<>();
         this.date = date;
     }
 
@@ -45,8 +42,7 @@ public class LogbookEntry {
         this.anxValue = anx;
         this.hoursSleptValue = sleep;
         this.date = date;
-        this.medications = Medication.parseIDString(medString);
-
+        this.boolItems = BoolItem.parseIDString(medString);
     }
 
     public LogbookEntry(int dateInt, String moodString, int irr, int anx, int sleep,  String medString){
@@ -58,7 +54,7 @@ public class LogbookEntry {
         dateCal.set(Calendar.YEAR, dateInt / 1000);
         dateCal.set(Calendar.DAY_OF_YEAR, dateInt % 1000);
         this.date = dateCal;
-        this.medications = Medication.parseIDString(medString);
+        this.boolItems = BoolItem.parseIDString(medString);
 
     }
 
@@ -118,7 +114,8 @@ public class LogbookEntry {
     }
 
     public String medicationString() {
-        return Medication.IDString(medications);
+
+        return BoolItem.IDString(boolItems);
     }
 
     public boolean isBlank(){
@@ -138,12 +135,12 @@ public class LogbookEntry {
         return result;
     }
 
-    public void setMedications(ArrayList medications) {
-        this.medications = medications;
+    public void setBoolItems(ArrayList boolItems) {
+        this.boolItems = boolItems;
     }
 
-    public ArrayList<Medication> getMedications() {
-        return medications;
+    public ArrayList<BoolItem> getBoolItems() {
+        return boolItems;
     }
 
 }

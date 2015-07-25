@@ -12,7 +12,7 @@ Its function is to allow users to record certain information about their day:
   
 * irritation level
   
-* whether they took certain medications
+* whether they took certain boolItems
 
 It will allow users to track their logs over a 28-day period.
 

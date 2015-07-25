@@ -41,7 +41,7 @@
             android:id="@+id/hoursPicker"
             />
 
-        <com.nmatte.mood.medications.MedList
+        <com.nmatte.mood.logbookitems.boolitems.BoolItemList
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/medList"
@@ -49,8 +49,5 @@
             android:focusable="false"
             custom:style_chart="true"
             />
-
-
-
 
     </LinearLayout>

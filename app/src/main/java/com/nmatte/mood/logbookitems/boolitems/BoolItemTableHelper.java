@@ -1,4 +1,4 @@
-package com.nmatte.mood.medications;
+package com.nmatte.mood.logbookitems.boolitems;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,15 +6,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.nmatte.mood.logbookitems.LogbookItemContract;
 import com.nmatte.mood.util.DatabaseHelper;
 
 import java.util.ArrayList;
 
-public class MedTableHelper {
+public class BoolItemTableHelper {
     DatabaseHelper DBHelper;
     Context context;
 
-    public MedTableHelper(Context context) {
+    public BoolItemTableHelper(Context context) {
         this.context = context;
         this.DBHelper = new DatabaseHelper(context);
     }
@@ -26,10 +27,10 @@ public class MedTableHelper {
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(MedicationContract.MEDICATION_NAME_COLUMN, name);
+        values.put(LogbookItemContract.BOOL_ITEM_NAME_COLUMN, name);
 
         try{
-            db.insert(MedicationContract.MEDICATION_TABLE,null,values);
+            db.insert(LogbookItemContract.BOOL_ITEM_TABLE,null,values);
         } catch (Exception e){
             Log.e("SQL exception", "error adding medication");
         }
@@ -40,10 +41,10 @@ public class MedTableHelper {
     public static void deleteMedication(Context context, String name){
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
-        String whereClause = MedicationContract.MEDICATION_NAME_COLUMN + "=?";
+        String whereClause = LogbookItemContract.BOOL_ITEM_NAME_COLUMN + "=?";
 
         try{
-            db.delete(MedicationContract.MEDICATION_TABLE, whereClause, new String[]{name});
+            db.delete(LogbookItemContract.BOOL_ITEM_TABLE, whereClause, new String[]{name});
         } catch (Exception e) {
             Log.e("SQL exception", "error deleting medication");
         }
@@ -51,35 +52,35 @@ public class MedTableHelper {
         db.close();
     }
 
-    public static ArrayList<Medication> getMedicationList(Context context){
+    public static ArrayList<BoolItem> getMedicationList(Context context){
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getReadableDatabase();
         String [] columns = new String[] {
-                MedicationContract.MEDICATION_ID_COLUMN,
-                MedicationContract.MEDICATION_NAME_COLUMN
+                LogbookItemContract.BOOL_ID_COLUMN,
+                LogbookItemContract.BOOL_ITEM_NAME_COLUMN
         };
 
-        Cursor c = db.query(MedicationContract.MEDICATION_TABLE, columns, null, null, null, null,
-                MedicationContract.MEDICATION_ID_COLUMN);
+        Cursor c = db.query(LogbookItemContract.BOOL_ITEM_TABLE, columns, null, null, null, null,
+                LogbookItemContract.BOOL_ID_COLUMN);
         c.moveToFirst();
 
-        ArrayList<Medication> medications = new ArrayList<>();
+        ArrayList<BoolItem> boolItems = new ArrayList<>();
         if(c.getCount() > 0){
             do{
-                Medication m = new Medication(c.getInt(0),c.getString(1));
-                medications.add(m);
+                BoolItem m = new BoolItem(c.getInt(0),c.getString(1));
+                boolItems.add(m);
             } while(c.moveToNext());
         }
         c.close();
         db.close();
-        return medications;
+        return boolItems;
 
     }
 
     public static ArrayList<String>  mapIDsToNames(ArrayList<Long> ids, Context context) {
         ArrayList<String> result = new ArrayList<>();
 
-        for (Medication m : getMedicationList(context)){
+        for (BoolItem m : getMedicationList(context)){
             if (ids.contains(m.getID())){
                 result.add(m.getName());
             }

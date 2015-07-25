@@ -7,8 +7,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 
-import com.nmatte.mood.medications.MedTableHelper;
-import com.nmatte.mood.medications.Medication;
+import com.nmatte.mood.logbookitems.boolitems.BoolItem;
+import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.notifications.AddMedNotificationDialog;
 import com.nmatte.mood.notifications.AlarmManagerHelper;
@@ -81,8 +81,8 @@ public class SettingsActivity
 
 
     @Override
-    public ArrayList<Medication> getMedList() {
-        return MedTableHelper.getMedicationList(this);
+    public ArrayList<BoolItem> getMedList() {
+        return BoolItemTableHelper.getMedicationList(this);
     }
 
 

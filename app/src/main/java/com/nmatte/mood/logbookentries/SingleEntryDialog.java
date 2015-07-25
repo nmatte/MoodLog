@@ -33,6 +33,7 @@ public class SingleEntryDialog extends DialogFragment {
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
+        // TODO: fix bug where dialog causes FC when created a second time
         View mainView = inflater.inflate(R.layout.dialog_single_entry, null);
         Bundle b = getArguments();
         final LogbookEntryFragment entryFragment = (LogbookEntryFragment) getFragmentManager().findFragmentById(R.id.dialogEntryFragment);

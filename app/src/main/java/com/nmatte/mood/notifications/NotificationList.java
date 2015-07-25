@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.nmatte.mood.medications.Medication;
+import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class NotificationList extends LinearLayout {
         void newNotificationDialog();
         void delete(MedNotification notification);
         ArrayList<MedNotification> getMedReminderList();
-        ArrayList<Medication> getMedList();
+        ArrayList<BoolItem> getMedList();
     }
 
 
@@ -80,7 +80,7 @@ public class NotificationList extends LinearLayout {
 
     }
 
-    public void addNotification(int hour, int minute, ArrayList<Medication> m){
+    public void addNotification(int hour, int minute, ArrayList<BoolItem> m){
         notifications = listener.getMedReminderList();
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY,hour);
@@ -98,8 +98,8 @@ public class NotificationList extends LinearLayout {
     }
 
     private MedNotification merge (MedNotification n1, MedNotification n2){
-        ArrayList<Medication> resultMed = n1.medications;
-        for(Medication med : n2.medications){
+        ArrayList<BoolItem> resultMed = n1.boolItems;
+        for(BoolItem med : n2.boolItems){
             if (!resultMed.contains(med))
                 resultMed.add(med);
         }
@@ -115,9 +115,9 @@ public class NotificationList extends LinearLayout {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY,13);
         c.set(Calendar.MINUTE, 30);
-        ArrayList<Medication> meds = new ArrayList<>();
-        meds.add(new Medication(1,"Foobar 200mg"));
-        meds.add(new Medication(2,"BazBar 150mg"));
+        ArrayList<BoolItem> meds = new ArrayList<>();
+        meds.add(new BoolItem(1,"Foobar 200mg"));
+        meds.add(new BoolItem(2,"BazBar 150mg"));
         notifications.add(new MedNotification(c,meds));
     }
 

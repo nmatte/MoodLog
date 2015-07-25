@@ -11,8 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TimePicker;
 
-import com.nmatte.mood.medications.MedList;
-import com.nmatte.mood.medications.Medication;
+import com.nmatte.mood.logbookitems.boolitems.BoolItemList;
+import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
@@ -41,8 +41,8 @@ public class AddMedNotificationDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.add_notification_dialog, null);
         final TimePicker timePicker = (TimePicker) view.findViewById(R.id.timePicker);
-        final MedList medList = (MedList) view.findViewById(R.id.medList);
-        medList.updateList(getActivity());
+        final BoolItemList boolItemList = (BoolItemList) view.findViewById(R.id.medList);
+        boolItemList.updateList(getActivity());
         builder.setView(view)
                 .setTitle("New Notification")
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
@@ -50,8 +50,8 @@ public class AddMedNotificationDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         int hour = timePicker.getCurrentHour();
                         int minute = timePicker.getCurrentMinute();
-                        ArrayList<Medication> medications = medList.getCheckedMeds();
-                        listener.onAddDialogPositiveClick(new MedNotification(hour,minute,medications));
+                        ArrayList<BoolItem> boolItems = boolItemList.getCheckedMeds();
+                        listener.onAddDialogPositiveClick(new MedNotification(hour,minute, boolItems));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

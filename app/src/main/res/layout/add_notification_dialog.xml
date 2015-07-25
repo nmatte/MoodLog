@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/timePicker"/>
 
-    <com.nmatte.mood.medications.MedList
+    <com.nmatte.mood.boolItems.MedList
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/medList"

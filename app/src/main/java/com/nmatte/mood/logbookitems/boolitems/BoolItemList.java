@@ -1,4 +1,4 @@
-package com.nmatte.mood.medications;
+package com.nmatte.mood.logbookitems.boolitems;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -15,27 +15,27 @@ import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
 
-public class MedList extends LinearLayout {
-    private ArrayList<Medication> medList;
+public class BoolItemList extends LinearLayout {
+    private ArrayList<BoolItem> medList;
     final private boolean chartStyle;
     final private boolean isEnabled;
 
-    public MedList(Context context, AttributeSet attrs) {
+    public BoolItemList(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.MedList,0,0);
-        this.chartStyle = a.getBoolean(R.styleable.MedList_style_chart,false);
-        this.isEnabled = a.getBoolean(R.styleable.MedList_is_enabled,true);
+        TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.BoolItemList,0,0);
+        this.chartStyle = a.getBoolean(R.styleable.BoolItemList_style_chart,false);
+        this.isEnabled = a.getBoolean(R.styleable.BoolItemList_is_enabled,true);
         init(context);
     }
 
-    public  MedList(Context context, boolean chartStyle ){
+    public BoolItemList(Context context, boolean chartStyle){
         super(context);
         this.chartStyle = chartStyle;
         this.isEnabled = true;
         init(context);
     }
 
-    public  MedList(Context context, boolean chartStyle, boolean isEnabled ){
+    public BoolItemList(Context context, boolean chartStyle, boolean isEnabled){
         super(context);
         this.chartStyle = chartStyle;
         this.isEnabled = isEnabled;
@@ -46,7 +46,7 @@ public class MedList extends LinearLayout {
 
     private void init(Context context){
         this.setOrientation(VERTICAL);
-        this.medList = MedTableHelper.getMedicationList(context);
+        this.medList = BoolItemTableHelper.getMedicationList(context);
         this.setClickable(isEnabled);
         this.setLongClickable(isEnabled);
     }
@@ -55,7 +55,7 @@ public class MedList extends LinearLayout {
     public void updateList(Context context) {
         this.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(context);
-        for (final Medication m : medList){
+        for (final BoolItem m : medList){
             final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, context.getResources().getDisplayMetrics());
             if(chartStyle){
                 final CheckableCellView cellView = new CheckableCellView(context,isEnabled);
@@ -79,8 +79,8 @@ public class MedList extends LinearLayout {
     }
 
 
-    public ArrayList<Medication> getCheckedMeds(){
-        ArrayList<Medication> result = new ArrayList<>();
+    public ArrayList<BoolItem> getCheckedMeds(){
+        ArrayList<BoolItem> result = new ArrayList<>();
         // if there's a footer we don't want to count it
         for(int i = 0; i < this.getChildCount(); i++){
             if(this.getChildAt(i) instanceof CheckedTextView) {
@@ -96,8 +96,8 @@ public class MedList extends LinearLayout {
         return result;
     }
 
-    public void setCheckedMeds(ArrayList<Medication> checked){
-        for (Medication checkedMed : checked){
+    public void setCheckedMeds(ArrayList<BoolItem> checked){
+        for (BoolItem checkedMed : checked){
             for (int i = 0; i < medList.size(); i++){
                 if(medList.get(i).getID() == checkedMed.getID()){
                     if(this.getChildAt(i) instanceof  CheckedTextView){

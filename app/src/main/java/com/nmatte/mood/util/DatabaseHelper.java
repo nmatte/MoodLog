@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.nmatte.mood.logbookentries.LogBookContract;
-import com.nmatte.mood.medications.MedicationContract;
+import com.nmatte.mood.logbookitems.LogbookItemContract;
 import com.nmatte.mood.notifications.MedNotificationContract;
 
 
@@ -21,9 +21,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try{
             String medTableQuery =
-                "CREATE TABLE IF NOT EXISTS "+ MedicationContract.MEDICATION_TABLE + " ("
-                + MedicationContract.MEDICATION_ID_COLUMN + " " + MedicationContract.MEDICATION_ID_TYPE + ", "
-                + MedicationContract.MEDICATION_NAME_COLUMN + " " + MedicationContract.MEDICATION_NAME_TYPE + ")";
+                "CREATE TABLE IF NOT EXISTS "+ LogbookItemContract.BOOL_ITEM_TABLE + " ("
+                + LogbookItemContract.BOOL_ID_COLUMN + " " + LogbookItemContract.BOOL_ID_TYPE + ", "
+                + LogbookItemContract.BOOL_ITEM_NAME_COLUMN + " " + LogbookItemContract.BOOL_ITEM_TYPE + ")";
 
             String logTableQuery =
                 "CREATE TABLE IF NOT EXISTS "+ LogBookContract.LOGBOOKENTRY_TABLE + " ("

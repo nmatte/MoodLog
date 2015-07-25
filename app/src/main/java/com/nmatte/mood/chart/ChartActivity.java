@@ -16,9 +16,9 @@ import com.nmatte.mood.logbookentries.LogbookEntryFragment;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 import com.nmatte.mood.logbookentries.SingleEntryActivity;
 import com.nmatte.mood.logbookentries.SingleEntryDialog;
-import com.nmatte.mood.medications.AddMedicationDialog;
-import com.nmatte.mood.medications.DeleteMedicationDialog;
-import com.nmatte.mood.medications.MedTableHelper;
+import com.nmatte.mood.logbookitems.boolitems.AddBoolDialog;
+import com.nmatte.mood.logbookitems.boolitems.DeleteBoolDialog;
+import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.settings.PreferencesContract;
 import com.nmatte.mood.settings.SettingsActivity;
@@ -29,8 +29,8 @@ import java.util.Calendar;
 
 
 public class ChartActivity extends ActionBarActivity
-        implements AddMedicationDialog.AddMedicationListener,
-        DeleteMedicationDialog.DeleteMedicationListener,
+        implements AddBoolDialog.AddMedicationListener,
+        DeleteBoolDialog.DeleteBoolItemListener,
         SingleEntryDialog.SingleEntryDialogListener
 {
 
@@ -167,14 +167,14 @@ public class ChartActivity extends ActionBarActivity
     @Override
     public void onAddDialogPositiveClick(String name) {
         LogbookEntry currentEntry = entryFragment.getEntry();
-        MedTableHelper.addMedication(this, name);
+        BoolItemTableHelper.addMedication(this, name);
         entryFragment.setEntry(currentEntry);
     }
 
     @Override
     public void onDeleteDialogPositiveClick(String name) {
         LogbookEntry currentEntry = entryFragment.getEntry();
-        MedTableHelper.deleteMedication(this, name);
+        BoolItemTableHelper.deleteMedication(this, name);
         entryFragment.setEntry(currentEntry);
     }
 

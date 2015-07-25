@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nmatte.mood.medications.MedList;
+import com.nmatte.mood.logbookitems.boolitems.BoolItemList;
 import com.nmatte.mood.moodlog.CustomNumberPicker;
 import com.nmatte.mood.moodlog.R;
 
@@ -16,7 +16,7 @@ public class LogbookEntryFragment extends Fragment  {
     CustomNumberPicker irrPicker;
     CustomNumberPicker anxPicker;
     CustomNumberPicker hoursPicker;
-    MedList medList;
+    BoolItemList boolItemList;
     MoodList moodList;
     Calendar date;
 
@@ -27,7 +27,7 @@ public class LogbookEntryFragment extends Fragment  {
         irrPicker = (CustomNumberPicker) rootView.findViewById(R.id.irrPicker);
         anxPicker = (CustomNumberPicker) rootView.findViewById(R.id.anxPicker);
         hoursPicker = (CustomNumberPicker) rootView.findViewById(R.id.hoursPicker);
-        medList = (MedList) rootView.findViewById(R.id.medList);
+        boolItemList = (BoolItemList) rootView.findViewById(R.id.medList);
         moodList = (MoodList) rootView.findViewById(R.id.selectorLayout);
         return rootView;
 
@@ -40,8 +40,8 @@ public class LogbookEntryFragment extends Fragment  {
         anxPicker.setCurrentNum(entry.getAnxValue());
         irrPicker.setCurrentNum(entry.getIrrValue());
         hoursPicker.setCurrentNum(entry.getHoursSleptValue());
-        medList.updateList(getActivity());
-        medList.setCheckedMeds(entry.getMedications());
+        boolItemList.updateList(getActivity());
+        boolItemList.setCheckedMeds(entry.getBoolItems());
         moodList.setCheckedItems(entry);
         date = entry.getDate();
         return entry;
@@ -52,7 +52,7 @@ public class LogbookEntryFragment extends Fragment  {
         entry.setAnxValue(anxPicker.getCurrentNum());
         entry.setIrrValue(irrPicker.getCurrentNum());
         entry.setHoursSleptValue(hoursPicker.getCurrentNum());
-        entry.setMedications(medList.getCheckedMeds());
+        entry.setBoolItems(boolItemList.getCheckedMeds());
         entry.setMoods(moodList.getCheckedItems());
         return entry;
 

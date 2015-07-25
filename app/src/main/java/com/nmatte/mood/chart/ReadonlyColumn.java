@@ -8,7 +8,7 @@ import com.nmatte.mood.chart.cell.CellView;
 import com.nmatte.mood.chart.cell.TextCellView;
 import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.MoodList;
-import com.nmatte.mood.medications.MedList;
+import com.nmatte.mood.logbookitems.boolitems.BoolItemList;
 import com.nmatte.mood.util.CalendarDatabaseUtil;
 
 import java.util.Calendar;
@@ -54,9 +54,9 @@ public class ReadonlyColumn extends LinearLayout {
         this.addView(new CellView(context));
         this.addView(new CellView(context));
         this.addView(new CellView(context));
-        MedList medList = new MedList(context,true,false);
-        medList.updateList(context);
-        this.addView(medList);
+        BoolItemList boolItemList = new BoolItemList(context,true,false);
+        boolItemList.updateList(context);
+        this.addView(boolItemList);
     }
 
     private void init(Context context){
@@ -66,11 +66,11 @@ public class ReadonlyColumn extends LinearLayout {
         this.addView(new TextCellView(context, anx));
         this.addView(new TextCellView(context, irr));
         this.addView(new TextCellView(context, hours));
-        MedList medList = new MedList(context,true,false);
-        medList.setEnabled(false);
-        medList.updateList(context);
-        medList.setCheckedMeds(entry.getMedications());
-        this.addView(medList);
+        BoolItemList boolItemList = new BoolItemList(context,true,false);
+        boolItemList.setEnabled(false);
+        boolItemList.updateList(context);
+        boolItemList.setCheckedMeds(entry.getBoolItems());
+        this.addView(boolItemList);
     }
 
 

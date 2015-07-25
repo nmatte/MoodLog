@@ -1,4 +1,4 @@
-package com.nmatte.mood.medications;
+package com.nmatte.mood.logbookitems.boolitems;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,18 +8,18 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 
-public class DeleteMedicationDialog extends DialogFragment{
-    DeleteMedicationListener listener;
+public class DeleteBoolDialog extends DialogFragment{
+    DeleteBoolItemListener listener;
     String name;
 
-    public interface DeleteMedicationListener{
+    public interface DeleteBoolItemListener {
         public void onDeleteDialogPositiveClick(String name);
     }
 
     public void onAttach(Activity activity){
         super.onAttach(activity);
         try{
-            listener = (DeleteMedicationListener) activity;
+            listener = (DeleteBoolItemListener) activity;
         } catch (ClassCastException e){
             Log.e("Class cast exception", "failed to instantiate listener");
         }
@@ -43,7 +43,7 @@ public class DeleteMedicationDialog extends DialogFragment{
             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                DeleteMedicationDialog.this.getDialog().cancel();
+                DeleteBoolDialog.this.getDialog().cancel();
             }
         });
 

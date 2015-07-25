@@ -1,4 +1,4 @@
-package com.nmatte.mood.medications;
+package com.nmatte.mood.logbookitems.boolitems;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 import com.nmatte.mood.moodlog.R;
 
-public class AddMedicationDialog extends DialogFragment {
+public class AddBoolDialog extends DialogFragment {
     AddMedicationListener listener;
 
     public interface AddMedicationListener {
@@ -46,14 +46,14 @@ public class AddMedicationDialog extends DialogFragment {
                        if (name.length() > 0) {
                            listener.onAddDialogPositiveClick(name);
                        } else {
-                           AddMedicationDialog.this.getDialog().cancel();
+                           AddBoolDialog.this.getDialog().cancel();
                        }
                    }
                })
                 .setNegativeButton(getString(R.string.add_medication_dialog_cancel_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        AddMedicationDialog.this.getDialog().cancel();
+                        AddBoolDialog.this.getDialog().cancel();
                     }
                 });
 

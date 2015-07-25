@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.cell.TextCellView;
-import com.nmatte.mood.medications.MedTableHelper;
-import com.nmatte.mood.medications.Medication;
+import com.nmatte.mood.logbookitems.boolitems.BoolItem;
+import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.moodlog.R;
 
 
@@ -36,7 +36,7 @@ public class ChartLabelFragment extends Fragment {
             }
         }
 
-        for (Medication m : MedTableHelper.getMedicationList(getActivity())){
+        for (BoolItem m : BoolItemTableHelper.getMedicationList(getActivity())){
             mainLayout.addView(new TextCellView(getActivity(),m.getName()));
         }
 
