@@ -11,10 +11,12 @@ import com.nmatte.mood.notifications.MedNotificationContract;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "logbook.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
+    Context context;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -25,12 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + LogbookItemContract.BOOL_ID_COLUMN + " " + LogbookItemContract.BOOL_ID_TYPE + ", "
                 + LogbookItemContract.BOOL_ITEM_NAME_COLUMN + " " + LogbookItemContract.BOOL_ITEM_TYPE + ")";
 
-            String numItemTableQuery =
-                    "CREATE TABLE IF NOT EXISTS "+ LogbookItemContract.NUM_ITEM_TABLE + " ("
-                            + LogbookItemContract.NUM_ITEM_ID_COLUMN + " " + LogbookItemContract.NUM_ITEM_ID_TYPE + ", "
-                            + LogbookItemContract.NUM_ITEM_NAME_COLUMN + " " + LogbookItemContract.NUM_ITEM_NAME_TYPE + ", "
-                            + LogbookItemContract.NUM_ITEM_MAX_COLUMN + " " + LogbookItemContract.NUM_ITEM_MAX_TYPE + ", "
-                            + LogbookItemContract.NUM_ITEM_DEFAULT_COLUMN + " " + LogbookItemContract.NUM_ITEM_DEFAULT_TYPE + ")";
+
 
             String logTableQuery =
                 "CREATE TABLE IF NOT EXISTS "+ LogBookContract.LOGBOOKENTRY_TABLE + " ("
@@ -50,13 +47,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(medReminderTableQuery);
             db.execSQL(medTableQuery);
             db.execSQL(logTableQuery);
-            db.execSQL(numItemTableQuery);
+            makeNumItemTable(db);
 
         } catch(Exception e){
             e.printStackTrace();
         }
 
 
+    }
+
+    private void makeNumItemTable(SQLiteDatabase db){
+        String numItemTableQuery =
+                "CREATE TABLE IF NOT EXISTS "+ LogbookItemContract.NUM_ITEM_TABLE + " ("
+                        + LogbookItemContract.NUM_ITEM_ID_COLUMN + " " + LogbookItemContract.NUM_ITEM_ID_TYPE + ", "
+                        + LogbookItemContract.NUM_ITEM_NAME_COLUMN + " " + LogbookItemContract.NUM_ITEM_NAME_TYPE + ", "
+                        + LogbookItemContract.NUM_ITEM_MAX_COLUMN + " " + LogbookItemContract.NUM_ITEM_MAX_TYPE + ", "
+                        + LogbookItemContract.NUM_ITEM_DEFAULT_COLUMN + " " + LogbookItemContract.NUM_ITEM_DEFAULT_TYPE + ")";
+
+        db.execSQL(numItemTableQuery);
     }
 
     @Override
@@ -69,6 +77,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             + MedNotificationContract.MED_REMINDER_MEDICATIONS_COLUMN + " " + MedNotificationContract.MED_REMINDER_MEDICATIONS_TYPE + ")";
             db.execSQL(medReminderTableQuery);
         }
+
+        if ((oldVersion == 2) && (newVersion == 3)){
+            makeNumItemTable(db);
+        }
+
 
     }
 }

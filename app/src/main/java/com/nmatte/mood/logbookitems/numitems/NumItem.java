@@ -26,7 +26,7 @@ public class NumItem extends LogbookItem{
         this.defaultNum = defaultNum;
     }
 
-    public static String itemDataString(SimpleArrayMap<NumItem,Integer> values){
+    public static String dataToString(SimpleArrayMap<NumItem,Integer> values){
         String result = "";
         // intended format: "1:3 13:2 14:30" etc
         for (int i = 0; i < values.size(); i++){
