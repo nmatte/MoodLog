@@ -22,17 +22,22 @@ public class FlexibleLogbookEntry {
     NUM_TAG = "LogbookEntryNumItems";
 
     public FlexibleLogbookEntry(){
-        this.moods = new ArrayList<Boolean>();
-        this.boolItems = new SimpleArrayMap<>();
-        this.numItems = new SimpleArrayMap<>();
-        this.date = Calendar.getInstance();
+        this(Calendar.getInstance());
     }
 
     public FlexibleLogbookEntry(Calendar date){
-        this.moods = new ArrayList<Boolean>();
-        this.boolItems = new SimpleArrayMap<>();
-        this.numItems = new SimpleArrayMap<>();
+        this(date,
+            new ArrayList<Boolean>(),
+            new SimpleArrayMap<NumItem,Integer>(),
+            new SimpleArrayMap<BoolItem,Boolean>());
+    }
+
+    public FlexibleLogbookEntry(Calendar date, ArrayList<Boolean> moods,
+                    SimpleArrayMap<NumItem,Integer> numItems, SimpleArrayMap<BoolItem,Boolean> boolItems) {
         this.date = date;
+        this.moods = moods;
+        this.numItems = numItems;
+        this.boolItems = boolItems;
     }
 
     public FlexibleLogbookEntry(Calendar date, String moodString, String boolItemString, String numItemString){
@@ -40,6 +45,10 @@ public class FlexibleLogbookEntry {
         this.moods = parseMoodString(moodString);
         this.boolItems = BoolItem.dataFromString(boolItemString);
         this.numItems = NumItem.dataFromString(numItemString);
+    }
+
+    public FlexibleLogbookEntry(int date, String moodString, String boolItemString, String numItemString){
+        this(CalendarDatabaseUtil.intToCalendar(date),moodString,boolItemString,numItemString);
     }
 
     public SimpleArrayMap<BoolItem, Boolean> getBoolItems() {
@@ -95,6 +104,22 @@ public class FlexibleLogbookEntry {
             }
         }
         return result;
+    }
+
+    public String getMoodString(){
+        String result = "";
+        for (int i = 0; i < moods.size(); i++){
+            result += moods.get(i) ? "T " : "F ";
+        }
+        return result;
+    }
+
+    public String getBoolString(){
+        return BoolItem.dataToString(boolItems);
+    }
+
+    public String getNumString(){
+        return NumItem.dataToString(numItems);
     }
 
 }

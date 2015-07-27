@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class NumItemTableHelper {
     public static void addNumItem(Context context, NumItem item){
+        //TODO handle case where name already in database
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
