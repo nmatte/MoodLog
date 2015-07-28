@@ -4,6 +4,13 @@ public class LogbookItem {
     protected long id;
     protected String name;
 
+
+    protected static String ARRAY_SEPARATOR = "\t";
+
+    // the user probably won't name something using this...probably.
+    protected static String FIELD_SEPARATOR = ";-;";
+    protected static String MAP_TO = "-->";
+
     public LogbookItem(long id, String name){
         this.id = id;
         this.name = name;

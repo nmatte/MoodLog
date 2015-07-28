@@ -33,12 +33,15 @@ public class FlexibleLogbookEntryFragment extends Fragment {
     public void setEntry(FlexibleLogbookEntry entry){
         date = entry.getDate();
         moodList.setCheckedRows(entry.getMoods());
+        boolItemList.setItems(entry.getBoolItems());
         numItemList.setItems(entry.getNumItems());
     }
 
     public FlexibleLogbookEntry getEntry(){
-        FlexibleLogbookEntry entry = new FlexibleLogbookEntry(date);
-        //entry.setNumItems(numItemList.getValues());
-        return entry;
+        return new FlexibleLogbookEntry(
+                date,
+                moodList.getCheckedItems(),
+                numItemList.getValues(),
+                boolItemList.getValues());
     }
 }

@@ -1,5 +1,7 @@
 package com.nmatte.mood.logbookentries;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v4.util.SimpleArrayMap;
 
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
@@ -9,14 +11,15 @@ import com.nmatte.mood.util.CalendarDatabaseUtil;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class FlexibleLogbookEntry {
+public class FlexibleLogbookEntry implements Parcelable{
     private Calendar date;
-    private boolean isBlank = false;
     private ArrayList<Boolean> moods;
     private SimpleArrayMap<NumItem,Integer> numItems;
     private SimpleArrayMap<BoolItem,Boolean> boolItems;
+    private boolean isBlank = false;
 
-    public static final String DATE_TAG = "LogbookEntryDate",
+    public static final String PARCEL_TAG = "LogbookParcel",
+            DATE_TAG = "LogbookEntryDate",
     MOOD_TAG = "LogbookEntryMood",
     BOOL_TAG = "LogbookEntryBoolItems",
     NUM_TAG = "LogbookEntryNumItems";
@@ -111,4 +114,39 @@ public class FlexibleLogbookEntry {
         return NumItem.dataToString(numItems);
     }
 
+
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    Parcelable.Creator<FlexibleLogbookEntry> CREATOR = new Creator<FlexibleLogbookEntry>() {
+        @Override
+        public FlexibleLogbookEntry createFromParcel(Parcel source) {
+            return new FlexibleLogbookEntry(source);
+        }
+
+        @Override
+        public FlexibleLogbookEntry[] newArray(int size) {
+            return new FlexibleLogbookEntry[size];
+        }
+    };
+
+    private FlexibleLogbookEntry (Parcel in){
+        Calendar newDate = CalendarDatabaseUtil.intToCalendar(in.readInt());
+        moods = parseMoodString(in.readString());
+        numItems = NumItem.mapFromStringArray(in.createStringArrayList());
+        boolItems = BoolItem.mapFromStringArray(in.createStringArrayList());
+
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(getDateInt());
+        dest.writeString(getMoodString());
+        dest.writeStringList(NumItem.mapToStringArray(numItems));
+        dest.writeStringList(BoolItem.mapToStringArray(boolItems));
+    }
 }

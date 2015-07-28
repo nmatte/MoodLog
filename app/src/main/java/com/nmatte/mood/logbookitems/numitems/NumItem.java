@@ -7,8 +7,8 @@ import com.nmatte.mood.logbookitems.LogbookItem;
 import java.util.ArrayList;
 
 public class NumItem extends LogbookItem{
-    private int defaultNum;
     private int maxNum;
+    private int defaultNum;
 
     public NumItem(long id) {
         super(id);
@@ -82,5 +82,43 @@ public class NumItem extends LogbookItem{
 
     public void setMaxNum(int maxNum) {
         this.maxNum = maxNum;
+    }
+
+    public String toString(){
+        return String.valueOf(id) + FIELD_SEPARATOR +
+                name + FIELD_SEPARATOR +
+                maxNum + FIELD_SEPARATOR +
+                defaultNum;
+    }
+
+    public static ArrayList<String> mapToStringArray(SimpleArrayMap<NumItem,Integer> map){
+        ArrayList<String> result = new ArrayList<>();
+
+        for (int i = 0; i < map.size(); i++){
+            String keyString = map.keyAt(i).toString();
+            String valString = String.valueOf(map.valueAt(i));
+
+            result.add(keyString + MAP_TO + valString);
+        }
+        return result;
+    }
+
+    public static SimpleArrayMap<NumItem,Integer> mapFromStringArray(ArrayList<String> mapStrings){
+        SimpleArrayMap<NumItem,Integer> result = new SimpleArrayMap<>();
+
+        for (String pair : mapStrings){
+            String [] keyAndVal = pair.split(MAP_TO);
+            NumItem key = new NumItem(keyAndVal[0].split(FIELD_SEPARATOR));
+            int val = Integer.valueOf(keyAndVal[1]);
+            result.put(key,val);
+        }
+
+        return result;
+    }
+
+    private NumItem (String [] valStrings){
+        super(Long.valueOf(valStrings[0]), valStrings[1]);
+        maxNum = Integer.valueOf(valStrings[2]);
+        defaultNum = Integer.valueOf(valStrings[3]);
     }
 }

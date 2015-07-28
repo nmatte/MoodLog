@@ -15,7 +15,7 @@ public class SingleEntryDialog extends DialogFragment {
     SingleEntryDialogListener listener;
 
     public interface SingleEntryDialogListener{
-        void onSaveEntryPositiveClick(LogbookEntry entry);
+        void onSaveEntryPositiveClick(FlexibleLogbookEntry entry);
     }
 
     @Override
@@ -33,20 +33,18 @@ public class SingleEntryDialog extends DialogFragment {
         super.onCreateDialog(savedInstanceState);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        // TODO: fix bug where dialog causes FC when created a second time
+
         View mainView = inflater.inflate(R.layout.dialog_single_entry, null);
         Bundle b = getArguments();
-        final FlexibleLogbookEntryFragment entryFragment = (FlexibleLogbookEntryFragment) getFragmentManager().findFragmentById(R.id.dialogEntryFragment);
-        /* TODO replace with flexible logbook entry
-        LogbookEntry entry = new LogbookEntry(
-                b.getInt(LogbookEntry.DATE_TAG),
-                b.getString(LogbookEntry.MOOD_TAG),
-                b.getInt(LogbookEntry.IRR_TAG),
-                b.getInt(LogbookEntry.ANX_TAG),
-                b.getInt(LogbookEntry.SLEEP_TAG),
-                b.getString(LogbookEntry.MED_TAG)
-        );
+        final FlexibleLogbookEntryFragment entryFragment =
+                (FlexibleLogbookEntryFragment) getFragmentManager().findFragmentById(R.id.dialogEntryFragment);
+        // TODO: fix bug where dialog causes FC when created a second time
+        // fixed?
+        entryFragment.setRetainInstance(false);
+
+        FlexibleLogbookEntry entry = b.getParcelable(FlexibleLogbookEntry.PARCEL_TAG);
         entryFragment.setEntry(entry);
+
         builder.setView(mainView)
                 .setTitle("Edit entry")
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
@@ -61,7 +59,7 @@ public class SingleEntryDialog extends DialogFragment {
                         SingleEntryDialog.this.getDialog().cancel();
                     }
                 });
-                */
+
         return builder.create();
     }
 }

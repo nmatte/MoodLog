@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.nmatte.mood.logbookentries.FlexibleLogbookEntry;
+import com.nmatte.mood.logbookentries.FlexibleLogbookEntryTableHelper;
 import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 import com.nmatte.mood.logbookentries.SingleEntryDialog;
@@ -170,7 +172,7 @@ public class ChartActivity extends ActionBarActivity
     }
 
     @Override
-    public void onSaveEntryPositiveClick(LogbookEntry entry) {
-        LogbookEntryTableHelper.addOrUpdateEntry(this,entry);
+    public void onSaveEntryPositiveClick(FlexibleLogbookEntry entry) {
+        FlexibleLogbookEntryTableHelper.addOrUpdateEntry(this,entry);
     }
 }

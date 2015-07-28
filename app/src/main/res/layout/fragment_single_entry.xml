@@ -10,16 +10,15 @@
         android:layout_height="48dp"
         custom:text="Today"/>
 
+    <com.nmatte.mood.logbookentries.MoodList
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/moodList"/>
 
     <com.nmatte.mood.logbookitems.numitems.NumItemList
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/numItemList"/>
-
-    <com.nmatte.mood.logbookentries.MoodList
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/moodList"/>
 
 
     <com.nmatte.mood.logbookitems.boolitems.BoolItemList
