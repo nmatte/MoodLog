@@ -36,7 +36,8 @@ public class SingleEntryDialog extends DialogFragment {
         // TODO: fix bug where dialog causes FC when created a second time
         View mainView = inflater.inflate(R.layout.dialog_single_entry, null);
         Bundle b = getArguments();
-        final LogbookEntryFragment entryFragment = (LogbookEntryFragment) getFragmentManager().findFragmentById(R.id.dialogEntryFragment);
+        final FlexibleLogbookEntryFragment entryFragment = (FlexibleLogbookEntryFragment) getFragmentManager().findFragmentById(R.id.dialogEntryFragment);
+        /* TODO replace with flexible logbook entry
         LogbookEntry entry = new LogbookEntry(
                 b.getInt(LogbookEntry.DATE_TAG),
                 b.getString(LogbookEntry.MOOD_TAG),
@@ -60,6 +61,7 @@ public class SingleEntryDialog extends DialogFragment {
                         SingleEntryDialog.this.getDialog().cancel();
                     }
                 });
+                */
         return builder.create();
     }
 }

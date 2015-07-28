@@ -9,10 +9,21 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.nmatte.mood.chart.cell.CellView;
+import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 
 public class CheckableCellView extends CellView {
     Paint blackPaint;
     Rect blackRect;
+
+    public BoolItem getBoolItem() {
+        return boolItem;
+    }
+
+    public void setBoolItem(BoolItem boolItem) {
+        this.boolItem = boolItem;
+    }
+
+    BoolItem boolItem;
 
     boolean isChecked;
     boolean isEnabled;

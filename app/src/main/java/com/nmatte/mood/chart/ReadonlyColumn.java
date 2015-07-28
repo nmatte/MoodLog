@@ -55,7 +55,6 @@ public class ReadonlyColumn extends LinearLayout {
         this.addView(new CellView(context));
         this.addView(new CellView(context));
         BoolItemList boolItemList = new BoolItemList(context,true,false);
-        boolItemList.updateList(context);
         this.addView(boolItemList);
     }
 
@@ -68,8 +67,6 @@ public class ReadonlyColumn extends LinearLayout {
         this.addView(new TextCellView(context, hours));
         BoolItemList boolItemList = new BoolItemList(context,true,false);
         boolItemList.setEnabled(false);
-        boolItemList.updateList(context);
-        boolItemList.setCheckedMeds(entry.getBoolItems());
         this.addView(boolItemList);
     }
 

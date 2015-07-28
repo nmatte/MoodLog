@@ -42,7 +42,8 @@ public class AddMedNotificationDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.add_notification_dialog, null);
         final TimePicker timePicker = (TimePicker) view.findViewById(R.id.timePicker);
         final BoolItemList boolItemList = (BoolItemList) view.findViewById(R.id.medList);
-        boolItemList.updateList(getActivity());
+        //TODO replace boolItemList.updateList(getActivity());
+        /*
         builder.setView(view)
                 .setTitle("New Notification")
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
@@ -60,7 +61,7 @@ public class AddMedNotificationDialog extends DialogFragment {
                         AddMedNotificationDialog.this.getDialog().cancel();
                     }
                 });
-
+*/
         return builder.create();
     }
 }

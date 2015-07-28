@@ -67,4 +67,20 @@ public class BoolItem extends LogbookItem {
         return result;
     }
 
+    public static SimpleArrayMap<BoolItem,Boolean> mapToList(ArrayList<BoolItem> currentItems, SimpleArrayMap<BoolItem,Boolean> oldMap){
+        SimpleArrayMap<BoolItem,Boolean> result = new SimpleArrayMap<>();
+        for (BoolItem item : currentItems){
+            if (oldMap.containsKey(item)){
+                result.put(item,oldMap.get(item));
+            } else {
+                result.put(item, false);
+            }
+        }
+        return result;
+    }
+
+    public boolean equals(BoolItem other){
+        return (id == other.getID());
+    }
+
 }

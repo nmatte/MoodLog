@@ -12,9 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.nmatte.mood.logbookentries.LogbookEntry;
-import com.nmatte.mood.logbookentries.LogbookEntryFragment;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
-import com.nmatte.mood.logbookentries.SingleEntryActivity;
 import com.nmatte.mood.logbookentries.SingleEntryDialog;
 import com.nmatte.mood.logbookitems.boolitems.AddBoolDialog;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
@@ -35,7 +33,6 @@ public class ChartActivity extends ActionBarActivity
         SingleEntryDialog.SingleEntryDialogListener
 {
 
-    LogbookEntryFragment entryFragment;
     ChartMainFragment chartMainFragment;
     ListView navList;
 
@@ -54,9 +51,6 @@ public class ChartActivity extends ActionBarActivity
     private void initFragments(){
         chartMainFragment = (ChartMainFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
         chartMainFragment.setRetainInstance(false);
-
-        entryFragment = (LogbookEntryFragment) getFragmentManager().findFragmentById(R.id.singleEntryFragment);
-        entryFragment.setRetainInstance(false);
     }
 
     @Override
@@ -74,7 +68,6 @@ public class ChartActivity extends ActionBarActivity
         if(todayEntry == null){
             todayEntry = new LogbookEntry();
         }
-        entryFragment.setEntry(todayEntry);
     }
 
     private void initStartDate(){
@@ -118,13 +111,6 @@ public class ChartActivity extends ActionBarActivity
         startActivity(intent);
     }
 
-    public void startSingleEntryActivity(Calendar date){
-        Intent intent = new Intent(this, SingleEntryActivity.class);
-        intent.setAction(SingleEntryActivity.INTENT_FROM_OTHER_ACTIVITY);
-        intent.putExtra(SingleEntryActivity.DATE_INT_TAG,CalendarDatabaseUtil.calendarToInt(date));
-        startActivity(intent);
-    }
-
     private Calendar getStartDate(){
         Calendar result;
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
@@ -162,21 +148,20 @@ public class ChartActivity extends ActionBarActivity
     @Override
     protected void onPause() {
         super.onPause();
-        LogbookEntryTableHelper.addOrUpdateEntry(this,entryFragment.getEntry());
     }
 
     @Override
     public void onAddDialogPositiveClick(String name) {
-        LogbookEntry currentEntry = entryFragment.getEntry();
+        // TODO replace LogbookEntry currentEntry = entryFragment.getEntry();
         BoolItemTableHelper.addBoolItem(this, new BoolItem(name));
-        entryFragment.setEntry(currentEntry);
+        //TODO replace entryFragment.setEntry(currentEntry);
     }
 
     @Override
     public void onDeleteDialogPositiveClick(String name) {
-        LogbookEntry currentEntry = entryFragment.getEntry();
+        //TODO replace LogbookEntry currentEntry = entryFragment.getEntry();
         BoolItemTableHelper.deleteBoolItemWithName(this, name);
-        entryFragment.setEntry(currentEntry);
+        //TODO replace entryFragment.setEntry(currentEntry);
     }
 
     @Override

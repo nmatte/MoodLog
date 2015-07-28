@@ -4,6 +4,8 @@ import android.support.v4.util.SimpleArrayMap;
 
 import com.nmatte.mood.logbookitems.LogbookItem;
 
+import java.util.ArrayList;
+
 public class NumItem extends LogbookItem{
     private int defaultNum;
     private int maxNum;
@@ -47,6 +49,18 @@ public class NumItem extends LogbookItem{
                 if (keyValArray.length == 2){
                     result.put(new NumItem(Integer.valueOf(keyValArray[0])),Integer.valueOf(keyValArray[1]));
                 }
+        }
+        return result;
+    }
+
+    public static SimpleArrayMap<NumItem,Integer> mapToNew (ArrayList<NumItem> newItems, SimpleArrayMap<NumItem,Integer> oldMap){
+        SimpleArrayMap<NumItem,Integer> result = new SimpleArrayMap<>();
+        for (NumItem item : newItems){
+            if (oldMap.containsKey(item)){
+                result.put(item,oldMap.get(item));
+            } else {
+                result.put(item,0);
+            }
         }
         return result;
     }

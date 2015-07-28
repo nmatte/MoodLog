@@ -2,6 +2,7 @@ package com.nmatte.mood.logbookitems.boolitems;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v4.util.SimpleArrayMap;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -16,7 +17,7 @@ import com.nmatte.mood.moodlog.R;
 import java.util.ArrayList;
 
 public class BoolItemList extends LinearLayout {
-    private ArrayList<BoolItem> medList;
+    Context context;
     final private boolean chartStyle;
     final private boolean isEnabled;
 
@@ -46,70 +47,61 @@ public class BoolItemList extends LinearLayout {
 
     private void init(Context context){
         this.setOrientation(VERTICAL);
-        this.medList = BoolItemTableHelper.getAll(context);
+        this.context = context;
         this.setClickable(isEnabled);
         this.setLongClickable(isEnabled);
     }
 
 
-    public void updateList(Context context) {
-        this.removeAllViews();
-        LayoutInflater inflater = LayoutInflater.from(context);
-        for (final BoolItem m : medList){
-            final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, context.getResources().getDisplayMetrics());
-            if(chartStyle){
-                final CheckableCellView cellView = new CheckableCellView(context,isEnabled);
-                this.addView(cellView);
-            } else {
-                final CheckedTextView rowView = (CheckedTextView) inflater.inflate(android.R.layout.simple_list_item_multiple_choice, null);
-                TextView label = (TextView) rowView.findViewById(android.R.id.text1);
-                label.setHeight (height);
-                label.setText(m.getName());
-                rowView.setClickable(true);
-                rowView.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(isEnabled)
-                            rowView.setChecked(!rowView.isChecked());
-                    }
-                });
-                this.addView(rowView);
-            }
-        }
-    }
 
 
-    public ArrayList<BoolItem> getCheckedMeds(){
-        ArrayList<BoolItem> result = new ArrayList<>();
-        // if there's a footer we don't want to count it
-        for(int i = 0; i < this.getChildCount(); i++){
-            if(this.getChildAt(i) instanceof CheckedTextView) {
-                CheckedTextView v = (CheckedTextView) this.getChildAt(i);
-                if (v.isChecked())
-                    result.add(medList.get(i));
-            } else if (this.getChildAt(i) instanceof CheckableCellView){
-                CheckableCellView v = (CheckableCellView) this.getChildAt(i);
-                if(v.isChecked())
-                    result.add(medList.get(i));
-            }
+    public SimpleArrayMap<BoolItem,Boolean> getValues(){
+        SimpleArrayMap<BoolItem,Boolean> result = new SimpleArrayMap<>();
+        for (int i = 0; i < getChildCount(); i++){
+            CheckableCellView row = (CheckableCellView) getChildAt(i);
+            result.put(row.getBoolItem(),row.isChecked());
         }
         return result;
     }
 
-    public void setCheckedMeds(ArrayList<BoolItem> checked){
-        for (BoolItem checkedMed : checked){
-            for (int i = 0; i < medList.size(); i++){
-                if(medList.get(i).getID() == checkedMed.getID()){
-                    if(this.getChildAt(i) instanceof  CheckedTextView){
-                        CheckedTextView rowView = (CheckedTextView) this.getChildAt(i);
-                        rowView.setChecked(true);
-                    } else if (this.getChildAt(i) instanceof  CheckableCellView){
-                        CheckableCellView rowView = (CheckableCellView) this.getChildAt(i);
-                        rowView.setChecked(true);
-                    }
+    public void setItems(ArrayList<BoolItem> items){
+        removeAllViews();
+        for (BoolItem item : items){
+            final CheckableCellView newRow = new CheckableCellView(context);
+            newRow.setBoolItem(item);
+
+            newRow.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isEnabled)
+                        newRow.setChecked(!newRow.isChecked());
                 }
-            }
+            });
+
+            addView(newRow);
         }
     }
+
+    public void setItems(SimpleArrayMap<BoolItem,Boolean> itemMap){
+        removeAllViews();
+        for (int i = 0; i < itemMap.size(); i++){
+            BoolItem item = itemMap.keyAt(i);
+            final CheckableCellView newRow = new CheckableCellView(context);
+            newRow.setBoolItem(item);
+            newRow.setChecked(itemMap.get(item));
+
+            newRow.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isEnabled)
+                        newRow.setChecked(!newRow.isChecked());
+                }
+            });
+
+            addView(newRow);
+        }
+    }
+
+
 
 }
