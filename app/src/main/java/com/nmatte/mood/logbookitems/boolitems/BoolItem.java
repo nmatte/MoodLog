@@ -41,8 +41,12 @@ public class BoolItem extends LogbookItem {
         return result;
     }
 
-    public static SimpleArrayMap<BoolItem,Boolean> dataFromString(String values){
-        SimpleArrayMap<BoolItem,Boolean> result = new SimpleArrayMap<>();
+    public static SimpleArrayMap<BoolItem,Boolean> dataFromString(String values, ArrayList<BoolItem> boolItems){
+        return mapToNew(boolItems,extractValues(values));
+    }
+
+    public static SimpleArrayMap<Long,Boolean> extractValues(String values){
+        SimpleArrayMap<Long,Boolean> result = new SimpleArrayMap<>();
 
         // convert from format "1:3 13:2 14:30"
         for(String keyValString : values.split(" ")){
@@ -50,37 +54,23 @@ public class BoolItem extends LogbookItem {
             String[] keyValArray = keyValString.split(":");
             if (keyValArray.length == 2){
                 Boolean itemVal = keyValArray[1].equals("T");
-                result.put(new BoolItem(Integer.valueOf(keyValArray[0])),itemVal);
+                result.put(Long.valueOf(keyValArray[0]),itemVal);
             }
         }
         return result;
     }
 
-    public static ArrayList<BoolItem> parseIDString(String itemString){
-        ArrayList<BoolItem> result = new ArrayList<>();
-        for (String item : itemString.split(" ")){
-            if (!item.equals("")) {
-                long id = Integer.valueOf(item);
-                result.add(new BoolItem(id));
-            }
-        }
-        return result;
-    }
 
-    public static SimpleArrayMap<BoolItem,Boolean> mapToList(ArrayList<BoolItem> currentItems, SimpleArrayMap<BoolItem,Boolean> oldMap){
+    public static SimpleArrayMap<BoolItem,Boolean> mapToNew(ArrayList<BoolItem> newItems, SimpleArrayMap<Long,Boolean> idMap){
         SimpleArrayMap<BoolItem,Boolean> result = new SimpleArrayMap<>();
-        for (BoolItem item : currentItems){
-            if (oldMap.containsKey(item)){
-                result.put(item,oldMap.get(item));
+        for (BoolItem item : newItems){
+            if (idMap.containsKey(item.getID())){
+                result.put(item,idMap.get(item.getID()));
             } else {
-                result.put(item, false);
+                result.put(item,false);
             }
         }
         return result;
-    }
-
-    public boolean equals(BoolItem other){
-        return (id == other.getID());
     }
 
 }

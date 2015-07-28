@@ -26,6 +26,7 @@ public class BoolItemList extends LinearLayout {
         TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.BoolItemList,0,0);
         this.chartStyle = a.getBoolean(R.styleable.BoolItemList_style_chart,false);
         this.isEnabled = a.getBoolean(R.styleable.BoolItemList_is_enabled,true);
+        a.recycle();
         init(context);
     }
 
@@ -42,18 +43,12 @@ public class BoolItemList extends LinearLayout {
         this.isEnabled = isEnabled;
         init(context);
     }
-
-
-
     private void init(Context context){
         this.setOrientation(VERTICAL);
         this.context = context;
         this.setClickable(isEnabled);
         this.setLongClickable(isEnabled);
     }
-
-
-
 
     public SimpleArrayMap<BoolItem,Boolean> getValues(){
         SimpleArrayMap<BoolItem,Boolean> result = new SimpleArrayMap<>();
@@ -65,21 +60,11 @@ public class BoolItemList extends LinearLayout {
     }
 
     public void setItems(ArrayList<BoolItem> items){
-        removeAllViews();
+        SimpleArrayMap<BoolItem,Boolean> newMap = new SimpleArrayMap<>();
         for (BoolItem item : items){
-            final CheckableCellView newRow = new CheckableCellView(context);
-            newRow.setBoolItem(item);
-
-            newRow.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isEnabled)
-                        newRow.setChecked(!newRow.isChecked());
-                }
-            });
-
-            addView(newRow);
+            newMap.put(item,false);
         }
+        setItems(newMap);
     }
 
     public void setItems(SimpleArrayMap<BoolItem,Boolean> itemMap){

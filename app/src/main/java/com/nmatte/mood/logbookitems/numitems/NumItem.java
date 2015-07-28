@@ -39,28 +39,31 @@ public class NumItem extends LogbookItem{
         return result;
     }
 
-    public static SimpleArrayMap<NumItem,Integer> dataFromString(String values){
-        SimpleArrayMap<NumItem,Integer> result = new SimpleArrayMap<>();
+    public static SimpleArrayMap<NumItem,Integer> dataFromString(ArrayList<NumItem> numItems, String values){
+        return mapToNew(numItems, extractValues(values));
+    }
+
+    public static SimpleArrayMap<Long,Integer> extractValues(String values){
+        SimpleArrayMap<Long,Integer> result = new SimpleArrayMap<>();
 
         // convert from format "1:3 13:2 14:30"
         for(String keyValString : values.split(" ")){
             // each string should be "1:3" "13:2" etc
             String[] keyValArray = keyValString.split(":");
-                if (keyValArray.length == 2){
-                    result.put(new NumItem(Integer.valueOf(keyValArray[0])),Integer.valueOf(keyValArray[1]));
-                }
+            if (keyValArray.length == 2){
+                result.put(Long.valueOf(keyValArray[0]),Integer.valueOf(keyValArray[1]));
+            }
         }
         return result;
     }
 
-    public static SimpleArrayMap<NumItem,Integer> mapToNew (ArrayList<NumItem> newItems, SimpleArrayMap<NumItem,Integer> oldMap){
+    public static SimpleArrayMap<NumItem,Integer> mapToNew (ArrayList<NumItem> newItems, SimpleArrayMap<Long,Integer> idMap){
         SimpleArrayMap<NumItem,Integer> result = new SimpleArrayMap<>();
         for (NumItem item : newItems){
-            if (oldMap.containsKey(item)){
-                result.put(item,oldMap.get(item));
-            } else {
+            if(idMap.containsKey(item.getID()))
+                result.put(item,idMap.get(item.getID()));
+            else
                 result.put(item,0);
-            }
         }
         return result;
     }
