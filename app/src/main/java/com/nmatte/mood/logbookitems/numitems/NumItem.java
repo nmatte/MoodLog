@@ -18,54 +18,18 @@ public class NumItem extends LogbookItem{
         super(id, name);
     }
 
-    public NumItem(String name) {
-        super(name);
+    public NumItem(String itemString) {
+        String [] valStrings = itemString.split(FIELD_SEPARATOR);
+        id = Long.valueOf(valStrings[0]);
+        name = valStrings[1];
+        maxNum = Integer.valueOf(valStrings[2]);
+        defaultNum = Integer.valueOf(valStrings[3]);
     }
 
     public NumItem(long id, String name, int maxNum, int defaultNum){
         super (id,name);
         this.maxNum = maxNum;
         this.defaultNum = defaultNum;
-    }
-
-    public static String dataToString(SimpleArrayMap<NumItem,Integer> values){
-        String result = "";
-        // intended format: "1:3 13:2 14:30" etc
-        for (int i = 0; i < values.size(); i++){
-            NumItem item = values.keyAt(i);
-            result += item.getID() + ":";
-            result += values.get(item) + " ";
-        }
-        return result;
-    }
-
-    public static SimpleArrayMap<NumItem,Integer> dataFromString(ArrayList<NumItem> numItems, String values){
-        return mapToNew(numItems, extractValues(values));
-    }
-
-    public static SimpleArrayMap<Long,Integer> extractValues(String values){
-        SimpleArrayMap<Long,Integer> result = new SimpleArrayMap<>();
-
-        // convert from format "1:3 13:2 14:30"
-        for(String keyValString : values.split(" ")){
-            // each string should be "1:3" "13:2" etc
-            String[] keyValArray = keyValString.split(":");
-            if (keyValArray.length == 2){
-                result.put(Long.valueOf(keyValArray[0]),Integer.valueOf(keyValArray[1]));
-            }
-        }
-        return result;
-    }
-
-    public static SimpleArrayMap<NumItem,Integer> mapToNew (ArrayList<NumItem> newItems, SimpleArrayMap<Long,Integer> idMap){
-        SimpleArrayMap<NumItem,Integer> result = new SimpleArrayMap<>();
-        for (NumItem item : newItems){
-            if(idMap.containsKey(item.getID()))
-                result.put(item,idMap.get(item.getID()));
-            else
-                result.put(item,0);
-        }
-        return result;
     }
 
     public int getDefaultNum() {
@@ -84,12 +48,21 @@ public class NumItem extends LogbookItem{
         this.maxNum = maxNum;
     }
 
-    public String toString(){
-        return String.valueOf(id) + FIELD_SEPARATOR +
-                name + FIELD_SEPARATOR +
-                maxNum + FIELD_SEPARATOR +
-                defaultNum;
+
+    public static SimpleArrayMap<NumItem,Integer>
+        refreshMap(ArrayList<NumItem> newItems, SimpleArrayMap<NumItem,Integer> oldMap){
+        SimpleArrayMap<NumItem,Integer> result = new SimpleArrayMap<>();
+
+        for (NumItem newItem : newItems){
+            if (oldMap.containsKey(newItem))
+                result.put(newItem,oldMap.get(newItem));
+            else
+                result.put(newItem,0);
+        }
+        return result;
     }
+
+
 
     public static ArrayList<String> mapToStringArray(SimpleArrayMap<NumItem,Integer> map){
         ArrayList<String> result = new ArrayList<>();
@@ -120,5 +93,35 @@ public class NumItem extends LogbookItem{
         super(Long.valueOf(valStrings[0]), valStrings[1]);
         maxNum = Integer.valueOf(valStrings[2]);
         defaultNum = Integer.valueOf(valStrings[3]);
+    }
+
+    @Override
+    public String toString(){
+        return String.valueOf(id) + FIELD_SEPARATOR +
+                name + FIELD_SEPARATOR +
+                maxNum + FIELD_SEPARATOR +
+                defaultNum;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null)
+            return false;
+        if (!(o instanceof  NumItem))
+            return false;
+        else {
+            NumItem rhs = (NumItem) o;
+            return this.getID() == rhs.getID();
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int prime = 457;
+        int hash = 1;
+        hash = hash * ((int) getID() + prime);
+        return hash;
     }
 }

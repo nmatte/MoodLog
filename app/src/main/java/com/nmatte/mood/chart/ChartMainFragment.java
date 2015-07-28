@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.nmatte.mood.logbookentries.FlexibleLogbookEntry;
 import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 import com.nmatte.mood.logbookentries.SingleEntryDialog;
@@ -55,12 +56,7 @@ public class ChartMainFragment extends Fragment {
                     public boolean onLongClick(View v) {
                         SingleEntryDialog dialog = new SingleEntryDialog();
                         Bundle b = new Bundle();
-                        b.putInt(LogbookEntry.DATE_TAG, e.getDateInt());
-                        b.putString(LogbookEntry.MOOD_TAG, e.moodString());
-                        b.putInt(LogbookEntry.IRR_TAG, e.getIrrValue());
-                        b.putInt(LogbookEntry.ANX_TAG,e.getAnxValue());
-                        b.putInt(LogbookEntry.SLEEP_TAG,e.getHoursSleptValue());
-                        b.putString(LogbookEntry.MED_TAG,e.medicationString());
+                        b.putParcelable(FlexibleLogbookEntry.PARCEL_TAG,new FlexibleLogbookEntry());
                         dialog.setArguments(b);
                         dialog.show(getFragmentManager(),"Single Entry Dialog");
                         return true;

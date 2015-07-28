@@ -17,13 +17,15 @@ public class LogbookItem {
     }
 
     public LogbookItem(String name){
-        this.name = name;
-        this.id = 0;
+        this(0,null);
     }
 
     public LogbookItem(long id){
-        this.id = id;
-        this.name = null;
+        this(id,null);
+    }
+
+    public LogbookItem(){
+        this(0,null);
     }
 
     public long getID() {
