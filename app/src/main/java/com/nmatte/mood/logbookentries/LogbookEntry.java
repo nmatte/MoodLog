@@ -42,7 +42,7 @@ public class LogbookEntry {
         this.anxValue = anx;
         this.hoursSleptValue = sleep;
         this.date = date;
-        this.boolItems = BoolItem.parseIDString(medString);
+        this.boolItems = new ArrayList<>();
     }
 
     public LogbookEntry(int dateInt, String moodString, int irr, int anx, int sleep,  String medString){
@@ -54,7 +54,7 @@ public class LogbookEntry {
         dateCal.set(Calendar.YEAR, dateInt / 1000);
         dateCal.set(Calendar.DAY_OF_YEAR, dateInt % 1000);
         this.date = dateCal;
-        this.boolItems = BoolItem.parseIDString(medString);
+        this.boolItems = new ArrayList<>();
 
     }
 

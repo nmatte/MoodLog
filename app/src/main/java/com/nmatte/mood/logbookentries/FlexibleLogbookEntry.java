@@ -40,17 +40,6 @@ public class FlexibleLogbookEntry {
         this.boolItems = boolItems;
     }
 
-    public FlexibleLogbookEntry(Calendar date, String moodString, String boolItemString, String numItemString){
-        this.date = date;
-        this.moods = parseMoodString(moodString);
-        this.boolItems = BoolItem.dataFromString(boolItemString);
-        this.numItems = NumItem.dataFromString(numItemString);
-    }
-
-    public FlexibleLogbookEntry(int date, String moodString, String boolItemString, String numItemString){
-        this(CalendarDatabaseUtil.intToCalendar(date),moodString,boolItemString,numItemString);
-    }
-
     public SimpleArrayMap<BoolItem, Boolean> getBoolItems() {
         return boolItems;
     }
@@ -95,7 +84,7 @@ public class FlexibleLogbookEntry {
         this.numItems = numItems;
     }
 
-    private static ArrayList<Boolean> parseMoodString (String moodString){
+    public static ArrayList<Boolean> parseMoodString (String moodString){
         ArrayList<Boolean> result = new ArrayList<>();
         String [] boolStrings = moodString.split(" ");
         for (String mood: boolStrings){

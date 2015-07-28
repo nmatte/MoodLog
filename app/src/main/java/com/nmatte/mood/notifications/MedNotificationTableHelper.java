@@ -62,7 +62,7 @@ public class MedNotificationTableHelper {
         MedNotification notification = null;
 
         if(c.getCount() > 0){
-            notification = new MedNotification(c.getInt(0),c.getLong(1), BoolItem.parseIDString(c.getString(2)));
+            notification = new MedNotification(c.getInt(0),c.getLong(1), new ArrayList<BoolItem>());
         }
         c.close();
         db.close();
@@ -84,7 +84,7 @@ public class MedNotificationTableHelper {
         ArrayList<MedNotification> notifications = new ArrayList<>();
         if(c.getCount() > 0){
             do{
-                MedNotification m = new MedNotification(c.getInt(0),c.getLong(1), BoolItem.parseIDString(c.getString(2)));
+                MedNotification m = new MedNotification(c.getInt(0),c.getLong(1), new ArrayList<BoolItem>());
                 notifications.add(m);
             } while(c.moveToNext());
         }

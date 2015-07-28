@@ -5,10 +5,17 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
 
+import com.nmatte.mood.logbookitems.boolitems.BoolItem;
+import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
+import com.nmatte.mood.logbookitems.numitems.NumItem;
+import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
+import com.nmatte.mood.util.CalendarDatabaseUtil;
 import com.nmatte.mood.util.DatabaseHelper;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class FlexibleLogbookEntryTableHelper {
@@ -27,11 +34,15 @@ public class FlexibleLogbookEntryTableHelper {
         Cursor c = db.query(LogBookContract.LOGBOOKENTRY_TABLE, columns,LogBookContract.LOGBOOKENTRY_DATE_COLUMN + "=?",selection,null,null,null);
         c.moveToFirst();
         if (c.getCount() > 0){
+            Calendar entryDate = CalendarDatabaseUtil.intToCalendar(c.getInt(0));
+            ArrayList<Boolean> moods = FlexibleLogbookEntry.parseMoodString(c.getString(1));
+            SimpleArrayMap<NumItem,Integer> numItems = NumItem.dataFromString(NumItemTableHelper.getAll(context),c.getString(1));
+            SimpleArrayMap<BoolItem,Boolean> boolItems= BoolItem.dataFromString(c.getString(2), BoolItemTableHelper.getAll(context));
             entry = new FlexibleLogbookEntry(
-                    c.getInt(0),
-                    c.getString(1),
-                    c.getString(2),
-                    c.getString(3));
+                    date,
+                    moods,
+                    numItems,
+                    boolItems);
         }
         c.close();
         db.close();

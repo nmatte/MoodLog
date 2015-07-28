@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import com.nmatte.mood.chart.cell.TextCellView;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
+import com.nmatte.mood.logbookitems.numitems.NumItem;
+import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.moodlog.R;
 
 
@@ -22,18 +24,22 @@ public class ChartLabelFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final LinearLayout mainLayout = new LinearLayout(getActivity());
         mainLayout.setOrientation(LinearLayout.VERTICAL);
-        // TODO fix this mess
         int i = 0;
         Resources res = getResources();
         int[] colors = res.getIntArray(R.array.mood_colors);
-        String [] labels = res.getStringArray(R.array.mood_labels);
-        for (String label : labels){
-            if (i < colors.length && !label.equals(labels[0])){
+        String [] moodLabels = res.getStringArray(R.array.mood_labels);
+        mainLayout.addView(new TextCellView(getActivity(),"Date"));
+        for (String label : moodLabels){
+            if (i < colors.length){
                 mainLayout.addView(new TextCellView(getActivity(),label,colors[i]));
                 i++;
             } else {
                 mainLayout.addView(new TextCellView(getActivity(), label));
             }
+        }
+
+        for (NumItem numItem : NumItemTableHelper.getAll(getActivity())){
+            mainLayout.addView(new TextCellView(getActivity(),numItem.getName()));
         }
 
         for (BoolItem m : BoolItemTableHelper.getAll(getActivity())){

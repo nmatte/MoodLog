@@ -17,7 +17,6 @@
     </integer-array>
 
     <string-array name="mood_labels">
-        <item>Date</item>
         <item>Severe</item>
         <item> </item>
         <item>Moderate</item>
@@ -31,9 +30,6 @@
         <item>Moderate</item>
         <item> </item>
         <item>Severe</item>
-        <item>Anxiety</item>
-        <item>Irritability</item>
-        <item>Sleep</item>
 
     </string-array>
 
