@@ -33,7 +33,7 @@ public class LogbookEntryFragment extends Fragment  {
 
     }
 
-    public LogbookEntry setEntry(LogbookEntry entry){
+    public void setEntry(LogbookEntry entry){
         if (entry == null){
             entry = new LogbookEntry();
         }
@@ -44,7 +44,6 @@ public class LogbookEntryFragment extends Fragment  {
         boolItemList.setCheckedMeds(entry.getBoolItems());
         moodList.setCheckedItems(entry);
         date = entry.getDate();
-        return entry;
     }
 
     public LogbookEntry getEntry(){

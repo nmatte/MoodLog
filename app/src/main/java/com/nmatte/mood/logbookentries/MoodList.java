@@ -55,4 +55,11 @@ public class MoodList extends LinearLayout {
             }
         }
     }
+
+    public void setCheckedRows(ArrayList<Boolean> checkedRows){
+        for (int i = 0; i < checkedRows.size(); i++) {
+            CheckableCellView row = (CheckableCellView) this.getChildAt(i);
+            row.setChecked(checkedRows.get(i));
+        }
+    }
 }

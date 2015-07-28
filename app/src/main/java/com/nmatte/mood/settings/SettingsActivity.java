@@ -27,9 +27,6 @@ import com.nmatte.mood.notifications.NotificationList;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-/**
- * Created by Nathan on 6/16/2015.
- */
 public class SettingsActivity
         extends ActionBarActivity
         implements NotificationList.NotificationListListener,

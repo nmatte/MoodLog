@@ -2,6 +2,7 @@ package com.nmatte.mood.logbookitems.numitems;
 
 import android.content.Context;
 import android.support.v4.util.SimpleArrayMap;
+import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.moodlog.CustomNumberPicker;
@@ -16,6 +17,13 @@ public class NumItemList extends LinearLayout {
         this.context = context;
         init();
     }
+
+    public NumItemList(Context context, AttributeSet attrs){
+        super(context,attrs);
+        this.context = context;
+        init();
+    }
+
     private void init(){
         setOrientation(VERTICAL);
         setClickable(true);

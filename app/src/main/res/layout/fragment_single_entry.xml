@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.nmatte.mood.chart.cell.TextCellView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        custom:text="Today"/>
+
+
+    <com.nmatte.mood.logbookitems.numitems.NumItemList
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/numItemList"/>
+
+    <com.nmatte.mood.logbookentries.MoodList
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/moodList"/>
+
+
+    <com.nmatte.mood.logbookitems.boolitems.BoolItemList
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/boolItemList"
+        android:clickable="true"
+        android:focusable="false"
+        custom:style_chart="true"
+        />
+
+
+</LinearLayout>
