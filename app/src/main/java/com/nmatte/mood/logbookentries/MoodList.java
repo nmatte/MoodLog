@@ -20,11 +20,11 @@ public class MoodList extends LinearLayout {
         init(context);
     }
 
-    public MoodList(Context context, boolean isEnabled, LogbookEntry e){
+    public MoodList(Context context, boolean isEnabled, ArrayList<Boolean> values){
         super(context);
         this.isEnabled = isEnabled;
         init(context);
-        setCheckedItems(e);
+        setCheckedRows(values);
     }
 
     private void init(Context context){
@@ -46,20 +46,25 @@ public class MoodList extends LinearLayout {
         return checkedItems;
     }
 
-    public void setCheckedItems(LogbookEntry e){
-        if (e != null) {
-            ArrayList<Boolean> moods = e.getMoods();
-            for (int i = 0; i < moods.size(); i++) {
-                CheckableCellView row = (CheckableCellView) this.getChildAt(i);
-                row.setChecked(moods.get(i));
-            }
-        }
-    }
-
     public void setCheckedRows(ArrayList<Boolean> checkedRows){
         for (int i = 0; i < checkedRows.size(); i++) {
             CheckableCellView row = (CheckableCellView) this.getChildAt(i);
             row.setChecked(checkedRows.get(i));
         }
+    }
+
+    public static ArrayList<CheckableCellView> getCellViews(Context context, ArrayList<Boolean> cellValues){
+        ArrayList<CheckableCellView> result = new ArrayList<>();
+        Resources res = context.getResources();
+        int [] colors = res.getIntArray(R.array.mood_colors);
+        for (int i = 0; i < colors.length; i++){
+            CheckableCellView newCell = new CheckableCellView(context,false,colors[i]);
+            if (i < cellValues.size())
+                newCell.setChecked(cellValues.get(i));
+            else
+                newCell.setChecked(false);
+            result.add(newCell);
+        }
+        return result;
     }
 }

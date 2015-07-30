@@ -73,9 +73,10 @@ public class TextCellView extends CellView {
         return text;
     }
 
-    public void setText(String newText){
+    public TextCellView setText(String newText){
         this.text = newText;
         invalidate();
+        return this;
     }
 
 }

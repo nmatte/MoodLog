@@ -43,9 +43,9 @@ public class CheckableCellView extends CellView {
         init();
     }
 
-    public CheckableCellView(Context context, boolean isEnabled) {
+    public CheckableCellView(Context context, boolean isChecked) {
         super(context);
-        this.isEnabled = isEnabled;
+        this.isChecked = isChecked;
         init();
     }
 

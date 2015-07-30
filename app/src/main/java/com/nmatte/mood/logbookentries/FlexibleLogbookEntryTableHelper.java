@@ -61,7 +61,7 @@ public class FlexibleLogbookEntryTableHelper {
                 FlexibleLogbookEntryContract.ENTRY_DATE_COLUMN,
                 FlexibleLogbookEntryContract.ENTRY_MOOD_COLUMN,
                 FlexibleLogbookEntryContract.ENTRY_NUMITEM_COLUMN,
-                FlexibleLogbookEntryContract.ENTRY_BOOLITEM_TYPE
+                FlexibleLogbookEntryContract.ENTRY_BOOLITEM_COLUMN
         };
 
         String [] selection = new String[] {

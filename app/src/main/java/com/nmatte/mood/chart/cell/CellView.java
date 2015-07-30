@@ -24,6 +24,11 @@ public class CellView extends View {
     static final int DESIRED_WIDTH = 32;
 
 
+    @Override
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
     int backgroundColor = WHITE;
 
     public CellView(Context context) {

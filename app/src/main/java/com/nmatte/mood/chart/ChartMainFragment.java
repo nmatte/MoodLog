@@ -10,9 +10,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.logbookentries.FlexibleLogbookEntry;
+import com.nmatte.mood.logbookentries.FlexibleLogbookEntryTableHelper;
 import com.nmatte.mood.logbookentries.LogbookEntry;
 import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
 import com.nmatte.mood.logbookentries.SingleEntryDialog;
+import com.nmatte.mood.logbookitems.boolitems.BoolItem;
+import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
+import com.nmatte.mood.logbookitems.numitems.NumItem;
+import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,10 +49,12 @@ public class ChartMainFragment extends Fragment {
         horizontalLayout.setLongClickable(true);
 
 
-        ArrayList<LogbookEntry> newList = LogbookEntryTableHelper.getGroupWithBlanks(getActivity(),startDate,endDate);
+        ArrayList<FlexibleLogbookEntry> newList = FlexibleLogbookEntryTableHelper.getGroupWithBlanks(getActivity(), startDate, endDate);
         if (newList.size() > 0) {
-            for (final LogbookEntry e : newList) {
-                final ReadonlyColumn column = new ReadonlyColumn(getActivity(), e, startDate);
+            ArrayList<NumItem> numItems = NumItemTableHelper.getAll(getActivity());
+            ArrayList<BoolItem> boolItems = BoolItemTableHelper.getAll(getActivity());
+            for (final FlexibleLogbookEntry entry : newList) {
+                final ReadonlyColumn column = new ReadonlyColumn(getActivity(), entry, startDate, numItems, boolItems);
                 column.setClickable(true);
                 column.setLongClickable(true);
                 column.setDuplicateParentStateEnabled(true);

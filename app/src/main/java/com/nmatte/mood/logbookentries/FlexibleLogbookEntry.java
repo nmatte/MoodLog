@@ -31,7 +31,7 @@ public class FlexibleLogbookEntry implements Parcelable{
 
     public FlexibleLogbookEntry(Calendar date){
         this(date,
-            new ArrayList<Boolean>(),
+            getEmptyMoods(),
             new SimpleArrayMap<NumItem,Integer>(),
             new SimpleArrayMap<BoolItem,Boolean>());
     }
@@ -154,5 +154,13 @@ public class FlexibleLogbookEntry implements Parcelable{
         dest.writeString(getMoodString());
         dest.writeStringList(NumItem.mapToStringArray(numItems));
         dest.writeStringList(BoolItem.mapToStringArray(boolItems));
+    }
+
+    private static ArrayList<Boolean> getEmptyMoods(){
+        ArrayList<Boolean> result = new ArrayList<>();
+        for (int i = 0; i < 13; i++) {
+            result.add(false);
+        }
+        return result;
     }
 }
