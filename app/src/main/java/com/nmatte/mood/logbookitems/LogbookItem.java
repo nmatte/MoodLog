@@ -1,5 +1,10 @@
 package com.nmatte.mood.logbookitems;
 
+import android.text.TextUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class LogbookItem {
     protected long id;
     protected String name;
@@ -42,6 +47,14 @@ public class LogbookItem {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static String combineStringArray(ArrayList<String> strings){
+        return TextUtils.join(ARRAY_SEPARATOR,strings);
+    }
+
+    public static ArrayList<String> extractStringArray(String string){
+        return new ArrayList<>(Arrays.asList(string.split(ARRAY_SEPARATOR)));
     }
 
 

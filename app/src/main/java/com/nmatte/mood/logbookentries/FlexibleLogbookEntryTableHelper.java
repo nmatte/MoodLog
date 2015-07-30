@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
 
+import com.nmatte.mood.logbookitems.LogbookItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
@@ -20,9 +21,8 @@ import java.util.Calendar;
 
 public class FlexibleLogbookEntryTableHelper {
     public static FlexibleLogbookEntry getEntry(Context context, Calendar date){
-        DatabaseHelper DBHelper = new DatabaseHelper(context);
-        SQLiteDatabase db = DBHelper.getReadableDatabase();
-        FlexibleLogbookEntry entry = null;
+        SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
+
         String [] columns = new String[] {
                 FlexibleLogbookEntryContract.ENTRY_DATE_COLUMN,
                 FlexibleLogbookEntryContract.ENTRY_MOOD_COLUMN,
@@ -31,22 +31,82 @@ public class FlexibleLogbookEntryTableHelper {
         };
         String [] selection = new String[] {String.valueOf(date)};
 
-        Cursor c = db.query(LogBookContract.LOGBOOKENTRY_TABLE, columns,LogBookContract.LOGBOOKENTRY_DATE_COLUMN + "=?",selection,null,null,null);
+        Cursor c = db.query(
+                LogBookContract.LOGBOOKENTRY_TABLE,
+                columns,
+                LogBookContract.LOGBOOKENTRY_DATE_COLUMN + "=?",
+                selection,
+                null,null,null);
+
+        FlexibleLogbookEntry entry = null;
+
         c.moveToFirst();
         if (c.getCount() > 0){
-            Calendar entryDate = CalendarDatabaseUtil.intToCalendar(c.getInt(0));
-            ArrayList<Boolean> moods = FlexibleLogbookEntry.parseMoodString(c.getString(1));
-            SimpleArrayMap<NumItem,Integer> numItems = NumItem.dataFromString(NumItemTableHelper.getAll(context),c.getString(1));
-            SimpleArrayMap<BoolItem,Boolean> boolItems= BoolItem.dataFromString(c.getString(2), BoolItemTableHelper.getAll(context));
+            ArrayList<NumItem> newNumItems = NumItemTableHelper.getAll(context);
+            ArrayList<BoolItem> newBoolItems = BoolItemTableHelper.getAll(context);
             entry = new FlexibleLogbookEntry(
-                    date,
-                    moods,
-                    numItems,
-                    boolItems);
+                    CalendarDatabaseUtil.intToCalendar(c.getInt(0)),
+                    FlexibleLogbookEntry.parseMoodString(c.getString(1)),
+                    NumItem.refreshMap(newNumItems,NumItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(2)))),
+                    BoolItem.refreshMap(newBoolItems,BoolItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(3)))));
         }
         c.close();
         db.close();
         return entry;
+    }
+
+    public static ArrayList<FlexibleLogbookEntry> getEntryGroup(Context context, Calendar startDate, Calendar endDate){
+        SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
+
+        String [] columns = new String [] {
+                FlexibleLogbookEntryContract.ENTRY_DATE_COLUMN,
+                FlexibleLogbookEntryContract.ENTRY_MOOD_COLUMN,
+                FlexibleLogbookEntryContract.ENTRY_NUMITEM_COLUMN,
+                FlexibleLogbookEntryContract.ENTRY_BOOLITEM_TYPE
+        };
+
+        String [] selection = new String[] {
+                String.valueOf(CalendarDatabaseUtil.calendarToInt(startDate)),
+                        String.valueOf(CalendarDatabaseUtil.calendarToInt(endDate))
+        };
+
+        Cursor c = db.query(
+                FlexibleLogbookEntryContract.ENTRY_TABLE_NAME,
+                columns,
+                FlexibleLogbookEntryContract.ENTRY_DATE_COLUMN + " BETWEEN ? AND ?",
+                selection,
+                null,null,null);
+
+        ArrayList<FlexibleLogbookEntry> result = new ArrayList<>();
+        ArrayList<NumItem> newNumItems = NumItemTableHelper.getAll(context);
+        ArrayList<BoolItem> newBoolItems = BoolItemTableHelper.getAll(context);
+
+        c.moveToFirst();
+        if (c.getCount() > 0){
+            do {
+                try {
+                    FlexibleLogbookEntry entry = new FlexibleLogbookEntry(
+                            CalendarDatabaseUtil.intToCalendar(c.getInt(0)),
+                            FlexibleLogbookEntry.parseMoodString(c.getString(1)),
+                            NumItem.refreshMap(newNumItems,NumItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(2)))),
+                            BoolItem.refreshMap(newBoolItems,BoolItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(3)))));
+
+                    result.add(entry);
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            } while(c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return result;
+
+    }
+
+    public static ArrayList<FlexibleLogbookEntry> getGroupWithBlanks(Context context, Calendar startDate, Calendar endDate){
+        ArrayList<FlexibleLogbookEntry> result = new ArrayList<>();
+
+        return result;
     }
 
     public static void addOrUpdateEntry(Context context, FlexibleLogbookEntry entry) {
@@ -55,8 +115,8 @@ public class FlexibleLogbookEntryTableHelper {
         ContentValues values = new ContentValues();
         values.put(FlexibleLogbookEntryContract.ENTRY_DATE_COLUMN,entry.getDateInt());
         values.put(FlexibleLogbookEntryContract.ENTRY_MOOD_COLUMN,entry.getMoodString());
-        values.put(FlexibleLogbookEntryContract.ENTRY_NUMITEM_COLUMN,entry.getNumString());
-        values.put(FlexibleLogbookEntryContract.ENTRY_BOOLITEM_COLUMN,entry.getBoolString());
+        values.put(FlexibleLogbookEntryContract.ENTRY_NUMITEM_COLUMN,entry.getNumMapString());
+        values.put(FlexibleLogbookEntryContract.ENTRY_BOOLITEM_COLUMN,entry.getBoolMapString());
 
         try{
             db.insertWithOnConflict(FlexibleLogbookEntryContract.ENTRY_TABLE_NAME,null,values,SQLiteDatabase.CONFLICT_REPLACE);

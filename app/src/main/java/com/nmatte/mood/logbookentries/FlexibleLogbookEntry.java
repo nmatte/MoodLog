@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.util.SimpleArrayMap;
 
+import com.nmatte.mood.logbookitems.LogbookItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
 import com.nmatte.mood.util.CalendarDatabaseUtil;
@@ -106,14 +107,14 @@ public class FlexibleLogbookEntry implements Parcelable{
         return result;
     }
 
-    public String getBoolString(){
-        return BoolItem.dataToString(boolItems);
+
+    public String getNumMapString(){
+        return LogbookItem.combineStringArray(NumItem.mapToStringArray(numItems));
     }
 
-    public String getNumString(){
-        return NumItem.dataToString(numItems);
+    public String getBoolMapString(){
+        return LogbookItem.combineStringArray(BoolItem.mapToStringArray(boolItems));
     }
-
 
 
 

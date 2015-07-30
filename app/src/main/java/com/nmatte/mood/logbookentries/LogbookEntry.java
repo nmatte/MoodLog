@@ -115,7 +115,7 @@ public class LogbookEntry {
 
     public String medicationString() {
 
-        return BoolItem.IDString(boolItems);
+        return "";
     }
 
     public boolean isBlank(){

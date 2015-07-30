@@ -89,6 +89,6 @@ public class MedNotification {
     }
 
     public String medIDString(){
-        return BoolItem.IDString(boolItems);
+        return "";
     }
 }
