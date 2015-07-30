@@ -68,8 +68,9 @@ public class FlexibleLogbookEntry implements Parcelable{
         return isBlank;
     }
 
-    public void setIsBlank(boolean isBlank) {
+    public FlexibleLogbookEntry setIsBlank(boolean isBlank) {
         this.isBlank = isBlank;
+        return this;
     }
 
     public ArrayList<Boolean> getMoods() {
@@ -141,6 +142,10 @@ public class FlexibleLogbookEntry implements Parcelable{
         numItems = NumItem.mapFromStringArray(in.createStringArrayList());
         boolItems = BoolItem.mapFromStringArray(in.createStringArrayList());
 
+    }
+
+    public static FlexibleLogbookEntry getBlankEntry(Calendar date){
+        return new FlexibleLogbookEntry(date).setIsBlank(true);
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.nmatte.mood.util.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 
 public class FlexibleLogbookEntryTableHelper {
     public static FlexibleLogbookEntry getEntry(Context context, Calendar date){
@@ -42,13 +43,11 @@ public class FlexibleLogbookEntryTableHelper {
 
         c.moveToFirst();
         if (c.getCount() > 0){
-            ArrayList<NumItem> newNumItems = NumItemTableHelper.getAll(context);
-            ArrayList<BoolItem> newBoolItems = BoolItemTableHelper.getAll(context);
             entry = new FlexibleLogbookEntry(
                     CalendarDatabaseUtil.intToCalendar(c.getInt(0)),
                     FlexibleLogbookEntry.parseMoodString(c.getString(1)),
-                    NumItem.refreshMap(newNumItems,NumItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(2)))),
-                    BoolItem.refreshMap(newBoolItems,BoolItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(3)))));
+                    NumItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(2))),
+                    BoolItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(3))));
         }
         c.close();
         db.close();
@@ -75,11 +74,9 @@ public class FlexibleLogbookEntryTableHelper {
                 columns,
                 FlexibleLogbookEntryContract.ENTRY_DATE_COLUMN + " BETWEEN ? AND ?",
                 selection,
-                null,null,null);
+                null, null, null);
 
         ArrayList<FlexibleLogbookEntry> result = new ArrayList<>();
-        ArrayList<NumItem> newNumItems = NumItemTableHelper.getAll(context);
-        ArrayList<BoolItem> newBoolItems = BoolItemTableHelper.getAll(context);
 
         c.moveToFirst();
         if (c.getCount() > 0){
@@ -88,8 +85,8 @@ public class FlexibleLogbookEntryTableHelper {
                     FlexibleLogbookEntry entry = new FlexibleLogbookEntry(
                             CalendarDatabaseUtil.intToCalendar(c.getInt(0)),
                             FlexibleLogbookEntry.parseMoodString(c.getString(1)),
-                            NumItem.refreshMap(newNumItems,NumItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(2)))),
-                            BoolItem.refreshMap(newBoolItems,BoolItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(3)))));
+                            NumItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(2))),
+                            BoolItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(3))));
 
                     result.add(entry);
                 } catch (Exception e){
@@ -104,7 +101,27 @@ public class FlexibleLogbookEntryTableHelper {
     }
 
     public static ArrayList<FlexibleLogbookEntry> getGroupWithBlanks(Context context, Calendar startDate, Calendar endDate){
+        ArrayList<FlexibleLogbookEntry> sparseEntries = getEntryGroup(context,startDate,endDate);
         ArrayList<FlexibleLogbookEntry> result = new ArrayList<>();
+        Iterator<FlexibleLogbookEntry> it = sparseEntries.iterator();
+        FlexibleLogbookEntry currentEntry = null;
+        if(it.hasNext())
+            currentEntry = it.next();
+
+        // fill the result array with entries marked blank for dates that don't have an entry saved
+        for (Calendar date : CalendarDatabaseUtil.datesBetween(startDate,endDate)){
+            if(currentEntry != null){
+                if (CalendarDatabaseUtil.sameDayOfYear(currentEntry.getDate(),date)){
+                    result.add(currentEntry);
+                    currentEntry = it.next();
+                } else {
+                    result.add(FlexibleLogbookEntry.getBlankEntry(date));
+                }
+            } else {
+                result.add(FlexibleLogbookEntry.getBlankEntry(date));
+            }
+        }
+
 
         return result;
     }
