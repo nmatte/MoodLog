@@ -13,7 +13,7 @@ import com.nmatte.mood.moodlog.R;
 
 import java.util.Calendar;
 
-public class FlexibleLogbookEntryFragment extends Fragment {
+public class ChartEntryFragment extends Fragment {
     Calendar date;
     MoodList moodList;
     NumItemList numItemList;
@@ -30,15 +30,15 @@ public class FlexibleLogbookEntryFragment extends Fragment {
         return rootView;
     }
 
-    public void setEntry(FlexibleLogbookEntry entry){
+    public void setEntry(ChartEntry entry){
         date = entry.getDate();
         moodList.setCheckedRows(entry.getMoods());
         boolItemList.setItems(entry.getBoolItems());
         numItemList.setItems(entry.getNumItems());
     }
 
-    public FlexibleLogbookEntry getEntry(){
-        return new FlexibleLogbookEntry(
+    public ChartEntry getEntry(){
+        return new ChartEntry(
                 date,
                 moodList.getCheckedItems(),
                 numItemList.getValues(),

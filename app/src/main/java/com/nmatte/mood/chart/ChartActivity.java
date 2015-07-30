@@ -11,10 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.nmatte.mood.logbookentries.FlexibleLogbookEntry;
-import com.nmatte.mood.logbookentries.FlexibleLogbookEntryTableHelper;
-import com.nmatte.mood.logbookentries.LogbookEntry;
-import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
+import com.nmatte.mood.logbookentries.ChartEntry;
+import com.nmatte.mood.logbookentries.ChartEntryTableHelper;
 import com.nmatte.mood.logbookentries.SingleEntryDialog;
 import com.nmatte.mood.logbookitems.boolitems.AddBoolDialog;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
@@ -66,10 +64,6 @@ public class ChartActivity extends ActionBarActivity
         Calendar endDate = Calendar.getInstance();
 
         chartMainFragment.refreshColumns(getStartDate(), endDate);
-        LogbookEntry todayEntry = LogbookEntryTableHelper.getEntryToday(this);
-        if(todayEntry == null){
-            todayEntry = new LogbookEntry();
-        }
     }
 
     private void initStartDate(){
@@ -172,7 +166,7 @@ public class ChartActivity extends ActionBarActivity
     }
 
     @Override
-    public void onSaveEntryPositiveClick(FlexibleLogbookEntry entry) {
-        FlexibleLogbookEntryTableHelper.addOrUpdateEntry(this,entry);
+    public void onSaveEntryPositiveClick(ChartEntry entry) {
+        ChartEntryTableHelper.addOrUpdateEntry(this, entry);
     }
 }

@@ -4,8 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.nmatte.mood.logbookentries.FlexibleLogbookEntry;
-import com.nmatte.mood.logbookentries.FlexibleLogbookEntryContract;
+import com.nmatte.mood.logbookentries.ChartEntryContract;
 import com.nmatte.mood.logbookentries.LogBookContract;
 import com.nmatte.mood.logbookitems.LogbookItemContract;
 import com.nmatte.mood.notifications.MedNotificationContract;
@@ -72,11 +71,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private void makeLogbookEntryTable(SQLiteDatabase db){
         String logbookEntryQuery =
-                "CREATE TABLE IF NOT EXISTS "+ FlexibleLogbookEntryContract.ENTRY_TABLE_NAME+ " ("
-                        + FlexibleLogbookEntryContract.ENTRY_DATE_COLUMN + " " + FlexibleLogbookEntryContract.ENTRY_DATE_TYPE + ", "
-                        + FlexibleLogbookEntryContract.ENTRY_MOOD_COLUMN + " " + FlexibleLogbookEntryContract.ENTRY_MOOD_TYPE + ", "
-                        + FlexibleLogbookEntryContract.ENTRY_NUMITEM_COLUMN + " " + FlexibleLogbookEntryContract.ENTRY_NUMITEM_TYPE + ", "
-                        + FlexibleLogbookEntryContract.ENTRY_BOOLITEM_COLUMN + " " + FlexibleLogbookEntryContract.ENTRY_BOOLITEM_TYPE + ")";
+                "CREATE TABLE IF NOT EXISTS "+ ChartEntryContract.ENTRY_TABLE_NAME+ " ("
+                        + ChartEntryContract.ENTRY_DATE_COLUMN + " " + ChartEntryContract.ENTRY_DATE_TYPE + ", "
+                        + ChartEntryContract.ENTRY_MOOD_COLUMN + " " + ChartEntryContract.ENTRY_MOOD_TYPE + ", "
+                        + ChartEntryContract.ENTRY_NUMITEM_COLUMN + " " + ChartEntryContract.ENTRY_NUMITEM_TYPE + ", "
+                        + ChartEntryContract.ENTRY_BOOLITEM_COLUMN + " " + ChartEntryContract.ENTRY_BOOLITEM_TYPE + ")";
 
         db.execSQL(logbookEntryQuery);
     }

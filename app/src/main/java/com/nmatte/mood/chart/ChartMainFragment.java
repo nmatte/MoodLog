@@ -3,16 +3,13 @@ package com.nmatte.mood.chart;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.nmatte.mood.logbookentries.FlexibleLogbookEntry;
-import com.nmatte.mood.logbookentries.FlexibleLogbookEntryTableHelper;
-import com.nmatte.mood.logbookentries.LogbookEntry;
-import com.nmatte.mood.logbookentries.LogbookEntryTableHelper;
+import com.nmatte.mood.logbookentries.ChartEntry;
+import com.nmatte.mood.logbookentries.ChartEntryTableHelper;
 import com.nmatte.mood.logbookentries.SingleEntryDialog;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
@@ -23,13 +20,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ChartMainFragment extends Fragment {
-    ArrayList<LogbookEntry> entryList;
     LinearLayout horizontalLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        entryList = new ArrayList<>();
         setRetainInstance(true);
     }
 
@@ -49,11 +44,11 @@ public class ChartMainFragment extends Fragment {
         horizontalLayout.setLongClickable(true);
 
 
-        ArrayList<FlexibleLogbookEntry> newList = FlexibleLogbookEntryTableHelper.getGroupWithBlanks(getActivity(), startDate, endDate);
+        ArrayList<ChartEntry> newList = ChartEntryTableHelper.getGroupWithBlanks(getActivity(), startDate, endDate);
         if (newList.size() > 0) {
             ArrayList<NumItem> numItems = NumItemTableHelper.getAll(getActivity());
             ArrayList<BoolItem> boolItems = BoolItemTableHelper.getAll(getActivity());
-            for (final FlexibleLogbookEntry entry : newList) {
+            for (final ChartEntry entry : newList) {
                 final ReadonlyColumn column = new ReadonlyColumn(getActivity(), entry, startDate, numItems, boolItems);
                 column.setClickable(true);
                 column.setLongClickable(true);
@@ -63,7 +58,7 @@ public class ChartMainFragment extends Fragment {
                     public boolean onLongClick(View v) {
                         SingleEntryDialog dialog = new SingleEntryDialog();
                         Bundle b = new Bundle();
-                        b.putParcelable(FlexibleLogbookEntry.PARCEL_TAG,new FlexibleLogbookEntry());
+                        b.putParcelable(ChartEntry.PARCEL_TAG,new ChartEntry());
                         dialog.setArguments(b);
                         dialog.show(getFragmentManager(),"Single Entry Dialog");
                         return true;

@@ -15,7 +15,7 @@ public class SingleEntryDialog extends DialogFragment {
     SingleEntryDialogListener listener;
 
     public interface SingleEntryDialogListener{
-        void onSaveEntryPositiveClick(FlexibleLogbookEntry entry);
+        void onSaveEntryPositiveClick(ChartEntry entry);
     }
 
     @Override
@@ -36,13 +36,13 @@ public class SingleEntryDialog extends DialogFragment {
 
         View mainView = inflater.inflate(R.layout.dialog_single_entry, null);
         Bundle b = getArguments();
-        final FlexibleLogbookEntryFragment entryFragment =
-                (FlexibleLogbookEntryFragment) getFragmentManager().findFragmentById(R.id.dialogEntryFragment);
+        final ChartEntryFragment entryFragment =
+                (ChartEntryFragment) getFragmentManager().findFragmentById(R.id.dialogEntryFragment);
         // TODO: fix bug where dialog causes FC when created a second time
         // fixed?
         entryFragment.setRetainInstance(false);
 
-        FlexibleLogbookEntry entry = b.getParcelable(FlexibleLogbookEntry.PARCEL_TAG);
+        ChartEntry entry = b.getParcelable(ChartEntry.PARCEL_TAG);
         entryFragment.setEntry(entry);
 
         builder.setView(mainView)

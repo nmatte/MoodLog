@@ -1,17 +1,14 @@
 package com.nmatte.mood.chart;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.cell.CellView;
 import com.nmatte.mood.chart.cell.CheckableCellView;
 import com.nmatte.mood.chart.cell.TextCellView;
-import com.nmatte.mood.logbookentries.FlexibleLogbookEntry;
-import com.nmatte.mood.logbookentries.LogbookEntry;
+import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.MoodList;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
-import com.nmatte.mood.logbookitems.boolitems.BoolItemList;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
 import com.nmatte.mood.util.CalendarDatabaseUtil;
 
@@ -21,16 +18,16 @@ import java.util.Calendar;
 // TODO fix bug where long click doesn't register on moods
 
 public class ReadonlyColumn extends LinearLayout {
-    final FlexibleLogbookEntry entry;
+    final ChartEntry entry;
     ArrayList<NumItem> numItems;
     ArrayList<BoolItem> boolItems;
 
 
-    public ReadonlyColumn(Context context, FlexibleLogbookEntry newEntry,
+    public ReadonlyColumn(Context context, ChartEntry newEntry,
                           Calendar refDate, ArrayList<NumItem> numItems, ArrayList<BoolItem> boolItems){
         super(context);
         if (newEntry == null){
-            this.entry = new FlexibleLogbookEntry();
+            this.entry = new ChartEntry();
         } else {
             this.entry = newEntry;
         }

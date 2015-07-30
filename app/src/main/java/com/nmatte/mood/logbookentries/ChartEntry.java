@@ -12,7 +12,7 @@ import com.nmatte.mood.util.CalendarDatabaseUtil;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class FlexibleLogbookEntry implements Parcelable{
+public class ChartEntry implements Parcelable{
     private Calendar date;
     private ArrayList<Boolean> moods;
     private SimpleArrayMap<NumItem,Integer> numItems;
@@ -25,19 +25,19 @@ public class FlexibleLogbookEntry implements Parcelable{
     BOOL_TAG = "LogbookEntryBoolItems",
     NUM_TAG = "LogbookEntryNumItems";
 
-    public FlexibleLogbookEntry(){
+    public ChartEntry(){
         this(Calendar.getInstance());
     }
 
-    public FlexibleLogbookEntry(Calendar date){
+    public ChartEntry(Calendar date){
         this(date,
             getEmptyMoods(),
             new SimpleArrayMap<NumItem,Integer>(),
             new SimpleArrayMap<BoolItem,Boolean>());
     }
 
-    public FlexibleLogbookEntry(Calendar date, ArrayList<Boolean> moods,
-                    SimpleArrayMap<NumItem,Integer> numItems, SimpleArrayMap<BoolItem,Boolean> boolItems) {
+    public ChartEntry(Calendar date, ArrayList<Boolean> moods,
+                      SimpleArrayMap<NumItem, Integer> numItems, SimpleArrayMap<BoolItem, Boolean> boolItems) {
         this.date = date;
         this.moods = moods;
         this.numItems = numItems;
@@ -68,7 +68,7 @@ public class FlexibleLogbookEntry implements Parcelable{
         return isBlank;
     }
 
-    public FlexibleLogbookEntry setIsBlank(boolean isBlank) {
+    public ChartEntry setIsBlank(boolean isBlank) {
         this.isBlank = isBlank;
         return this;
     }
@@ -124,19 +124,19 @@ public class FlexibleLogbookEntry implements Parcelable{
         return 0;
     }
 
-    Parcelable.Creator<FlexibleLogbookEntry> CREATOR = new Creator<FlexibleLogbookEntry>() {
+    Parcelable.Creator<ChartEntry> CREATOR = new Creator<ChartEntry>() {
         @Override
-        public FlexibleLogbookEntry createFromParcel(Parcel source) {
-            return new FlexibleLogbookEntry(source);
+        public ChartEntry createFromParcel(Parcel source) {
+            return new ChartEntry(source);
         }
 
         @Override
-        public FlexibleLogbookEntry[] newArray(int size) {
-            return new FlexibleLogbookEntry[size];
+        public ChartEntry[] newArray(int size) {
+            return new ChartEntry[size];
         }
     };
 
-    private FlexibleLogbookEntry (Parcel in){
+    private ChartEntry(Parcel in){
         Calendar newDate = CalendarDatabaseUtil.intToCalendar(in.readInt());
         moods = parseMoodString(in.readString());
         numItems = NumItem.mapFromStringArray(in.createStringArrayList());
@@ -144,8 +144,8 @@ public class FlexibleLogbookEntry implements Parcelable{
 
     }
 
-    public static FlexibleLogbookEntry getBlankEntry(Calendar date){
-        return new FlexibleLogbookEntry(date).setIsBlank(true);
+    public static ChartEntry getBlankEntry(Calendar date){
+        return new ChartEntry(date).setIsBlank(true);
     }
 
     @Override

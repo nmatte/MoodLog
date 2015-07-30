@@ -1,6 +1,6 @@
 package com.nmatte.mood.logbookentries;
 
-public class FlexibleLogbookEntryContract {
+public class ChartEntryContract {
     public static final String
             ENTRY_TABLE_NAME = "FlexibleLogbookEntryTable",
             ENTRY_DATE_COLUMN = "LogbookEntryDate",
