@@ -7,7 +7,7 @@ import android.support.v4.util.SimpleArrayMap;
 import com.nmatte.mood.logbookitems.LogbookItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
-import com.nmatte.mood.util.CalendarDatabaseUtil;
+import com.nmatte.mood.util.CalendarUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,7 +57,7 @@ public class ChartEntry implements Parcelable{
     }
 
     public int getDateInt(){
-        return CalendarDatabaseUtil.calendarToInt(date);
+        return CalendarUtil.calendarToInt(date);
     }
 
     public void setDate(Calendar date) {
@@ -137,7 +137,7 @@ public class ChartEntry implements Parcelable{
     };
 
     private ChartEntry(Parcel in){
-        Calendar newDate = CalendarDatabaseUtil.intToCalendar(in.readInt());
+        Calendar newDate = CalendarUtil.intToCalendar(in.readInt());
         moods = parseMoodString(in.readString());
         numItems = NumItem.mapFromStringArray(in.createStringArrayList());
         boolItems = BoolItem.mapFromStringArray(in.createStringArrayList());

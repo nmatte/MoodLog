@@ -21,7 +21,7 @@ import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.settings.PreferencesContract;
 import com.nmatte.mood.settings.SettingsActivity;
-import com.nmatte.mood.util.CalendarDatabaseUtil;
+import com.nmatte.mood.util.CalendarUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,11 +30,14 @@ import java.util.Calendar;
 public class ChartActivity extends ActionBarActivity
         implements AddBoolDialog.AddMedicationListener,
         DeleteBoolDialog.DeleteBoolItemListener,
-        SingleEntryDialog.SingleEntryDialogListener
+        SingleEntryDialog.SingleEntryDialogListener,
+        DateRangeDialog.DateRangeDialongListener
 {
 
     ChartMainFragment chartMainFragment;
     ListView navList;
+    Calendar startDate;
+    Calendar endDate;
 
 
     @Override
@@ -43,7 +46,7 @@ public class ChartActivity extends ActionBarActivity
         setContentView(R.layout.activity_chart);
 
 
-        initStartDate();
+        initDates();
         initFragments();
         initNavbar();
     }
@@ -57,6 +60,7 @@ public class ChartActivity extends ActionBarActivity
     protected void onResume() {
         super.onResume();
 
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         refreshFragments();
     }
 
@@ -66,14 +70,21 @@ public class ChartActivity extends ActionBarActivity
         chartMainFragment.refreshColumns(getStartDate(), endDate);
     }
 
-    private void initStartDate(){
+    /*
+    date preferences behavior:
+    default: 1st of month - current
+    user may choose custom date range; option to save for next time.
+        if the option is not checked, revert to default on next startup.
+
+     */
+    private void initDates(){
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
         if (!settings.contains(PreferencesContract.CHART_START_DATE)){
             Calendar newStartDate = Calendar.getInstance();
             newStartDate.set(Calendar.DAY_OF_MONTH,newStartDate.getActualMinimum(Calendar.DAY_OF_MONTH));
 
             settings.edit()
-                    .putInt(PreferencesContract.CHART_START_DATE, CalendarDatabaseUtil.calendarToInt(newStartDate))
+                    .putInt(PreferencesContract.CHART_START_DATE, CalendarUtil.calendarToInt(newStartDate))
                     .apply();
         }
     }
@@ -116,7 +127,7 @@ public class ChartActivity extends ActionBarActivity
             newStartDate.set(Calendar.DAY_OF_MONTH,newStartDate.getActualMinimum(Calendar.DAY_OF_MONTH));
             result = newStartDate;
         } else {
-            result = CalendarDatabaseUtil.intToCalendar(dateInt);
+            result = CalendarUtil.intToCalendar(dateInt);
         }
 
         return result;
@@ -126,7 +137,8 @@ public class ChartActivity extends ActionBarActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_chart, menu);
+        menu.findItem(R.id.pickDates).setTitle("July");
         return true;
     }
 
@@ -136,6 +148,9 @@ public class ChartActivity extends ActionBarActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        if (id == R.id.pickDates){
+            startDateDialog();
+        }
 
 
         return super.onOptionsItemSelected(item);
@@ -168,5 +183,29 @@ public class ChartActivity extends ActionBarActivity
     @Override
     public void onSaveEntryPositiveClick(ChartEntry entry) {
         ChartEntryTableHelper.addOrUpdateEntry(this, entry);
+    }
+
+    private void startDateDialog(){
+        DateRangeDialog dialog = new DateRangeDialog();
+        Bundle args = new Bundle();
+        args.putBoolean(DateRangeDialog.IS_START_PICKER, true);
+        dialog.setArguments(args);
+        dialog.show(getFragmentManager(),"DateRangeDialogStart");
+    }
+
+    @Override
+    public void startDatePicked(Calendar startDate) {
+        DateRangeDialog dialog = new DateRangeDialog();
+        Bundle args = new Bundle();
+        args.putBoolean(DateRangeDialog.IS_START_PICKER,false);
+        args.putLong(DateRangeDialog.START_DATE_VALUE, startDate.getTimeInMillis());
+        dialog.setArguments(args);
+        dialog.show(getFragmentManager(),"DateRangeDialogEnd");
+
+    }
+
+    @Override
+    public void endDatePicked(Calendar endDate, boolean save) {
+
     }
 }
