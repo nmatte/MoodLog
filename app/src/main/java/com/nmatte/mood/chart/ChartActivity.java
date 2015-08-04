@@ -28,8 +28,7 @@ import java.util.Calendar;
 
 
 public class ChartActivity extends ActionBarActivity
-        implements AddBoolDialog.AddMedicationListener,
-        DeleteBoolDialog.DeleteBoolItemListener,
+        implements
         SingleEntryDialog.SingleEntryDialogListener,
         DateRangeDialog.DateRangeDialongListener
 {
@@ -159,20 +158,6 @@ public class ChartActivity extends ActionBarActivity
     @Override
     protected void onPause() {
         super.onPause();
-    }
-
-    @Override
-    public void onAddDialogPositiveClick(String name) {
-        // TODO replace LogbookEntry currentEntry = entryFragment.getEntry();
-        BoolItemTableHelper.addBoolItem(this, new BoolItem(name));
-        //TODO replace entryFragment.setEntry(currentEntry);
-    }
-
-    @Override
-    public void onDeleteDialogPositiveClick(String name) {
-        //TODO replace LogbookEntry currentEntry = entryFragment.getEntry();
-        BoolItemTableHelper.deleteBoolItemWithName(this, name);
-        //TODO replace entryFragment.setEntry(currentEntry);
     }
 
     @Override
