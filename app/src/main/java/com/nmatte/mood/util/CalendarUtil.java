@@ -1,13 +1,16 @@
 package com.nmatte.mood.util;
 
+import android.support.v4.util.SimpleArrayMap;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import static java.lang.Integer.valueOf;
 
-public class CalendarDatabaseUtil {
+public class CalendarUtil {
 
     public static int dayDiff(Calendar startDate, Calendar endDate){
         int result = 0;
@@ -98,5 +101,21 @@ public class CalendarDatabaseUtil {
     public static boolean sameDayOfYear(Calendar firstDay, Calendar secondDay){
         return (firstDay.get(Calendar.DAY_OF_YEAR) == secondDay.get(Calendar.DAY_OF_YEAR) &&
                 firstDay.get(Calendar.YEAR) == secondDay.get(Calendar.YEAR));
+    }
+
+    public static SimpleArrayMap<Integer,String> getMonthDisplayNames(){
+        SimpleArrayMap<Integer,String> result = new SimpleArrayMap<>();
+        Calendar baseCal = Calendar.getInstance();
+        baseCal.clear();
+        // start at January
+        baseCal.set(Calendar.MONTH,baseCal.getActualMinimum(Calendar.MONTH));
+        Locale locale = Locale.getDefault();
+        for (int i = 0; i <= baseCal.getActualMaximum(Calendar.MONTH); i++){
+            Integer month = baseCal.get(Calendar.MONTH);
+            String name = baseCal.getDisplayName(Calendar.MONTH,Calendar.SHORT, locale);
+            result.put(month,name);
+            baseCal.roll(Calendar.MONTH,1);
+        }
+        return result;
     }
 }

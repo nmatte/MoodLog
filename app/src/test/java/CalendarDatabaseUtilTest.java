@@ -1,8 +1,8 @@
-import com.nmatte.mood.util.CalendarDatabaseUtil;
+import com.nmatte.mood.util.CalendarUtil;
 
 import org.junit.Before;
 import org.junit.Test;
-import java.util.regex.Pattern;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -41,19 +41,19 @@ public class CalendarDatabaseUtilTest
 
     @Test
     public void testDatesSameYear(){
-        int result = CalendarDatabaseUtil.dayDiff(mid2015Date,later2015Date);
+        int result = CalendarUtil.dayDiff(mid2015Date, later2015Date);
         assertTrue(result == DAYS_BETWEEN_MID_LATER_2015);
     }
 
     @Test
     public void testSwappedDates(){
-        int result = CalendarDatabaseUtil.dayDiff(later2015Date, mid2015Date);
+        int result = CalendarUtil.dayDiff(later2015Date, mid2015Date);
         assertTrue(result == DAYS_BETWEEN_MID_LATER_2015);
     }
 
     @Test
     public void testDatesAcrossYear(){
-        int result = CalendarDatabaseUtil.dayDiff(later2015Date,early2016Date);
+        int result = CalendarUtil.dayDiff(later2015Date, early2016Date);
         assertTrue(result == DAYS_BETWEEN_LATER_2015_EARLY_2016);
     }
 

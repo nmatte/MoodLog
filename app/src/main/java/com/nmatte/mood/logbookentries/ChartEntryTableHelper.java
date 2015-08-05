@@ -10,7 +10,7 @@ import android.util.Log;
 import com.nmatte.mood.logbookitems.LogbookItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
-import com.nmatte.mood.util.CalendarDatabaseUtil;
+import com.nmatte.mood.util.CalendarUtil;
 import com.nmatte.mood.util.DatabaseHelper;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class ChartEntryTableHelper {
         c.moveToFirst();
         if (c.getCount() > 0){
             entry = new ChartEntry(
-                    CalendarDatabaseUtil.intToCalendar(c.getInt(0)),
+                    CalendarUtil.intToCalendar(c.getInt(0)),
                     ChartEntry.parseMoodString(c.getString(1)),
                     NumItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(2))),
                     BoolItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(3))));
@@ -62,8 +62,8 @@ public class ChartEntryTableHelper {
         };
 
         String [] selection = new String[] {
-                String.valueOf(CalendarDatabaseUtil.calendarToInt(startDate)),
-                        String.valueOf(CalendarDatabaseUtil.calendarToInt(endDate))
+                String.valueOf(CalendarUtil.calendarToInt(startDate)),
+                        String.valueOf(CalendarUtil.calendarToInt(endDate))
         };
 
         Cursor c = db.query(
@@ -80,7 +80,7 @@ public class ChartEntryTableHelper {
             do {
                 try {
                     ChartEntry entry = new ChartEntry(
-                            CalendarDatabaseUtil.intToCalendar(c.getInt(0)),
+                            CalendarUtil.intToCalendar(c.getInt(0)),
                             ChartEntry.parseMoodString(c.getString(1)),
                             NumItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(2))),
                             BoolItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(3))));
@@ -106,9 +106,9 @@ public class ChartEntryTableHelper {
             currentEntry = it.next();
 
         // fill the result array with entries marked blank for dates that don't have an entry saved
-        for (Calendar date : CalendarDatabaseUtil.datesBetween(startDate,endDate)){
+        for (Calendar date : CalendarUtil.datesBetween(startDate, endDate)){
             if(currentEntry != null){
-                if (CalendarDatabaseUtil.sameDayOfYear(currentEntry.getDate(),date)){
+                if (CalendarUtil.sameDayOfYear(currentEntry.getDate(), date)){
                     result.add(currentEntry);
                     currentEntry = it.next();
                 } else {

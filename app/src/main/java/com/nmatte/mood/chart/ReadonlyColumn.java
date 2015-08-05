@@ -10,7 +10,7 @@ import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.MoodList;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
-import com.nmatte.mood.util.CalendarDatabaseUtil;
+import com.nmatte.mood.util.CalendarUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,7 +36,7 @@ public class ReadonlyColumn extends LinearLayout {
 
 
         this.setOrientation(VERTICAL);
-        int dateNum = CalendarDatabaseUtil.dayDiff(refDate,entry.getDate());
+        int dateNum = CalendarUtil.dayDiff(refDate, entry.getDate());
         this.addView(new TextCellView(context, String.valueOf(dateNum)));
         addMoodModule(context);
         if (entry.isBlank()){
