@@ -24,11 +24,6 @@
         android:id="@+id/logbookEditorLayout"
         android:name="com.nmatte.mood.logbookitems.LogbookEditorFragment"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="new"
-        android:onClick="addNewClick"/>
 
 
 </LinearLayout>

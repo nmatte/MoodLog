@@ -10,12 +10,14 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.boolitems.EditBoolItem;
+import com.nmatte.mood.logbookitems.numitems.EditNumItem;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
@@ -23,6 +25,9 @@ import java.util.ArrayList;
 public class LogbookEditorFragment extends Fragment {
     LinearLayout mainLayout;
     LinearLayout boolItemLayout;
+    LinearLayout numItemLayout;
+    ImageButton addBoolButton;
+    ImageButton addNumButton;
 
     @Nullable
     @Override
@@ -30,20 +35,24 @@ public class LogbookEditorFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_logbook_editor,container);
         mainLayout = (LinearLayout) mainView.findViewById(R.id.logbookEditorLayout);
         boolItemLayout = (LinearLayout) mainView.findViewById(R.id.boolItemList);
+        numItemLayout = (LinearLayout) mainView.findViewById(R.id.numItemList);
+        addBoolButton = (ImageButton) mainView.findViewById(R.id.addBoolButton);
+        addBoolButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNewBoolItem();
+            }
+        });
+        addNumButton = (ImageButton) mainView.findViewById(R.id.addNumButton);
+        addNumButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNewNumItem();
+            }
+        });
 
         ArrayList<BoolItem> boolItems = BoolItemTableHelper.getAll(getActivity());
         for (final BoolItem item : boolItems){
-            /*
-            View rowView = inflater.inflate(R.layout.row_boolitem_edit,boolItemLayout);
-            rowView.findViewById(R.id.delButton).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //BoolItemTableHelper.deleteBoolItemWithName(getActivity(),item);
-                }
-            });
-            EditText nameField = (EditText) rowView.findViewById(R.id.itemName);
-            nameField.setText(item.getName());
-            */
             EditBoolItem rowView = new EditBoolItem(getActivity(),item);
             boolItemLayout.addView(rowView);
         }
@@ -55,16 +64,6 @@ public class LogbookEditorFragment extends Fragment {
 
 
     public void addNewBoolItem(){
-        /*
-        final View view = View.inflate(getActivity(),R.layout.row_boolitem_edit,null);
-        Button delButton =(Button) view.findViewById(R.id.delButton);
-        delButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolItemLayout.removeView(view);
-            }
-        });
-        */
         final EditBoolItem rowView = new EditBoolItem(getActivity());
         rowView.delButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,13 +75,23 @@ public class LogbookEditorFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE){
-
                 }
-
                 return false;
             }
         });
 
         boolItemLayout.addView(rowView);
+    }
+
+    public void addNewNumItem(){
+        final EditNumItem rowView = new EditNumItem(getActivity());
+        rowView.delButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                numItemLayout.removeView(rowView);
+            }
+        });
+        numItemLayout.addView(rowView);
+
     }
 }

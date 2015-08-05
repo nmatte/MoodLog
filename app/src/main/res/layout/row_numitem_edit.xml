@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+
+    <EditText
+
+        style="@style/BoolItemRow.TextView"
+        android:id="@+id/itemName"
+        android:layout_toLeftOf="@+id/defaultNumEditText"/>
+
+    <EditText
+        style="@style/NumItem.EditNum"
+        android:hint="max"
+        android:layout_toLeftOf="@id/delButton"
+        android:id="@+id/maxNumEditText"
+        />
+
+    <EditText
+        style="@style/NumItem.EditNum"
+        android:hint="start"
+        android:layout_toLeftOf="@id/maxNumEditText"
+        android:id="@+id/defaultNumEditText"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:layout_alignParentRight="true"
+        android:id="@+id/delButton"/>
+
+</RelativeLayout>

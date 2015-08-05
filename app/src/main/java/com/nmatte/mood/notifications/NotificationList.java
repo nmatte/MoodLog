@@ -111,15 +111,5 @@ public class NotificationList extends LinearLayout {
 
     }
 
-    private void addTestValues(){
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY,13);
-        c.set(Calendar.MINUTE, 30);
-        ArrayList<BoolItem> meds = new ArrayList<>();
-        meds.add(new BoolItem(1,"Foobar 200mg"));
-        meds.add(new BoolItem(2,"BazBar 150mg"));
-        notifications.add(new MedNotification(c,meds));
-    }
-
 
 }

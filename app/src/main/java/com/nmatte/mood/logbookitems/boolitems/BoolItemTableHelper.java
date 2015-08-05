@@ -17,9 +17,12 @@ public class BoolItemTableHelper {
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(LogbookItemContract.BOOL_ITEM_NAME_COLUMN, item.getName());
+
+        // TODO fix logic, make single addOrUpdate method
 
         try{
+
+            values.put(LogbookItemContract.BOOL_ITEM_NAME_COLUMN, item.getName());
             db.insert(LogbookItemContract.BOOL_ITEM_TABLE,null,values);
         } catch (Exception e){
             Log.e("SQL exception", "error adding medication");

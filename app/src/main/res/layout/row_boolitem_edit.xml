@@ -4,15 +4,15 @@
     android:layout_height="48dp">
 
     <EditText
-
         style="@style/BoolItemRow.TextView"
+        android:layout_toLeftOf="@+id/delButton"
         android:id="@+id/itemName"/>
 
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DEL"
+        android:text="X"
         android:layout_alignParentRight="true"
         android:id="@+id/delButton"/>
 

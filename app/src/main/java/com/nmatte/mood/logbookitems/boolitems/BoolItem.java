@@ -19,6 +19,10 @@ public class BoolItem extends LogbookItem {
         super(name);
     }
 
+    public BoolItem(){
+        super();
+    }
+
     public BoolItem(Long id){
         super(id);
     }

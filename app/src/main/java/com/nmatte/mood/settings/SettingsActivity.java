@@ -102,23 +102,4 @@ public class SettingsActivity
         notificationList.updateList(this);
     }
 
-
-    private void createDefaultNumItems(){
-        NumItem anx = new NumItem(0,"Anxiety",3,0);
-        NumItemTableHelper.addNumItem(this, anx);
-
-        NumItem irr = new NumItem(0,"Irritability",3,0);
-        NumItemTableHelper.addNumItem(this,irr);
-
-        NumItem sleep = new NumItem(0,"Sleep",24,0);
-        NumItemTableHelper.addNumItem(this,sleep);
-    }
-
-    public void addNewClick(View view) {
-        LogbookEditorFragment f = (LogbookEditorFragment) getFragmentManager()
-                        .findFragmentById(R.id.logbookEditorLayout);
-
-        f.addNewBoolItem();
-
-    }
 }

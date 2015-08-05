@@ -82,7 +82,7 @@ public class NumItemTableHelper {
         ArrayList<NumItem> numItems = new ArrayList<>();
         if (c.getCount() > 0){
             do {
-                NumItem item = new NumItem(c.getInt(0),c.getString(1),c.getInt(2),c.getInt(3));
+                NumItem item = new NumItem(c.getLong(0),c.getString(1),c.getInt(2),c.getInt(3));
                 numItems.add(item);
             } while(c.moveToNext());
         }

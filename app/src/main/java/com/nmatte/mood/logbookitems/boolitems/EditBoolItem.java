@@ -59,11 +59,13 @@ public class EditBoolItem extends RelativeLayout {
 
     @Nullable
     public BoolItem getBoolItem(){
+        if (boolItem == null) {
+            boolItem = new BoolItem();
+        }
+
         if (itemName.getText().length() > 0 && boolItem != null){
             boolItem.setName(itemName.getText().toString());
         }
-
-
         return boolItem;
     }
 }

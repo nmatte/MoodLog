@@ -90,7 +90,7 @@ public class CustomNumberPicker extends RelativeLayout {
 
     public NumItem getNumItem(){
         if (numItem == null){
-            numItem = new NumItem(0,"",maxNum,0);
+            numItem = new NumItem(null,"",maxNum,0);
         }
         return numItem;
     }

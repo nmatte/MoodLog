@@ -7,10 +7,12 @@
 
     <style name="Divider">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:background">#000000</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">#878787</item>
         <item name="android:layout_marginTop">6dp</item>
         <item name="android:layout_marginBottom">6dp</item>
+        <item name="android:layout_marginLeft">6dp</item>
+        <item name="android:layout_marginRight">6dp</item>
     </style>
 
     <style name="VerticalDivider">
@@ -32,11 +34,29 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
-    <style name="BoolItemRow.DeleteButton" parent="android:Widget.Button">
+
+    <style name="LogbookItem.ImageButton_Add" parent="android:Widget.DeviceDefault.ImageButton">
+        <item name="android:background">@null</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:text">DEL</item>
-        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:src">@mipmap/ic_action_new</item>
+    </style>
+
+    <style name="NumItem.EditNum" parent="android:Widget.EditText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLength">2</item>
+    </style>
+
+    <style name="OptionsHeader" parent="android:Widget.TextView">
+        <item name="android:background">#B7B7B7</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingRight">6dp</item>
     </style>
 
 </resources>

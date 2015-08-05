@@ -6,12 +6,51 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:id="@+id/logbookEditorLayout">
-    <LinearLayout
+
+    <TextView style="@style/OptionsHeader"
+        android:text="NUMBERS"/>
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:animateLayoutChanges="true"
-        android:id="@+id/boolItemList"/>
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:animateLayoutChanges="true"
+            android:layout_alignParentTop="true"
+            android:id="@+id/numItemList"/>
+
+        <ImageButton
+            style="@style/LogbookItem.ImageButton_Add"
+            android:id="@+id/addNumButton"
+            android:layout_below="@+id/numItemList"/>
+    </RelativeLayout>
+
+    <TextView
+        style="@style/OptionsHeader"
+        android:text="CHECKBOXES"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:animateLayoutChanges="true"
+            android:id="@+id/boolItemList"
+            android:layout_alignParentTop="true"
+            />
+        <ImageButton
+            android:layout_below="@+id/boolItemList"
+            style="@style/LogbookItem.ImageButton_Add"
+            android:id="@+id/addBoolButton"/>
+    </RelativeLayout>
+
+
+
 
 
 
