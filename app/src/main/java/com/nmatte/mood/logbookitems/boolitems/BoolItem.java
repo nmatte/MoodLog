@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class BoolItem extends LogbookItem {
 
 
-    public BoolItem(long id, String name){
+    public BoolItem(Long id, String name){
         super(id,name);
     }
 
@@ -19,7 +19,7 @@ public class BoolItem extends LogbookItem {
         super(name);
     }
 
-    public BoolItem(long id){
+    public BoolItem(Long id){
         super(id);
     }
 
@@ -67,6 +67,10 @@ public class BoolItem extends LogbookItem {
         super(Long.valueOf(valStrings[0]), valStrings[1]);
     }
 
+    public static BoolItem fromString(String itemString){
+        return new BoolItem(itemString.split(FIELD_SEPARATOR));
+    }
+
 
     @Override
     public String toString(){
@@ -83,15 +87,17 @@ public class BoolItem extends LogbookItem {
             return false;
         else {
             BoolItem rhs = (BoolItem) o;
-            return this.getID() == rhs.getID();
+            if (rhs.getID() == null || getID() == null)
+                return false;
+            return this.getID().equals(rhs.getID());
         }
     }
 
     @Override
     public int hashCode() {
-        int prime = 331;
-        int hash = 1;
-        hash = hash * ((int) getID() + prime);
-        return hash;
+        long prime = 331;
+        long hash = 1;
+        hash = hash * ((id == null? 0 : id) + prime);
+        return (int) hash;
     }
 }

@@ -156,7 +156,7 @@ public class ChartActivity extends ActionBarActivity
     @Override
     public void onDeleteDialogPositiveClick(String name) {
         //TODO replace LogbookEntry currentEntry = entryFragment.getEntry();
-        BoolItemTableHelper.deleteBoolItemWithName(this, name);
+        //BoolItemTableHelper.deleteBoolItemWithName(this, name);
         //TODO replace entryFragment.setEntry(currentEntry);
     }
 

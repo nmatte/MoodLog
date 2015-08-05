@@ -1,12 +1,13 @@
 package com.nmatte.mood.logbookitems;
 
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class LogbookItem {
-    protected long id;
+    protected Long id;
     protected String name;
 
 
@@ -16,24 +17,25 @@ public class LogbookItem {
     protected static String FIELD_SEPARATOR = ";-;";
     protected static String MAP_TO = "-->";
 
-    public LogbookItem(long id, String name){
+    public LogbookItem(Long id, String name){
         this.id = id;
         this.name = name;
     }
 
     public LogbookItem(String name){
-        this(0,null);
+        this(new Long(0),name);
     }
 
-    public LogbookItem(long id){
+    public LogbookItem(Long id){
         this(id,null);
     }
 
     public LogbookItem(){
-        this(0,null);
+        this(null,null);
     }
 
-    public long getID() {
+    @Nullable
+    public Long getID() {
         return id;
     }
 
@@ -41,6 +43,7 @@ public class LogbookItem {
         this.id = id;
     }
 
+    @Nullable
     public String getName() {
         return name;
     }

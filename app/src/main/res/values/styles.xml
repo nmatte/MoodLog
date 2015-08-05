@@ -21,4 +21,22 @@
         <item name="android:layout_marginRight">6dp</item>
     </style>
 
+
+    <style name="BoolItemRow.TextView" parent="android:Widget.EditText">
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:hint">Name</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="BoolItemRow.DeleteButton" parent="android:Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">DEL</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+
 </resources>

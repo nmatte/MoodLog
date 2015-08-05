@@ -10,11 +10,11 @@ public class NumItem extends LogbookItem{
     private int maxNum;
     private int defaultNum;
 
-    public NumItem(long id) {
+    public NumItem(Long id) {
         super(id);
     }
 
-    public NumItem(long id, String name) {
+    public NumItem(Long id, String name) {
         super(id, name);
     }
 
@@ -26,7 +26,7 @@ public class NumItem extends LogbookItem{
         defaultNum = Integer.valueOf(valStrings[3]);
     }
 
-    public NumItem(long id, String name, int maxNum, int defaultNum){
+    public NumItem(Long id, String name, int maxNum, int defaultNum){
         super (id,name);
         this.maxNum = maxNum;
         this.defaultNum = defaultNum;
@@ -113,15 +113,17 @@ public class NumItem extends LogbookItem{
             return false;
         else {
             NumItem rhs = (NumItem) o;
-            return this.getID() == rhs.getID();
+            if (rhs.getID() == null || getID() == null)
+                return false;
+            return this.getID().equals(rhs.getID());
         }
     }
 
     @Override
     public int hashCode() {
-        int prime = 457;
-        int hash = 1;
-        hash = hash * ((int) getID() + prime);
-        return hash;
+        long prime = 457;
+        long hash = 1;
+        hash = hash * (( getID() + prime));
+        return (int) hash;
     }
 }

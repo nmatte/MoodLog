@@ -7,6 +7,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 
+import com.nmatte.mood.logbookitems.LogbookEditorFragment;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
@@ -111,5 +112,13 @@ public class SettingsActivity
 
         NumItem sleep = new NumItem(0,"Sleep",24,0);
         NumItemTableHelper.addNumItem(this,sleep);
+    }
+
+    public void addNewClick(View view) {
+        LogbookEditorFragment f = (LogbookEditorFragment) getFragmentManager()
+                        .findFragmentById(R.id.logbookEditorLayout);
+
+        f.addNewBoolItem();
+
     }
 }

@@ -43,13 +43,15 @@ public class BoolItemTableHelper {
         db.close();
     }
 
-    public static void deleteBoolItemWithName(Context context, String name){
+    public static void deleteBoolItem(Context context, BoolItem item){
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
-        String whereClause = LogbookItemContract.BOOL_ITEM_NAME_COLUMN + "=?";
+        String whereClause = LogbookItemContract.BOOL_ID_COLUMN + "=?";
+
+
 
         try{
-            db.delete(LogbookItemContract.BOOL_ITEM_TABLE, whereClause, new String[]{name});
+            db.delete(LogbookItemContract.BOOL_ITEM_TABLE, whereClause, new String[]{String.valueOf(item.getID())});
         } catch (Exception e) {
             Log.e("SQL exception", "error deleting medication");
         }
@@ -71,7 +73,7 @@ public class BoolItemTableHelper {
         ArrayList<BoolItem> boolItems = new ArrayList<>();
         if(c.getCount() > 0){
             do{
-                BoolItem m = new BoolItem(c.getInt(0),c.getString(1));
+                BoolItem m = new BoolItem(c.getLong(0),c.getString(1));
                 boolItems.add(m);
             } while(c.moveToNext());
         }

@@ -11,24 +11,24 @@
         android:onClick="notificationTest"
         android:id="@+id/testButton" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Migrate"
-        android:onClick="migrateEntries"
-        />
 
     <com.nmatte.mood.notifications.NotificationList
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/notificationList"/>
 
+
     <fragment
-        android:layout_width="120dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:name="com.nmatte.mood.logbookentries.ChartEntryFragment"
-        android:id="@+id/logbookEntryFragment"
-        />
+        android:id="@+id/logbookEditorLayout"
+        android:name="com.nmatte.mood.logbookitems.LogbookEditorFragment"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="new"
+        android:onClick="addNewClick"/>
 
 
 </LinearLayout>
