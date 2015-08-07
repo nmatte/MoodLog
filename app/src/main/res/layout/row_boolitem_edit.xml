@@ -11,14 +11,14 @@
     <ImageButton
         style="@style/LogbookItem.ImageButton_Delete"
         android:layout_toLeftOf="@+id/saveButton"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:id="@+id/delButton"/>
 
     <ImageButton
         style="@style/LogbookItem.ImageButton_Save"
         android:layout_alignParentRight="true"
         android:id="@+id/saveButton"
-        android:visibility="gone"
+        android:visibility="invisible"
         />
 
     <ImageButton

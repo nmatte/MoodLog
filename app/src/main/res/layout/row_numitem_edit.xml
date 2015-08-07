@@ -20,7 +20,7 @@
     <EditText
         style="@style/NumItem.EditNum"
         android:hint="max"
-        android:layout_toLeftOf="@+id/editButton"
+        android:layout_toLeftOf="@+id/delButton"
         android:id="@+id/maxNumEditText"
         />
 
@@ -34,7 +34,7 @@
         style="@style/LogbookItem.ImageButton_Save"
         android:layout_alignParentRight="true"
         android:id="@+id/saveButton"
-        android:visibility="gone"
+        android:visibility="invisible"
         />
 
     <ImageButton

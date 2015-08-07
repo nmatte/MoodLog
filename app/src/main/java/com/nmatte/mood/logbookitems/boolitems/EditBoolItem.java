@@ -9,6 +9,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -78,14 +80,30 @@ public class EditBoolItem extends RelativeLayout {
     }
 
     public void setEditable(boolean isEditable){
+        Animation out= AnimationUtils.loadAnimation(context, R.anim.abc_fade_out);
+        Animation in  = AnimationUtils.loadAnimation(context,R.anim.abc_fade_in);
+
         if (isEditable){
+
+            editButton.startAnimation(out);
+            editButton.setVisibility(INVISIBLE);
+
+
+            delButton.startAnimation(in);
             delButton.setVisibility(VISIBLE);
+
+            saveButton.startAnimation(in);
             saveButton.setVisibility(VISIBLE);
-            editButton.setVisibility(GONE);
             itemName.setEnabled(true);
+
         } else {
-            delButton.setVisibility(GONE);
-            saveButton.setVisibility(GONE);
+            delButton.startAnimation(out);
+            delButton.setVisibility(INVISIBLE);
+
+            saveButton.startAnimation(out);
+            saveButton.setVisibility(INVISIBLE);
+
+            editButton.startAnimation(in);
             editButton.setVisibility(VISIBLE);
             itemName.setEnabled(false);
         }
