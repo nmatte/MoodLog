@@ -45,7 +45,6 @@ public class ChartActivity extends ActionBarActivity
 
         initStartDate();
         initFragments();
-        initNavbar();
     }
 
     private void initFragments(){
@@ -76,11 +75,6 @@ public class ChartActivity extends ActionBarActivity
                     .putInt(PreferencesContract.CHART_START_DATE, CalendarUtil.calendarToInt(newStartDate))
                     .apply();
         }
-    }
-
-
-    private void initNavbar(){
-
     }
 
 
