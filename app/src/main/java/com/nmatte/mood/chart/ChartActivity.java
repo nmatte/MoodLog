@@ -29,8 +29,7 @@ import java.util.Calendar;
 
 
 public class ChartActivity extends ActionBarActivity
-        implements AddBoolDialog.AddMedicationListener,
-        DeleteBoolDialog.DeleteBoolItemListener,
+        implements
         SingleEntryDialog.SingleEntryDialogListener
 {
 
@@ -81,25 +80,7 @@ public class ChartActivity extends ActionBarActivity
 
 
     private void initNavbar(){
-        navList = (ListView) findViewById(R.id.drawerList);
-        final ArrayList<String> navItems = new ArrayList<>();
-        navItems.add("Settings");
-        navList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, navItems));
-        View header = getLayoutInflater().inflate(R.layout.navlist_header, null);
-        navList.addHeaderView(header);
-        navList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        break;
-                    case 1:
-                        startSettingsActivity();
-                        break;
-                }
 
-            }
-        });
     }
 
 
@@ -148,20 +129,6 @@ public class ChartActivity extends ActionBarActivity
     }
 
     @Override
-    public void onAddDialogPositiveClick(String name) {
-        // TODO replace LogbookEntry currentEntry = entryFragment.getEntry();
-        BoolItemTableHelper.addBoolItem(this, new BoolItem(name));
-        //TODO replace entryFragment.setEntry(currentEntry);
-    }
-
-    @Override
-    public void onDeleteDialogPositiveClick(String name) {
-        //TODO replace LogbookEntry currentEntry = entryFragment.getEntry();
-        //BoolItemTableHelper.deleteBoolItemWithName(this, name);
-        //TODO replace entryFragment.setEntry(currentEntry);
-    }
-
-    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
@@ -169,5 +136,12 @@ public class ChartActivity extends ActionBarActivity
     @Override
     public void onSaveEntryPositiveClick(ChartEntry entry) {
         ChartEntryTableHelper.addOrUpdateEntry(this, entry);
+    }
+
+    public void onSettingsItemClick(MenuItem item) {
+        startSettingsActivity();
+    }
+
+    public void onRemindersItemClick(MenuItem item) {
     }
 }

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     tools:context=".ChartActivity">
 
@@ -57,14 +58,14 @@
 
     </LinearLayout>
 </ScrollView>
-    <ListView
+
+
+    <android.support.design.widget.NavigationView
         android:layout_width="180dp"
         android:layout_height="match_parent"
-        android:id="@+id/drawerList"
         android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:background="#FFFFFF"
-
+        app:headerLayout="@layout/navlist_header"
+        app:menu="@menu/drawer"
         />
 
 
