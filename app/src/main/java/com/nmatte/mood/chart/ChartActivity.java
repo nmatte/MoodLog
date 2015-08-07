@@ -21,7 +21,8 @@ import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.settings.PreferencesContract;
 import com.nmatte.mood.settings.SettingsActivity;
-import com.nmatte.mood.util.CalendarDatabaseUtil;
+import com.nmatte.mood.util.CalendarUtil;
+import com.nmatte.mood.util.CalendarUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -73,7 +74,7 @@ public class ChartActivity extends ActionBarActivity
             newStartDate.set(Calendar.DAY_OF_MONTH,newStartDate.getActualMinimum(Calendar.DAY_OF_MONTH));
 
             settings.edit()
-                    .putInt(PreferencesContract.CHART_START_DATE, CalendarDatabaseUtil.calendarToInt(newStartDate))
+                    .putInt(PreferencesContract.CHART_START_DATE, CalendarUtil.calendarToInt(newStartDate))
                     .apply();
         }
     }
@@ -116,7 +117,7 @@ public class ChartActivity extends ActionBarActivity
             newStartDate.set(Calendar.DAY_OF_MONTH,newStartDate.getActualMinimum(Calendar.DAY_OF_MONTH));
             result = newStartDate;
         } else {
-            result = CalendarDatabaseUtil.intToCalendar(dateInt);
+            result = CalendarUtil.intToCalendar(dateInt);
         }
 
         return result;
@@ -126,7 +127,7 @@ public class ChartActivity extends ActionBarActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_chart, menu);
         return true;
     }
 

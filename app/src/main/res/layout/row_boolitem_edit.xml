@@ -5,15 +5,26 @@
 
     <EditText
         style="@style/BoolItemRow.TextView"
-        android:layout_toLeftOf="@+id/delButton"
+        android:enabled="false"
         android:id="@+id/itemName"/>
 
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="X"
-        android:layout_alignParentRight="true"
+    <ImageButton
+        style="@style/LogbookItem.ImageButton_Delete"
+        android:layout_toLeftOf="@+id/saveButton"
+        android:visibility="gone"
         android:id="@+id/delButton"/>
+
+    <ImageButton
+        style="@style/LogbookItem.ImageButton_Save"
+        android:layout_alignParentRight="true"
+        android:id="@+id/saveButton"
+        android:visibility="gone"
+        />
+
+    <ImageButton
+        style="@style/LogbookItem.ImageButton_Edit"
+        android:layout_alignParentRight="true"
+        android:id="@+id/editButton"
+        />
 
 </RelativeLayout>

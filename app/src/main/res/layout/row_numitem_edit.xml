@@ -1,32 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="48dp">
 
 
     <EditText
 
         style="@style/BoolItemRow.TextView"
-        android:id="@+id/itemName"
-        android:layout_toLeftOf="@+id/defaultNumEditText"/>
+        android:enabled="false"
+        android:id="@+id/itemName"/>
 
-    <EditText
-        style="@style/NumItem.EditNum"
-        android:hint="max"
-        android:layout_toLeftOf="@id/delButton"
-        android:id="@+id/maxNumEditText"
-        />
+
 
     <EditText
         style="@style/NumItem.EditNum"
         android:hint="start"
-        android:layout_toLeftOf="@id/maxNumEditText"
+        android:layout_toLeftOf="@+id/maxNumEditText"
         android:id="@+id/defaultNumEditText"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="X"
-        android:layout_alignParentRight="true"
+    <EditText
+        style="@style/NumItem.EditNum"
+        android:hint="max"
+        android:layout_toLeftOf="@+id/editButton"
+        android:id="@+id/maxNumEditText"
+        />
+
+    <ImageButton
+        style="@style/LogbookItem.ImageButton_Delete"
+        android:layout_toLeftOf="@+id/saveButton"
+        android:visibility="invisible"
         android:id="@+id/delButton"/>
+
+    <ImageButton
+        style="@style/LogbookItem.ImageButton_Save"
+        android:layout_alignParentRight="true"
+        android:id="@+id/saveButton"
+        android:visibility="gone"
+        />
+
+    <ImageButton
+        style="@style/LogbookItem.ImageButton_Edit"
+        android:layout_alignParentRight="true"
+        android:id="@+id/editButton"
+        />
+
+
 
 </RelativeLayout>

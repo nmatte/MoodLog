@@ -3,6 +3,7 @@ package com.nmatte.mood.logbookitems;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.boolitems.EditBoolItem;
 import com.nmatte.mood.logbookitems.numitems.EditNumItem;
+import com.nmatte.mood.logbookitems.numitems.NumItem;
+import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
@@ -33,65 +36,99 @@ public class LogbookEditorFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.fragment_logbook_editor,container);
-        mainLayout = (LinearLayout) mainView.findViewById(R.id.logbookEditorLayout);
-        boolItemLayout = (LinearLayout) mainView.findViewById(R.id.boolItemList);
-        numItemLayout = (LinearLayout) mainView.findViewById(R.id.numItemList);
-        addBoolButton = (ImageButton) mainView.findViewById(R.id.addBoolButton);
-        addBoolButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addNewBoolItem();
-            }
-        });
-        addNumButton = (ImageButton) mainView.findViewById(R.id.addNumButton);
-        addNumButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addNewNumItem();
-            }
-        });
+        initLayout(mainView);
+
+        ArrayList<NumItem> numItems = NumItemTableHelper.getAll(getActivity());
+        for (final NumItem item : numItems){
+            addNewNumItem(item);
+        }
+
+
 
         ArrayList<BoolItem> boolItems = BoolItemTableHelper.getAll(getActivity());
         for (final BoolItem item : boolItems){
-            EditBoolItem rowView = new EditBoolItem(getActivity(),item);
-            boolItemLayout.addView(rowView);
+            addNewBoolItem(item);
         }
 
 
         return mainView;
     }
 
+    private void initLayout(View mainView){
+        mainLayout = (LinearLayout) mainView.findViewById(R.id.logbookEditorLayout);
 
+        boolItemLayout = (LinearLayout) mainView.findViewById(R.id.boolItemList);
+        numItemLayout = (LinearLayout) mainView.findViewById(R.id.numItemList);
 
-    public void addNewBoolItem(){
-        final EditBoolItem rowView = new EditBoolItem(getActivity());
-        rowView.delButton.setOnClickListener(new View.OnClickListener() {
+        addBoolButton = (ImageButton) mainView.findViewById(R.id.addBoolButton);
+        addBoolButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolItemLayout.removeView(rowView);
-            }
-        });
-        rowView.itemName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE){
-                }
-                return false;
+                addNewBoolItem(null);
             }
         });
 
+        addNumButton = (ImageButton) mainView.findViewById(R.id.addNumButton);
+        addNumButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNewNumItem(null);
+            }
+        });
+    }
+
+
+
+    public void addNewBoolItem(BoolItem item){
+        final EditBoolItem rowView = new EditBoolItem(getActivity(),item);
+        rowView.delButton.setOnClickListener(getDeleteBoolListener(rowView));
         boolItemLayout.addView(rowView);
     }
 
-    public void addNewNumItem(){
-        final EditNumItem rowView = new EditNumItem(getActivity());
-        rowView.delButton.setOnClickListener(new View.OnClickListener() {
+    public void addNewNumItem(NumItem item){
+        final EditNumItem rowView = new EditNumItem(getActivity(),item);
+        rowView.delButton.setOnClickListener(getDeleteNumItemListener(rowView));
+        numItemLayout.addView(rowView);
+    }
+
+
+    private View.OnClickListener getDeleteBoolListener(final EditBoolItem editBoolItem){
+        return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                numItemLayout.removeView(rowView);
+                final int viewIndex = boolItemLayout.indexOfChild(editBoolItem);
+                boolItemLayout.removeView(editBoolItem);
+                String text = "Deleted " + editBoolItem.itemName.getText();
+                Snackbar.make(mainLayout,text, Snackbar.LENGTH_LONG)
+                        .setAction("UNDO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                boolItemLayout.addView(editBoolItem,viewIndex);
+                            }
+                        })
+                        .show();
             }
-        });
-        numItemLayout.addView(rowView);
-
+        };
     }
+
+    private View.OnClickListener getDeleteNumItemListener(final EditNumItem editNumItem){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final int viewIndex = numItemLayout.indexOfChild(editNumItem);
+                numItemLayout.removeView(editNumItem);
+                String text = "Deleted " + editNumItem.itemName.getText();
+                Snackbar.make(mainLayout,text,Snackbar.LENGTH_LONG)
+                        .setAction("UNDO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                numItemLayout.addView(editNumItem,viewIndex);
+                            }
+                        })
+                        .show();
+            }
+        };
+    }
+
+
 }
