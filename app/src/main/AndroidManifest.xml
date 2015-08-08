@@ -17,6 +17,7 @@
         </activity>
 
 
+        <activity android:name="com.nmatte.mood.util.TestActivity"/>
         <activity android:name="com.nmatte.mood.settings.SettingsActivity"/>
         
         <receiver android:name="com.nmatte.mood.notifications.AlarmManagerHelper">

@@ -42,14 +42,7 @@
                 android:layout_height="wrap_content"
                 android:name="com.nmatte.mood.chart.ChartMainFragment"
                 android:id="@+id/chartMainFragment"/>
-
-                <!-- TODO replace
-
-            <fragment
-                android:layout_width="126dp"
-                android:layout_height="wrap_content"
-                android:name="com.nmatte.mood.logbookentries.LogbookEntryFragment"
-                android:id="@+id/singleEntryFragment"/> -->
+                
 
             </LinearLayout>
 

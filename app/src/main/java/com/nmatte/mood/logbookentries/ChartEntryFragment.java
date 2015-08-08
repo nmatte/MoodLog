@@ -34,7 +34,7 @@ public class ChartEntryFragment extends Fragment {
         date = entry.getDate();
         moodList.setCheckedRows(entry.getMoods());
         boolItemList.setItems(entry.getBoolItems());
-        numItemList.setItems(entry.getNumItems());
+        numItemList.setItemValues(entry.getNumItems());
     }
 
     public ChartEntry getEntry(){

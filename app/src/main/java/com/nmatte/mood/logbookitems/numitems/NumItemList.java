@@ -37,13 +37,18 @@ public class NumItemList extends LinearLayout {
         }
     }
 
-    public void setItems(SimpleArrayMap<NumItem,Integer> itemMap){
-        removeAllViews();
-        for (int i = 0; i < itemMap.size(); i++){
-            CustomNumberPicker numPicker = new CustomNumberPicker(context,itemMap.keyAt(i));
-            numPicker.setCurrentNum(itemMap.valueAt(i));
-            addView(numPicker);
+    public void setItemValues(SimpleArrayMap<NumItem,Integer> itemMap){
+        for (int i = 0; i < getChildCount(); i++){
+            CustomNumberPicker numPicker = (CustomNumberPicker) getChildAt(i);
+            if (itemMap.containsKey(numPicker.getNumItem())){
+                numPicker.setCurrentNum(itemMap.get(numPicker.getNumItem()));
+            }
         }
+    }
+
+    public void setItemsAndValues(ArrayList<NumItem> items, SimpleArrayMap<NumItem,Integer> itemMap){
+        setItems(items);
+        setItemValues(itemMap);
     }
 
     public SimpleArrayMap<NumItem,Integer> getValues(){

@@ -23,6 +23,7 @@ import com.nmatte.mood.settings.PreferencesContract;
 import com.nmatte.mood.settings.SettingsActivity;
 import com.nmatte.mood.util.CalendarUtil;
 import com.nmatte.mood.util.CalendarUtil;
+import com.nmatte.mood.util.TestActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -83,6 +84,11 @@ public class ChartActivity extends ActionBarActivity
         startActivity(intent);
     }
 
+    private void startTestActivity(){
+        Intent intent = new Intent(this, TestActivity.class);
+        startActivity(intent);
+    }
+
     private Calendar getStartDate(){
         Calendar result;
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
@@ -137,5 +143,9 @@ public class ChartActivity extends ActionBarActivity
     }
 
     public void onRemindersItemClick(MenuItem item) {
+    }
+
+    public void onTestItemClick(MenuItem item) {
+        startTestActivity();
     }
 }

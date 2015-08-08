@@ -4,10 +4,12 @@ import android.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.nmatte.mood.chart.cell.TextCellView;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
@@ -39,7 +41,12 @@ public class ChartLabelFragment extends Fragment {
         }
 
         for (NumItem numItem : NumItemTableHelper.getAll(getActivity())){
-            mainLayout.addView(new TextCellView(getActivity(),numItem.getName()));
+
+            TextView textView = new TextView(getActivity());
+            textView.setBackgroundResource(R.drawable.drop_shadow3);
+            textView.setText(numItem.getName());
+            textView.setEllipsize(TextUtils.TruncateAt.END);
+            mainLayout.addView(textView);
         }
 
         for (BoolItem m : BoolItemTableHelper.getAll(getActivity())){

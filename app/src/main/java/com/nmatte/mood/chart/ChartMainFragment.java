@@ -1,5 +1,6 @@
 package com.nmatte.mood.chart;
 
+import android.animation.LayoutTransition;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,11 +11,12 @@ import android.widget.LinearLayout;
 
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.ChartEntryTableHelper;
-import com.nmatte.mood.logbookentries.SingleEntryDialog;
+import com.nmatte.mood.logbookentries.EditEntryLayout;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
 import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
+import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,6 +37,8 @@ public class ChartMainFragment extends Fragment {
         horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);
         horizontalLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
+        horizontalLayout.setLayoutTransition(new LayoutTransition());
+
         return horizontalLayout;
     }
 
@@ -46,8 +50,16 @@ public class ChartMainFragment extends Fragment {
 
         ArrayList<ChartEntry> newList = ChartEntryTableHelper.getGroupWithBlanks(getActivity(), startDate, endDate);
         if (newList.size() > 0) {
-            ArrayList<NumItem> numItems = NumItemTableHelper.getAll(getActivity());
-            ArrayList<BoolItem> boolItems = BoolItemTableHelper.getAll(getActivity());
+            final ArrayList<NumItem> numItems = NumItemTableHelper.getAll(getActivity());
+            final ArrayList<BoolItem> boolItems = BoolItemTableHelper.getAll(getActivity());
+            ArrayList<String> numItemStrings = new ArrayList<>();
+            ArrayList<String> boolItemStrings = new ArrayList<>();
+            for (NumItem item : numItems){
+                numItemStrings.add(item.toString());
+            }
+            for (BoolItem item : boolItems){
+                boolItemStrings.add(item.toString());
+            }
             for (final ChartEntry entry : newList) {
                 final ReadonlyColumn column = new ReadonlyColumn(getActivity(), entry, startDate, numItems, boolItems);
                 column.setClickable(true);
@@ -56,11 +68,12 @@ public class ChartMainFragment extends Fragment {
                 column.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        SingleEntryDialog dialog = new SingleEntryDialog();
-                        Bundle b = new Bundle();
-                        b.putParcelable(ChartEntry.PARCEL_TAG,new ChartEntry());
-                        dialog.setArguments(b);
-                        dialog.show(getFragmentManager(),"Single Entry Dialog");
+                        int index = horizontalLayout.indexOfChild(column);
+
+
+                        horizontalLayout.removeView(column);
+                        horizontalLayout.addView(new EditEntryLayout(getActivity(),entry,numItems,boolItems),index);
+
                         return true;
                     }
                 });
