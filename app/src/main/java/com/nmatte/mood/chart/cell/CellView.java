@@ -1,6 +1,7 @@
 package com.nmatte.mood.chart.cell;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.NinePatchDrawable;
@@ -54,9 +55,9 @@ public class CellView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        int desiredWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DESIRED_WIDTH, getResources().getDisplayMetrics());
-        int desiredHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DESIRED_HEIGHT, getResources().getDisplayMetrics());
+        Resources res = getResources();
+        int desiredHeight = (int) res.getDimension(R.dimen.chart_cell_height);
+        int desiredWidth = (int) res.getDimension(R.dimen.chart_cell_width);
 
         int widthMode = View.MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = View.MeasureSpec.getSize(widthMeasureSpec);

@@ -48,7 +48,7 @@ public class EditEntryLayout extends LinearLayout {
 
         setOrientation(VERTICAL);
         LayoutInflater inflater = LayoutInflater.from(context);
-        LinearLayout main = (LinearLayout) inflater.inflate(R.layout.layout_edit_single_entry, null).findViewById(R.id.mainFuckingLayout);
+        LinearLayout main = (LinearLayout) inflater.inflate(R.layout.layout_edit_single_entry, null).findViewById(R.id.mainLayout);
         dateView = (TextCellView) main.findViewById(R.id.dateHeader);
         moodList = (MoodList) main.findViewById(R.id.moodList);
         numItemList = (NumItemList) main.findViewById(R.id.numItemList);

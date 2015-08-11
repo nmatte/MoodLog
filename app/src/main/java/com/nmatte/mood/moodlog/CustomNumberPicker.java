@@ -1,6 +1,7 @@
 package com.nmatte.mood.moodlog;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
@@ -15,6 +16,7 @@ public class CustomNumberPicker extends RelativeLayout {
     ImageButton minusButton;
     ImageButton plusButton;
     TextView textCellView;
+    Context context;
 
     NumItem numItem;
 
@@ -23,39 +25,41 @@ public class CustomNumberPicker extends RelativeLayout {
 
     public CustomNumberPicker(Context context, NumItem item){
         super(context);
-        View view = inflate(context,R.layout.custom_number_picker,null);
 
-        minusButton = (ImageButton) view.findViewById(R.id.minusButton);
-        plusButton = (ImageButton) view.findViewById(R.id.plusButton);
-        this.numItem = item;
-        textCellView = (TextView) view.findViewById(R.id.textCellView);
-        currentNum = item.getDefaultNum();
-        maxNum = item.getMaxNum();
+        this.context = context;
+        numItem = item;
+        init();
 
-        minusButton.setOnClickListener(minusListener);
-        plusButton.setOnClickListener(plusListener);
 
-        addView(view);
     }
 
     public CustomNumberPicker(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs,R.styleable.CustomNumberPicker,0,0);
+        int defaultNum = a.getInt(R.styleable.CustomNumberPicker_defaultNum,0);
+        int maxNum = a.getInt(R.styleable.CustomNumberPicker_max, 100);
+        numItem = new NumItem(null,"",maxNum,defaultNum);
+        init();
 
-        View v = inflate(context,R.layout.custom_number_picker,null);
-        minusButton = (ImageButton) v.findViewById(R.id.minusButton);
-        plusButton = (ImageButton) v.findViewById(R.id.plusButton);
-        textCellView = (TextView) v.findViewById(R.id.textCellView);
-        currentNum = a.getInt(R.styleable.CustomNumberPicker_defaultNum,0);
-        maxNum = a.getInt(R.styleable.CustomNumberPicker_max,100);
+   }
 
-        textCellView.setBackgroundColor(0xFFFFFFFF);
+    private void init(){
+        inflate(context,R.layout.custom_number_picker,this);
+
+        minusButton = (ImageButton) findViewById(R.id.minusButton);
+        plusButton = (ImageButton) findViewById(R.id.plusButton);
+        textCellView = (TextView) findViewById(R.id.textCellView);
+        currentNum = numItem.getDefaultNum();
+        maxNum = numItem.getMaxNum();
+        textCellView.setText(String.valueOf(currentNum));
 
         minusButton.setOnClickListener(minusListener);
         plusButton.setOnClickListener(plusListener);
+    }
 
-        addView(v);
-   }
+
+
 
     private OnClickListener plusListener = new OnClickListener() {
         @Override

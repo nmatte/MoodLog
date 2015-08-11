@@ -33,13 +33,10 @@ public class ChartMainFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        horizontalLayout = new LinearLayout(getActivity());
-        horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);
-        horizontalLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        View fragmentLayout = inflater.inflate(R.layout.fragment_month_view,null);
+        horizontalLayout = (LinearLayout) fragmentLayout.findViewById(R.id.columnLayout);
 
-        horizontalLayout.setLayoutTransition(new LayoutTransition());
-
-        return horizontalLayout;
+        return fragmentLayout;
     }
 
     public void refreshColumns(Calendar startDate, Calendar endDate) {
@@ -72,7 +69,7 @@ public class ChartMainFragment extends Fragment {
 
 
                         horizontalLayout.removeView(column);
-                        horizontalLayout.addView(new EditEntryLayout(getActivity(),entry,numItems,boolItems),index);
+                        horizontalLayout.addView(new EditEntryLayout(getActivity(), entry, numItems,boolItems),index);
 
                         return true;
                     }

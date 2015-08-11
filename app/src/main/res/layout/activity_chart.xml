@@ -27,26 +27,11 @@
                 android:id="@+id/chartLabelFragment"
                 />
 
-
-        <HorizontalScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:id="@+id/horizontalScrollView">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true">
             <fragment
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:name="com.nmatte.mood.chart.ChartMainFragment"
                 android:id="@+id/chartMainFragment"/>
-                
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
 
 
     </LinearLayout>
