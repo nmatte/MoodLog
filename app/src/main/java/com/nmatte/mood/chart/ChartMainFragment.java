@@ -28,6 +28,10 @@ public class ChartMainFragment extends Fragment {
     LinearLayout horizontalLayout;
     boolean editEntryViewIsOpen = false;
     int indexOfOpenEntry = 0;
+    ArrayList<NumItem> numItems;
+    ArrayList<BoolItem> boolItems;
+    Calendar startDate;
+    Calendar endDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,9 @@ public class ChartMainFragment extends Fragment {
         View fragmentLayout = inflater.inflate(R.layout.fragment_month_view, null);
         horizontalLayout = (LinearLayout) fragmentLayout.findViewById(R.id.columnLayout);
 
+        numItems = NumItemTableHelper.getAll(getActivity());
+        boolItems = BoolItemTableHelper.getAll(getActivity());
+
         return fragmentLayout;
     }
 
@@ -56,32 +63,17 @@ public class ChartMainFragment extends Fragment {
         horizontalLayout.setClickable(true);
         horizontalLayout.setLongClickable(true);
 
+        this.startDate = startDate;
+        this.endDate = endDate;
 
         ArrayList<ChartEntry> newList = ChartEntryTableHelper.getGroupWithBlanks(getActivity(), startDate, endDate);
         if (newList.size() > 0) {
-            final ArrayList<NumItem> numItems = NumItemTableHelper.getAll(getActivity());
-            final ArrayList<BoolItem> boolItems = BoolItemTableHelper.getAll(getActivity());
             for (final ChartEntry entry : newList) {
                 final ReadonlyColumn column = new ReadonlyColumn(getActivity(), entry, startDate, numItems, boolItems);
                 column.setClickable(true);
                 column.setLongClickable(true);
                 column.setDuplicateParentStateEnabled(true);
-                column.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        if (!editEntryViewIsOpen) {
-                            editEntryViewIsOpen = true;
-                            indexOfOpenEntry = horizontalLayout.indexOfChild(column);
-
-                            horizontalLayout.removeView(column);
-                            horizontalLayout.addView(new EditEntryLayout(getActivity(), entry, numItems, boolItems), indexOfOpenEntry);
-
-                            EventBus.getDefault().post(new OpenEditEntryEvent());
-                            return true;
-                        } else
-                            return false;
-                    }
-                });
+                column.setOnLongClickListener(getColumnLongClickListener(column));
                 horizontalLayout.addView(column);
             }
         }
@@ -89,7 +81,42 @@ public class ChartMainFragment extends Fragment {
 
     }
 
+    private View.OnLongClickListener getColumnLongClickListener(final ReadonlyColumn column){
+        return new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (!editEntryViewIsOpen) {
+                    editEntryViewIsOpen = true;
+                    indexOfOpenEntry = horizontalLayout.indexOfChild(column);
+                    horizontalLayout.removeView(column);
+                    horizontalLayout.addView(new EditEntryLayout(getActivity(), column.getEntry(), numItems, boolItems), indexOfOpenEntry);
+                    EventBus.getDefault().post(new OpenEditEntryEvent());
+                    return true;
+                } else
+                    return false;
+            }
+        };
+    }
+
     public void onEvent(CloseEditEntryEvent event){
+        try {
+            // TODO fix when column is closed, numItem list is blank?
+            // TODO save entry to table
+            EditEntryLayout editEntryLayout = (EditEntryLayout) horizontalLayout.getChildAt(indexOfOpenEntry);
+            ReadonlyColumn newColumn = new ReadonlyColumn(
+                    getActivity(),
+                     editEntryLayout.getEntry(),
+                    startDate,
+                    numItems,
+                    boolItems
+                    );
+            newColumn.setOnLongClickListener(getColumnLongClickListener(newColumn));
+            horizontalLayout.removeView(editEntryLayout);
+            horizontalLayout.addView(newColumn,indexOfOpenEntry);
+            editEntryViewIsOpen = false;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 

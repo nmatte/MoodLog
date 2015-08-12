@@ -18,6 +18,7 @@ import java.util.Calendar;
 // TODO fix bug where long click doesn't register on moods
 
 public class ReadonlyColumn extends LinearLayout {
+
     final ChartEntry entry;
     ArrayList<NumItem> numItems;
     ArrayList<BoolItem> boolItems;
@@ -78,6 +79,12 @@ public class ReadonlyColumn extends LinearLayout {
         for (CheckableCellView cellView : MoodList.getCellViews(context,entry.getMoods())){
             addView(cellView);
         }
+    }
+
+
+
+    public ChartEntry getEntry() {
+        return entry;
     }
 
 
