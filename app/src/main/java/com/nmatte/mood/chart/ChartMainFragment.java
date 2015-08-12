@@ -1,6 +1,5 @@
 package com.nmatte.mood.chart;
 
-import android.animation.LayoutTransition;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +10,9 @@ import android.widget.LinearLayout;
 
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.ChartEntryTableHelper;
-import com.nmatte.mood.logbookentries.EditEntryLayout;
+import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
+import com.nmatte.mood.logbookentries.editentry.EditEntryLayout;
+import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
@@ -21,19 +22,30 @@ import com.nmatte.mood.moodlog.R;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import de.greenrobot.event.EventBus;
+
 public class ChartMainFragment extends Fragment {
     LinearLayout horizontalLayout;
+    boolean editEntryViewIsOpen = false;
+    int indexOfOpenEntry = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View fragmentLayout = inflater.inflate(R.layout.fragment_month_view,null);
+        View fragmentLayout = inflater.inflate(R.layout.fragment_month_view, null);
         horizontalLayout = (LinearLayout) fragmentLayout.findViewById(R.id.columnLayout);
 
         return fragmentLayout;
@@ -49,14 +61,6 @@ public class ChartMainFragment extends Fragment {
         if (newList.size() > 0) {
             final ArrayList<NumItem> numItems = NumItemTableHelper.getAll(getActivity());
             final ArrayList<BoolItem> boolItems = BoolItemTableHelper.getAll(getActivity());
-            ArrayList<String> numItemStrings = new ArrayList<>();
-            ArrayList<String> boolItemStrings = new ArrayList<>();
-            for (NumItem item : numItems){
-                numItemStrings.add(item.toString());
-            }
-            for (BoolItem item : boolItems){
-                boolItemStrings.add(item.toString());
-            }
             for (final ChartEntry entry : newList) {
                 final ReadonlyColumn column = new ReadonlyColumn(getActivity(), entry, startDate, numItems, boolItems);
                 column.setClickable(true);
@@ -65,20 +69,27 @@ public class ChartMainFragment extends Fragment {
                 column.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        int index = horizontalLayout.indexOfChild(column);
+                        if (!editEntryViewIsOpen) {
+                            editEntryViewIsOpen = true;
+                            indexOfOpenEntry = horizontalLayout.indexOfChild(column);
 
+                            horizontalLayout.removeView(column);
+                            horizontalLayout.addView(new EditEntryLayout(getActivity(), entry, numItems, boolItems), indexOfOpenEntry);
 
-                        horizontalLayout.removeView(column);
-                        horizontalLayout.addView(new EditEntryLayout(getActivity(), entry, numItems,boolItems),index);
-
-                        return true;
+                            EventBus.getDefault().post(new OpenEditEntryEvent());
+                            return true;
+                        } else
+                            return false;
                     }
                 });
-
                 horizontalLayout.addView(column);
             }
         }
 
+
+    }
+
+    public void onEvent(CloseEditEntryEvent event){
 
     }
 

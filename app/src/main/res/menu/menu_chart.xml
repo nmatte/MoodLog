@@ -3,8 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".ChartActivity">
 
     <item android:id="@+id/pickDates"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title=""
+        />
+
+    <item android:id="@+id/editEntryDoneButton"
+        android:title="Done"
+        android:icon="@drawable/ic_done_white_24dp"
+        app:showAsAction="always|withText"
         />
 
 

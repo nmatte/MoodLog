@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.ListView;
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.ChartEntryTableHelper;
 import com.nmatte.mood.logbookentries.SingleEntryDialog;
+import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
+import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
 import com.nmatte.mood.logbookitems.boolitems.AddBoolDialog;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.DeleteBoolDialog;
@@ -28,14 +31,16 @@ import com.nmatte.mood.util.TestActivity;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import de.greenrobot.event.EventBus;
 
-public class ChartActivity extends ActionBarActivity
+
+public class ChartActivity extends AppCompatActivity
         implements
         SingleEntryDialog.SingleEntryDialogListener
 {
 
     ChartMainFragment chartMainFragment;
-    ListView navList;
+    Menu menu;
 
 
     @Override
@@ -48,9 +53,10 @@ public class ChartActivity extends ActionBarActivity
         initFragments();
     }
 
-    private void initFragments(){
-        chartMainFragment = (ChartMainFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
-        chartMainFragment.setRetainInstance(false);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -59,6 +65,24 @@ public class ChartActivity extends ActionBarActivity
 
         refreshFragments();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    private void initFragments(){
+        chartMainFragment = (ChartMainFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
+        chartMainFragment.setRetainInstance(false);
+    }
+
+
 
     private void refreshFragments(){
         Calendar endDate = Calendar.getInstance();
@@ -109,6 +133,11 @@ public class ChartActivity extends ActionBarActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_chart, menu);
+        this.menu = menu;
+
+        MenuItem editEntryDoneButton = menu.findItem(R.id.editEntryDoneButton);
+        editEntryDoneButton.setVisible(false);
+
         return true;
     }
 
@@ -119,14 +148,16 @@ public class ChartActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if(id == R.id.editEntryDoneButton){
+            item.setVisible(false);
+            EventBus.getDefault().post(new CloseEditEntryEvent());
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -148,4 +179,11 @@ public class ChartActivity extends ActionBarActivity
     public void onTestItemClick(MenuItem item) {
         startTestActivity();
     }
+
+    public void onEvent(OpenEditEntryEvent event){
+        MenuItem doneButton = menu.findItem(R.id.editEntryDoneButton);
+        doneButton.setVisible(true);
+    }
+
+
 }

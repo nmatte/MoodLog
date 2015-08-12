@@ -1,4 +1,4 @@
-package com.nmatte.mood.logbookentries;
+package com.nmatte.mood.logbookentries.editentry;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.cell.TextCellView;
+import com.nmatte.mood.logbookentries.ChartEntry;
+import com.nmatte.mood.logbookentries.MoodList;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemList;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
