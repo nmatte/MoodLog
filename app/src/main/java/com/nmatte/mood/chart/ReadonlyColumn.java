@@ -5,6 +5,7 @@ import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.cell.CellView;
 import com.nmatte.mood.chart.cell.CheckableCellView;
+import com.nmatte.mood.chart.cell.ReadonlyCheckbox;
 import com.nmatte.mood.chart.cell.TextCellView;
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.MoodList;
@@ -15,7 +16,6 @@ import com.nmatte.mood.util.CalendarUtil;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-// TODO fix bug where long click doesn't register on moods
 
 public class ReadonlyColumn extends LinearLayout {
 
@@ -66,9 +66,8 @@ public class ReadonlyColumn extends LinearLayout {
         }
         for (BoolItem boolItem : boolItems){
             if (entry.getBoolItems().containsKey(boolItem)){
-                CheckableCellView newCell = new CheckableCellView(context);
+                ReadonlyCheckbox newCell = new ReadonlyCheckbox(context);
                 newCell.setChecked(entry.getBoolItems().get(boolItem));
-                newCell.setEnabled(false);
             } else {
                 addView(new CellView(context));
             }
@@ -76,7 +75,7 @@ public class ReadonlyColumn extends LinearLayout {
     }
 
     private void addMoodModule(Context context){
-        for (CheckableCellView cellView : MoodList.getCellViews(context,entry.getMoods())){
+        for (ReadonlyCheckbox cellView : MoodList.getCellViews(context,entry.getMoods())){
             addView(cellView);
         }
     }

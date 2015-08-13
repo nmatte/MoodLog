@@ -43,7 +43,7 @@ public class ChartLabelFragment extends Fragment {
         for (NumItem numItem : NumItemTableHelper.getAll(getActivity())){
 
             TextView textView = new TextView(getActivity());
-            textView.setBackgroundResource(R.drawable.drop_shadow3);
+            textView.setBackgroundResource(R.drawable.drop_shadow2);
             textView.setText(numItem.getName());
             textView.setEllipsize(TextUtils.TruncateAt.END);
             mainLayout.addView(textView);

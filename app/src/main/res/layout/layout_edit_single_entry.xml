@@ -8,32 +8,29 @@
 
     <com.nmatte.mood.chart.cell.TextCellView
         android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/chart_edit_entry_width"
         android:layout_height="48dp"
         android:id="@+id/dateHeader"
         />
 
     <com.nmatte.mood.logbookentries.MoodList
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/chart_edit_entry_width"
         android:layout_height="wrap_content"
         android:id="@+id/moodList"/>
 
     <com.nmatte.mood.logbookitems.numitems.NumItemList
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/chart_edit_entry_width"
         android:layout_height="wrap_content"
         android:id="@+id/numItemList"/>
 
     <com.nmatte.mood.logbookitems.boolitems.BoolItemList
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/chart_edit_entry_width"
         android:layout_height="wrap_content"
         android:id="@+id/boolItemList"/>
 
 
 
-    <TextView
-        android:layout_width="144dp"
-        android:layout_height="0dp"
-        android:text="for some reason this is the only way to give this view the desired width"/>
+
 
 
 

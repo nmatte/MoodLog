@@ -13,6 +13,7 @@ import com.nmatte.mood.logbookitems.boolitems.BoolItemList;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
 import com.nmatte.mood.logbookitems.numitems.NumItemList;
 import com.nmatte.mood.moodlog.R;
+import com.nmatte.mood.util.CalendarUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,13 +51,13 @@ public class EditEntryLayout extends LinearLayout {
 
         setOrientation(VERTICAL);
         LayoutInflater inflater = LayoutInflater.from(context);
-        LinearLayout main = (LinearLayout) inflater.inflate(R.layout.layout_edit_single_entry, null).findViewById(R.id.mainLayout);
+        LinearLayout main = (LinearLayout) inflater.inflate(R.layout.layout_edit_single_entry, this).findViewById(R.id.mainLayout);
         dateView = (TextCellView) main.findViewById(R.id.dateHeader);
         moodList = (MoodList) main.findViewById(R.id.moodList);
         numItemList = (NumItemList) main.findViewById(R.id.numItemList);
         boolItemList = (BoolItemList) main.findViewById(R.id.boolItemList);
 
-        addView(main);
+        dateView.setText(CalendarUtil.getDateText(date));
 
 
     }
@@ -72,7 +73,6 @@ public class EditEntryLayout extends LinearLayout {
     }
 
     public void setEntryValues(ChartEntry entry){
-        dateView.setText("Today");
         moodList.setCheckedRows(entry.getMoods());
         numItemList.setItemValues(entry.getNumItems());
         boolItemList.setItems(entry.getBoolItems());

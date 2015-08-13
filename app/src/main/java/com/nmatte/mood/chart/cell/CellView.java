@@ -21,8 +21,6 @@ public class CellView extends View {
 
     static final int WHITE = 0xFFFFFFFF;
     static final int BLACK = 0xFF000000;
-    static final int DESIRED_HEIGHT = 48;
-    static final int DESIRED_WIDTH = 32;
 
 
     @Override

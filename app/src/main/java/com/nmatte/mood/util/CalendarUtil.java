@@ -118,4 +118,10 @@ public class CalendarUtil {
         }
         return result;
     }
+
+    public static String getDateText(Calendar date){
+        SimpleDateFormat format = new SimpleDateFormat("EEE MM/d",Locale.getDefault());
+
+        return format.format(date.getTime());
+    }
 }

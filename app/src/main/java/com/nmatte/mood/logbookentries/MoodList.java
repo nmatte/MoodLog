@@ -2,10 +2,12 @@ package com.nmatte.mood.logbookentries;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.RequiresPermission;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.cell.CheckableCellView;
+import com.nmatte.mood.chart.cell.ReadonlyCheckbox;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
@@ -32,8 +34,14 @@ public class MoodList extends LinearLayout {
         Resources res = getResources();
         int [] colors = res.getIntArray(R.array.mood_colors);
         for(int i = 0; i < colors.length; i++){
-            CheckableCellView row = new CheckableCellView(context,isEnabled,colors[i]);
-            this.addView(row);
+            if (isEnabled){
+                CheckableCellView row = new CheckableCellView(context,colors[i]);
+                addView(row);
+            } else {
+                ReadonlyCheckbox row = new ReadonlyCheckbox(context,colors[i]);
+                addView(row);
+            }
+
         }
     }
 
@@ -53,17 +61,17 @@ public class MoodList extends LinearLayout {
         }
     }
 
-    public static ArrayList<CheckableCellView> getCellViews(Context context, ArrayList<Boolean> cellValues){
-        ArrayList<CheckableCellView> result = new ArrayList<>();
+    public static ArrayList<ReadonlyCheckbox> getCellViews(Context context, ArrayList<Boolean> cellValues){
+        ArrayList<ReadonlyCheckbox> result = new ArrayList<>();
         Resources res = context.getResources();
         int [] colors = res.getIntArray(R.array.mood_colors);
         for (int i = 0; i < colors.length; i++){
-            CheckableCellView newCell = new CheckableCellView(context,false,colors[i]);
+            ReadonlyCheckbox newRow = new ReadonlyCheckbox(context,colors[i]);
             if (i < cellValues.size())
-                newCell.setChecked(cellValues.get(i));
+                newRow.setChecked(cellValues.get(i));
             else
-                newCell.setChecked(false);
-            result.add(newCell);
+                newRow.setChecked(false);
+            result.add(newRow);
         }
         return result;
     }
