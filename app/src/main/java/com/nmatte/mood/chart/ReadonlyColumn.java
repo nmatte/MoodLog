@@ -22,43 +22,33 @@ public class ReadonlyColumn extends LinearLayout {
     final ChartEntry entry;
     ArrayList<NumItem> numItems;
     ArrayList<BoolItem> boolItems;
+    Calendar refDate;
+    Context context;
 
 
     public ReadonlyColumn(Context context, ChartEntry newEntry,
                           Calendar refDate, ArrayList<NumItem> numItems, ArrayList<BoolItem> boolItems){
         super(context);
-        if (newEntry == null){
-            this.entry = new ChartEntry();
-        } else {
-            this.entry = newEntry;
-        }
+        this.entry = newEntry;
         this.numItems = numItems;
         this.boolItems = boolItems;
+        this.refDate = refDate;
+        this.context = context;
+        init();
 
+    }
 
+    private void init(){
         this.setOrientation(VERTICAL);
         int dateNum = CalendarUtil.dayDiff(refDate, entry.getDate());
         this.addView(new TextCellView(context, String.valueOf(dateNum)));
-        addMoodModule(context);
-        if (entry.isBlank()){
-            initBlank(context);
-        } else {
-            init(context);
-        }
-    }
-
-    private void initBlank(Context context){
-        for (int i = 0; i < (numItems.size() + boolItems.size()); i++){
-            addView(new CellView(context));
-        }
-    }
-
-    private void init(Context context){
+        addMoodModule();
         for (NumItem numItem : numItems){
             if (entry.getNumItems().containsKey(numItem)){
                 TextCellView newCell = new TextCellView(context);
                 newCell.setText(String.valueOf(entry.getNumItems().get(numItem)));
                 newCell.setEnabled(false);
+                addView(newCell);
             }
             else{
                 addView(new CellView(context));
@@ -68,19 +58,18 @@ public class ReadonlyColumn extends LinearLayout {
             if (entry.getBoolItems().containsKey(boolItem)){
                 ReadonlyCheckbox newCell = new ReadonlyCheckbox(context);
                 newCell.setChecked(entry.getBoolItems().get(boolItem));
+                addView(newCell);
             } else {
                 addView(new CellView(context));
             }
         }
     }
 
-    private void addMoodModule(Context context){
+    private void addMoodModule(){
         for (ReadonlyCheckbox cellView : MoodList.getCellViews(context,entry.getMoods())){
             addView(cellView);
         }
     }
-
-
 
     public ChartEntry getEntry() {
         return entry;

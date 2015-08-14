@@ -70,8 +70,6 @@ public class ChartMainFragment extends Fragment {
         if (newList.size() > 0) {
             for (final ChartEntry entry : newList) {
                 final ReadonlyColumn column = new ReadonlyColumn(getActivity(), entry, startDate, numItems, boolItems);
-                column.setClickable(true);
-                column.setLongClickable(true);
                 column.setDuplicateParentStateEnabled(true);
                 column.setOnLongClickListener(getColumnLongClickListener(column));
                 horizontalLayout.addView(column);
