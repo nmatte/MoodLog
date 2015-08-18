@@ -36,7 +36,7 @@ public class EditNumItem extends RelativeLayout {
     }
 
     private void init() {
-        View mainLayout = inflate(context, R.layout.row_numitem_edit,null);
+        View mainLayout = inflate(context, R.layout.row_numitem_edit,this);
         itemName = (EditText) mainLayout.findViewById(R.id.itemName);
 
         delButton = (ImageButton) mainLayout.findViewById(R.id.delButton);
@@ -69,7 +69,6 @@ public class EditNumItem extends RelativeLayout {
         }
 
 
-        addView(mainLayout);
     }
 
     public void setEditable(boolean isEditable){

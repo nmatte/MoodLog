@@ -26,11 +26,18 @@
                     android:id="@+id/chartLabelFragment"
                     />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
             <fragment
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:name="com.nmatte.mood.chart.ChartMainFragment"
                     android:id="@+id/chartMainFragment"/>
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

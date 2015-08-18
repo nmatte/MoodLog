@@ -14,34 +14,26 @@ import com.nmatte.mood.moodlog.R;
 
 import java.util.Calendar;
 
+import de.greenrobot.event.EventBus;
+
 public class DateRangeDialog extends DialogFragment {
-    DateRangeDialongListener listener;
     DatePicker datePicker;
+    Calendar startDate = null;
     boolean isStart = true;
 
     public static String
-            IS_START_PICKER = "StartOrEnd",
-            START_DATE_VALUE = "StartDateValue",
+            BOOL_IS_START_PICKER = "StartOrEnd",
+            LONG_START_DATE_VALUE = "StartDateValue",
+
             BUTTON_END = "Done",
             BUTTON_START = "Next",
             TITLE_START = "Choose start date",
             TITLE_END = "Choose end date";
 
-    interface DateRangeDialongListener{
-        void startDatePicked(Calendar startDate);
-        void endDatePicked(Calendar endDate, boolean save);
-    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try {
-            listener = (DateRangeDialongListener) getActivity();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
     }
 
     @Override
@@ -53,7 +45,7 @@ public class DateRangeDialog extends DialogFragment {
         final CheckBox saveBox = (CheckBox) view.findViewById(R.id.saveBox);
 
         try{
-            isStart = getArguments().getBoolean(IS_START_PICKER);
+            isStart = getArguments().getBoolean(BOOL_IS_START_PICKER);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -73,7 +65,7 @@ public class DateRangeDialog extends DialogFragment {
             saveBox.setText("Remember next time");
         }
 
-        final boolean isStartFinal = isStart;
+        final boolean isStartF = isStart;
         builder.setView(view)
                 .setTitle(title)
                 .setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
@@ -83,10 +75,10 @@ public class DateRangeDialog extends DialogFragment {
                         date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
                         date.set(Calendar.MONTH, datePicker.getMonth());
                         date.set(Calendar.YEAR, datePicker.getYear());
-                        if(isStartFinal)
-                            listener.startDatePicked(date);
+                        if(isStartF)
+                            EventBus.getDefault().post(new OpenEndDateDialogEvent(date));
                         else
-                            listener.endDatePicked(date, saveBox.isChecked());
+                            EventBus.getDefault().post(new SaveEndDateDialogEvent(startDate,date,saveBox.isChecked()));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -109,9 +101,10 @@ public class DateRangeDialog extends DialogFragment {
             long maxTime = Calendar.getInstance().getTimeInMillis();
             datePicker.setMaxDate(maxTime);
         } else {
-            long minDate = args.getLong(START_DATE_VALUE);
+            long minDate = args.getLong(LONG_START_DATE_VALUE);
             Calendar max = Calendar.getInstance();
             max.setTimeInMillis(minDate);
+            startDate = max;
             max.roll(Calendar.DAY_OF_YEAR,31);
             long maxDate = max.getTimeInMillis();
             datePicker.setMinDate(minDate);

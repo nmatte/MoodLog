@@ -50,7 +50,7 @@ public class EditBoolItem extends RelativeLayout {
     }
 
     private void init() {
-        View mainLayout = inflate(context,R.layout.row_boolitem_edit,null);
+        View mainLayout = inflate(context,R.layout.row_boolitem_edit,this);
         itemName = (EditText) mainLayout.findViewById(R.id.itemName);
         delButton = (ImageButton) mainLayout.findViewById(R.id.delButton);
         saveButton = (ImageButton) mainLayout.findViewById(R.id.saveButton);
@@ -76,7 +76,6 @@ public class EditBoolItem extends RelativeLayout {
         else
             setEditable(true);
 
-        addView(mainLayout);
     }
 
     public void setEditable(boolean isEditable){
