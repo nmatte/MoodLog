@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Region;
 import android.util.AttributeSet;
 
 import com.nmatte.mood.chart.cell.CellView;
@@ -62,8 +63,10 @@ public class TextCellView extends CellView {
         blackPaint.setTextSize(getAdjustedTextSize(sampleText));
 
 
+        //this centers the text
+        //float textX = getWidth() / 2 - blackPaint.measureText(text) / 2;
 
-        float textX = getWidth() / 2 - blackPaint.measureText(text) / 2;
+        float textX = (float) super.leftTransparentBound;
         float textY = (getHeight() * 5 )/ 6;
 
         canvas.drawText(text, textX, textY, blackPaint);

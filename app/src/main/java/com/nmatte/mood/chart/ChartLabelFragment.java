@@ -42,10 +42,12 @@ public class ChartLabelFragment extends Fragment {
 
         for (NumItem numItem : NumItemTableHelper.getAll(getActivity())){
 
-            TextView textView = new TextView(getActivity());
-            textView.setBackgroundResource(R.drawable.drop_shadow2);
-            textView.setText(numItem.getName());
-            textView.setEllipsize(TextUtils.TruncateAt.END);
+            //TextView textView = new TextView(getActivity());
+            //TextViewCell textView = new TextViewCell(getActivity());
+            TextCellView textView = new TextCellView(getActivity(),numItem.getName());
+            //textView.setBackgroundResource(R.drawable.drop_shadow3);
+            //textView.setText(numItem.getName());
+            //textView.setEllipsize(TextUtils.TruncateAt.END);
             mainLayout.addView(textView);
         }
 

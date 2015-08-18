@@ -217,7 +217,9 @@ public class ChartActivity extends AppCompatActivity
 
     public void onEvent(SaveEndDateDialogEvent event){
         boolean foo = event.isRememberDates();
-        chartMainFragment.refreshColumns(event.getStartDate(),event.getEndDate());
+        Calendar start = event.getStartDate();
+        Calendar end = event.getEndDate();
+        chartMainFragment.refreshColumns(start,end);
     }
 
 

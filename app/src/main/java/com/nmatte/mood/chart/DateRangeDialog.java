@@ -78,7 +78,7 @@ public class DateRangeDialog extends DialogFragment {
                         if(isStartF)
                             EventBus.getDefault().post(new OpenEndDateDialogEvent(date));
                         else
-                            EventBus.getDefault().post(new SaveEndDateDialogEvent(startDate,date,saveBox.isChecked()));
+                            EventBus.getDefault().post(new SaveEndDateDialogEvent(date,startDate,saveBox.isChecked()));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
