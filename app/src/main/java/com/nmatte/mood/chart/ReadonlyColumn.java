@@ -22,17 +22,14 @@ public class ReadonlyColumn extends LinearLayout {
     final ChartEntry entry;
     ArrayList<NumItem> numItems;
     ArrayList<BoolItem> boolItems;
-    Calendar refDate;
     Context context;
 
 
-    public ReadonlyColumn(Context context, ChartEntry newEntry,
-                          Calendar refDate, ArrayList<NumItem> numItems, ArrayList<BoolItem> boolItems){
+    public ReadonlyColumn(Context context, ChartEntry newEntry, ArrayList<NumItem> numItems, ArrayList<BoolItem> boolItems){
         super(context);
         this.entry = newEntry;
         this.numItems = numItems;
         this.boolItems = boolItems;
-        this.refDate = refDate;
         this.context = context;
         init();
 
@@ -40,7 +37,7 @@ public class ReadonlyColumn extends LinearLayout {
 
     private void init(){
         this.setOrientation(VERTICAL);
-        int dateNum = CalendarUtil.dayDiff(refDate, entry.getDate());
+        int dateNum = entry.getLogDate().getDayOfMonth();
         this.addView(new TextCellView(context, String.valueOf(dateNum)));
         addMoodModule();
         for (NumItem numItem : numItems){

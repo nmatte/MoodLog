@@ -7,17 +7,17 @@ import android.support.v4.util.SimpleArrayMap;
 import com.nmatte.mood.logbookitems.LogbookItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
-import com.nmatte.mood.util.CalendarUtil;
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class ChartEntry implements Parcelable{
-    private Calendar date;
+
+    private final DateTime logDate;
     private ArrayList<Boolean> moods;
     private SimpleArrayMap<NumItem,Integer> numItems;
     private SimpleArrayMap<BoolItem,Boolean> boolItems;
-    private boolean isBlank = false;
 
     public static final String PARCEL_TAG = "LogbookParcel",
             DATE_TAG = "LogbookEntryDate",
@@ -25,23 +25,31 @@ public class ChartEntry implements Parcelable{
     BOOL_TAG = "LogbookEntryBoolItems",
     NUM_TAG = "LogbookEntryNumItems";
 
+
     public ChartEntry(){
-        this(Calendar.getInstance());
+        this(DateTime.now());
     }
 
-    public ChartEntry(Calendar date){
-        this(date,
-            getEmptyMoods(),
-            new SimpleArrayMap<NumItem,Integer>(),
-            new SimpleArrayMap<BoolItem,Boolean>());
+    public ChartEntry(DateTime logDate){
+        this(logDate, getEmptyMoods(),new SimpleArrayMap<NumItem,Integer>(),new SimpleArrayMap<BoolItem,Boolean>());
     }
 
-    public ChartEntry(Calendar date, ArrayList<Boolean> moods,
+    public ChartEntry(DateTime logDate, ArrayList<Boolean> moods,
                       SimpleArrayMap<NumItem, Integer> numItems, SimpleArrayMap<BoolItem, Boolean> boolItems) {
-        this.date = date;
+        this.logDate = logDate;
         this.moods = moods;
         this.numItems = numItems;
         this.boolItems = boolItems;
+    }
+
+
+    // parcel constructor
+    private ChartEntry(Parcel in){
+        logDate = new DateTime(in.readLong());
+        moods = parseMoodString(in.readString());
+        numItems = NumItem.mapFromStringArray(in.createStringArrayList());
+        boolItems = BoolItem.mapFromStringArray(in.createStringArrayList());
+
     }
 
     public SimpleArrayMap<BoolItem, Boolean> getBoolItems() {
@@ -50,27 +58,6 @@ public class ChartEntry implements Parcelable{
 
     public void setBoolItems(SimpleArrayMap<BoolItem, Boolean> boolItems) {
         this.boolItems = boolItems;
-    }
-
-    public Calendar getDate() {
-        return date;
-    }
-
-    public int getDateInt(){
-        return CalendarUtil.calendarToInt(date);
-    }
-
-    public void setDate(Calendar date) {
-        this.date = date;
-    }
-
-    public boolean isBlank() {
-        return isBlank;
-    }
-
-    public ChartEntry setIsBlank(boolean isBlank) {
-        this.isBlank = isBlank;
-        return this;
     }
 
     public ArrayList<Boolean> getMoods() {
@@ -136,21 +123,11 @@ public class ChartEntry implements Parcelable{
         }
     };
 
-    private ChartEntry(Parcel in){
-        Calendar newDate = CalendarUtil.intToCalendar(in.readInt());
-        moods = parseMoodString(in.readString());
-        numItems = NumItem.mapFromStringArray(in.createStringArrayList());
-        boolItems = BoolItem.mapFromStringArray(in.createStringArrayList());
 
-    }
-
-    public static ChartEntry getBlankEntry(Calendar date){
-        return new ChartEntry(date).setIsBlank(true);
-    }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(getDateInt());
+        dest.writeLong(logDate.getMillis());
         dest.writeString(getMoodString());
         dest.writeStringList(NumItem.mapToStringArray(numItems));
         dest.writeStringList(BoolItem.mapToStringArray(boolItems));
@@ -162,5 +139,13 @@ public class ChartEntry implements Parcelable{
             result.add(false);
         }
         return result;
+    }
+
+    public DateTime getLogDate() {
+        return logDate;
+    }
+
+    public int getDateInt() {
+        return Integer.valueOf(logDate.toString("YYYYDDD"));
     }
 }

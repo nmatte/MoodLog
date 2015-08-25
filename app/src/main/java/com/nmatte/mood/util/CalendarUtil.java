@@ -1,16 +1,8 @@
 package com.nmatte.mood.util;
 
-import android.support.v4.util.SimpleArrayMap;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
-
-import static java.lang.Integer.valueOf;
-
 public class CalendarUtil {
+
+    /*
 
     public static int dayDiff(Calendar startDate, Calendar endDate){
         int result = 0;
@@ -124,4 +116,6 @@ public class CalendarUtil {
 
         return format.format(date.getTime());
     }
+
+    */
 }

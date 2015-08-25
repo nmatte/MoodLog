@@ -1,19 +1,13 @@
 package com.nmatte.mood.chart;
 
+import org.joda.time.DateTime;
+
 import java.util.Calendar;
 
 public class OpenEndDateDialogEvent {
-    public Calendar getDate() {
-        return date;
-    }
+    DateTime date;
 
-    public void setDate(Calendar date) {
-        this.date = date;
-    }
-
-
-    Calendar date;
-    public OpenEndDateDialogEvent (Calendar date){
+    public OpenEndDateDialogEvent(DateTime date) {
         this.date = date;
     }
 }

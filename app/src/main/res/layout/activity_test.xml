@@ -3,21 +3,4 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="show"
-        android:onClick="onShowClick"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="hide"
-        android:onClick="onHideClick"/>
-
-    <fragment
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:name="com.nmatte.mood.logbookentries.ChartEntryFragment"
-        android:id="@+id/testEntryFragment"/>
-
 </LinearLayout>

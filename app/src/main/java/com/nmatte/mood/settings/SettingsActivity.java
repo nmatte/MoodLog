@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.nmatte.mood.logbookitems.LogbookEditorFragment;
@@ -23,7 +24,7 @@ import com.nmatte.mood.notifications.NotificationList;
 import java.util.ArrayList;
 
 public class SettingsActivity
-        extends ActionBarActivity
+        extends AppCompatActivity
         implements NotificationList.NotificationListListener,
         AddMedNotificationDialog.AddNotificationListener,
         DeleteMedNotificationDialog.DeleteNotificationListener{

@@ -6,8 +6,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class AlarmManagerHelper extends BroadcastReceiver {
     static final String NMATTE_NOTIFICATION_ACTION = "nmatte notification action";
@@ -47,11 +48,11 @@ public class AlarmManagerHelper extends BroadcastReceiver {
         return PendingIntent.getService(context, notification.timeID,intent,PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private static void setAlarm(Context context, Calendar calendar, PendingIntent pIntent){
+    private static void setAlarm(Context context, DateTime time, PendingIntent pIntent){
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.setInexactRepeating(
                 AlarmManager.RTC_WAKEUP,
-                calendar.getTimeInMillis(),
+                time.getMillis(),
                 AlarmManager.INTERVAL_DAY,
                 pIntent);
     }

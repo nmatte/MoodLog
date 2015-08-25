@@ -2,32 +2,27 @@ package com.nmatte.mood.chart;
 
 import android.app.DialogFragment;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.nmatte.mood.logbookentries.ChartEntry;
-import com.nmatte.mood.logbookentries.ChartEntryTableHelper;
-import com.nmatte.mood.logbookentries.SingleEntryDialog;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
 import com.nmatte.mood.moodlog.R;
-import com.nmatte.mood.settings.PreferencesContract;
 import com.nmatte.mood.settings.SettingsActivity;
-import com.nmatte.mood.util.CalendarUtil;
 import com.nmatte.mood.util.TestActivity;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
 
 
 public class ChartActivity extends AppCompatActivity
-        implements
-        SingleEntryDialog.SingleEntryDialogListener
 {
 
     ChartMainFragment chartMainFragment;
@@ -40,9 +35,6 @@ public class ChartActivity extends AppCompatActivity
         setContentView(R.layout.activity_chart);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-
-        initStartDate();
         initFragments();
     }
 
@@ -80,17 +72,6 @@ public class ChartActivity extends AppCompatActivity
     }
 
 
-    private void initStartDate(){
-        SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        if (!settings.contains(PreferencesContract.CHART_START_DATE)){
-            Calendar newStartDate = Calendar.getInstance();
-            newStartDate.set(Calendar.DAY_OF_MONTH,newStartDate.getActualMinimum(Calendar.DAY_OF_MONTH));
-
-            settings.edit()
-                    .putInt(PreferencesContract.CHART_START_DATE, CalendarUtil.calendarToInt(newStartDate))
-                    .apply();
-        }
-    }
 
 
     private void startSettingsActivity(){
@@ -103,7 +84,19 @@ public class ChartActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    private Calendar getChartStartDate(){
+    private DateTime getChartStartDate(){
+    /*
+    SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        if (!settings.contains(PreferencesContract.CHART_START_DATE)){
+            Calendar newStartDate = Calendar.getInstance();
+            newStartDate.set(Calendar.DAY_OF_MONTH,newStartDate.getActualMinimum(Calendar.DAY_OF_MONTH));
+
+            settings.edit()
+                    .putInt(PreferencesContract.CHART_START_DATE, CalendarUtil.calendarToInt(newStartDate))
+                    .apply();
+        }
+
+
         Calendar result;
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
         int dateInt = settings.getInt(PreferencesContract.CHART_START_DATE,0);
@@ -114,17 +107,18 @@ public class ChartActivity extends AppCompatActivity
         } else {
             result = CalendarUtil.intToCalendar(dateInt);
         }
+        */
 
-        return result;
-
-
-
-
+        return DateTime.now().withDayOfMonth(1);
     }
 
-    private Calendar getChartEndDate(){
-        return Calendar.getInstance();
+    private DateTime getChartEndDate(){
+        return DateTime.now();
+    }
 
+    public String getDateRangeString(DateTime startDate, DateTime endDate){
+        DateTimeFormatter fmt = DateTimeFormat.shortDate().withLocale(Locale.getDefault());
+        return startDate.toString(fmt) + "-" + endDate.toString(fmt);
     }
 
 
@@ -138,10 +132,7 @@ public class ChartActivity extends AppCompatActivity
         editEntryDoneButton.setVisible(false);
 
         MenuItem pickDateButton = menu.findItem(R.id.pickDates);
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
-        String startText = sdf.format(getChartStartDate().getTime());
-        String endText = sdf.format(Calendar.getInstance().getTime());
-        pickDateButton.setTitle(startText + "-" + endText);
+        pickDateButton.setTitle(getDateRangeString(getChartStartDate(),getChartEndDate()));
 
         return true;
     }
@@ -173,11 +164,6 @@ public class ChartActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onSaveEntryPositiveClick(ChartEntry entry) {
-        ChartEntryTableHelper.addOrUpdateEntry(this, entry);
-    }
-
     public void onSettingsItemClick(MenuItem item) {
         startSettingsActivity();
     }
@@ -205,21 +191,18 @@ public class ChartActivity extends AppCompatActivity
     }
 
     public void onEvent(OpenEndDateDialogEvent event){
-        Calendar date = event.date;
-        DialogFragment d = new DateRangeDialog();
+        DialogFragment dialog = new DateRangeDialog();
         Bundle args = new Bundle();
         args.putBoolean(DateRangeDialog.BOOL_IS_START_PICKER,false);
-        args.putLong(DateRangeDialog.LONG_START_DATE_VALUE, date.getTimeInMillis());
-        d.setArguments(args);
+        args.putLong(DateRangeDialog.LONG_START_DATE_VALUE, event.date.getMillis());
+        dialog.setArguments(args);
 
-        d.show(getFragmentManager(),"bar");
+        dialog.show(getFragmentManager(), "bar");
     }
 
     public void onEvent(SaveEndDateDialogEvent event){
         boolean foo = event.isRememberDates();
-        Calendar start = event.getStartDate();
-        Calendar end = event.getEndDate();
-        chartMainFragment.refreshColumns(start,end);
+        chartMainFragment.refreshColumns(event.getStartDate(),event.getEndDate());
     }
 
 

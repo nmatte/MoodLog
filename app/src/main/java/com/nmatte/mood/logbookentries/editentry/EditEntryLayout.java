@@ -15,12 +15,15 @@ import com.nmatte.mood.logbookitems.numitems.NumItemList;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.util.CalendarUtil;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class EditEntryLayout extends LinearLayout {
     private Context context;
-    Calendar date;
+    ChartEntry entry;
     TextCellView dateView;
     MoodList moodList;
     NumItemList numItemList;
@@ -29,14 +32,15 @@ public class EditEntryLayout extends LinearLayout {
 
     public EditEntryLayout(Context context,
                            ChartEntry initialValues,
-                           ArrayList<NumItem> numItems, ArrayList<BoolItem> boolItems) {
+                           ArrayList<NumItem> numItems,
+                           ArrayList<BoolItem> boolItems) {
         super(context);
         this.context = context;
-        this.date = initialValues.getDate();
+        this.entry = initialValues;
         initWidgets();
         setNumItemList(numItems);
         setBoolItemList(boolItems);
-        setEntryValues(initialValues);
+        setEntryValues();
     }
 
 
@@ -48,7 +52,6 @@ public class EditEntryLayout extends LinearLayout {
 
 
     private void initWidgets() {
-
         setOrientation(VERTICAL);
         LayoutInflater inflater = LayoutInflater.from(context);
         LinearLayout main = (LinearLayout) inflater.inflate(R.layout.layout_edit_single_entry, this).findViewById(R.id.mainLayout);
@@ -56,10 +59,6 @@ public class EditEntryLayout extends LinearLayout {
         moodList = (MoodList) main.findViewById(R.id.moodList);
         numItemList = (NumItemList) main.findViewById(R.id.numItemList);
         boolItemList = (BoolItemList) main.findViewById(R.id.boolItemList);
-
-        dateView.setText(CalendarUtil.getDateText(date));
-
-
     }
 
 
@@ -72,16 +71,18 @@ public class EditEntryLayout extends LinearLayout {
         numItemList.setItems(items);
     }
 
-    public void setEntryValues(ChartEntry entry){
+    public void setEntryValues(){
         moodList.setCheckedRows(entry.getMoods());
         numItemList.setItemValues(entry.getNumItems());
         boolItemList.setItems(entry.getBoolItems());
+        DateTimeFormatter fmt = DateTimeFormat.shortDate();
+        dateView.setText(entry.getLogDate().toString(fmt));
     }
 
     public ChartEntry getEntry(){
-        return new ChartEntry(date,
-                moodList.getCheckedItems(),
-                numItemList.getValues(),
-                boolItemList.getValues());
+        entry.setMoods(moodList.getCheckedItems());
+        entry.setBoolItems(boolItemList.getValues());
+        entry.setNumItems(numItemList.getValues());
+        return entry;
     }
 }

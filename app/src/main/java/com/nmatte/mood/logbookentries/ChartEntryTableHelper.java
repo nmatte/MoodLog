@@ -10,48 +10,19 @@ import android.util.Log;
 import com.nmatte.mood.logbookitems.LogbookItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
-import com.nmatte.mood.util.CalendarUtil;
 import com.nmatte.mood.util.DatabaseHelper;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Iterator;
 
 public class ChartEntryTableHelper {
-    public static ChartEntry getEntry(Context context, Calendar date){
-        SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
 
-        String [] columns = new String[] {
-                ChartEntryContract.ENTRY_DATE_COLUMN,
-                ChartEntryContract.ENTRY_MOOD_COLUMN,
-                ChartEntryContract.ENTRY_NUMITEM_COLUMN,
-                ChartEntryContract.ENTRY_BOOLITEM_COLUMN
-        };
-        String [] selection = new String[] {String.valueOf(date)};
-
-        Cursor c = db.query(
-                LogBookContract.LOGBOOKENTRY_TABLE,
-                columns,
-                LogBookContract.LOGBOOKENTRY_DATE_COLUMN + "=?",
-                selection,
-                null,null,null);
-
-        ChartEntry entry = null;
-
-        c.moveToFirst();
-        if (c.getCount() > 0){
-            entry = new ChartEntry(
-                    CalendarUtil.intToCalendar(c.getInt(0)),
-                    ChartEntry.parseMoodString(c.getString(1)),
-                    NumItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(2))),
-                    BoolItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(3))));
-        }
-        c.close();
-        db.close();
-        return entry;
-    }
-
-    public static ArrayList<ChartEntry> getEntryGroup(Context context, Calendar startDate, Calendar endDate){
+    public static ArrayList<ChartEntry> getEntryGroup(Context context, DateTime startDate, DateTime endDate){
         SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
 
         String [] columns = new String [] {
@@ -62,8 +33,8 @@ public class ChartEntryTableHelper {
         };
 
         String [] selection = new String[] {
-                String.valueOf(CalendarUtil.calendarToInt(startDate)),
-                        String.valueOf(CalendarUtil.calendarToInt(endDate))
+                String.valueOf(startDate.toLocalDate().toString("YYYYDDD")),
+                        String.valueOf(endDate.toLocalDate().toString("YYYYDDD"))
         };
 
         Cursor c = db.query(
@@ -79,8 +50,9 @@ public class ChartEntryTableHelper {
         if (c.getCount() > 0){
             do {
                 try {
+                    DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYYDDD");
                     ChartEntry entry = new ChartEntry(
-                            CalendarUtil.intToCalendar(c.getInt(0)),
+                            DateTime.parse(c.getString(0),formatter),
                             ChartEntry.parseMoodString(c.getString(1)),
                             NumItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(2))),
                             BoolItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(3))));
@@ -97,28 +69,41 @@ public class ChartEntryTableHelper {
 
     }
 
-    public static ArrayList<ChartEntry> getGroupWithBlanks(Context context, Calendar startDate, Calendar endDate){
-        ArrayList<ChartEntry> sparseEntries = getEntryGroup(context,startDate,endDate);
+    public static ArrayList<ChartEntry> getGroupWithBlanks(Context context, DateTime startDate, DateTime endDate){
+        // swap dates if out of order
+        if (startDate.isAfter(endDate)){
+            DateTime tmp = startDate;
+            startDate = endDate;
+            endDate = tmp;
+        }
+        int numDays = Days.daysBetween(startDate.toLocalDate(),endDate.toLocalDate()).getDays();
+        ArrayList<ChartEntry> sparseEntries = getEntryGroup(context, startDate, endDate);
         ArrayList<ChartEntry> result = new ArrayList<>();
-        Iterator<ChartEntry> it = sparseEntries.iterator();
-        ChartEntry currentEntry = null;
-        if(it.hasNext())
-            currentEntry = it.next();
+        DateTime currentDate = new DateTime(startDate);
 
-        // fill the result array with entries marked blank for dates that don't have an entry saved
-        for (Calendar date : CalendarUtil.datesBetween(startDate, endDate)){
-            if(currentEntry != null){
-                if (CalendarUtil.sameDayOfYear(currentEntry.getDate(), date)){
-                    result.add(currentEntry);
-                    currentEntry = it.next();
-                } else {
-                    result.add(ChartEntry.getBlankEntry(date));
-                }
-            } else {
-                result.add(ChartEntry.getBlankEntry(date));
-            }
+        ChartEntry currentEntry = null;
+        Iterator<ChartEntry> it = sparseEntries.iterator();
+        if (it.hasNext()){
+            currentEntry = it.next();
         }
 
+        // for the number of days between start and end
+        for (int i = 0; i < numDays; i++){
+           if (currentEntry != null){
+               // if current entry (from sparse entries) has same as current date
+               if (currentEntry.getLogDate().getDayOfYear() == currentDate.getDayOfYear()){
+                   result.add(currentEntry);
+                   if (it.hasNext())
+                       currentEntry = it.next();
+               } else {
+               // current entry doesn't have same date so just add a "blank" one
+                   result.add(new ChartEntry(currentDate));
+               }
+           } else {
+               result.add(new ChartEntry(currentDate));
+           }
+            currentDate = currentDate.plusDays(1);
+        }
 
         return result;
     }

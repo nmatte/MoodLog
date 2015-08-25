@@ -12,13 +12,13 @@ import android.widget.DatePicker;
 
 import com.nmatte.mood.moodlog.R;
 
-import java.util.Calendar;
+import org.joda.time.DateTime;
 
 import de.greenrobot.event.EventBus;
 
 public class DateRangeDialog extends DialogFragment {
     DatePicker datePicker;
-    Calendar startDate = null;
+    DateTime startDate;
     boolean isStart = true;
 
     public static String
@@ -71,14 +71,12 @@ public class DateRangeDialog extends DialogFragment {
                 .setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Calendar date = Calendar.getInstance();
-                        date.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
-                        date.set(Calendar.MONTH, datePicker.getMonth());
-                        date.set(Calendar.YEAR, datePicker.getYear());
+                        DateTime chosenDate = new DateTime(datePicker.getYear(),datePicker.getMonth(),datePicker.getDayOfMonth(),0,0);
+
                         if(isStartF)
-                            EventBus.getDefault().post(new OpenEndDateDialogEvent(date));
+                            EventBus.getDefault().post(new OpenEndDateDialogEvent(chosenDate));
                         else
-                            EventBus.getDefault().post(new SaveEndDateDialogEvent(date,startDate,saveBox.isChecked()));
+                            EventBus.getDefault().post(new SaveEndDateDialogEvent(chosenDate,startDate,saveBox.isChecked()));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -98,17 +96,19 @@ public class DateRangeDialog extends DialogFragment {
 
     private void initDatePicker(Bundle args) throws Exception {
         if (isStart){
-            long maxTime = Calendar.getInstance().getTimeInMillis();
+            // maximum start date is current date.
+            long maxTime = DateTime.now().getMillis();
             datePicker.setMaxDate(maxTime);
         } else {
-            long minDate = args.getLong(LONG_START_DATE_VALUE);
-            Calendar max = Calendar.getInstance();
-            max.setTimeInMillis(minDate);
-            startDate = max;
-            max.roll(Calendar.DAY_OF_YEAR,31);
-            long maxDate = max.getTimeInMillis();
-            datePicker.setMinDate(minDate);
-            datePicker.setMaxDate(maxDate);
+            // minimum date must be the start date.
+            // pull start date from the bundle.
+            DateTime minDate = new DateTime(args.getLong(LONG_START_DATE_VALUE));
+            startDate = minDate;
+            datePicker.setMinDate(minDate.getMillis());
+
+            // maximum date is 31 days after min date.
+            DateTime maxDate = minDate.plusDays(31);
+            datePicker.setMaxDate(maxDate.getMillis());
         }
     }
 }

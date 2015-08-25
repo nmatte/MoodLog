@@ -19,6 +19,8 @@ import com.nmatte.mood.logbookitems.numitems.NumItem;
 import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.moodlog.R;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -30,8 +32,8 @@ public class ChartMainFragment extends Fragment {
     int indexOfOpenEntry = 0;
     ArrayList<NumItem> numItems;
     ArrayList<BoolItem> boolItems;
-    Calendar startDate;
-    Calendar endDate;
+    DateTime startDate;
+    DateTime endDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,7 @@ public class ChartMainFragment extends Fragment {
         return fragmentLayout;
     }
 
-    public void refreshColumns(Calendar startDate, Calendar endDate) {
+    public void refreshColumns(DateTime startDate, DateTime endDate) {
         horizontalLayout.removeAllViews();
         horizontalLayout.setClickable(true);
         horizontalLayout.setLongClickable(true);
@@ -69,7 +71,7 @@ public class ChartMainFragment extends Fragment {
         ArrayList<ChartEntry> newList = ChartEntryTableHelper.getGroupWithBlanks(getActivity(), startDate, endDate);
         if (newList.size() > 0) {
             for (final ChartEntry entry : newList) {
-                final ReadonlyColumn column = new ReadonlyColumn(getActivity(), entry, startDate, numItems, boolItems);
+                final ReadonlyColumn column = new ReadonlyColumn(getActivity(), entry, numItems, boolItems);
                 column.setDuplicateParentStateEnabled(true);
                 column.setOnLongClickListener(getColumnLongClickListener(column));
                 horizontalLayout.addView(column);
@@ -98,13 +100,11 @@ public class ChartMainFragment extends Fragment {
 
     public void onEvent(CloseEditEntryEvent event){
         try {
-            // TODO fix when column is closed, numItem list is blank?
             // TODO save entry to table
             EditEntryLayout editEntryLayout = (EditEntryLayout) horizontalLayout.getChildAt(indexOfOpenEntry);
             ReadonlyColumn newColumn = new ReadonlyColumn(
                     getActivity(),
                      editEntryLayout.getEntry(),
-                    startDate,
                     numItems,
                     boolItems
                     );

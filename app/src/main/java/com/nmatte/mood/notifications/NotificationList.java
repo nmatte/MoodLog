@@ -11,12 +11,10 @@ import android.widget.TextView;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.moodlog.R;
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import org.joda.time.DateTime;
 
-/**
- * Created by Nathan on 6/16/2015.
- */
+import java.util.ArrayList;
+
 public class NotificationList extends LinearLayout {
     private Context context;
     private View footer;
@@ -82,10 +80,11 @@ public class NotificationList extends LinearLayout {
 
     public void addNotification(int hour, int minute, ArrayList<BoolItem> m){
         notifications = listener.getMedReminderList();
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY,hour);
-        c.set(Calendar.MINUTE,minute);
-        MedNotification newNotification = new MedNotification(c,m);
+        DateTime time = DateTime
+                .now()
+                .withHourOfDay(hour)
+                .withMinuteOfHour(minute);
+        MedNotification newNotification = new MedNotification(time,m);
         for (MedNotification oldNotification : notifications) {
             if (MedNotification.equal(oldNotification, newNotification)) {
                 newNotification = merge(newNotification, oldNotification);
@@ -103,11 +102,7 @@ public class NotificationList extends LinearLayout {
             if (!resultMed.contains(med))
                 resultMed.add(med);
         }
-        Calendar resultCal = Calendar.getInstance();
-        resultCal.set(Calendar.HOUR_OF_DAY,n1.time.get(Calendar.HOUR_OF_DAY));
-        resultCal.set(Calendar.MINUTE,n1.time.get(Calendar.MINUTE));
-
-        return new MedNotification(resultCal,resultMed);
+        return new MedNotification(n1.time,resultMed);
 
     }
 
