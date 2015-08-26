@@ -10,20 +10,9 @@ public class NumItem extends LogbookItem{
     private int maxNum;
     private int defaultNum;
 
-    public NumItem(Long id) {
-        super(id);
-    }
 
     public NumItem(Long id, String name) {
         super(id, name);
-    }
-
-    public NumItem(String itemString) {
-        String [] valStrings = itemString.split(FIELD_SEPARATOR);
-        id = Long.valueOf(valStrings[0]);
-        name = valStrings[1];
-        maxNum = Integer.valueOf(valStrings[2]);
-        defaultNum = Integer.valueOf(valStrings[3]);
     }
 
     public NumItem(Long id, String name, int maxNum, int defaultNum){

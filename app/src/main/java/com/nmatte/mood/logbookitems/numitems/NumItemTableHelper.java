@@ -18,12 +18,12 @@ public class NumItemTableHelper {
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(LogbookItemContract.NUM_ITEM_NAME_COLUMN,item.getName());
-        values.put(LogbookItemContract.NUM_ITEM_MAX_COLUMN,item.getMaxNum());
-        values.put(LogbookItemContract.NUM_ITEM_DEFAULT_COLUMN,item.getDefaultNum());
+        values.put(LogbookItemContract.Num.ITEM_NAME_COLUMN,item.getName());
+        values.put(LogbookItemContract.Num.ITEM_MAX_COLUMN,item.getMaxNum());
+        values.put(LogbookItemContract.Num.ITEM_DEFAULT_COLUMN,item.getDefaultNum());
 
         try{
-            db.insert(LogbookItemContract.NUM_ITEM_TABLE,null,values);
+            db.insert(LogbookItemContract.Num.ITEM_TABLE,null,values);
         } catch (Exception e){
             Log.e("SQL exception", "error adding NumItem");
         }
@@ -35,13 +35,13 @@ public class NumItemTableHelper {
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(LogbookItemContract.NUM_ITEM_NAME_COLUMN,item.getName());
-        values.put(LogbookItemContract.NUM_ITEM_MAX_COLUMN,item.getMaxNum());
-        values.put(LogbookItemContract.NUM_ITEM_DEFAULT_COLUMN,item.getDefaultNum());
-        values.put(LogbookItemContract.NUM_ITEM_ID_COLUMN,item.getID());
+        values.put(LogbookItemContract.Num.ITEM_NAME_COLUMN,item.getName());
+        values.put(LogbookItemContract.Num.ITEM_MAX_COLUMN,item.getMaxNum());
+        values.put(LogbookItemContract.Num.ITEM_DEFAULT_COLUMN,item.getDefaultNum());
+        values.put(LogbookItemContract.Num.ITEM_ID_COLUMN,item.getID());
 
         try{
-            db.insertWithOnConflict(LogbookItemContract.NUM_ITEM_TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            db.insertWithOnConflict(LogbookItemContract.Num.ITEM_TABLE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (Exception e){
             Log.e("db","",e);
         }
@@ -51,10 +51,10 @@ public class NumItemTableHelper {
     public static void deleteItemWithName(Context context, String name){
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
-        String whereClause = LogbookItemContract.NUM_ITEM_NAME_COLUMN + "=?";
+        String whereClause = LogbookItemContract.Num.ITEM_NAME_COLUMN + "=?";
 
         try{
-            db.delete(LogbookItemContract.NUM_ITEM_TABLE, whereClause, new String[]{name});
+            db.delete(LogbookItemContract.Num.ITEM_TABLE, whereClause, new String[]{name});
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -66,17 +66,17 @@ public class NumItemTableHelper {
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         String [] columns = new String[] {
-                LogbookItemContract.NUM_ITEM_ID_COLUMN,
-                LogbookItemContract.NUM_ITEM_NAME_COLUMN,
-                LogbookItemContract.NUM_ITEM_MAX_COLUMN,
-                LogbookItemContract.NUM_ITEM_DEFAULT_COLUMN
+                LogbookItemContract.Num.ITEM_ID_COLUMN,
+                LogbookItemContract.Num.ITEM_NAME_COLUMN,
+                LogbookItemContract.Num.ITEM_MAX_COLUMN,
+                LogbookItemContract.Num.ITEM_DEFAULT_COLUMN
         };
 
         Cursor c = db.query(
-                LogbookItemContract.NUM_ITEM_TABLE,
+                LogbookItemContract.Num.ITEM_TABLE,
                 columns,
                 null,null,null,null,
-                LogbookItemContract.NUM_ITEM_ID_COLUMN);
+                LogbookItemContract.Num.ITEM_ID_COLUMN);
         c.moveToFirst();
 
         ArrayList<NumItem> numItems = new ArrayList<>();

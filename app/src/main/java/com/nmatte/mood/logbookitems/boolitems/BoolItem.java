@@ -1,10 +1,8 @@
 package com.nmatte.mood.logbookitems.boolitems;
 
 import android.support.v4.util.SimpleArrayMap;
-import android.text.TextUtils;
 
 import com.nmatte.mood.logbookitems.LogbookItem;
-import com.nmatte.mood.logbookitems.numitems.NumItem;
 
 import java.util.ArrayList;
 
@@ -23,9 +21,6 @@ public class BoolItem extends LogbookItem {
         super();
     }
 
-    public BoolItem(Long id){
-        super(id);
-    }
 
     public static SimpleArrayMap<BoolItem,Boolean>
         refreshMap(ArrayList<BoolItem> newItems, SimpleArrayMap<BoolItem,Boolean> oldMap){

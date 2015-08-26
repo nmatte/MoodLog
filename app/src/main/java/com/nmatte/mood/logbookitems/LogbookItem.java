@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class LogbookItem {
-    protected Long id;
+    protected final Long id;
     protected String name;
 
 
@@ -23,11 +23,7 @@ public class LogbookItem {
     }
 
     public LogbookItem(String name){
-        this(new Long(0),name);
-    }
-
-    public LogbookItem(Long id){
-        this(id,null);
+        this(null,name);
     }
 
     public LogbookItem(){
@@ -37,10 +33,6 @@ public class LogbookItem {
     @Nullable
     public Long getID() {
         return id;
-    }
-
-    public void setID(long id) {
-        this.id = id;
     }
 
     @Nullable
