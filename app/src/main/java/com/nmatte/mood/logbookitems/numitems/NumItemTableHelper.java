@@ -11,9 +11,10 @@ import com.nmatte.mood.util.DatabaseHelper;
 
 import java.util.ArrayList;
 
+
+// TODO give same functionality as BoolItems
 public class NumItemTableHelper {
     public static void addNumItem(Context context, NumItem item){
-        //TODO handle case where name already in database
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();

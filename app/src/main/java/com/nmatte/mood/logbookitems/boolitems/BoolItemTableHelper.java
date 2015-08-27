@@ -29,39 +29,43 @@ public class BoolItemTableHelper {
 
 
         try {
-            if (item.getID() == null && item.getName() == null){
+            if (item.getID() == null && item.getName() == null)
                 return item;
-            } else {
+            if (item.getID() != null)
+                values.put(LogbookItemContract.Bool.ITEM_ID_COLUMN, item.getID());
+            if (item.getName() != null)
                 values.put(LogbookItemContract.Bool.ITEM_NAME_COLUMN,item.getName());
-                values.put(LogbookItemContract.Bool.ITEM_VISIBLE_COLUMN, TRUE);
-                if (item.getID() != null){
-                    values.put(LogbookItemContract.Bool.ITEM_ID_COLUMN, item.getID());
-                }
-            }
 
+            values.put(LogbookItemContract.Bool.ITEM_VISIBLE_COLUMN, TRUE);
             db.insertWithOnConflict(
                     LogbookItemContract.Bool.ITEM_TABLE,
                     null,
                     values,
                     SQLiteDatabase.CONFLICT_REPLACE);
-
         } catch (Exception e){
             e.printStackTrace();
         }
 
+        item = getFullItem(db,item);
+        addItemColumn(db,item);
+        db.close();
+        return item;
+    }
+
+    private static BoolItem getFullItem(SQLiteDatabase db, BoolItem item){
         String [] columns = new String [] {
                 LogbookItemContract.Bool.ITEM_ID_COLUMN,
                 LogbookItemContract.Bool.ITEM_NAME_COLUMN
         };
-        String selection;
-        String [] args = new String [1];
+        String selection = "? = ?";
+        String [] args = new String [2];
 
-        if (item.getID() == null){
-            selection = LogbookItemContract.Bool.ITEM_NAME_COLUMN;
-            args[0] = item.getName();
+        if (item.getID() != null){
+            args[0] = LogbookItemContract.Bool.ITEM_ID_COLUMN;
+            args[1] = item.getID().toString();
         } else {
-            selection = LogbookItemContract.Bool.ITEM_ID_COLUMN;
-            args[0] = item.getID().toString();
+            args[0] = LogbookItemContract.Bool.ITEM_NAME_COLUMN;
+            args[1] = item.getName();
         }
         Cursor c = db.query(
                 LogbookItemContract.Bool.ITEM_TABLE,
@@ -76,16 +80,14 @@ public class BoolItemTableHelper {
             item = new BoolItem(c.getLong(0),c.getString(1));
         }
         c.close();
-        addItemColumn(db,item);
-        db.close();
         return item;
     }
 
     // this is a helper method to add a column if the column doesn't already exist.
     private static void addItemColumn(SQLiteDatabase db, BoolItem item){
 
-        String query1 = "SELECT * FROM ? LIMIT 0,1";
-        Cursor c = db.rawQuery(query1, new String[]{LogbookItemContract.Bool.LOG_TABLE});
+        String query1 = "SELECT * FROM "+LogbookItemContract.Bool.LOG_TABLE +" LIMIT 0,1";
+        Cursor c = db.rawQuery(query1, null);
 
         if (item.getID() == null){
             return;
@@ -93,19 +95,18 @@ public class BoolItemTableHelper {
         // column with this name wasn't found so you can safely add a new column.
         if (c.getColumnIndex(item.getID().toString()) == -1){
             String addColumnQuery = "ALTER TABLE " + LogbookItemContract.Bool.LOG_TABLE +
-                    " ADD COLUMN " + item.getID().toString() + " " + LogbookItemContract.Bool.LOG_VALUE_TYPE ;
+                    " ADD COLUMN " + item.getColumnName() + " " + LogbookItemContract.Bool.LOG_VALUE_TYPE ;
 
             db.execSQL(addColumnQuery);
         }
+        c.close();
+
     }
-
-
 
     public static void setVisibility(Context context, BoolItem item, boolean isVisible){
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-
 
         try {
             if (item.getID() == null)
@@ -116,7 +117,7 @@ public class BoolItemTableHelper {
             db.update(
                     LogbookItemContract.Bool.ITEM_TABLE,
                     values,
-                    "WHERE ? = ?",
+                    "? = ?",
                     new String[]{
                             LogbookItemContract.Bool.ITEM_ID_COLUMN,
                             item.getID().toString()
@@ -169,7 +170,39 @@ public class BoolItemTableHelper {
     }
 
 
-    //TODO: public static ArrayList<BoolItem> getAllVisible(Context context)
+    public static ArrayList<BoolItem> getAllVisible(Context context){
+        DatabaseHelper DBHelper = new DatabaseHelper(context);
+        SQLiteDatabase db = DBHelper.getReadableDatabase();
+        String [] columns = new String[] {
+                LogbookItemContract.Bool.ITEM_ID_COLUMN,
+                LogbookItemContract.Bool.ITEM_NAME_COLUMN
+        };
+
+
+        Cursor c = db.query(
+                LogbookItemContract.Bool.ITEM_TABLE,
+                columns,
+                "? = ?",
+                new String[] {
+                        LogbookItemContract.Bool.ITEM_VISIBLE_COLUMN,
+                        String.valueOf(TRUE)
+                },
+                null,
+                null,
+                LogbookItemContract.Bool.ITEM_ID_COLUMN);
+        c.moveToFirst();
+
+        ArrayList<BoolItem> boolItems = new ArrayList<>();
+        if(c.getCount() > 0){
+            do{
+                BoolItem m = new BoolItem(c.getLong(0),c.getString(1));
+                boolItems.add(m);
+            } while(c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return boolItems;
+    }
 
 
     public static ArrayList<String>  mapIDsToNames(ArrayList<Long> ids, Context context) {
@@ -182,6 +215,8 @@ public class BoolItemTableHelper {
         }
         return result;
     }
+
+
 
 }
 

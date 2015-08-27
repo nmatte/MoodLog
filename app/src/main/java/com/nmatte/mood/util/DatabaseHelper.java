@@ -66,6 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "CREATE TABLE IF NOT EXISTS "+ LogbookItemContract.Num.ITEM_TABLE + " ("
                 + LogbookItemContract.Num.ITEM_ID_COLUMN + " " + LogbookItemContract.Num.ITEM_ID_TYPE + ", "
                 + LogbookItemContract.Num.ITEM_NAME_COLUMN + " " + LogbookItemContract.Num.ITEM_NAME_TYPE + ", "
+                + LogbookItemContract.Num.ITEM_VISIBLE_COLUMN + " " + LogbookItemContract.Num.ITEM_VISIBLE_TYPE + ", "
                 + LogbookItemContract.Num.ITEM_MAX_COLUMN + " " + LogbookItemContract.Num.ITEM_MAX_TYPE + ", "
                 + LogbookItemContract.Num.ITEM_DEFAULT_COLUMN + " " + LogbookItemContract.Num.ITEM_DEFAULT_TYPE + ")";
 

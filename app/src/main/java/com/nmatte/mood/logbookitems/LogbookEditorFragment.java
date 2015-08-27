@@ -4,26 +4,25 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.boolitems.EditBoolItem;
+import com.nmatte.mood.logbookitems.boolitems.SaveBoolItemEvent;
 import com.nmatte.mood.logbookitems.numitems.EditNumItem;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
 import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
+
+import de.greenrobot.event.EventBus;
 
 public class LogbookEditorFragment extends Fragment {
     LinearLayout mainLayout;
@@ -35,6 +34,7 @@ public class LogbookEditorFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         View mainView = inflater.inflate(R.layout.fragment_logbook_editor,container);
         initLayout(mainView);
 
@@ -130,5 +130,14 @@ public class LogbookEditorFragment extends Fragment {
         };
     }
 
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
 
+    public void onEvent(SaveBoolItemEvent event){
+        BoolItem saved = BoolItemTableHelper.insertOrUpdate(getActivity(),event.getItem());
+        Log.i("BoolItem saved", "Saved BoolItem" + saved.getName() + " with ID " + saved.getID().toString());
+    }
 }

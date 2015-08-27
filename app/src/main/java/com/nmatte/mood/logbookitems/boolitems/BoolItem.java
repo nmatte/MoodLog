@@ -76,6 +76,10 @@ public class BoolItem extends LogbookItem {
         return String.valueOf(id) + FIELD_SEPARATOR + name;
     }
 
+    public String getColumnName(){
+        return "B" + id.toString();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)

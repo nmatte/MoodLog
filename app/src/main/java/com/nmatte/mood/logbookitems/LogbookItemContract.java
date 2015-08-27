@@ -36,12 +36,9 @@ public class LogbookItemContract {
     }
 
     public class Num{
-
         // Table for information regarding num items (name, id, max val, etc).
         public static final String
                 ITEM_TABLE = "NumItems",
-
-
                 ITEM_ID_COLUMN = "_ID",
                 ITEM_ID_TYPE = "INTEGER PRIMARY KEY AUTOINCREMENT",
                 ITEM_NAME_COLUMN = "numItemName",

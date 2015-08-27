@@ -1,25 +1,18 @@
 package com.nmatte.mood.logbookitems.boolitems;
 
-import android.app.Fragment;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.nmatte.mood.moodlog.R;
+
+import de.greenrobot.event.EventBus;
 
 public class EditBoolItem extends RelativeLayout {
     BoolItem boolItem = null;
@@ -55,13 +48,11 @@ public class EditBoolItem extends RelativeLayout {
         delButton = (ImageButton) mainLayout.findViewById(R.id.delButton);
         saveButton = (ImageButton) mainLayout.findViewById(R.id.saveButton);
         editButton = (ImageButton) mainLayout.findViewById(R.id.editButton);
-
-
-
         saveButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 setEditable(false);
+                EventBus.getDefault().post(new SaveBoolItemEvent(getBoolItem()));
             }
         });
         editButton.setOnClickListener(new OnClickListener() {
@@ -79,14 +70,12 @@ public class EditBoolItem extends RelativeLayout {
     }
 
     public void setEditable(boolean isEditable){
-        Animation out= AnimationUtils.loadAnimation(context, R.anim.abc_fade_out);
-        Animation in  = AnimationUtils.loadAnimation(context,R.anim.abc_fade_in);
+        Animation out = AnimationUtils.loadAnimation(context, R.anim.abc_fade_out);
+        Animation in = AnimationUtils.loadAnimation(context,R.anim.abc_fade_in);
 
         if (isEditable){
-
             editButton.startAnimation(out);
             editButton.setVisibility(INVISIBLE);
-
 
             delButton.startAnimation(in);
             delButton.setVisibility(VISIBLE);
@@ -107,10 +96,6 @@ public class EditBoolItem extends RelativeLayout {
             itemName.setEnabled(false);
         }
     }
-
-
-
-
 
     @Nullable
     public BoolItem getBoolItem(){
