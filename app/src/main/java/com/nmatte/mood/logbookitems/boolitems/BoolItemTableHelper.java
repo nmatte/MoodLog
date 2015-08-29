@@ -23,14 +23,18 @@ public class BoolItemTableHelper {
         If the BoolItem was not already in the database, add a column to the BoolChartEntry table.
          */
     public static BoolItem insertOrUpdate(Context context, BoolItem item){
+        if (item == null)
+            return item;
+        if (item.getID() == null && item.getName() == null)
+            return item;
+
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
 
+
         try {
-            if (item.getID() == null && item.getName() == null)
-                return item;
             if (item.getID() != null)
                 values.put(LogbookItemContract.Bool.ITEM_ID_COLUMN, item.getID());
             if (item.getName() != null)
@@ -83,7 +87,6 @@ public class BoolItemTableHelper {
         return item;
     }
 
-    // this is a helper method to add a column if the column doesn't already exist.
     private static void addItemColumn(SQLiteDatabase db, BoolItem item){
 
         String query1 = "SELECT * FROM "+LogbookItemContract.Bool.LOG_TABLE +" LIMIT 0,1";
@@ -93,7 +96,7 @@ public class BoolItemTableHelper {
             return;
         }
         // column with this name wasn't found so you can safely add a new column.
-        if (c.getColumnIndex(item.getID().toString()) == -1){
+        if (c.getColumnIndex(item.getColumnName()) == -1){
             String addColumnQuery = "ALTER TABLE " + LogbookItemContract.Bool.LOG_TABLE +
                     " ADD COLUMN " + item.getColumnName() + " " + LogbookItemContract.Bool.LOG_VALUE_TYPE ;
 

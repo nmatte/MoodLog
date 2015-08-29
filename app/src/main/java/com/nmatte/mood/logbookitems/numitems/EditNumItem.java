@@ -86,6 +86,8 @@ public class EditNumItem extends RelativeLayout {
             saveButton.startAnimation(in);
             saveButton.setVisibility(VISIBLE);
             itemName.setEnabled(true);
+            maxNumText.setEnabled(true);
+            defaultNumText.setEnabled(true);
 
         } else {
             delButton.startAnimation(out);
@@ -97,6 +99,8 @@ public class EditNumItem extends RelativeLayout {
             editButton.startAnimation(in);
             editButton.setVisibility(VISIBLE);
             itemName.setEnabled(false);
+            maxNumText.setEnabled(false);
+            defaultNumText.setEnabled(false);
         }
     }
 

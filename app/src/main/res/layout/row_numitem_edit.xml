@@ -4,7 +4,6 @@
 
 
     <EditText
-
         style="@style/BoolItemRow.TextView"
         android:enabled="false"
         android:id="@+id/itemName"/>
@@ -13,26 +12,39 @@
     <TextView
         style="@style/BoolItemRow.TextView"
         android:id="@+id/rangeText"
-        android:text="Max value:"
+        android:text="Maximum:"
+        android:enabled="false"
         android:layout_alignParentLeft="true"
         android:layout_alignLeft="@id/itemName"
         android:layout_below="@id/itemName"/>
 
-
     <EditText
         style="@style/NumItem.EditNum"
-        android:hint="start"
-        android:layout_toRightOf="@id/maxNumEditText"
-        android:id="@+id/defaultNumEditText"
-        android:layout_alignBottom="@id/rangeText"/>
-
-    <EditText
-        style="@style/NumItem.EditNum"
-        android:hint="max"
-        android:layout_toRightOf="@id/rangeText"
+        android:hint="max."
+        android:layout_toRightOf="@+id/rangeText"
         android:id="@+id/maxNumEditText"
         android:layout_alignBottom="@id/rangeText"
         />
+
+    <TextView
+        style="@style/BoolItemRow.TextView"
+        android:id="@+id/defaultText"
+        android:text="Default:"
+        android:enabled="false"
+        android:layout_toRightOf="@+id/maxNumEditText"
+        android:layout_alignBottom="@id/rangeText"
+        />
+
+
+    <EditText
+        style="@style/NumItem.EditNum"
+        android:hint="def."
+        android:text="0"
+        android:layout_toRightOf="@+id/defaultText"
+        android:id="@+id/defaultNumEditText"
+        android:layout_alignBottom="@id/rangeText"/>
+
+
 
     <ImageButton
         style="@style/LogbookItem.ImageButton_Delete"

@@ -115,4 +115,8 @@ public class NumItem extends LogbookItem{
         hash = hash * (( getID() + prime));
         return (int) hash;
     }
+
+    public String getColumnName() {
+        return "N" + id.toString();
+    }
 }
