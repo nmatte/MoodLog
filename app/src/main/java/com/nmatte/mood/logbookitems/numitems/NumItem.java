@@ -21,6 +21,12 @@ public class NumItem extends LogbookItem{
         this.defaultNum = defaultNum;
     }
 
+    public NumItem(String name, int maxNum, int defaultNum){
+        super(name);
+        this.maxNum = maxNum;
+        this.defaultNum = defaultNum;
+    }
+
     public int getDefaultNum() {
         return defaultNum;
     }

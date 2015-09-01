@@ -10,6 +10,8 @@ import android.widget.RelativeLayout;
 
 import com.nmatte.mood.moodlog.R;
 
+import de.greenrobot.event.EventBus;
+
 public class EditNumItem extends RelativeLayout {
     NumItem numItem = null;
     public EditText itemName;
@@ -35,7 +37,7 @@ public class EditNumItem extends RelativeLayout {
     }
 
     private void init() {
-        View mainLayout = inflate(context, R.layout.row_numitem_edit,this);
+        View mainLayout = inflate(context, R.layout.row_numitem_edit, this);
         itemName = (EditText) mainLayout.findViewById(R.id.itemName);
 
         delButton = (ImageButton) mainLayout.findViewById(R.id.delButton);
@@ -45,12 +47,7 @@ public class EditNumItem extends RelativeLayout {
         defaultNumText = (EditText) mainLayout.findViewById(R.id.defaultNumEditText);
         maxNumText = (EditText) mainLayout.findViewById(R.id.maxNumEditText);
 
-        saveButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setEditable(false);
-            }
-        });
+        saveButton.setOnClickListener(saveButtonClickListener);
         editButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,9 +67,19 @@ public class EditNumItem extends RelativeLayout {
 
     }
 
+    private OnClickListener saveButtonClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(validateFields()){
+                setEditable(false);
+                EventBus.getDefault().post(new SaveNumItemEvent(getNumItem()));
+            }
+        }
+    };
+
     public void setEditable(boolean isEditable){
         Animation out= AnimationUtils.loadAnimation(context, R.anim.abc_fade_out);
-        Animation in  = AnimationUtils.loadAnimation(context,R.anim.abc_fade_in);
+        Animation in  = AnimationUtils.loadAnimation(context, R.anim.abc_fade_in);
 
         if (isEditable){
 
@@ -104,8 +111,64 @@ public class EditNumItem extends RelativeLayout {
         }
     }
 
+    private boolean validateFields(){
+        String name = itemName.getText().toString();
+        String maxNumString = maxNumText.getText().toString();
+        String defaultNumString = defaultNumText.getText().toString();
+
+        boolean result = true;
+
+        if (name.length() < 1){
+            itemName.setError("Name field can't be blank.");
+            result = false;
+        }
+
+        if (maxNumString.length() < 1){
+            // blank field
+            maxNumText.setError("Max num field can't be blank.");
+            result = false;
+        } else if (Integer.valueOf(maxNumString) < 1){
+            // field not blank, but invalid input
+            maxNumText.setError("Max num must be greater than 0.");
+            result = false;
+        }
+
+        /*
+        default num is less important and pre-populated. Doesn't give error message, but automatically
+        corrects the value.
+         */
+        if (defaultNumString.length() < 1){
+            defaultNumText.setText("0");
+        } else if (Integer.valueOf(defaultNumString) < 1){
+            defaultNumText.setText("0");
+        } else if (maxNumString.length() > 1){
+            if (Integer.valueOf(defaultNumString) > Integer.valueOf(maxNumString))
+                defaultNumText.setText(maxNumString);
+        }
+
+        return result;
+    }
+
+    public NumItem getNumItem(){
+        String name = itemName.getText().toString();
+        String maxNumString = maxNumText.getText().toString();
+        String defaultNumString = defaultNumText.getText().toString();
+        int maxNum = 0;
+        int defaultNum = 0;
+
+        if (maxNumString.length() > 0)
+            maxNum = Integer.valueOf(maxNumString);
+        if (defaultNumString.length() > 0)
+            defaultNum = Integer.valueOf(defaultNumString);
 
 
-
+        if (numItem == null){
+            numItem = new NumItem(name, maxNum, defaultNum);
+            return numItem;
+        } else {
+            numItem = new NumItem(numItem.getID(),name,maxNum,defaultNum);
+            return numItem;
+        }
+    }
 
 }

@@ -48,13 +48,7 @@ public class EditBoolItem extends RelativeLayout {
         delButton = (ImageButton) mainLayout.findViewById(R.id.delButton);
         saveButton = (ImageButton) mainLayout.findViewById(R.id.saveButton);
         editButton = (ImageButton) mainLayout.findViewById(R.id.editButton);
-        saveButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setEditable(false);
-                EventBus.getDefault().post(new SaveBoolItemEvent(getBoolItem()));
-            }
-        });
+        saveButton.setOnClickListener(saveButtonClickListener);
         editButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +89,30 @@ public class EditBoolItem extends RelativeLayout {
             editButton.setVisibility(VISIBLE);
             itemName.setEnabled(false);
         }
+    }
+
+    private OnClickListener saveButtonClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            if (validateFields()){
+                setEditable(false);
+                EventBus.getDefault().post(new SaveBoolItemEvent(getBoolItem()));
+            }
+        }
+    };
+
+    private boolean validateFields(){
+        String name = itemName.getText().toString();
+
+        boolean result = true;
+
+        if (name.length() < 1){
+            itemName.setError("Name field can't be blank.");
+            result = false;
+        }
+
+        return result;
     }
 
     @Nullable

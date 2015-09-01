@@ -18,6 +18,7 @@ import com.nmatte.mood.logbookitems.boolitems.SaveBoolItemEvent;
 import com.nmatte.mood.logbookitems.numitems.EditNumItem;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
 import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
+import com.nmatte.mood.logbookitems.numitems.SaveNumItemEvent;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
@@ -43,13 +44,10 @@ public class LogbookEditorFragment extends Fragment {
             addNewNumItem(item);
         }
 
-
-
         ArrayList<BoolItem> boolItems = BoolItemTableHelper.getAll(getActivity());
         for (final BoolItem item : boolItems){
             addNewBoolItem(item);
         }
-
 
         return mainView;
     }
@@ -140,4 +138,11 @@ public class LogbookEditorFragment extends Fragment {
         BoolItem saved = BoolItemTableHelper.insertOrUpdate(getActivity(),event.getItem());
         Log.i("BoolItem saved", "Saved BoolItem" + saved.getName() + " with ID " + saved.getID().toString());
     }
+
+    public void onEvent(SaveNumItemEvent event){
+        NumItem saved = NumItemTableHelper.insertOrUpdate(getActivity(),event.getItem());
+        Log.i("NumItem saved", "Saved NumItem"  + saved.getName() + " with ID " + saved.getID().toString());
+    }
+
+
 }
