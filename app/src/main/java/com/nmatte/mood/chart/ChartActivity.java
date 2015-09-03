@@ -78,9 +78,6 @@ public class ChartActivity extends AppCompatActivity
         chartMainFragment.refreshColumns(getChartStartDate(), getChartEndDate());
     }
 
-
-
-
     private void startSettingsActivity(){
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);

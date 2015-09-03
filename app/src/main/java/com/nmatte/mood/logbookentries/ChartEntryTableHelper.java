@@ -77,6 +77,9 @@ public class ChartEntryTableHelper {
             endDate = tmp;
         }
         int numDays = Days.daysBetween(startDate.toLocalDate(),endDate.toLocalDate()).getDays();
+        // Joda-time's daysBetween function takes the end date as exclusive.
+        // We need to add 1 so that numDays includes the end date.
+        numDays++;
         ArrayList<ChartEntry> sparseEntries = getEntryGroup(context, startDate, endDate);
         ArrayList<ChartEntry> result = new ArrayList<>();
         DateTime currentDate = new DateTime(startDate);
