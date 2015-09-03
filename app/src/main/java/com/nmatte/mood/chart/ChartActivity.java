@@ -4,9 +4,14 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.nmatte.mood.chart.datedialog.DateRangeDialog;
+import com.nmatte.mood.chart.datedialog.OpenEndDateDialogEvent;
+import com.nmatte.mood.chart.datedialog.OpenStartDateDialogEvent;
+import com.nmatte.mood.chart.datedialog.SaveEndDateDialogEvent;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
 import com.nmatte.mood.moodlog.R;
@@ -116,9 +121,21 @@ public class ChartActivity extends AppCompatActivity
         return DateTime.now();
     }
 
-    public String getDateRangeString(DateTime startDate, DateTime endDate){
+
+
+    private void refreshPickDateButton(DateTime startDate, DateTime endDate){
+        if(endDate.isBefore(startDate)){
+            DateTime tmp = startDate;
+            startDate = endDate;
+            endDate = tmp;
+        }
         DateTimeFormatter fmt = DateTimeFormat.shortDate().withLocale(Locale.getDefault());
-        return startDate.toString(fmt) + "-" + endDate.toString(fmt);
+        String title = new StringBuilder()
+                .append(startDate.toString(fmt))
+                .append("-")
+                .append(endDate.toString(fmt))
+                .toString();
+        menu.findItem(R.id.pickDates).setTitle(title);
     }
 
 
@@ -131,8 +148,7 @@ public class ChartActivity extends AppCompatActivity
         MenuItem editEntryDoneButton = menu.findItem(R.id.editEntryDoneButton);
         editEntryDoneButton.setVisible(false);
 
-        MenuItem pickDateButton = menu.findItem(R.id.pickDates);
-        pickDateButton.setTitle(getDateRangeString(getChartStartDate(),getChartEndDate()));
+        refreshPickDateButton(getChartStartDate(),getChartEndDate());
 
         return true;
     }
@@ -185,25 +201,23 @@ public class ChartActivity extends AppCompatActivity
         Bundle args = new Bundle();
         args.putBoolean(DateRangeDialog.BOOL_IS_START_PICKER,true);
         d.setArguments(args);
-
         d.show(getFragmentManager(), "foo");
-
     }
 
     public void onEvent(OpenEndDateDialogEvent event){
         DialogFragment dialog = new DateRangeDialog();
         Bundle args = new Bundle();
         args.putBoolean(DateRangeDialog.BOOL_IS_START_PICKER,false);
-        args.putLong(DateRangeDialog.LONG_START_DATE_VALUE, event.date.getMillis());
+        args.putLong(DateRangeDialog.LONG_START_DATE_VALUE, event.getDate().getMillis());
+        Log.i("Date Range Dialog", "Start date chosen: " + event.getDate().toString("MM/dd/YYYY"));
         dialog.setArguments(args);
-
         dialog.show(getFragmentManager(), "bar");
     }
 
     public void onEvent(SaveEndDateDialogEvent event){
         boolean foo = event.isRememberDates();
+        Log.i("Date Range Dialog", "End date chosen: " + event.getEndDate().toString("MM/dd/YYYY"));
         chartMainFragment.refreshColumns(event.getStartDate(),event.getEndDate());
+        refreshPickDateButton(event.getStartDate(),event.getEndDate());
     }
-
-
 }

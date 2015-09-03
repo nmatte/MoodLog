@@ -108,7 +108,7 @@ public class EditBoolItem extends RelativeLayout {
         boolean result = true;
 
         if (name.length() < 1){
-            itemName.setError("Name field can't be blank.");
+            itemName.setError(context.getString(R.string.logbookitem_name_blank_error));
             result = false;
         }
 

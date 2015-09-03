@@ -1,4 +1,4 @@
-package com.nmatte.mood.chart;
+package com.nmatte.mood.chart.datedialog;
 
 public class OpenStartDateDialogEvent {
 }

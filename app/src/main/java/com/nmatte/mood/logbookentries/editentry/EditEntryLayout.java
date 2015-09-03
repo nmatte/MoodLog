@@ -13,13 +13,11 @@ import com.nmatte.mood.logbookitems.boolitems.BoolItemList;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
 import com.nmatte.mood.logbookitems.numitems.NumItemList;
 import com.nmatte.mood.moodlog.R;
-import com.nmatte.mood.util.CalendarUtil;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class EditEntryLayout extends LinearLayout {
     private Context context;

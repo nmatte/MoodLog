@@ -4,17 +4,14 @@ import android.content.Context;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.cell.CellView;
-import com.nmatte.mood.chart.cell.CheckableCellView;
 import com.nmatte.mood.chart.cell.ReadonlyCheckbox;
 import com.nmatte.mood.chart.cell.TextCellView;
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.MoodList;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
-import com.nmatte.mood.util.CalendarUtil;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 
 public class ReadonlyColumn extends LinearLayout {

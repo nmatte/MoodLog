@@ -26,6 +26,8 @@ dependencies {
     compile 'com.android.support:design:22.2.0'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'joda-time:joda-time:2.8.2'
+    compile 'com.yahoo.squidb:squidb:1.1.0' // SquiDB mai
+    compile 'com.yahoo.squidb:squidb-annotations:1.1.0'
 
     testCompile 'junit:junit:4.12'
 }
