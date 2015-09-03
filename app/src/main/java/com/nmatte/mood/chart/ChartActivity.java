@@ -2,6 +2,7 @@ package com.nmatte.mood.chart;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.nmatte.mood.chart.datedialog.SaveEndDateDialogEvent;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
 import com.nmatte.mood.moodlog.R;
+import com.nmatte.mood.settings.PreferencesContract;
 import com.nmatte.mood.settings.SettingsActivity;
 import com.nmatte.mood.util.TestActivity;
 
@@ -90,35 +92,28 @@ public class ChartActivity extends AppCompatActivity
     }
 
     private DateTime getChartStartDate(){
-    /*
-    SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        if (!settings.contains(PreferencesContract.CHART_START_DATE)){
-            Calendar newStartDate = Calendar.getInstance();
-            newStartDate.set(Calendar.DAY_OF_MONTH,newStartDate.getActualMinimum(Calendar.DAY_OF_MONTH));
 
-            settings.edit()
-                    .putInt(PreferencesContract.CHART_START_DATE, CalendarUtil.calendarToInt(newStartDate))
-                    .apply();
-        }
-
-
-        Calendar result;
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        int dateInt = settings.getInt(PreferencesContract.CHART_START_DATE,0);
-        if (dateInt == 0){
-            Calendar newStartDate = Calendar.getInstance();
-            newStartDate.set(Calendar.DAY_OF_MONTH,newStartDate.getActualMinimum(Calendar.DAY_OF_MONTH));
-            result = newStartDate;
-        } else {
-            result = CalendarUtil.intToCalendar(dateInt);
+        if(settings.getBoolean(PreferencesContract.BOOL_CHART_REMEMBER_DATES,false)){
+            if(settings.contains(PreferencesContract.LONG_CHART_START_DATE)){
+                long millis = settings.getLong(PreferencesContract.LONG_CHART_START_DATE,0);
+                if (millis != 0)
+                    return new DateTime(millis);
+            }
         }
-        */
-
         return DateTime.now().withDayOfMonth(1);
     }
 
     private DateTime getChartEndDate(){
-        return DateTime.now();
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        if(settings.getBoolean(PreferencesContract.BOOL_CHART_REMEMBER_DATES,false)){
+            if(settings.contains(PreferencesContract.LONG_CHART_END_DATE)){
+                long millis = settings.getLong(PreferencesContract.LONG_CHART_END_DATE,0);
+                if (millis != 0)
+                    return new DateTime(millis);
+            }
+        }
+        return DateTime.now().dayOfMonth().withMaximumValue();
     }
 
 
@@ -219,5 +214,22 @@ public class ChartActivity extends AppCompatActivity
         Log.i("Date Range Dialog", "End date chosen: " + event.getEndDate().toString("MM/dd/YYYY"));
         chartMainFragment.refreshColumns(event.getStartDate(),event.getEndDate());
         refreshPickDateButton(event.getStartDate(),event.getEndDate());
+
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        if (event.isRememberDates()){
+            settings
+                    .edit()
+                    .putBoolean(PreferencesContract.BOOL_CHART_REMEMBER_DATES,event.isRememberDates())
+                    .putLong(PreferencesContract.LONG_CHART_START_DATE,event.getStartDate().getMillis())
+                    .putLong(PreferencesContract.LONG_CHART_END_DATE,event.getEndDate().getMillis())
+                    .apply();
+        } else{
+            settings
+                    .edit()
+                    .putBoolean(PreferencesContract.BOOL_CHART_REMEMBER_DATES,event.isRememberDates())
+                    .apply();
+        }
+
+
     }
 }
