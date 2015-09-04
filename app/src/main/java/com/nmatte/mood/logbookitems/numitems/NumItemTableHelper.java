@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.nmatte.mood.logbookentries.ChartEntryContract;
 import com.nmatte.mood.logbookitems.LogbookItemContract;
@@ -43,7 +44,7 @@ public class NumItemTableHelper {
             e.printStackTrace();
         }
 
-        item = getFullItem(db,item);
+        item = getItemWithName(db,item.getName());
         addItemColumn(db, item);
         db.close();
         return item;
@@ -59,11 +60,48 @@ public class NumItemTableHelper {
         // column with this name wasn't found so you can safely add a new column.
         if (c.getColumnIndex(item.getColumnName()) == -1){
             String addColumnQuery = "ALTER TABLE " + ChartEntryContract.ENTRY_TABLE_NAME +
-                    " ADD COLUMN " + item.getColumnName() + " " + LogbookItemContract.Bool.LOG_VALUE_TYPE ;
-
+                    " ADD COLUMN " + item.getColumnName() + " " + LogbookItemContract.Bool.LOG_VALUE_TYPE;
             db.execSQL(addColumnQuery);
+            Log.i("NumItems", "Adding column " + item.getColumnName());
+        } else {
+            Log.i("NumItems", "skipped adding column " +item.getColumnName());
         }
         c.close();
+    }
+
+    private static NumItem getItemWithName(SQLiteDatabase db, String itemName){
+        if (itemName == null)
+            return null;
+
+        String [] columns = new String [] {
+                LogbookItemContract.Num.ITEM_ID_COLUMN,
+                LogbookItemContract.Num.ITEM_NAME_COLUMN,
+                LogbookItemContract.Num.ITEM_MAX_COLUMN,
+                LogbookItemContract.Num.ITEM_DEFAULT_COLUMN
+        };
+        String selection = LogbookItemContract.Num.ITEM_NAME_COLUMN + " = ?";
+        String [] args = new String[] {
+            itemName
+        };
+
+
+        Cursor c = db.query(
+                LogbookItemContract.Num.ITEM_TABLE,
+                columns,
+                selection,
+                args,
+                null, null,
+                LogbookItemContract.Num.ITEM_ID_COLUMN);
+
+
+        NumItem item = null;
+        if(c.getCount() > 0) {
+            c.moveToFirst();
+            item = new NumItem(c.getLong(0),c.getString(1),c.getInt(2),c.getInt(3));
+        }
+
+        c.close();
+        return item;
     }
 
     private static NumItem getFullItem(SQLiteDatabase db, NumItem item) {
@@ -158,13 +196,13 @@ public class NumItemTableHelper {
                 LogbookItemContract.Num.ITEM_MAX_COLUMN,
                 LogbookItemContract.Num.ITEM_DEFAULT_COLUMN
         };
+        String selection = LogbookItemContract.Num.ITEM_VISIBLE_COLUMN + " = ?";
 
         Cursor c = db.query(
                 LogbookItemContract.Num.ITEM_TABLE,
                 columns,
-                "? = ?",
+                selection,
                 new String[] {
-                        LogbookItemContract.Num.ITEM_VISIBLE_COLUMN,
                         String.valueOf(TRUE)
                 },
                 null,

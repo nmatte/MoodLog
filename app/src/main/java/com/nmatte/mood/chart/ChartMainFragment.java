@@ -97,7 +97,6 @@ public class ChartMainFragment extends Fragment {
 
     public void onEvent(CloseEditEntryEvent event){
         try {
-            // TODO save entry to table
             EditEntryLayout editEntryLayout = (EditEntryLayout) horizontalLayout.getChildAt(indexOfOpenEntry);
             ReadonlyColumn newColumn = new ReadonlyColumn(
                     getActivity(),
@@ -105,6 +104,7 @@ public class ChartMainFragment extends Fragment {
                     numItems,
                     boolItems
                     );
+            ChartEntryTableHelper.addOrUpdateEntry(getActivity(),editEntryLayout.getEntry());
             newColumn.setOnLongClickListener(getColumnLongClickListener(newColumn));
             horizontalLayout.removeView(editEntryLayout);
             horizontalLayout.addView(newColumn,indexOfOpenEntry);

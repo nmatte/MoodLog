@@ -51,9 +51,39 @@ public class BoolItemTableHelper {
             e.printStackTrace();
         }
 
-        item = getFullItem(db,item);
+        item = getItemWithName(db, item.getColumnName());
         addItemColumn(db,item);
         db.close();
+        return item;
+    }
+
+    private static BoolItem getItemWithName(SQLiteDatabase db, String itemName){
+        if (itemName == null)
+            return null;
+
+        String [] columns = new String [] {
+                LogbookItemContract.Bool.ITEM_ID_COLUMN,
+                LogbookItemContract.Bool.ITEM_NAME_COLUMN
+        };
+        String selection = LogbookItemContract.Bool.ITEM_NAME_COLUMN+ " = ?";
+        String [] args = new String []{
+                itemName
+        };
+
+        Cursor c = db.query(
+                LogbookItemContract.Bool.ITEM_TABLE,
+                columns,
+                selection,
+                args,
+                null,null,
+                LogbookItemContract.Bool.ITEM_ID_COLUMN);
+
+        BoolItem item = null;
+        if(c.getCount() > 0){
+            c.moveToFirst();
+            item = new BoolItem(c.getLong(0),c.getString(1));
+        }
+        c.close();
         return item;
     }
 
@@ -188,9 +218,8 @@ public class BoolItemTableHelper {
         Cursor c = db.query(
                 LogbookItemContract.Bool.ITEM_TABLE,
                 columns,
-                "? = ?",
+                LogbookItemContract.Bool.ITEM_VISIBLE_COLUMN + " = ?",
                 new String[]{
-                        LogbookItemContract.Bool.ITEM_VISIBLE_COLUMN,
                         String.valueOf(TRUE)
                 },
                 null,

@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     tools:context=".SettingsActivity">
 
     <LinearLayout
@@ -40,5 +41,6 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/navlist_header"
         app:menu="@menu/drawer"
+
         />
 </android.support.v4.widget.DrawerLayout>
