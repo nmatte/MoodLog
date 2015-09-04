@@ -1,9 +1,6 @@
 package com.nmatte.mood.notifications;
 
-import android.content.Context;
-
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
-import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 
 import org.joda.time.DateTime;
 
@@ -49,34 +46,7 @@ public class MedNotification {
         return hour * 100 + minute;
     }
 
-    public static String medDisplayString(MedNotification notification, Context context) {
-        ArrayList<Long> medicationIDs = new ArrayList<>();
-        for (BoolItem m : notification.boolItems){
-            medicationIDs.add(m.getID());
-        }
 
-        String result = "";
-        for (String name : BoolItemTableHelper.mapIDsToNames(medicationIDs, context)){
-            result += name + "\n";
-        }
-        return result;
-    }
-
-    public static String medDisplayString(String idString, Context context){
-        String [] idStrings = idString.split(" ");
-        ArrayList<Long> medicationIDs = new ArrayList<>();
-
-        for (String id : idStrings){
-            long idNumber = Long.valueOf(id);
-            medicationIDs.add(idNumber);
-        }
-        String result = "";
-        for (String name : BoolItemTableHelper.mapIDsToNames(medicationIDs, context)){
-            result += name + "\n";
-        }
-        return result;
-
-    }
 
     public String medIDString(){
         return "";

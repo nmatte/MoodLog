@@ -226,7 +226,5 @@ public class ChartActivity extends AppCompatActivity
                     .putBoolean(PreferencesContract.BOOL_CHART_REMEMBER_DATES,event.isRememberDates())
                     .apply();
         }
-
-
     }
 }

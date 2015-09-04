@@ -54,7 +54,7 @@ public class NotificationList extends LinearLayout {
             TextView medicationText = (TextView) notificationListItem.findViewById(R.id.medicationText);
 
             timeText.setText(notification.calendarString());
-            medicationText.setText(MedNotification.medDisplayString(notification, context));
+            medicationText.setText("replace me!");
 
             notificationListItem.setOnLongClickListener(new OnLongClickListener() {
                 @Override

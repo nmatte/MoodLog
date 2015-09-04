@@ -22,7 +22,6 @@ import com.nmatte.mood.moodlog.R;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import de.greenrobot.event.EventBus;
 
@@ -77,8 +76,6 @@ public class ChartMainFragment extends Fragment {
                 horizontalLayout.addView(column);
             }
         }
-
-
     }
 
     private View.OnLongClickListener getColumnLongClickListener(final ReadonlyColumn column){
@@ -104,7 +101,7 @@ public class ChartMainFragment extends Fragment {
             EditEntryLayout editEntryLayout = (EditEntryLayout) horizontalLayout.getChildAt(indexOfOpenEntry);
             ReadonlyColumn newColumn = new ReadonlyColumn(
                     getActivity(),
-                     editEntryLayout.getEntry(),
+                    editEntryLayout.getEntry(),
                     numItems,
                     boolItems
                     );

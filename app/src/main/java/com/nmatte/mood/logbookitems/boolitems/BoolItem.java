@@ -103,4 +103,12 @@ public class BoolItem extends LogbookItem {
         hash = hash * ((id == null? 0 : id) + prime);
         return (int) hash;
     }
+
+    public static ArrayList<String> getColumnNames (ArrayList<BoolItem> items){
+        ArrayList<String> result = new ArrayList<>();
+        for (BoolItem item: items){
+            result.add(item.getColumnName());
+        }
+        return result;
+    }
 }

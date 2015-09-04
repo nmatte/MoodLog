@@ -28,9 +28,6 @@ public class LogbookItemContract {
 
         // Table for storing entries to correspond with ChartEntries.
         public static final String
-                LOG_TABLE = "BoolItemEntryTable",
-                LOG_DATE_COLUMN = "BoolChartEntryDate",
-                LOG_DATE_TYPE = "INTEGER PRIMARY KEY",
         // SQLite doesn't support boolean, so I'll use 0 and 1.
                 LOG_VALUE_TYPE = "INTEGER";
     }
@@ -50,14 +47,8 @@ public class LogbookItemContract {
                 ITEM_DEFAULT_COLUMN = "numItemDefault",
                 ITEM_DEFAULT_TYPE = "INTEGER";
 
-
-        // Table for storing entries to correspond with ChartEntries.
         public static final String
-                LOG_TABLE = "NumItemEntryTable",
-                LOG_DATE_COLUMN = "NumChartEntryDate",
-                LOG_DATE_TYPE = "INTEGER PRIMARY KEY",
                 LOG_VALUE_TYPE = "INTEGER";
-
     }
 
 

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.nmatte.mood.logbookentries.ChartEntryContract;
 import com.nmatte.mood.logbookitems.LogbookItemContract;
 import com.nmatte.mood.util.DatabaseHelper;
 
@@ -89,7 +90,7 @@ public class BoolItemTableHelper {
 
     private static void addItemColumn(SQLiteDatabase db, BoolItem item){
 
-        String query1 = "SELECT * FROM "+LogbookItemContract.Bool.LOG_TABLE +" LIMIT 0,1";
+        String query1 = "SELECT * FROM "+ ChartEntryContract.ENTRY_TABLE_NAME +" LIMIT 0,1";
         Cursor c = db.rawQuery(query1, null);
 
         if (item.getID() == null){
@@ -97,7 +98,7 @@ public class BoolItemTableHelper {
         }
         // column with this name wasn't found so you can safely add a new column.
         if (c.getColumnIndex(item.getColumnName()) == -1){
-            String addColumnQuery = "ALTER TABLE " + LogbookItemContract.Bool.LOG_TABLE +
+            String addColumnQuery = "ALTER TABLE " + ChartEntryContract.ENTRY_TABLE_NAME +
                     " ADD COLUMN " + item.getColumnName() + " " + LogbookItemContract.Bool.LOG_VALUE_TYPE ;
 
             db.execSQL(addColumnQuery);
@@ -129,7 +130,6 @@ public class BoolItemTableHelper {
             e.printStackTrace();
         }
     }
-
 
 
     public static void deleteBoolItem(Context context, BoolItem item){
@@ -174,19 +174,22 @@ public class BoolItemTableHelper {
 
 
     public static ArrayList<BoolItem> getAllVisible(Context context){
-        DatabaseHelper DBHelper = new DatabaseHelper(context);
-        SQLiteDatabase db = DBHelper.getReadableDatabase();
+        SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
+        ArrayList<BoolItem> result = getAllVisible(db);
+        db.close();
+        return result;
+    }
+
+    public static ArrayList<BoolItem> getAllVisible(SQLiteDatabase db){
         String [] columns = new String[] {
                 LogbookItemContract.Bool.ITEM_ID_COLUMN,
                 LogbookItemContract.Bool.ITEM_NAME_COLUMN
         };
-
-
         Cursor c = db.query(
                 LogbookItemContract.Bool.ITEM_TABLE,
                 columns,
                 "? = ?",
-                new String[] {
+                new String[]{
                         LogbookItemContract.Bool.ITEM_VISIBLE_COLUMN,
                         String.valueOf(TRUE)
                 },
@@ -203,23 +206,7 @@ public class BoolItemTableHelper {
             } while(c.moveToNext());
         }
         c.close();
-        db.close();
         return boolItems;
     }
-
-
-    public static ArrayList<String>  mapIDsToNames(ArrayList<Long> ids, Context context) {
-        ArrayList<String> result = new ArrayList<>();
-
-        for (BoolItem m : getAll(context)){
-            if (ids.contains(m.getID())){
-                result.add(m.getName());
-            }
-        }
-        return result;
-    }
-
-
-
 }
 

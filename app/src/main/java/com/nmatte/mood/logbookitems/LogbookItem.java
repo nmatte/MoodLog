@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class LogbookItem {
+abstract public class LogbookItem {
     protected final Long id;
     protected String name;
 
@@ -44,6 +44,8 @@ public class LogbookItem {
         this.name = name;
     }
 
+    abstract public String getColumnName();
+
     public static String combineStringArray(ArrayList<String> strings){
         return TextUtils.join(ARRAY_SEPARATOR,strings);
     }
@@ -51,7 +53,6 @@ public class LogbookItem {
     public static ArrayList<String> extractStringArray(String string){
         return new ArrayList<>(Arrays.asList(string.split(ARRAY_SEPARATOR)));
     }
-
 
 
 }

@@ -32,7 +32,7 @@ public class NotificationService extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle("Medication reminder")
-                .setContentText(MedNotification.medDisplayString(medString,this));
+                .setContentText("replace me!");
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         manager.notify(1,builder.build());

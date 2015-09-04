@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.nmatte.mood.logbookentries.ChartEntryContract;
 import com.nmatte.mood.logbookitems.LogbookItemContract;
 import com.nmatte.mood.util.DatabaseHelper;
 
@@ -52,12 +53,12 @@ public class NumItemTableHelper {
         if (item.getID() == null){
             return;
         }
-        String query = "SELECT * FROM "+LogbookItemContract.Num.LOG_TABLE +" LIMIT 0,1";
+        String query = "SELECT * FROM "+ ChartEntryContract.ENTRY_TABLE_NAME +" LIMIT 0,1";
         Cursor c = db.rawQuery(query, null);
 
         // column with this name wasn't found so you can safely add a new column.
         if (c.getColumnIndex(item.getColumnName()) == -1){
-            String addColumnQuery = "ALTER TABLE " + LogbookItemContract.Num.LOG_TABLE +
+            String addColumnQuery = "ALTER TABLE " + ChartEntryContract.ENTRY_TABLE_NAME +
                     " ADD COLUMN " + item.getColumnName() + " " + LogbookItemContract.Bool.LOG_VALUE_TYPE ;
 
             db.execSQL(addColumnQuery);
@@ -93,7 +94,7 @@ public class NumItemTableHelper {
                 columns,
                 selection,
                 args,
-                null,null,
+                null, null,
                 LogbookItemContract.Num.ITEM_ID_COLUMN);
 
 
@@ -149,5 +150,38 @@ public class NumItemTableHelper {
 
         return numItems;
     }
+
+    public static ArrayList<NumItem> getAllVisible(SQLiteDatabase db){
+        String [] columns = new String[] {
+                LogbookItemContract.Num.ITEM_ID_COLUMN,
+                LogbookItemContract.Num.ITEM_NAME_COLUMN,
+                LogbookItemContract.Num.ITEM_MAX_COLUMN,
+                LogbookItemContract.Num.ITEM_DEFAULT_COLUMN
+        };
+
+        Cursor c = db.query(
+                LogbookItemContract.Num.ITEM_TABLE,
+                columns,
+                "? = ?",
+                new String[] {
+                        LogbookItemContract.Num.ITEM_VISIBLE_COLUMN,
+                        String.valueOf(TRUE)
+                },
+                null,
+                null,
+                LogbookItemContract.Num.ITEM_ID_COLUMN);
+        c.moveToFirst();
+
+        ArrayList<NumItem> numItems = new ArrayList<>();
+        if (c.getCount() > 0){
+            do {
+                NumItem item = new NumItem(c.getLong(0),c.getString(1),c.getInt(2),c.getInt(3));
+                numItems.add(item);
+            } while(c.moveToNext());
+        }
+        c.close();
+        return numItems;
+    }
+
 
 }

@@ -23,8 +23,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try{
             makeChartEntryTable(db);
-            makeBoolChartEntryTable(db);
-            makeNumChartEntryTable(db);
 
             makeBoolItemTable(db);
             makeNumItemTable(db);
@@ -36,29 +34,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    private void makeNumChartEntryTable(SQLiteDatabase db) {
-        String numChartEntryQuery =
-                "CREATE TABLE IF NOT EXISTS " + LogbookItemContract.Num.LOG_TABLE + " ("
-                + LogbookItemContract.Num.LOG_DATE_COLUMN + " " + LogbookItemContract.Num.LOG_DATE_TYPE + ")";
-        db.execSQL(numChartEntryQuery);
-    }
 
     private void makeChartEntryTable(SQLiteDatabase db){
         String logbookEntryQuery =
                 "CREATE TABLE IF NOT EXISTS "+ ChartEntryContract.ENTRY_TABLE_NAME+ " ("
                 + ChartEntryContract.ENTRY_DATE_COLUMN + " " + ChartEntryContract.ENTRY_DATE_TYPE + ", "
-                + ChartEntryContract.ENTRY_MOOD_COLUMN + " " + ChartEntryContract.ENTRY_MOOD_TYPE + ", "
-                + ChartEntryContract.ENTRY_NUMITEM_COLUMN + " " + ChartEntryContract.ENTRY_NUMITEM_TYPE + ", "
-                + ChartEntryContract.ENTRY_BOOLITEM_COLUMN + " " + ChartEntryContract.ENTRY_BOOLITEM_TYPE + ")";
+                + ChartEntryContract.ENTRY_MOOD_COLUMN + " " + ChartEntryContract.ENTRY_MOOD_TYPE +  ")";
 
         db.execSQL(logbookEntryQuery);
-    }
-
-    private void makeBoolChartEntryTable(SQLiteDatabase db){
-        String boolChartEntryQuery =
-                "CREATE TABLE IF NOT EXISTS " + LogbookItemContract.Bool.LOG_TABLE + " ("
-                + LogbookItemContract.Bool.LOG_DATE_COLUMN + " " + LogbookItemContract.Bool.LOG_DATE_TYPE + ")";
-        db.execSQL(boolChartEntryQuery);
     }
 
     private void makeNumItemTable(SQLiteDatabase db){

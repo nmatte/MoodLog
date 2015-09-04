@@ -125,4 +125,12 @@ public class NumItem extends LogbookItem{
     public String getColumnName() {
         return "N" + id.toString();
     }
+
+    public static ArrayList<String> getColumnNames (ArrayList<NumItem> items){
+        ArrayList<String> result = new ArrayList<>();
+        for (NumItem item: items){
+            result.add(item.getColumnName());
+        }
+        return result;
+    }
 }

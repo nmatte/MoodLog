@@ -1,7 +1,5 @@
 package com.nmatte.mood.logbookentries;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v4.util.SimpleArrayMap;
 
 import com.nmatte.mood.logbookitems.LogbookItem;
@@ -9,26 +7,22 @@ import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 
-public class ChartEntry implements Parcelable{
+public class ChartEntry{
 
     private final DateTime logDate;
     private ArrayList<Boolean> moods;
     private SimpleArrayMap<NumItem,Integer> numItems;
     private SimpleArrayMap<BoolItem,Boolean> boolItems;
 
-    public static final String PARCEL_TAG = "LogbookParcel",
-            DATE_TAG = "LogbookEntryDate",
-    MOOD_TAG = "LogbookEntryMood",
-    BOOL_TAG = "LogbookEntryBoolItems",
-    NUM_TAG = "LogbookEntryNumItems";
+    public static final String DATE_PATTERN = "YYYYDDD";
 
+    public static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern(DATE_PATTERN);
 
-    public ChartEntry(){
-        this(DateTime.now());
-    }
 
     public ChartEntry(DateTime logDate){
         this(logDate, getEmptyMoods(),new SimpleArrayMap<NumItem,Integer>(),new SimpleArrayMap<BoolItem,Boolean>());
@@ -43,14 +37,6 @@ public class ChartEntry implements Parcelable{
     }
 
 
-    // parcel constructor
-    private ChartEntry(Parcel in){
-        logDate = new DateTime(in.readLong());
-        moods = parseMoodString(in.readString());
-        numItems = NumItem.mapFromStringArray(in.createStringArrayList());
-        boolItems = BoolItem.mapFromStringArray(in.createStringArrayList());
-
-    }
 
     public SimpleArrayMap<BoolItem, Boolean> getBoolItems() {
         return boolItems;
@@ -105,34 +91,6 @@ public class ChartEntry implements Parcelable{
     }
 
 
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    Parcelable.Creator<ChartEntry> CREATOR = new Creator<ChartEntry>() {
-        @Override
-        public ChartEntry createFromParcel(Parcel source) {
-            return new ChartEntry(source);
-        }
-
-        @Override
-        public ChartEntry[] newArray(int size) {
-            return new ChartEntry[size];
-        }
-    };
-
-
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(logDate.getMillis());
-        dest.writeString(getMoodString());
-        dest.writeStringList(NumItem.mapToStringArray(numItems));
-        dest.writeStringList(BoolItem.mapToStringArray(boolItems));
-    }
-
     private static ArrayList<Boolean> getEmptyMoods(){
         ArrayList<Boolean> result = new ArrayList<>();
         for (int i = 0; i < 13; i++) {
@@ -146,6 +104,6 @@ public class ChartEntry implements Parcelable{
     }
 
     public int getDateInt() {
-        return Integer.valueOf(logDate.toString("YYYYDDD"));
+        return Integer.valueOf(logDate.toString(FORMATTER));
     }
 }

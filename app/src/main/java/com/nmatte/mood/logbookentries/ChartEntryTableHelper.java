@@ -5,36 +5,46 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import android.support.v4.util.SimpleArrayMap;
 
-import com.nmatte.mood.logbookitems.LogbookItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
+import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
+import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.util.DatabaseHelper;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ChartEntryTableHelper {
-
+    /*
+    the ChartEntry table has two predefined columns, the ID (which is also the date) and the mood
+    values.
+    it also has user-defined columns in the form of NumItems and BoolItems.
+     */
     public static ArrayList<ChartEntry> getEntryGroup(Context context, DateTime startDate, DateTime endDate){
         SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
 
-        String [] columns = new String [] {
-                ChartEntryContract.ENTRY_DATE_COLUMN,
-                ChartEntryContract.ENTRY_MOOD_COLUMN,
-                ChartEntryContract.ENTRY_NUMITEM_COLUMN,
-                ChartEntryContract.ENTRY_BOOLITEM_COLUMN
-        };
+        ArrayList<NumItem> numItems = NumItemTableHelper.getAllVisible(db);
+        ArrayList<BoolItem> boolItems = BoolItemTableHelper.getAllVisible(db);
+
+        ArrayList<String> preDefinedColumns = new ArrayList<>();
+        preDefinedColumns.add(ChartEntryContract.ENTRY_DATE_COLUMN);
+        preDefinedColumns.add(ChartEntryContract.ENTRY_MOOD_COLUMN);
+
+        ArrayList<String> allColumns = new ArrayList<>();
+        allColumns.addAll(preDefinedColumns);
+        allColumns.addAll(NumItem.getColumnNames(numItems));
+        allColumns.addAll(BoolItem.getColumnNames(boolItems));
+
+        String [] columns = allColumns.toArray(new String[allColumns.size()]);
 
         String [] selection = new String[] {
-                String.valueOf(startDate.toLocalDate().toString("YYYYDDD")),
-                        String.valueOf(endDate.toLocalDate().toString("YYYYDDD"))
+                String.valueOf(startDate.toLocalDate().toString(ChartEntry.DATE_PATTERN)),
+                String.valueOf(endDate.toLocalDate().toString(ChartEntry.DATE_PATTERN))
         };
 
         Cursor c = db.query(
@@ -47,21 +57,44 @@ public class ChartEntryTableHelper {
         ArrayList<ChartEntry> result = new ArrayList<>();
 
         c.moveToFirst();
-        if (c.getCount() > 0){
-            do {
-                try {
-                    DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYYDDD");
+        try{
+            if (c.getCount() > 0){
+                do {
+                    DateTime entryDate = DateTime.parse(
+                            c.getString(c.getColumnIndex(ChartEntryContract.ENTRY_DATE_COLUMN)),
+                            ChartEntry.FORMATTER);
+
+                    ArrayList<Boolean> chartMoods = ChartEntry.parseMoodString(
+                            c.getString(c.getColumnIndex(ChartEntryContract.ENTRY_MOOD_COLUMN)));
+
+
+                    SimpleArrayMap<BoolItem,Boolean> boolItemMap = new SimpleArrayMap<>();
+                    for (BoolItem item : boolItems){
+                        int index = c.getColumnIndex(item.getColumnName());
+                        if (index > 0){
+                            boolItemMap.put(item,c.getInt(index) != 0);
+                        }
+                    }
+
+                    SimpleArrayMap<NumItem,Integer> numItemMap = new SimpleArrayMap<>();
+                    for (NumItem item : numItems){
+                        int index = c.getColumnIndex(item.getColumnName());
+                        if (index > 0){
+                            numItemMap.put(item,c.getInt(index));
+                        }
+                    }
+
                     ChartEntry entry = new ChartEntry(
-                            DateTime.parse(c.getString(0),formatter),
-                            ChartEntry.parseMoodString(c.getString(1)),
-                            NumItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(2))),
-                            BoolItem.mapFromStringArray(LogbookItem.extractStringArray(c.getString(3))));
+                            entryDate,
+                            chartMoods,
+                            numItemMap,
+                            boolItemMap);
 
                     result.add(entry);
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-            } while(c.moveToNext());
+                } while(c.moveToNext());
+            }
+        } catch (Exception e){
+                e.printStackTrace();
         }
         c.close();
         db.close();
@@ -112,18 +145,28 @@ public class ChartEntryTableHelper {
     }
 
     public static void addOrUpdateEntry(Context context, ChartEntry entry) {
-        DatabaseHelper DBHelper = new DatabaseHelper(context);
-        SQLiteDatabase db = DBHelper.getWritableDatabase();
+        SQLiteDatabase db = new DatabaseHelper(context).getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(ChartEntryContract.ENTRY_DATE_COLUMN,entry.getDateInt());
         values.put(ChartEntryContract.ENTRY_MOOD_COLUMN,entry.getMoodString());
-        values.put(ChartEntryContract.ENTRY_NUMITEM_COLUMN,entry.getNumMapString());
-        values.put(ChartEntryContract.ENTRY_BOOLITEM_COLUMN,entry.getBoolMapString());
+
+        SimpleArrayMap<NumItem,Integer> numItemMap = entry.getNumItems();
+
+        for (int i = 0; i < numItemMap.size();i++){
+            values.put(numItemMap.keyAt(i).getColumnName(),numItemMap.valueAt(i));
+        }
+
+        SimpleArrayMap<BoolItem,Boolean> boolItemMap = entry.getBoolItems();
+        for (int i = 0; i < boolItemMap.size(); i++){
+            values.put(
+                    boolItemMap.keyAt(i).getColumnName(),
+                    boolItemMap.valueAt(i) ? 1 : 0); // 1 for true, 0 for false
+        }
 
         try{
             db.insertWithOnConflict(ChartEntryContract.ENTRY_TABLE_NAME,null,values,SQLiteDatabase.CONFLICT_REPLACE);
         } catch (Exception e){
-            Log.e("db", "", e);
+            e.printStackTrace();
         }
 
         db.close();
