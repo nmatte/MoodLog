@@ -33,8 +33,6 @@ public class BoolItemTableHelper {
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-
-
         try {
             if (item.getID() != null)
                 values.put(LogbookItemContract.Bool.ITEM_ID_COLUMN, item.getID());
@@ -51,7 +49,7 @@ public class BoolItemTableHelper {
             e.printStackTrace();
         }
 
-        item = getItemWithName(db, item.getColumnName());
+        item = getItemWithName(db, item.getName());
         addItemColumn(db,item);
         db.close();
         return item;
@@ -65,7 +63,7 @@ public class BoolItemTableHelper {
                 LogbookItemContract.Bool.ITEM_ID_COLUMN,
                 LogbookItemContract.Bool.ITEM_NAME_COLUMN
         };
-        String selection = LogbookItemContract.Bool.ITEM_NAME_COLUMN+ " = ?";
+        String selection = LogbookItemContract.Bool.ITEM_NAME_COLUMN + " = ?";
         String [] args = new String []{
                 itemName
         };
@@ -85,6 +83,26 @@ public class BoolItemTableHelper {
         }
         c.close();
         return item;
+    }
+
+    private static void addItemColumn(SQLiteDatabase db, BoolItem item){
+        if (item.getID() == null){
+            return;
+        }
+        String query1 = "SELECT * FROM "+ ChartEntryContract.ENTRY_TABLE_NAME +" LIMIT 0,1";
+        Cursor c = db.rawQuery(query1, null);
+
+        // column with this name wasn't found so you can safely add a new column.
+        if (c.getColumnIndex(item.getColumnName()) == -1){
+            String addColumnQuery = "ALTER TABLE " + ChartEntryContract.ENTRY_TABLE_NAME +
+                    " ADD COLUMN " + item.getColumnName() + " " + LogbookItemContract.Bool.LOG_VALUE_TYPE ;
+            db.execSQL(addColumnQuery);
+            Log.i("BoolItemTableHelper", "Added column" + item.getColumnName());
+        } else {
+            Log.i("BoolItemTableHelper", "Skipped adding column" + item.getColumnName());
+        }
+        c.close();
+
     }
 
     private static BoolItem getFullItem(SQLiteDatabase db, BoolItem item){
@@ -116,25 +134,6 @@ public class BoolItemTableHelper {
         }
         c.close();
         return item;
-    }
-
-    private static void addItemColumn(SQLiteDatabase db, BoolItem item){
-
-        String query1 = "SELECT * FROM "+ ChartEntryContract.ENTRY_TABLE_NAME +" LIMIT 0,1";
-        Cursor c = db.rawQuery(query1, null);
-
-        if (item.getID() == null){
-            return;
-        }
-        // column with this name wasn't found so you can safely add a new column.
-        if (c.getColumnIndex(item.getColumnName()) == -1){
-            String addColumnQuery = "ALTER TABLE " + ChartEntryContract.ENTRY_TABLE_NAME +
-                    " ADD COLUMN " + item.getColumnName() + " " + LogbookItemContract.Bool.LOG_VALUE_TYPE ;
-
-            db.execSQL(addColumnQuery);
-        }
-        c.close();
-
     }
 
     public static void setVisibility(Context context, BoolItem item, boolean isVisible){
