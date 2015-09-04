@@ -1,29 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.v4.widget.DrawerLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".SettingsActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test"
-        android:onClick="notificationTest"
-        android:id="@+id/testButton" />
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-
-    <com.nmatte.mood.notifications.NotificationList
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/notificationList"/>
-
-
-    <fragment
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/logbookEditorLayout"
-        android:name="com.nmatte.mood.logbookitems.LogbookEditorFragment"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test"
+            android:onClick="notificationTest"
+            android:id="@+id/testButton" />
 
 
+        <com.nmatte.mood.notifications.NotificationList
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/notificationList"/>
 
-</LinearLayout>
+
+        <fragment
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/logbookEditorLayout"
+            android:name="com.nmatte.mood.logbookitems.LogbookEditorFragment"/>
+
+
+
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:layout_width="180dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navlist_header"
+        app:menu="@menu/drawer"
+        />
+</android.support.v4.widget.DrawerLayout>

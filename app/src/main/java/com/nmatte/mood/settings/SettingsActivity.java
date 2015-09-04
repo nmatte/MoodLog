@@ -2,17 +2,16 @@ package com.nmatte.mood.settings;
 
 import android.app.DialogFragment;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 
-import com.nmatte.mood.logbookitems.LogbookEditorFragment;
+import com.nmatte.mood.chart.ChartActivity;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
-import com.nmatte.mood.logbookitems.numitems.NumItem;
-import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.notifications.AddMedNotificationDialog;
 import com.nmatte.mood.notifications.AlarmManagerHelper;
@@ -37,6 +36,13 @@ public class SettingsActivity
         setContentView(R.layout.activity_settings);
         notificationList = (NotificationList) findViewById(R.id.notificationList);
         notificationList.updateList(this);
+    }
+
+
+
+    private void startChartActivity(){
+        Intent intent = new Intent(this, ChartActivity.class);
+        startActivity(intent);
     }
 
 
@@ -103,4 +109,12 @@ public class SettingsActivity
         notificationList.updateList(this);
     }
 
+    public void onSettingsItemClick(MenuItem item) {
+    }
+
+    public void onRemindersItemClick(MenuItem item) {
+    }
+
+    public void onTestItemClick(MenuItem item) {
+    }
 }
