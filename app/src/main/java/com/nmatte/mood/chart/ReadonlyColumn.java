@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import com.nmatte.mood.chart.cell.CellView;
 import com.nmatte.mood.chart.cell.ReadonlyCheckbox;
 import com.nmatte.mood.chart.cell.TextCellView;
+import com.nmatte.mood.chart.cell.TextCellViewBuilder;
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.MoodList;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
@@ -35,12 +36,13 @@ public class ReadonlyColumn extends LinearLayout {
     private void init(){
         this.setOrientation(VERTICAL);
         int dateNum = entry.getLogDate().getDayOfMonth();
-        this.addView(new TextCellView(context, String.valueOf(dateNum)));
+        this.addView(new TextCellViewBuilder(context).setText(String.valueOf(dateNum)).build());
         addMoodModule();
         for (NumItem numItem : numItems){
             if (entry.getNumItems().containsKey(numItem)){
-                TextCellView newCell = new TextCellView(context);
-                newCell.setText(String.valueOf(entry.getNumItems().get(numItem)));
+                TextCellView newCell = new TextCellViewBuilder(context)
+                        .setText(String.valueOf(entry.getNumItems().get(numItem)))
+                        .build();
                 newCell.setEnabled(false);
                 addView(newCell);
             }

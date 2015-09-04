@@ -14,6 +14,7 @@ import com.nmatte.mood.logbookitems.numitems.NumItem;
 import com.nmatte.mood.logbookitems.numitems.NumItemList;
 import com.nmatte.mood.moodlog.R;
 
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -74,7 +75,11 @@ public class EditEntryLayout extends LinearLayout {
         numItemList.setItemValues(entry.getNumItems());
         boolItemList.setItems(entry.getBoolItems());
         DateTimeFormatter fmt = DateTimeFormat.shortDate();
-        dateView.setText(entry.getLogDate().toString(fmt));
+
+        if (entry.getLogDate().toLocalDate().getDayOfYear() == DateTime.now().toLocalDate().getDayOfYear())
+            dateView.setText("Today");
+        else
+            dateView.setText(entry.getLogDate().toString(fmt));
     }
 
     public ChartEntry getEntry(){

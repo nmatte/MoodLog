@@ -4,10 +4,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Region;
+import android.graphics.Rect;
 import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 
 import com.nmatte.mood.moodlog.R;
@@ -17,7 +16,10 @@ import com.nmatte.mood.moodlog.R;
 public class CellView extends View {
 
     Paint blackPaint;
-    protected int leftTransparentBound = 0;
+    protected int leftTransparentBound = -1;
+    protected int rightTransparentBound = -1;
+    protected int topTransparentBound = -1;
+    protected int bottomTransparentBound = -1;
 
 
 
@@ -94,8 +96,11 @@ public class CellView extends View {
         if (bg != null) {
             bg.setBounds(0, 0, getWidth(), getHeight());
             bg.draw(canvas);
-            Region region = bg.getTransparentRegion();
-            leftTransparentBound = region.getBounds().left;
+            Rect bounds = bg.getTransparentRegion().getBounds();
+            leftTransparentBound = bounds.left;
+            rightTransparentBound = bounds.right;
+            topTransparentBound = bounds.top;
+            bottomTransparentBound = bounds.bottom;
         }
 
         // draw BG color

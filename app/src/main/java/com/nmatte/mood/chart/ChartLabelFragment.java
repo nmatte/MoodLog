@@ -4,14 +4,13 @@ import android.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.nmatte.mood.chart.cell.TextCellView;
+import com.nmatte.mood.chart.cell.TextCellViewBuilder;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
@@ -30,13 +29,17 @@ public class ChartLabelFragment extends Fragment {
         Resources res = getResources();
         int[] colors = res.getIntArray(R.array.mood_colors);
         String [] moodLabels = res.getStringArray(R.array.mood_labels);
-        mainLayout.addView(new TextCellView(getActivity(),"Date"));
+        mainLayout.addView(new TextCellViewBuilder(getActivity()).setText("Date").build());
         for (String label : moodLabels){
+            TextCellViewBuilder b = new TextCellViewBuilder(getActivity());
             if (i < colors.length){
-                mainLayout.addView(new TextCellView(getActivity(),label,colors[i]));
+                mainLayout.addView(b
+                        .setText(label)
+                        .setBackgroundColor(colors[i])
+                        .build());
                 i++;
             } else {
-                mainLayout.addView(new TextCellView(getActivity(), label));
+                mainLayout.addView(b.setText(label).build());
             }
         }
 
@@ -44,7 +47,7 @@ public class ChartLabelFragment extends Fragment {
 
             //TextView textView = new TextView(getActivity());
             //TextViewCell textView = new TextViewCell(getActivity());
-            TextCellView textView = new TextCellView(getActivity(),numItem.getName());
+            TextCellView textView = new TextCellViewBuilder(getActivity()).setText(numItem.getName()).build();
             //textView.setBackgroundResource(R.drawable.drop_shadow3);
             //textView.setText(numItem.getName());
             //textView.setEllipsize(TextUtils.TruncateAt.END);
@@ -52,7 +55,7 @@ public class ChartLabelFragment extends Fragment {
         }
 
         for (BoolItem m : BoolItemTableHelper.getAll(getActivity())){
-            mainLayout.addView(new TextCellView(getActivity(),m.getName()));
+            mainLayout.addView(new TextCellViewBuilder(getActivity()).setText(m.getName()).build());
         }
 
         return mainLayout;

@@ -4,33 +4,32 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Region;
 import android.util.AttributeSet;
 
-import com.nmatte.mood.chart.cell.CellView;
 import com.nmatte.mood.moodlog.R;
 
 public class TextCellView extends CellView {
     Paint blackPaint;
+    Context context;
     String text;
+    TextAlignment alignment;
+    int backgroundColor;
 
 
-    public TextCellView(Context context){
-        super(context);
-        init();
-    }
+    public enum TextAlignment {
+        ALIGN_LEFT,
+        ALIGN_CENTER
+    };
 
-    public TextCellView(Context context, String text){
-        super(context);
-        this.text = text;
-        init();
-    }
-
-    public TextCellView(Context context, String text, int backgroundColor){
+    protected TextCellView(Context context, String text, int backgroundColor, TextAlignment alignment){
         super(context,backgroundColor);
+        this.context = context;
         this.text = text;
+        this.alignment = (alignment == null)? TextAlignment.ALIGN_LEFT : alignment;
         init();
     }
+
+
 
     public TextCellView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -38,11 +37,12 @@ public class TextCellView extends CellView {
         this.text = (String) a.getText(R.styleable.TextCellView_text);
         if (this.text == null)
             this.text = "";
-        init();
-    }
+        String alignText = (String) a.getText(R.styleable.TextCellView_alignment);
 
-    public TextCellView(Context context, int backgroundColor){
-        super(context, backgroundColor);
+        // prefer left align
+        this.alignment = TextAlignment.ALIGN_LEFT;
+        if (alignText.equals("center"))
+            this.alignment = TextAlignment.ALIGN_CENTER;
         init();
     }
 
@@ -58,16 +58,22 @@ public class TextCellView extends CellView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // TODO fix this mess
         String sampleText = text.length() <= 2 ? "00" : text.length() <= "Irritability".length() ? "Irritability" : text;
         blackPaint.setTextSize(getAdjustedTextSize(sampleText));
 
 
-        //this centers the text
-        //float textX = getWidth() / 2 - blackPaint.measureText(text) / 2;
+        float textX = 0;
+        float textY = 0;
+        if (alignment == TextAlignment.ALIGN_CENTER){
+            textX = getWidth() / 2 - blackPaint.measureText(text) / 2;
+            textY = (getHeight() * 5 )/ 6;
+        }
 
-        float textX = (float) super.leftTransparentBound;
-        float textY = (getHeight() * 5 )/ 6;
+        if (alignment == TextAlignment.ALIGN_LEFT){
+            textX = (float) super.leftTransparentBound;
+            textY = (getHeight() * 5 )/ 6;
+        }
+
 
         canvas.drawText(text, textX, textY, blackPaint);
     }
@@ -81,5 +87,7 @@ public class TextCellView extends CellView {
         invalidate();
         return this;
     }
+
+
 
 }
