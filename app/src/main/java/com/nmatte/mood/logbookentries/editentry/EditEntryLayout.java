@@ -73,7 +73,7 @@ public class EditEntryLayout extends LinearLayout {
     public void setEntryValues(){
         moodList.setCheckedRows(entry.getMoods());
         numItemList.setItemValues(entry.getNumItems());
-        boolItemList.setItems(entry.getBoolItems());
+        boolItemList.setItemValues(entry.getBoolItems());
         DateTimeFormatter fmt = DateTimeFormat.shortDate();
 
         if (entry.getLogDate().toLocalDate().getDayOfYear() == DateTime.now().toLocalDate().getDayOfYear())

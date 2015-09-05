@@ -4,12 +4,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v4.util.SimpleArrayMap;
 import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.nmatte.mood.chart.cell.CheckableCellView;
 import com.nmatte.mood.moodlog.R;
@@ -60,15 +56,52 @@ public class BoolItemList extends LinearLayout {
     }
 
     public void setItems(ArrayList<BoolItem> items){
-        SimpleArrayMap<BoolItem,Boolean> newMap = new SimpleArrayMap<>();
+        removeAllViews();
         for (BoolItem item : items){
-            newMap.put(item,false);
+            CheckableCellView checkBox = new CheckableCellView(context);
+            checkBox.setBoolItem(item);
+            addView(checkBox);
         }
-        setItems(newMap);
     }
 
     public void setItems(SimpleArrayMap<BoolItem,Boolean> itemMap){
         removeAllViews();
+        for (int i = 0; i < itemMap.size(); i++){
+            BoolItem item = itemMap.keyAt(i);
+            final CheckableCellView newRow = new CheckableCellView(context);
+            newRow.setBoolItem(item);
+            newRow.setChecked(itemMap.get(item));
+
+            newRow.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isEnabled)
+                        newRow.setChecked(!newRow.isChecked());
+                }
+            });
+
+            addView(newRow);
+        }
+    }
+
+    public void setItemValues(SimpleArrayMap<BoolItem,Boolean> itemMap){
+        for (int i = 0; i < getChildCount(); i++){
+            final CheckableCellView checkBox = (CheckableCellView) getChildAt(i);
+            if (itemMap.containsKey(checkBox.getBoolItem())){
+                checkBox.setChecked(itemMap.get(checkBox.getBoolItem()));
+
+                checkBox.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (isEnabled)
+                            checkBox.setChecked(!checkBox.isChecked());
+                    }
+                });
+            }
+        }
+
+
+
         for (int i = 0; i < itemMap.size(); i++){
             BoolItem item = itemMap.keyAt(i);
             final CheckableCellView newRow = new CheckableCellView(context);
