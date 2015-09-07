@@ -35,11 +35,10 @@ public class EditEntryLayout extends LinearLayout {
                            ArrayList<BoolItem> boolItems) {
         super(context);
         this.context = context;
-        this.entry = initialValues;
         initWidgets();
         setNumItemList(numItems);
         setBoolItemList(boolItems);
-        setEntryValues();
+        setEntry(initialValues);
     }
 
 
@@ -70,7 +69,8 @@ public class EditEntryLayout extends LinearLayout {
         numItemList.setItems(items);
     }
 
-    public void setEntryValues(){
+    public void setEntry(ChartEntry newEntry){
+        this.entry = newEntry;
         moodList.setCheckedRows(entry.getMoods());
         numItemList.setItemValues(entry.getNumItems());
         boolItemList.setItemValues(entry.getBoolItems());

@@ -20,12 +20,19 @@ public class CellView extends View {
     protected int rightTransparentBound = -1;
     protected int topTransparentBound = -1;
     protected int bottomTransparentBound = -1;
+    int shadowID = DEFAULT_BG_ID;
+    static final int DEFAULT_BG_ID = R.drawable.drop_shadow3;
 
 
 
     static final int WHITE = 0xFFFFFFFF;
     static final int BLACK = 0xFF000000;
 
+
+    public void setBg(int id) {
+        this.shadowID = id;
+        invalidate();
+    }
 
     @Override
     public void setBackgroundColor(int backgroundColor) {
@@ -92,7 +99,7 @@ public class CellView extends View {
         super.onDraw(canvas);
 
         canvas.drawColor(backgroundColor);
-        NinePatchDrawable bg =  (NinePatchDrawable) getResources().getDrawable(R.drawable.drop_shadow3);
+        NinePatchDrawable bg = (NinePatchDrawable) getResources().getDrawable(shadowID);
         if (bg != null) {
             bg.setBounds(0, 0, getWidth(), getHeight());
             bg.draw(canvas);

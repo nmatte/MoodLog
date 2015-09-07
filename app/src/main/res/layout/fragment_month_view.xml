@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:background="@android:color/darker_gray"
+    android:id="@+id/backgroundLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
 <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -12,3 +19,11 @@
         android:id="@+id/columnLayout"/>
 
 </HorizontalScrollView>
+
+    <com.nmatte.mood.logbookentries.editentry.EditEntryLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editEntryView"
+        android:visibility="invisible"/>
+
+</FrameLayout>

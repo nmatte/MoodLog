@@ -72,5 +72,7 @@ public class ReadonlyColumn extends LinearLayout {
     }
 
 
-
+    public void setCellBackgrounds(int bg) {
+        this.setAlpha((float) 0.5);
+    }
 }

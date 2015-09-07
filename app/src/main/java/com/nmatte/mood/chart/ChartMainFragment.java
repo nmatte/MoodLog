@@ -1,11 +1,18 @@
 package com.nmatte.mood.chart;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.logbookentries.ChartEntry;
@@ -27,12 +34,15 @@ import de.greenrobot.event.EventBus;
 
 public class ChartMainFragment extends Fragment {
     LinearLayout horizontalLayout;
+    FrameLayout backgroundLayout;
+    HorizontalScrollView horizontalScrollView;
     boolean editEntryViewIsOpen = false;
-    int indexOfOpenEntry = 0;
     ArrayList<NumItem> numItems;
     ArrayList<BoolItem> boolItems;
     DateTime startDate;
     DateTime endDate;
+
+    EditEntryLayout editEntryView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,9 +62,14 @@ public class ChartMainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentLayout = inflater.inflate(R.layout.fragment_month_view, null);
         horizontalLayout = (LinearLayout) fragmentLayout.findViewById(R.id.columnLayout);
-
+        editEntryView = (EditEntryLayout) fragmentLayout.findViewById(R.id.editEntryView);
+        backgroundLayout = (FrameLayout) fragmentLayout.findViewById(R.id.backgroundLayout);
+        horizontalScrollView = (HorizontalScrollView) fragmentLayout.findViewById(R.id.horizontalScrollView);
         numItems = NumItemTableHelper.getAll(getActivity());
         boolItems = BoolItemTableHelper.getAll(getActivity());
+
+        editEntryView.setNumItemList(numItems);
+        editEntryView.setBoolItemList(boolItems);
 
         return fragmentLayout;
     }
@@ -84,9 +99,45 @@ public class ChartMainFragment extends Fragment {
             public boolean onLongClick(View v) {
                 if (!editEntryViewIsOpen) {
                     editEntryViewIsOpen = true;
-                    indexOfOpenEntry = horizontalLayout.indexOfChild(column);
-                    horizontalLayout.removeView(column);
-                    horizontalLayout.addView(new EditEntryLayout(getActivity(), column.getEntry(), numItems, boolItems), indexOfOpenEntry);
+
+                    editEntryView.setEntry(column.getEntry());
+
+
+                    int [] columnArgs = new int [2];
+                    column.getLocationOnScreen(columnArgs);
+                    int [] layoutArgs = new int[2];
+                    backgroundLayout.getLocationOnScreen(layoutArgs);
+
+
+                    editEntryView.setX(columnArgs[0] - layoutArgs[0]);
+
+
+                    if (Build.VERSION.SDK_INT == 21){
+                        int cx = editEntryView.getWidth() / 2;
+                        cx = 0;
+                        int cy = editEntryView.getHeight() / 2;
+                        int finalRadius = Math.max(editEntryView.getWidth(), editEntryView.getHeight());
+                        Animator animator =
+                                ViewAnimationUtils.createCircularReveal(editEntryView, cx, cy, 0, finalRadius);
+                        animator.setDuration(700);
+                        editEntryView.setVisibility(View.VISIBLE);
+                        animator.start();
+                    } else {
+                        Animator animator = AnimatorInflater.loadAnimator(getActivity(), R.animator.expand);
+                        animator.setTarget(editEntryView);
+                        editEntryView.setVisibility(View.VISIBLE);
+                        animator.start();
+                    }
+
+
+                    horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            return true;
+                        }
+                    });
+                    addShadows(0);
+
                     EventBus.getDefault().post(new OpenEditEntryEvent());
                     return true;
                 } else
@@ -95,23 +146,56 @@ public class ChartMainFragment extends Fragment {
         };
     }
 
+    private void addShadows(long duration){
+        /*
+        for(int i = 0; i < horizontalLayout.getChildCount(); i++){
+            if (i != indexOfOpenEntry){
+                Animator anim = AnimatorInflater.loadAnimator(getActivity(),R.animator.fade_out);
+                anim.setTarget(horizontalLayout.getChildAt(i));
+                anim.setStartDelay(duration);
+                anim.start();
+            }
+        }
+*/
+        Animator anim = AnimatorInflater.loadAnimator(getActivity(),R.animator.fade_out);
+        anim.setTarget(horizontalLayout);
+        anim.setStartDelay(duration);
+        anim.start();
+    }
+
+    private void clearShadows(long duration){
+        /*
+        for(int i = 0; i < horizontalLayout.getChildCount(); i++){
+            if (i != indexOfOpenEntry){
+                Animator anim = AnimatorInflater.loadAnimator(getActivity(),R.animator.fade_in);
+                anim.setTarget(horizontalLayout.getChildAt(i));
+                anim.setStartDelay(duration);
+                anim.start();
+            }
+        }*/
+        Animator anim = AnimatorInflater.loadAnimator(getActivity(),R.animator.fade_in);
+        anim.setTarget(horizontalLayout);
+        anim.setStartDelay(duration);
+        anim.start();
+    }
+
     public void onEvent(CloseEditEntryEvent event){
         try {
-            EditEntryLayout editEntryLayout = (EditEntryLayout) horizontalLayout.getChildAt(indexOfOpenEntry);
-            ReadonlyColumn newColumn = new ReadonlyColumn(
-                    getActivity(),
-                    editEntryLayout.getEntry(),
-                    numItems,
-                    boolItems
-                    );
-            ChartEntryTableHelper.addOrUpdateEntry(getActivity(),editEntryLayout.getEntry());
-            newColumn.setOnLongClickListener(getColumnLongClickListener(newColumn));
-            horizontalLayout.removeView(editEntryLayout);
-            horizontalLayout.addView(newColumn,indexOfOpenEntry);
+            ChartEntryTableHelper.addOrUpdateEntry(getActivity(), editEntryView.getEntry());
+
+            horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return false;
+                }
+            });
+            clearShadows(0);
+            editEntryView.setVisibility(View.INVISIBLE);
             editEntryViewIsOpen = false;
         } catch (Exception e){
             e.printStackTrace();
         }
+
 
     }
 
