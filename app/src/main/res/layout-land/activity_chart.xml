@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:padding="12dp"
             android:clickable="true"
+
             android:orientation="horizontal"
             android:id="@+id/mainLayout">
             <fragment
@@ -36,7 +37,7 @@
                 <fragment
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:name="com.nmatte.mood.chart.ChartMainFragment"
+                    android:name="com.nmatte.mood.chart.monthview.ChartMainFragment"
                     android:id="@+id/chartMainFragment"/>
 
             </LinearLayout>

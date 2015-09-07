@@ -1,8 +1,7 @@
-package com.nmatte.mood.chart;
+package com.nmatte.mood.chart.monthview;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
-import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,14 +14,13 @@ import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import com.nmatte.mood.chart.ReadonlyColumn;
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.ChartEntryTableHelper;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
 import com.nmatte.mood.logbookentries.editentry.EditEntryLayout;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
-import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
-import com.nmatte.mood.logbookitems.numitems.NumItem;
 import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.moodlog.R;
 
@@ -32,15 +30,13 @@ import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
-public class ChartMainFragment extends Fragment {
+public class ChartMainFragment extends ChartMonthView {
+
+
     LinearLayout horizontalLayout;
     FrameLayout backgroundLayout;
     HorizontalScrollView horizontalScrollView;
     boolean editEntryViewIsOpen = false;
-    ArrayList<NumItem> numItems;
-    ArrayList<BoolItem> boolItems;
-    DateTime startDate;
-    DateTime endDate;
 
     EditEntryLayout editEntryView;
 
@@ -60,8 +56,10 @@ public class ChartMainFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View fragmentLayout = inflater.inflate(R.layout.fragment_month_view, null);
+        View fragmentLayout = inflater.inflate(R.layout.fragment_month_view, container);
         horizontalLayout = (LinearLayout) fragmentLayout.findViewById(R.id.columnLayout);
+        horizontalLayout.setClickable(true);
+        horizontalLayout.setLongClickable(true);
         editEntryView = (EditEntryLayout) fragmentLayout.findViewById(R.id.editEntryView);
         backgroundLayout = (FrameLayout) fragmentLayout.findViewById(R.id.backgroundLayout);
         horizontalScrollView = (HorizontalScrollView) fragmentLayout.findViewById(R.id.horizontalScrollView);
@@ -74,10 +72,9 @@ public class ChartMainFragment extends Fragment {
         return fragmentLayout;
     }
 
+
     public void refreshColumns(DateTime startDate, DateTime endDate) {
         horizontalLayout.removeAllViews();
-        horizontalLayout.setClickable(true);
-        horizontalLayout.setLongClickable(true);
 
         this.startDate = startDate;
         this.endDate = endDate;
@@ -103,19 +100,43 @@ public class ChartMainFragment extends Fragment {
                     editEntryView.setEntry(column.getEntry());
 
 
+                    /*
+                    find appropriate x coord for editEntryView:
+                    prefer centering on the center of the column to be edited.
+                    However, if the left or right side would be clipped by the parent layout,
+                    the x should be adjusted to align with parent instead.
+                     */
+
+                    // get absolute position of the column and its parent
                     int [] columnArgs = new int [2];
                     column.getLocationOnScreen(columnArgs);
                     int [] layoutArgs = new int[2];
                     backgroundLayout.getLocationOnScreen(layoutArgs);
 
 
-                    editEntryView.setX(columnArgs[0] - layoutArgs[0]);
+                    // get column's x coord relative to its parent
+                    int columnRelativeX = columnArgs[0] - layoutArgs[0];
+                    // now the relative x coord of the column's center
+                    int columnCenter = columnRelativeX + (column.getWidth()/2);
+                    // half the width of the edit entry view
+                    int editHalfWidth = editEntryView.getWidth()/2;
 
+                    // starting from center of original column, subtracting half of the
+                    // edit view's width from that coordinate gives the x coord for centering it.
+                    int newX = columnCenter - editHalfWidth;
+                    // newX would be clipped on the left
+                    if (newX < 0)
+                        newX = 0;
+                    // the parent layout's width is the right bound, and newX plus the width is the
+                    // view's right x coord.
+                    else if (newX + editEntryView.getWidth() > backgroundLayout.getWidth())
+                        newX = backgroundLayout.getWidth() - editEntryView.getWidth();
 
-                    if (Build.VERSION.SDK_INT == 21){
-                        int cx = editEntryView.getWidth() / 2;
-                        cx = 0;
-                        int cy = editEntryView.getHeight() / 2;
+                    editEntryView.setX(newX);
+
+                    if (Build.VERSION.SDK_INT >= 21){
+                        int cx = (int) column.getLastXtouch();
+                        int cy = (int) column.getLastYtouch();
                         int finalRadius = Math.max(editEntryView.getWidth(), editEntryView.getHeight());
                         Animator animator =
                                 ViewAnimationUtils.createCircularReveal(editEntryView, cx, cy, 0, finalRadius);
@@ -125,6 +146,7 @@ public class ChartMainFragment extends Fragment {
                     } else {
                         Animator animator = AnimatorInflater.loadAnimator(getActivity(), R.animator.expand);
                         animator.setTarget(editEntryView);
+                        //editEntryView.setPivotX(column.getLastXtouch());
                         editEntryView.setVisibility(View.VISIBLE);
                         animator.start();
                     }

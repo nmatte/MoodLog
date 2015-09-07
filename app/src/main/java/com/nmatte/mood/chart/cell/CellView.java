@@ -1,6 +1,7 @@
 package com.nmatte.mood.chart.cell;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -65,8 +66,14 @@ public class CellView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         Resources res = getResources();
+
         int desiredHeight = (int) res.getDimension(R.dimen.chart_cell_height);
         int desiredWidth = (int) res.getDimension(R.dimen.chart_cell_width);
+        if (res.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            desiredHeight = desiredHeight/2;
+            desiredWidth = (desiredWidth * 2)/3;
+            this.setPadding(1,1,1,1);
+        }
 
         int widthMode = View.MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = View.MeasureSpec.getSize(widthMeasureSpec);
@@ -99,16 +106,28 @@ public class CellView extends View {
         super.onDraw(canvas);
 
         canvas.drawColor(backgroundColor);
-        NinePatchDrawable bg = (NinePatchDrawable) getResources().getDrawable(shadowID);
-        if (bg != null) {
-            bg.setBounds(0, 0, getWidth(), getHeight());
-            bg.draw(canvas);
-            Rect bounds = bg.getTransparentRegion().getBounds();
-            leftTransparentBound = bounds.left;
-            rightTransparentBound = bounds.right;
-            topTransparentBound = bounds.top;
-            bottomTransparentBound = bounds.bottom;
+        int id = -1;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            leftTransparentBound = 0;
+            rightTransparentBound = getWidth();
+            topTransparentBound = 0;
+            bottomTransparentBound = getHeight();
+        } else {
+            id = shadowID;
+            NinePatchDrawable bg = (NinePatchDrawable) getResources().getDrawable(id);
+
+            if (bg != null) {
+                bg.setBounds(0, 0, getWidth(), getHeight());
+                bg.draw(canvas);
+                Rect bounds = bg.getTransparentRegion().getBounds();
+                leftTransparentBound = bounds.left;
+                rightTransparentBound = bounds.right;
+                topTransparentBound = bounds.top;
+                bottomTransparentBound = bounds.bottom;
+            }
         }
+
+
 
         // draw BG color
 

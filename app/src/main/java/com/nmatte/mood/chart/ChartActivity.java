@@ -13,6 +13,7 @@ import com.nmatte.mood.chart.datedialog.DateRangeDialog;
 import com.nmatte.mood.chart.datedialog.OpenEndDateDialogEvent;
 import com.nmatte.mood.chart.datedialog.OpenStartDateDialogEvent;
 import com.nmatte.mood.chart.datedialog.SaveEndDateDialogEvent;
+import com.nmatte.mood.chart.monthview.ChartMainFragment;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
 import com.nmatte.mood.moodlog.R;
