@@ -92,13 +92,13 @@ public class ChartActivity extends AppCompatActivity
         scroll.setScrollListener(new ScrollViewWithListener.ScrollListener() {
             @Override
             public void onScrollUp() {
-                if(FAB_is_open)
+                if (FAB_is_open)
                     faButton.show();
             }
 
             @Override
             public void onScrollDown() {
-                if(FAB_is_open)
+                if (FAB_is_open)
                     faButton.hide();
             }
         });
@@ -108,15 +108,7 @@ public class ChartActivity extends AppCompatActivity
         monthFragment.refreshColumns(getChartStartDate(), getChartEndDate());
     }
 
-    private void startSettingsActivity(){
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
-    }
 
-    private void startTestActivity(){
-        Intent intent = new Intent(this, TestActivity.class);
-        startActivity(intent);
-    }
 
     private DateTime getChartStartDate(){
 
@@ -207,6 +199,16 @@ public class ChartActivity extends AppCompatActivity
 
     public void onTestItemClick(MenuItem item) {
         startTestActivity();
+    }
+
+    private void startSettingsActivity(){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void startTestActivity(){
+        Intent intent = new Intent(this, TestActivity.class);
+        startActivity(intent);
     }
 
     public void onEvent(OpenEditEntryEvent event){

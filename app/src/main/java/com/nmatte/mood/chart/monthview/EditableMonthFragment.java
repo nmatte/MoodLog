@@ -94,8 +94,6 @@ public class EditableMonthFragment extends ChartMonthView {
                     editEntryViewIsOpen = true;
 
                     editEntryView.setEntry(column.getEntry());
-
-
                     /*
                     find appropriate x coord for editEntryView:
                     prefer centering on the center of the column to be edited.
