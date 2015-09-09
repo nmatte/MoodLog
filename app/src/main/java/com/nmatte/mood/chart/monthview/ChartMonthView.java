@@ -1,9 +1,12 @@
 package com.nmatte.mood.chart.monthview;
 
 import android.app.Fragment;
+import android.os.Bundle;
 
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
+import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
+import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 
 import org.joda.time.DateTime;
 
@@ -14,6 +17,14 @@ public abstract class ChartMonthView extends Fragment {
     ArrayList<BoolItem> boolItems;
     DateTime startDate;
     DateTime endDate;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        numItems = NumItemTableHelper.getAll(getActivity());
+        boolItems = BoolItemTableHelper.getAll(getActivity());
+
+    }
 
     /**
      * Refreshes the entries to be shown in the specified date range.

@@ -20,8 +20,6 @@ import com.nmatte.mood.logbookentries.ChartEntryTableHelper;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
 import com.nmatte.mood.logbookentries.editentry.EditEntryLayout;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
-import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
-import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.moodlog.R;
 
 import org.joda.time.DateTime;
@@ -30,7 +28,7 @@ import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
-public class ChartMainFragment extends ChartMonthView {
+public class EditableMonthFragment extends ChartMonthView {
 
 
     LinearLayout horizontalLayout;
@@ -63,8 +61,6 @@ public class ChartMainFragment extends ChartMonthView {
         editEntryView = (EditEntryLayout) fragmentLayout.findViewById(R.id.editEntryView);
         backgroundLayout = (FrameLayout) fragmentLayout.findViewById(R.id.backgroundLayout);
         horizontalScrollView = (HorizontalScrollView) fragmentLayout.findViewById(R.id.horizontalScrollView);
-        numItems = NumItemTableHelper.getAll(getActivity());
-        boolItems = BoolItemTableHelper.getAll(getActivity());
 
         editEntryView.setNumItemList(numItems);
         editEntryView.setBoolItemList(boolItems);

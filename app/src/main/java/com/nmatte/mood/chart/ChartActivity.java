@@ -4,16 +4,19 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.nmatte.mood.chart.datedialog.DateRangeDialog;
 import com.nmatte.mood.chart.datedialog.OpenEndDateDialogEvent;
 import com.nmatte.mood.chart.datedialog.OpenStartDateDialogEvent;
 import com.nmatte.mood.chart.datedialog.SaveEndDateDialogEvent;
-import com.nmatte.mood.chart.monthview.ChartMainFragment;
+import com.nmatte.mood.chart.monthview.ChartMonthView;
+import com.nmatte.mood.chart.monthview.EditableMonthFragment;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
 import com.nmatte.mood.moodlog.R;
@@ -33,7 +36,10 @@ import de.greenrobot.event.EventBus;
 public class ChartActivity extends AppCompatActivity
 {
 
-    ChartMainFragment chartMainFragment;
+    FloatingActionButton faButton;
+    boolean FAB_is_open;
+    EditableMonthFragment editableMonthFragment;
+    ChartMonthView monthFragment;
     Menu menu;
 
 
@@ -54,7 +60,6 @@ public class ChartActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-
         refreshFragments();
     }
 
@@ -70,12 +75,37 @@ public class ChartActivity extends AppCompatActivity
     }
 
     private void initFragments(){
-        chartMainFragment = (ChartMainFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
-        chartMainFragment.setRetainInstance(false);
+        monthFragment = (EditableMonthFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
+        monthFragment.setRetainInstance(false);
+        faButton = (FloatingActionButton) findViewById(R.id.fabDone);
+        faButton.hide();
+        faButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                faButton.hide();
+                FAB_is_open = false;
+                EventBus.getDefault().post(new CloseEditEntryEvent());
+            }
+        });
+        // FIXME: 9/8/15 fix erratic show/hide behavior
+        final ScrollViewWithListener scroll = (ScrollViewWithListener) findViewById(R.id.scrollView);
+        scroll.setScrollListener(new ScrollViewWithListener.ScrollListener() {
+            @Override
+            public void onScrollUp() {
+                if(FAB_is_open)
+                    faButton.show();
+            }
+
+            @Override
+            public void onScrollDown() {
+                if(FAB_is_open)
+                    faButton.hide();
+            }
+        });
     }
 
     private void refreshFragments(){
-        chartMainFragment.refreshColumns(getChartStartDate(), getChartEndDate());
+        monthFragment.refreshColumns(getChartStartDate(), getChartEndDate());
     }
 
     private void startSettingsActivity(){
@@ -152,10 +182,6 @@ public class ChartActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if(id == R.id.editEntryDoneButton){
-            item.setVisible(false);
-            EventBus.getDefault().post(new CloseEditEntryEvent());
-        }
 
         if (id == R.id.pickDates){
             EventBus.getDefault().post(new OpenStartDateDialogEvent());
@@ -184,11 +210,12 @@ public class ChartActivity extends AppCompatActivity
     }
 
     public void onEvent(OpenEditEntryEvent event){
-        MenuItem doneButton = menu.findItem(R.id.editEntryDoneButton);
-        doneButton.setVisible(true);
+        faButton.show();
+        FAB_is_open = true;
+
     }
 
-    public void onEvent( OpenStartDateDialogEvent event){
+    public void onEvent(OpenStartDateDialogEvent event){
         DialogFragment d = new DateRangeDialog();
         Bundle args = new Bundle();
         args.putBoolean(DateRangeDialog.BOOL_IS_START_PICKER,true);
@@ -209,7 +236,7 @@ public class ChartActivity extends AppCompatActivity
     public void onEvent(SaveEndDateDialogEvent event){
         boolean foo = event.isRememberDates();
         Log.i("Date Range Dialog", "End date chosen: " + event.getEndDate().toString("MM/dd/YYYY"));
-        chartMainFragment.refreshColumns(event.getStartDate(),event.getEndDate());
+        editableMonthFragment.refreshColumns(event.getStartDate(),event.getEndDate());
         refreshPickDateButton(event.getStartDate(),event.getEndDate());
 
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
