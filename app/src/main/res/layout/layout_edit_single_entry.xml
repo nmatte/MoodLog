@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:layout_width="@dimen/chart_edit_entry_width"
         android:layout_height="48dp"
-        app:alignment="center"
+        app:horizontal_alignment="center"
         android:id="@+id/dateHeader"
         />
 

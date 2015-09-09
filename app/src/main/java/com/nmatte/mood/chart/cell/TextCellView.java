@@ -12,20 +12,26 @@ public class TextCellView extends CellView {
     Paint blackPaint;
     Context context;
     String text;
-    TextAlignment alignment;
+    TextAlignment horizontalAlignment;
+    TextAlignment verticalAlignment;
     int backgroundColor;
 
 
     public enum TextAlignment {
-        ALIGN_LEFT,
-        ALIGN_CENTER
+        LEFT,
+        CENTER,
+        BOTTOM
     };
 
-    protected TextCellView(Context context, String text, int backgroundColor, TextAlignment alignment){
+    protected TextCellView(Context context,
+                           String text,
+                           int backgroundColor,
+                           TextAlignment hAlignment, TextAlignment vAlignment){
         super(context,backgroundColor);
         this.context = context;
         this.text = text;
-        this.alignment = (alignment == null)? TextAlignment.ALIGN_LEFT : alignment;
+        this.horizontalAlignment = (hAlignment == null)? TextAlignment.LEFT : hAlignment;
+        this.verticalAlignment = (vAlignment == null)? TextAlignment.BOTTOM : vAlignment;
         init();
     }
 
@@ -37,12 +43,20 @@ public class TextCellView extends CellView {
         this.text = (String) a.getText(R.styleable.TextCellView_text);
         if (this.text == null)
             this.text = "";
-        String alignText = (String) a.getText(R.styleable.TextCellView_alignment);
+        String hAlignText = (String) a.getText(R.styleable.TextCellView_horizontal_alignment);
+        String vAlignText = (String) a.getText(R.styleable.TextCellView_vertical_alignment);
 
+        if (hAlignText == null)
+            hAlignText = "";
+        if (vAlignText == null)
+            vAlignText = "";
         // prefer left align
-        this.alignment = TextAlignment.ALIGN_LEFT;
-        if (alignText.equals("center"))
-            this.alignment = TextAlignment.ALIGN_CENTER;
+        this.horizontalAlignment = TextAlignment.LEFT;
+        if (hAlignText.equals("center"))
+            this.horizontalAlignment = TextAlignment.CENTER;
+        this.verticalAlignment = TextAlignment.BOTTOM;
+        if(vAlignText.equals("center"))
+            this.verticalAlignment = TextAlignment.CENTER;
         init();
     }
 
@@ -64,14 +78,22 @@ public class TextCellView extends CellView {
 
         float textX = 0;
         float textY = 0;
-        if (alignment == TextAlignment.ALIGN_CENTER){
+        if (horizontalAlignment == TextAlignment.CENTER) {
             textX = getWidth() / 2 - blackPaint.measureText(text) / 2;
-            textY = (getHeight() * 5 )/ 6;
+        } else if (horizontalAlignment == TextAlignment.LEFT){
+            textX = (float) super.leftTransparentBound;
+
         }
 
-        if (alignment == TextAlignment.ALIGN_LEFT){
-            textX = (float) super.leftTransparentBound;
+        if (verticalAlignment == TextAlignment.CENTER){
+            textY = getHeight() / 2 + blackPaint.getTextSize()/2;
+                    //- blackPaint.getTextSize();
+            //super.bottomTransparentBound;
+            //super.topTransparentBound;
+
+        } else if (verticalAlignment == TextAlignment.BOTTOM){
             textY = (getHeight() * 5 )/ 6;
+            //textY = (float) super.bottomTransparentBound - blackPaint.getTextSize();
         }
 
 

@@ -47,7 +47,9 @@ public class ChartLabelFragment extends Fragment {
 
             //TextView textView = new TextView(getActivity());
             //TextViewCell textView = new TextViewCell(getActivity());
-            TextCellView textView = new TextCellViewBuilder(getActivity()).setText(numItem.getName()).build();
+            TextCellView textView = new TextCellViewBuilder(getActivity())
+                    .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
+                    .setText(numItem.getName()).build();
             //textView.setBackgroundResource(R.drawable.drop_shadow3);
             //textView.setText(numItem.getName());
             //textView.setEllipsize(TextUtils.TruncateAt.END);

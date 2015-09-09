@@ -47,6 +47,8 @@ public class ReadonlyColumn extends LinearLayout {
             if (entry.getNumItems().containsKey(numItem)){
                 TextCellView newCell = new TextCellViewBuilder(context)
                         .setText(String.valueOf(entry.getNumItems().get(numItem)))
+                        .setHorizontalAlignment(TextCellView.TextAlignment.CENTER)
+                        .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
                         .build();
                 newCell.setEnabled(false);
                 addView(newCell);
