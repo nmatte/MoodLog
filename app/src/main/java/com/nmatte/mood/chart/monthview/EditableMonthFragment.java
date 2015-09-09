@@ -76,6 +76,7 @@ public class EditableMonthFragment extends ChartMonthView {
         this.endDate = endDate;
 
         ArrayList<ChartEntry> newList = ChartEntryTableHelper.getGroupWithBlanks(getActivity(), startDate, endDate);
+
         if (newList.size() > 0) {
             for (final ChartEntry entry : newList) {
                 final ReadonlyColumn column = new ReadonlyColumn(getActivity(), entry, numItems, boolItems);
@@ -91,75 +92,84 @@ public class EditableMonthFragment extends ChartMonthView {
             @Override
             public boolean onLongClick(View v) {
                 if (!editEntryViewIsOpen) {
-                    editEntryViewIsOpen = true;
+                    openColumn(column);
+                    return true;
+                } else
+                    return false;
+            }
+        };
+    }
 
-                    editEntryView.setEntry(column.getEntry());
-                    /*
+    private void openColumn(ReadonlyColumn column){
+        editEntryViewIsOpen = true;
+
+        editEntryView.setEntry(column.getEntry());
+        editEntryView.setX(getCenterX(column));
+
+
+        // animate opening the layout
+        if (Build.VERSION.SDK_INT >= 21){
+            int cx = (int) column.getLastXtouch();
+            int cy = (int) column.getLastYtouch();
+            int finalRadius = Math.max(editEntryView.getWidth(), editEntryView.getHeight());
+            Animator animator =
+                    ViewAnimationUtils.createCircularReveal(editEntryView, cx, cy, 0, finalRadius);
+            animator.setDuration(700);
+            editEntryView.setVisibility(View.VISIBLE);
+            animator.start();
+        } else {
+            Animator animator = AnimatorInflater.loadAnimator(getActivity(), R.animator.expand);
+            animator.setTarget(editEntryView);
+            //editEntryView.setPivotX(column.getLastXtouch());
+            editEntryView.setVisibility(View.VISIBLE);
+            animator.start();
+        }
+
+
+        horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+        addShadows(0);
+
+        EventBus.getDefault().post(new OpenEditEntryEvent());
+
+    }
+
+    private int getCenterX(ReadonlyColumn column){
+        /*
                     find appropriate x coord for editEntryView:
                     prefer centering on the center of the column to be edited.
                     However, if the left or right side would be clipped by the parent layout,
                     the x should be adjusted to align with parent instead.
                      */
 
-                    // get absolute position of the column and its parent
-                    int [] columnArgs = new int [2];
-                    column.getLocationOnScreen(columnArgs);
-                    int [] layoutArgs = new int[2];
-                    backgroundLayout.getLocationOnScreen(layoutArgs);
+        // get absolute position of the column and its parent
+        int [] columnArgs = new int [2];
+        column.getLocationOnScreen(columnArgs);
+        int [] layoutArgs = new int[2];
+        backgroundLayout.getLocationOnScreen(layoutArgs);
 
 
-                    // get column's x coord relative to its parent
-                    int columnRelativeX = columnArgs[0] - layoutArgs[0];
-                    // now the relative x coord of the column's center
-                    int columnCenter = columnRelativeX + (column.getWidth()/2);
-                    // half the width of the edit entry view
-                    int editHalfWidth = editEntryView.getWidth()/2;
+        // get column's x coord relative to its parent
+        int columnRelativeX = columnArgs[0] - layoutArgs[0];
+        // now the relative x coord of the column's center
+        int columnCenter = columnRelativeX + (column.getWidth()/2);
 
-                    // starting from center of original column, subtracting half of the
-                    // edit view's width from that coordinate gives the x coord for centering it.
-                    int newX = columnCenter - editHalfWidth;
-                    // newX would be clipped on the left
-                    if (newX < 0)
-                        newX = 0;
-                    // the parent layout's width is the right bound, and newX plus the width is the
-                    // view's right x coord.
-                    else if (newX + editEntryView.getWidth() > backgroundLayout.getWidth())
-                        newX = backgroundLayout.getWidth() - editEntryView.getWidth();
+        // starting from center of original column, subtracting half of the
+        // edit view's width from that coordinate gives the x coord for centering it.
+        int newX = columnCenter - editEntryView.getWidth()/2;
+        // newX would be clipped on the left
+        if (newX < 0)
+            newX = 0;
+            // the parent layout's width is the right bound, and newX plus the width is the
+            // view's right x coord.
+        else if (newX + editEntryView.getWidth() > backgroundLayout.getWidth())
+            newX = backgroundLayout.getWidth() - editEntryView.getWidth();
 
-                    editEntryView.setX(newX);
-
-                    if (Build.VERSION.SDK_INT >= 21){
-                        int cx = (int) column.getLastXtouch();
-                        int cy = (int) column.getLastYtouch();
-                        int finalRadius = Math.max(editEntryView.getWidth(), editEntryView.getHeight());
-                        Animator animator =
-                                ViewAnimationUtils.createCircularReveal(editEntryView, cx, cy, 0, finalRadius);
-                        animator.setDuration(700);
-                        editEntryView.setVisibility(View.VISIBLE);
-                        animator.start();
-                    } else {
-                        Animator animator = AnimatorInflater.loadAnimator(getActivity(), R.animator.expand);
-                        animator.setTarget(editEntryView);
-                        //editEntryView.setPivotX(column.getLastXtouch());
-                        editEntryView.setVisibility(View.VISIBLE);
-                        animator.start();
-                    }
-
-
-                    horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            return true;
-                        }
-                    });
-                    addShadows(0);
-
-                    EventBus.getDefault().post(new OpenEditEntryEvent());
-                    return true;
-                } else
-                    return false;
-            }
-        };
+        return newX;
     }
 
     private void addShadows(long duration){

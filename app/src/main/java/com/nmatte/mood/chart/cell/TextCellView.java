@@ -9,12 +9,11 @@ import android.util.AttributeSet;
 import com.nmatte.mood.moodlog.R;
 
 public class TextCellView extends CellView {
-    Paint blackPaint;
+    Paint textPaint;
     Context context;
     String text;
     TextAlignment horizontalAlignment;
     TextAlignment verticalAlignment;
-    int backgroundColor;
 
 
     public enum TextAlignment {
@@ -62,9 +61,9 @@ public class TextCellView extends CellView {
 
 
     private void init(){
-        blackPaint = new Paint();
-        blackPaint.setColor(BLACK);
-        blackPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        textPaint = new Paint();
+        textPaint.setColor(BLACK);
+        textPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
     }
 
 
@@ -72,36 +71,57 @@ public class TextCellView extends CellView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        String sampleText = text.length() <= 2 ? "00" : text.length() <= "Irritability".length() ? "Irritability" : text;
-        blackPaint.setTextSize(getAdjustedTextSize(sampleText));
+        //String sampleText = text.length() <= 2 ? "00" : text.length() <= "Irritability".length() ? "Irritability" : text;
+        textPaint.setTextSize((super.bottomTransparentBound - super.topTransparentBound) / 2);
 
 
         float textX = 0;
         float textY = 0;
         if (horizontalAlignment == TextAlignment.CENTER) {
-            textX = getWidth() / 2 - blackPaint.measureText(text) / 2;
+            textX = getWidth() / 2 - textPaint.measureText(text) / 2;
         } else if (horizontalAlignment == TextAlignment.LEFT){
             textX = (float) super.leftTransparentBound;
 
         }
 
         if (verticalAlignment == TextAlignment.CENTER){
-            textY = getHeight() / 2 + blackPaint.getTextSize()/2;
-                    //- blackPaint.getTextSize();
+            textY = getHeight() / 2 + textPaint.getTextSize()/2;
+                    //- textPaint.getTextSize();
             //super.bottomTransparentBound;
             //super.topTransparentBound;
 
         } else if (verticalAlignment == TextAlignment.BOTTOM){
             textY = (getHeight() * 5 )/ 6;
-            //textY = (float) super.bottomTransparentBound - blackPaint.getTextSize();
+            //textY = (float) super.bottomTransparentBound - textPaint.getTextSize();
         }
 
 
-        canvas.drawText(text, textX, textY, blackPaint);
+        String displayText = text;
+        if (text.length() > 2)
+            displayText = truncate(text);
+        canvas.drawText(displayText, textX, textY, textPaint);
     }
 
     public String getText (){
         return text;
+    }
+
+    private String truncate (final String text){
+        int maxLength = super.rightTransparentBound - super.leftTransparentBound;
+
+        if(textPaint.measureText(text) <= maxLength)
+            return text;
+
+
+        for (int i = text.length(); i > 0; i--){
+            String resultText = text.substring(0,i);
+            resultText += "...";
+            if (textPaint.measureText(resultText) <= maxLength)
+                return resultText;
+        }
+
+
+        return "";
     }
 
     public TextCellView setText(String newText){

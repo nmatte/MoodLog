@@ -36,6 +36,7 @@ public class ChartLabelFragment extends Fragment {
                 mainLayout.addView(b
                         .setText(label)
                         .setBackgroundColor(colors[i])
+                        .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
                         .build());
                 i++;
             } else {
@@ -45,19 +46,17 @@ public class ChartLabelFragment extends Fragment {
 
         for (NumItem numItem : NumItemTableHelper.getAll(getActivity())){
 
-            //TextView textView = new TextView(getActivity());
-            //TextViewCell textView = new TextViewCell(getActivity());
             TextCellView textView = new TextCellViewBuilder(getActivity())
                     .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
                     .setText(numItem.getName()).build();
-            //textView.setBackgroundResource(R.drawable.drop_shadow3);
-            //textView.setText(numItem.getName());
-            //textView.setEllipsize(TextUtils.TruncateAt.END);
             mainLayout.addView(textView);
         }
 
         for (BoolItem m : BoolItemTableHelper.getAll(getActivity())){
-            mainLayout.addView(new TextCellViewBuilder(getActivity()).setText(m.getName()).build());
+            mainLayout.addView(new TextCellViewBuilder(getActivity())
+                    .setText(m.getName())
+                    .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
+                    .build());
         }
 
         return mainLayout;

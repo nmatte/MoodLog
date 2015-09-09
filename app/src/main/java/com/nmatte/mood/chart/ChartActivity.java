@@ -37,7 +37,7 @@ public class ChartActivity extends AppCompatActivity
 {
 
     FloatingActionButton faButton;
-    boolean FAB_is_open;
+    boolean fabIsOpen;
     EditableMonthFragment editableMonthFragment;
     ChartMonthView monthFragment;
     Menu menu;
@@ -83,7 +83,7 @@ public class ChartActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 faButton.hide();
-                FAB_is_open = false;
+                fabIsOpen = false;
                 EventBus.getDefault().post(new CloseEditEntryEvent());
             }
         });
@@ -92,13 +92,13 @@ public class ChartActivity extends AppCompatActivity
         scroll.setScrollListener(new ScrollViewWithListener.ScrollListener() {
             @Override
             public void onScrollUp() {
-                if (FAB_is_open)
+                if (fabIsOpen)
                     faButton.show();
             }
 
             @Override
             public void onScrollDown() {
-                if (FAB_is_open)
+                if (fabIsOpen)
                     faButton.hide();
             }
         });
@@ -213,7 +213,7 @@ public class ChartActivity extends AppCompatActivity
 
     public void onEvent(OpenEditEntryEvent event){
         faButton.show();
-        FAB_is_open = true;
+        fabIsOpen = true;
 
     }
 
