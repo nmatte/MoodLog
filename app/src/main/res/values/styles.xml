@@ -1,8 +1,15 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/BlueActionBar</item>
+        <item name="actionBarStyle">@style/BlueActionBar</item>
+    </style>
+
+    <style name="BlueActionBar" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/primary_color</item>
+        <item name="background">@color/primary_color</item>
+
     </style>
 
     <style name="Divider">
@@ -105,9 +112,6 @@
         <item name="android:layout_centerVertical">true</item>
     </style>
 
-    <style name="TextViewCell" parent="android:Widget.TextView">
-
-    </style>
 
 
 
