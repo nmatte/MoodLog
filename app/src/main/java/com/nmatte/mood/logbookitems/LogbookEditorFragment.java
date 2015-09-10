@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -41,7 +42,7 @@ public class LogbookEditorFragment extends Fragment {
 
         ArrayList<NumItem> numItems = NumItemTableHelper.getAll(getActivity());
         for (final NumItem item : numItems){
-            addNewNumItem(item);
+            addNewNumItem(item,false);
         }
 
         ArrayList<BoolItem> boolItems = BoolItemTableHelper.getAll(getActivity());
@@ -67,10 +68,12 @@ public class LogbookEditorFragment extends Fragment {
         });
 
         addNumButton = (ImageButton) mainView.findViewById(R.id.addNumButton);
+        final EditText addNumEditText = (EditText) mainView.findViewById(R.id.addNumEditText);
         addNumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewNumItem(null);
+                addNewNumItem(new NumItem(null,addNumEditText.getText().toString()),true);
+                addNumEditText.setText("");
             }
         });
     }
@@ -83,10 +86,19 @@ public class LogbookEditorFragment extends Fragment {
         boolItemLayout.addView(rowView);
     }
 
-    public void addNewNumItem(NumItem item){
-        final EditNumItem rowView = new EditNumItem(getActivity(),item);
-        rowView.delButton.setOnClickListener(getDeleteNumItemListener(rowView));
-        numItemLayout.addView(rowView);
+    public void addNewNumItem(NumItem item,boolean isNewItem){
+        if (isNewItem){
+            final EditNumItem rowView = new EditNumItem(getActivity(),null);
+
+            rowView.setNumItem(item);
+            rowView.delButton.setOnClickListener(getDeleteNumItemListener(rowView));
+            numItemLayout.addView(rowView);
+        } else {
+            final EditNumItem rowView = new EditNumItem(getActivity(),item);
+            rowView.delButton.setOnClickListener(getDeleteNumItemListener(rowView));
+            numItemLayout.addView(rowView);
+        }
+
     }
 
 

@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="96dp">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
 
 
     <EditText
         style="@style/BoolItemRow.TextView"
+        android:textColor="@android:color/black"
         android:enabled="false"
         android:id="@+id/itemName"/>
 
@@ -13,6 +18,7 @@
         style="@style/BoolItemRow.TextView"
         android:id="@+id/rangeText"
         android:text="Maximum:"
+        android:textColor="@android:color/black"
         android:enabled="false"
         android:layout_alignParentLeft="true"
         android:layout_alignLeft="@id/itemName"
@@ -30,6 +36,7 @@
         style="@style/BoolItemRow.TextView"
         android:id="@+id/defaultText"
         android:text="Default:"
+        android:textColor="@android:color/black"
         android:enabled="false"
         android:layout_toRightOf="@+id/maxNumEditText"
         android:layout_alignBottom="@id/rangeText"

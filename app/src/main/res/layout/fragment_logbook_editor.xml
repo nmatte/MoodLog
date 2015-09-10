@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -18,14 +22,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:showDividers="middle"
+            android:divider="?android:attr/dividerHorizontal"
             android:animateLayoutChanges="true"
             android:layout_alignParentTop="true"
+            android:layout_margin="16dp"
             android:id="@+id/numItemList"/>
 
-        <ImageButton
-            style="@style/LogbookItem.ImageButton_Add"
-            android:id="@+id/addNumButton"
-            android:layout_below="@+id/numItemList"/>
+        <View
+            style="@style/Divider"
+            android:layout_below="@+id/numItemList"
+            android:id="@+id/numItemDivider"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/numItemDivider">
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:id="@+id/addNumEditText"
+                android:layout_toLeftOf="@+id/addNumButton"
+                android:hint="New number..."/>
+
+
+            <ImageButton
+                style="@style/LogbookItem.ImageButton_Add"
+                android:layout_alignParentRight="true"
+                android:id="@+id/addNumButton"/>
+        </RelativeLayout>
+
+
+
     </RelativeLayout>
 
     <TextView
@@ -43,18 +72,33 @@
             android:id="@+id/boolItemList"
             android:layout_alignParentTop="true"
             />
-        <ImageButton
+
+        <View
+            style="@style/Divider"
             android:layout_below="@+id/boolItemList"
-            style="@style/LogbookItem.ImageButton_Add"
-            android:id="@+id/addBoolButton"/>
+            android:id="@+id/boolItemDivider"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/boolItemDivider">
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:id="@+id/addBoolEditText"
+                android:layout_toLeftOf="@+id/addBoolButton"
+                android:hint="New checkbox..."/>
+
+
+            <ImageButton
+                style="@style/LogbookItem.ImageButton_Add"
+                android:layout_alignParentRight="true"
+                android:id="@+id/addBoolButton"/>
+        </RelativeLayout>
+
+
     </RelativeLayout>
 
-
-
-
-
-
-
-
-
 </LinearLayout>
+</ScrollView>

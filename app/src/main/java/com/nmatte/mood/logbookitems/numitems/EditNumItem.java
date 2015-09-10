@@ -13,6 +13,8 @@ import com.nmatte.mood.moodlog.R;
 import de.greenrobot.event.EventBus;
 
 public class EditNumItem extends RelativeLayout {
+
+
     NumItem numItem = null;
     public EditText itemName;
     public ImageButton delButton;
@@ -65,6 +67,13 @@ public class EditNumItem extends RelativeLayout {
         }
 
 
+    }
+
+    public void setNumItem(NumItem numItem) {
+        this.numItem = numItem;
+        itemName.setText(numItem.getName());
+        defaultNumText.setText(String.valueOf(numItem.getDefaultNum()));
+        maxNumText.setText(String.valueOf(numItem.getMaxNum()));
     }
 
     private OnClickListener saveButtonClickListener = new OnClickListener() {

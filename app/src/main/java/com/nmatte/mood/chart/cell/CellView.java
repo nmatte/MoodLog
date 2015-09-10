@@ -23,6 +23,8 @@ public class CellView extends View {
     protected int bottomTransparentBound = -1;
     int shadowID = DEFAULT_BG_ID;
     static final int DEFAULT_BG_ID = R.drawable.drop_shadow3;
+    static final int VERTICAL_SHADOW_BG_ID = R.drawable.drop_shadow_vertical;
+    static final int HORIZONTAL_SHADOW_BG_ID=  R.drawable.drop_shadow_horizontal;
 
 
 
