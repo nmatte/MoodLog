@@ -20,6 +20,7 @@ import com.nmatte.mood.chart.monthview.EditableMonthFragment;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
 import com.nmatte.mood.moodlog.R;
+import com.nmatte.mood.reminders.ReminderActivity;
 import com.nmatte.mood.settings.PreferencesContract;
 import com.nmatte.mood.settings.SettingsActivity;
 import com.nmatte.mood.util.TestActivity;
@@ -162,7 +163,7 @@ public class ChartActivity extends AppCompatActivity
         MenuItem editEntryDoneButton = menu.findItem(R.id.editEntryDoneButton);
         editEntryDoneButton.setVisible(false);
 
-        refreshPickDateButton(getChartStartDate(),getChartEndDate());
+        refreshPickDateButton(getChartStartDate(), getChartEndDate());
 
         return true;
     }
@@ -195,10 +196,16 @@ public class ChartActivity extends AppCompatActivity
     }
 
     public void onRemindersItemClick(MenuItem item) {
+        startRemindersActivity();
     }
 
     public void onTestItemClick(MenuItem item) {
         startTestActivity();
+    }
+
+    private void startRemindersActivity(){
+        Intent intent = new Intent(this, ReminderActivity.class);
+        startActivity(intent);
     }
 
     private void startSettingsActivity(){

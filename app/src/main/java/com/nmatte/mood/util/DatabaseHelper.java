@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.nmatte.mood.logbookentries.ChartEntryContract;
 import com.nmatte.mood.logbookitems.LogbookItemContract;
-import com.nmatte.mood.notifications.MedNotificationContract;
+import com.nmatte.mood.reminders.ReminderContract;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -27,7 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             makeBoolItemTable(db);
             makeNumItemTable(db);
 
-            makeMedReminderTable(db);
+            makeReminderTable(db);
 
         } catch(Exception e){
             e.printStackTrace();
@@ -65,12 +65,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(medTableQuery);
     }
 
-    private void makeMedReminderTable(SQLiteDatabase db){
+    private void makeReminderTable(SQLiteDatabase db){
         String medReminderTableQuery =
-                "CREATE TABLE IF NOT EXISTS " + MedNotificationContract.MED_NOTIFICATION_TABLE + " ("
-                + MedNotificationContract.MED_REMINDER_TIME_COLUMN + " " + MedNotificationContract.MED_REMINDER_TIME_TYPE + ", "
-                + MedNotificationContract.MED_REMINDER_INTENT_COLUMN + " " + MedNotificationContract.MED_REMINDER_INTENT_TYPE + ", "
-                + MedNotificationContract.MED_REMINDER_MEDICATIONS_COLUMN + " " + MedNotificationContract.MED_REMINDER_MEDICATIONS_TYPE + ")";
+                "CREATE TABLE IF NOT EXISTS " + ReminderContract.REMINDER_TABLE + " ("
+                + ReminderContract.REMINDER_TIME_OF_DAY_COLUMN + " " + ReminderContract.REMINDER_TIME_TYPE + ", "
+                + ReminderContract.REMINDER_MILLIS_COLUMN + " " + ReminderContract.REMINDER_MILLIS_TYPE + ", "
+                + ReminderContract.REMINDER_MESSAGE_COLUMN + " " + ReminderContract.REMINDER_MESSAGE_TYPE + ")";
 
         db.execSQL(medReminderTableQuery);
     }

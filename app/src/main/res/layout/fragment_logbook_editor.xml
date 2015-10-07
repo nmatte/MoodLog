@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,15 +28,11 @@
             android:layout_margin="16dp"
             android:id="@+id/numItemList"/>
 
-        <View
-            style="@style/Divider"
-            android:layout_below="@+id/numItemList"
-            android:id="@+id/numItemDivider"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/numItemDivider">
+            android:layout_below="@id/numItemList">
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -73,15 +68,12 @@
             android:layout_alignParentTop="true"
             />
 
-        <View
-            style="@style/Divider"
-            android:layout_below="@+id/boolItemList"
-            android:id="@+id/boolItemDivider"/>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/boolItemDivider">
+            android:layout_below="@id/boolItemList">
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

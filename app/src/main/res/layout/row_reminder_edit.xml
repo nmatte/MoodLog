@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:hint="message"
+        android:id="@+id/messageText"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TIME"
+        android:id="@+id/timeText"
+        android:textSize="@dimen/abc_text_size_large_material"
+        android:layout_alignParentRight="true"
+        android:padding="5dp"
+        android:layout_alignBottom="@+id/messageText"
+        android:onClick="setTime"/>
+
+</RelativeLayout>

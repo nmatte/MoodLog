@@ -65,6 +65,7 @@ public class EditableMonthFragment extends ChartMonthView {
         editEntryView.setNumItemList(numItems);
         editEntryView.setBoolItemList(boolItems);
 
+
         return fragmentLayout;
     }
 
@@ -91,7 +92,9 @@ public class EditableMonthFragment extends ChartMonthView {
         return new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (!editEntryViewIsOpen) {
+                boolean isTodayOrEarlier =
+                        column.getEntry().getLogDate().getDayOfYear() <= DateTime.now().getDayOfYear();
+                if (!editEntryViewIsOpen && isTodayOrEarlier) {
                     openColumn(column);
                     return true;
                 } else
