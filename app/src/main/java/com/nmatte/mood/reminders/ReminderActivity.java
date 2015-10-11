@@ -39,13 +39,9 @@ public class ReminderActivity extends AppCompatActivity {
     }
 
     public void makeAndDeleteReminder(View view){
-        DateTime time = DateTime.now().plusMinutes(2);
-        Reminder reminder = new Reminder(time,"Cancel Test");
-        ReminderTableHelper.addReminder(this,reminder);
-        AlarmManagerHelper.setAlarms(this);
+        oneMinTest(view);
         AlarmManagerHelper.cancelAlarms(this);
-        Log.d("Reminders", "Set and canceled test reminder for time " + time.toString("HHmmss"));
-    }
+        }
 
     public void oneMinTest(View view){
         DateTime time = DateTime.now().plusMinutes(2);

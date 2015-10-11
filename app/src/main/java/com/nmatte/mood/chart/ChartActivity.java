@@ -146,7 +146,7 @@ public class ChartActivity extends AppCompatActivity
         }
         DateTimeFormatter fmt = DateTimeFormat.shortDate().withLocale(Locale.getDefault());
         String title = new StringBuilder()
-                .append(startDate.toString(fmt))
+                .append(startDate.toString(fmt))   
                 .append("-")
                 .append(endDate.toString(fmt))
                 .toString();
