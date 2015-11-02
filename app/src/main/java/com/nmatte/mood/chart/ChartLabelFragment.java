@@ -19,12 +19,20 @@ import com.nmatte.mood.moodlog.R;
 
 
 public class ChartLabelFragment extends Fragment {
+    LinearLayout mainLayout;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final LinearLayout mainLayout = new LinearLayout(getActivity());
+        mainLayout = new LinearLayout(getActivity());
         mainLayout.setOrientation(LinearLayout.VERTICAL);
+        refreshView();
+
+        return mainLayout;
+    }
+
+    private void refreshView(){
+        mainLayout.removeAllViews();
         int i = 0;
         Resources res = getResources();
         int[] colors = res.getIntArray(R.array.mood_colors);
@@ -58,7 +66,9 @@ public class ChartLabelFragment extends Fragment {
                     .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
                     .build());
         }
+    }
 
-        return mainLayout;
+    public void refresh(){
+        refreshView();
     }
 }

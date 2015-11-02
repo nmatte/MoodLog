@@ -6,6 +6,10 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/*
+A LogbookItem is a field that the user can add to their logbook. So far only NumItems and BoolItems
+are available--user can track an integer value or a boolean value.
+ */
 abstract public class LogbookItem {
     protected final Long id;
     protected String name;

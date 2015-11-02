@@ -46,11 +46,6 @@ public class NumItemList extends LinearLayout {
         }
     }
 
-    public void setItemsAndValues(ArrayList<NumItem> items, SimpleArrayMap<NumItem,Integer> itemMap){
-        setItems(items);
-        setItemValues(itemMap);
-    }
-
     public SimpleArrayMap<NumItem,Integer> getValues(){
         SimpleArrayMap<NumItem,Integer> result = new SimpleArrayMap<>();
         for (int i = 0; i < getChildCount(); i++){

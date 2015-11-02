@@ -64,26 +64,6 @@ public class BoolItemList extends LinearLayout {
         }
     }
 
-    public void setItems(SimpleArrayMap<BoolItem,Boolean> itemMap){
-        removeAllViews();
-        for (int i = 0; i < itemMap.size(); i++){
-            BoolItem item = itemMap.keyAt(i);
-            final CheckableCellView newRow = new CheckableCellView(context);
-            newRow.setBoolItem(item);
-            newRow.setChecked(itemMap.get(item));
-
-            newRow.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isEnabled)
-                        newRow.setChecked(!newRow.isChecked());
-                }
-            });
-
-            addView(newRow);
-        }
-    }
-
     public void setItemValues(SimpleArrayMap<BoolItem,Boolean> itemMap){
         for (int i = 0; i < getChildCount(); i++){
             final CheckableCellView checkBox = (CheckableCellView) getChildAt(i);

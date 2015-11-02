@@ -25,7 +25,6 @@
             android:divider="?android:attr/dividerHorizontal"
             android:animateLayoutChanges="true"
             android:layout_alignParentTop="true"
-            android:layout_margin="16dp"
             android:id="@+id/numItemList"/>
 
 

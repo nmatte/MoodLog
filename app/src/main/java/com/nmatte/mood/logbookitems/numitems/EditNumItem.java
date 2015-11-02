@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
+import com.nmatte.mood.logbookitems.ChartChangeEvent;
 import com.nmatte.mood.moodlog.R;
 
 import de.greenrobot.event.EventBus;
@@ -82,6 +83,7 @@ public class EditNumItem extends RelativeLayout {
             if(validateFields()){
                 setEditable(false);
                 EventBus.getDefault().post(new SaveNumItemEvent(getNumItem()));
+                EventBus.getDefault().postSticky(new ChartChangeEvent());
             }
         }
     };

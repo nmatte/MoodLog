@@ -20,6 +20,8 @@ import com.nmatte.mood.logbookentries.ChartEntryTableHelper;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
 import com.nmatte.mood.logbookentries.editentry.EditEntryLayout;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
+import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
+import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.moodlog.R;
 
 import org.joda.time.DateTime;
@@ -62,8 +64,7 @@ public class EditableMonthFragment extends ChartMonthView {
         backgroundLayout = (FrameLayout) fragmentLayout.findViewById(R.id.backgroundLayout);
         horizontalScrollView = (HorizontalScrollView) fragmentLayout.findViewById(R.id.horizontalScrollView);
 
-        editEntryView.setNumItemList(numItems);
-        editEntryView.setBoolItemList(boolItems);
+
 
 
         return fragmentLayout;
@@ -72,7 +73,10 @@ public class EditableMonthFragment extends ChartMonthView {
 
     public void refreshColumns(DateTime startDate, DateTime endDate) {
         horizontalLayout.removeAllViews();
-
+        numItems = NumItemTableHelper.getAll(getActivity());
+        boolItems = BoolItemTableHelper.getAll(getActivity());
+        editEntryView.setNumItemList(numItems);
+        editEntryView.setBoolItemList(boolItems);
         this.startDate = startDate;
         this.endDate = endDate;
 
@@ -86,6 +90,9 @@ public class EditableMonthFragment extends ChartMonthView {
                 horizontalLayout.addView(column);
             }
         }
+        horizontalLayout.invalidate();
+        horizontalScrollView.invalidate();
+        backgroundLayout.invalidate();
     }
 
     private View.OnLongClickListener getColumnLongClickListener(final ReadonlyColumn column){

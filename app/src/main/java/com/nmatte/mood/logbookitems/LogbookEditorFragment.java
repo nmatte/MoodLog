@@ -1,6 +1,7 @@
 package com.nmatte.mood.logbookitems;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -69,13 +71,22 @@ public class LogbookEditorFragment extends Fragment {
 
         addNumButton = (ImageButton) mainView.findViewById(R.id.addNumButton);
         final EditText addNumEditText = (EditText) mainView.findViewById(R.id.addNumEditText);
+
         addNumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewNumItem(new NumItem(null,addNumEditText.getText().toString()),true);
-                addNumEditText.setText("");
+                addNewNumItem(new NumItem(null, addNumEditText.getText().toString()), true);
+                addNumEditText.clearComposingText();
             }
         });
+
+
+        InputMethodManager inputManager =
+                (InputMethodManager) getActivity().
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(
+                addNumEditText.getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 

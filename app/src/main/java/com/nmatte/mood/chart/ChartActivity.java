@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.datedialog.DateRangeDialog;
 import com.nmatte.mood.chart.datedialog.OpenEndDateDialogEvent;
@@ -19,6 +20,7 @@ import com.nmatte.mood.chart.monthview.ChartMonthView;
 import com.nmatte.mood.chart.monthview.EditableMonthFragment;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
+import com.nmatte.mood.logbookitems.ChartChangeEvent;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.reminders.ReminderActivity;
 import com.nmatte.mood.settings.PreferencesContract;
@@ -41,6 +43,7 @@ public class ChartActivity extends AppCompatActivity
     boolean fabIsOpen;
     EditableMonthFragment editableMonthFragment;
     ChartMonthView monthFragment;
+    ChartLabelFragment labelFragment;
     Menu menu;
 
 
@@ -56,12 +59,14 @@ public class ChartActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        EventBus.getDefault().getStickyEvent(ChartChangeEvent.class);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         refreshFragments();
+        Log.i("onResume", "Refreshing fragments...");
     }
 
     @Override
@@ -77,6 +82,7 @@ public class ChartActivity extends AppCompatActivity
 
     private void initFragments(){
         monthFragment = (EditableMonthFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
+        labelFragment = (ChartLabelFragment) getFragmentManager().findFragmentById(R.id.chartLabelFragment);
         monthFragment.setRetainInstance(false);
         faButton = (FloatingActionButton) findViewById(R.id.fabDone);
         faButton.hide();
@@ -107,6 +113,9 @@ public class ChartActivity extends AppCompatActivity
 
     private void refreshFragments(){
         monthFragment.refreshColumns(getChartStartDate(), getChartEndDate());
+        labelFragment.refresh();
+        LinearLayout mainLayout = (LinearLayout) findViewById(R.id.mainLayout);
+        mainLayout.invalidate();
     }
 
 
@@ -152,7 +161,6 @@ public class ChartActivity extends AppCompatActivity
                 .toString();
         menu.findItem(R.id.pickDates).setTitle(title);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -227,7 +235,7 @@ public class ChartActivity extends AppCompatActivity
     public void onEvent(OpenStartDateDialogEvent event){
         DialogFragment d = new DateRangeDialog();
         Bundle args = new Bundle();
-        args.putBoolean(DateRangeDialog.BOOL_IS_START_PICKER,true);
+        args.putBoolean(DateRangeDialog.BOOL_IS_START_PICKER, true);
         d.setArguments(args);
         d.show(getFragmentManager(), "foo");
     }
@@ -245,8 +253,8 @@ public class ChartActivity extends AppCompatActivity
     public void onEvent(SaveEndDateDialogEvent event){
         boolean foo = event.isRememberDates();
         Log.i("Date Range Dialog", "End date chosen: " + event.getEndDate().toString("MM/dd/YYYY"));
-        editableMonthFragment.refreshColumns(event.getStartDate(),event.getEndDate());
-        refreshPickDateButton(event.getStartDate(),event.getEndDate());
+        editableMonthFragment.refreshColumns(event.getStartDate(), event.getEndDate());
+        refreshPickDateButton(event.getStartDate(), event.getEndDate());
 
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
         if (event.isRememberDates()){
@@ -263,4 +271,6 @@ public class ChartActivity extends AppCompatActivity
                     .apply();
         }
     }
+
+
 }
