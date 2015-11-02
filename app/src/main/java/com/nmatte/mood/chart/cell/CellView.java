@@ -25,8 +25,7 @@ public class CellView extends View {
     static final int DEFAULT_BG_ID = R.drawable.drop_shadow3;
     static final int VERTICAL_SHADOW_BG_ID = R.drawable.drop_shadow_vertical;
     static final int HORIZONTAL_SHADOW_BG_ID=  R.drawable.drop_shadow_horizontal;
-
-
+    int backgroundColor = -1;
 
     static final int WHITE = 0xFFFFFFFF;
     static final int BLACK = 0xFF000000;
@@ -42,7 +41,6 @@ public class CellView extends View {
         this.backgroundColor = backgroundColor;
     }
 
-    int backgroundColor = WHITE;
 
     public CellView(Context context) {
         super(context);
@@ -107,6 +105,8 @@ public class CellView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        if (backgroundColor == -1)
+            backgroundColor = WHITE;
         canvas.drawColor(backgroundColor);
         int id = -1;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){

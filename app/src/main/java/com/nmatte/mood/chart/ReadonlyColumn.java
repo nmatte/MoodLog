@@ -13,6 +13,7 @@ import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.MoodList;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
+import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
 
@@ -43,27 +44,40 @@ public class ReadonlyColumn extends LinearLayout {
         int dateNum = entry.getLogDate().getDayOfMonth();
         this.addView(new TextCellViewBuilder(context).setText(String.valueOf(dateNum)).build());
         addMoodModule();
+        boolean grayToggle = false;
+        int grayColor = getResources().getColor(R.color.gray_cell_bg);
+        int whiteColor = getResources().getColor(R.color.white);
+        int color = 0;
         for (NumItem numItem : numItems){
+            color = grayToggle ? grayColor : whiteColor;
+            grayToggle = !grayToggle;
+            String cellText = "";
+
             if (entry.getNumItems().containsKey(numItem)){
-                TextCellView newCell = new TextCellViewBuilder(context)
-                        .setText(String.valueOf(entry.getNumItems().get(numItem)))
-                        .setHorizontalAlignment(TextCellView.TextAlignment.CENTER)
-                        .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
-                        .build();
-                newCell.setEnabled(false);
-                addView(newCell);
+                cellText = String.valueOf(entry.getNumItems().get(numItem));
             }
-            else{
-                addView(new CellView(context));
-            }
+            TextCellView newCell = new TextCellViewBuilder(context)
+                    .setText(cellText)
+                    .setHorizontalAlignment(TextCellView.TextAlignment.CENTER)
+                    .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
+                    .setBackgroundColor(color)
+                    .build();
+            newCell.setEnabled(false);
+            newCell.setBackgroundColor(color);
+            addView(newCell);
+
+
         }
         for (BoolItem boolItem : boolItems){
+            color = grayToggle ? grayColor : whiteColor;
+            grayToggle = !grayToggle;
             if (entry.getBoolItems().containsKey(boolItem)){
                 ReadonlyCheckbox newCell = new ReadonlyCheckbox(context);
+                newCell.setBackgroundColor(color);
                 newCell.setChecked(entry.getBoolItems().get(boolItem));
                 addView(newCell);
             } else {
-                addView(new CellView(context));
+                addView(new CellView(context,color));
             }
         }
     }

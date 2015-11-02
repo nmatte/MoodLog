@@ -52,17 +52,28 @@ public class ChartLabelFragment extends Fragment {
             }
         }
 
+        int grayColor = getResources().getColor(R.color.gray_cell_bg);
+        int whiteColor = getResources().getColor(R.color.white);
+        boolean grayToggle = false;
+        int color;
         for (NumItem numItem : NumItemTableHelper.getAll(getActivity())){
+            color = grayToggle ? grayColor : whiteColor;
+            grayToggle = !grayToggle;
 
             TextCellView textView = new TextCellViewBuilder(getActivity())
                     .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
+                    .setBackgroundColor(color)
                     .setText(numItem.getName()).build();
             mainLayout.addView(textView);
         }
 
         for (BoolItem m : BoolItemTableHelper.getAll(getActivity())){
+            color = grayToggle ? grayColor : whiteColor;
+            grayToggle = !grayToggle;
+
             mainLayout.addView(new TextCellViewBuilder(getActivity())
                     .setText(m.getName())
+                    .setBackgroundColor(color)
                     .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
                     .build());
         }
