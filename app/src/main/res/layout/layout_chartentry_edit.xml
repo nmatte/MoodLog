@@ -4,12 +4,13 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:id="@+id/mainLayout">
 
     <com.nmatte.mood.chart.cell.TextCellView
         android:orientation="vertical"
         android:layout_width="@dimen/chart_edit_entry_width"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/chart_cell_height"
         app:horizontal_alignment="center"
         android:id="@+id/dateHeader"
         />

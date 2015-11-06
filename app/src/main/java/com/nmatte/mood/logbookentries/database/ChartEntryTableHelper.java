@@ -1,4 +1,4 @@
-package com.nmatte.mood.logbookentries;
+package com.nmatte.mood.logbookentries.database;
 
 
 import android.content.ContentValues;
@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.util.SimpleArrayMap;
 
+import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.numitems.NumItem;

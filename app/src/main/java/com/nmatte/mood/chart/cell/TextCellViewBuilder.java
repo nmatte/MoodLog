@@ -6,6 +6,7 @@ public class TextCellViewBuilder {
     Context context;
     String text;
     int backgroundColor = -1;
+    boolean backgroundEnabled = true;
     TextCellView.TextAlignment horizontalAlignment;
     TextCellView.TextAlignment verticalAlignment;
 
@@ -34,9 +35,20 @@ public class TextCellViewBuilder {
         return this;
     }
 
+    public TextCellViewBuilder setIsBackgroundEnabled(boolean enabled){
+        this.backgroundEnabled = enabled;
+        return this;
+    }
+
     public TextCellView build(){
         if (backgroundColor == -1)
             backgroundColor = CellView.WHITE;
-        return new TextCellView(context,text,backgroundColor, horizontalAlignment,verticalAlignment);
+        TextCellView newCell = new TextCellView(
+                context,
+                text,
+                backgroundColor,
+                horizontalAlignment,
+                verticalAlignment);
+        return newCell;
     }
 }

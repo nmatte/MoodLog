@@ -27,6 +27,8 @@ public class CellView extends View {
     static final int HORIZONTAL_SHADOW_BG_ID=  R.drawable.drop_shadow_horizontal;
     int backgroundColor = -1;
 
+
+
     static final int WHITE = 0xFFFFFFFF;
     static final int BLACK = 0xFF000000;
 
@@ -105,43 +107,36 @@ public class CellView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        // Draw default color (white)
         if (backgroundColor == -1)
             backgroundColor = WHITE;
         canvas.drawColor(backgroundColor);
-        int id = -1;
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-            leftTransparentBound = 0;
-            rightTransparentBound = getWidth();
-            topTransparentBound = 0;
-            bottomTransparentBound = getHeight();
-        } else {
-            id = shadowID;
-            NinePatchDrawable bg = (NinePatchDrawable) getResources().getDrawable(id);
 
-            if (bg != null) {
-                bg.setBounds(0, 0, getWidth(), getHeight());
-                bg.draw(canvas);
-                Rect bounds = bg.getTransparentRegion().getBounds();
-                leftTransparentBound = bounds.left;
-                rightTransparentBound = bounds.right;
-                topTransparentBound = bounds.top;
-                bottomTransparentBound = bounds.bottom;
-            } else {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
                 leftTransparentBound = 0;
                 rightTransparentBound = getWidth();
                 topTransparentBound = 0;
                 bottomTransparentBound = getHeight();
+            } else {
+                NinePatchDrawable bg = (NinePatchDrawable) getResources().getDrawable(shadowID);
+
+                if (bg != null) {
+                    bg.setBounds(0, 0, getWidth(), getHeight());
+                    bg.draw(canvas);
+                    Rect bounds = bg.getTransparentRegion().getBounds();
+                    leftTransparentBound = bounds.left;
+                    rightTransparentBound = bounds.right;
+                    topTransparentBound = bounds.top;
+                    bottomTransparentBound = bounds.bottom;
+                } else {
+                    leftTransparentBound = 0;
+                    rightTransparentBound = getWidth();
+                    topTransparentBound = 0;
+                    bottomTransparentBound = getHeight();
+                }
             }
-        }
 
 
-
-        // draw BG color
-
-        int cellTop = 0;
-        int cellBottom = getHeight();
-        int cellLeft = 0;
-        int cellRight = getWidth();
     }
 
 

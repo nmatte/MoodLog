@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/logbookEditorLayout"
-            android:name="com.nmatte.mood.logbookitems.LogbookEditorFragment"/>
+            android:name="com.nmatte.mood.logbookitems.LogbookCustomizeFragment"/>
 
 
 

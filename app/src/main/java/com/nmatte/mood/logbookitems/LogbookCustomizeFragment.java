@@ -16,9 +16,9 @@ import android.widget.LinearLayout;
 
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
-import com.nmatte.mood.logbookitems.boolitems.EditBoolItem;
+import com.nmatte.mood.logbookitems.boolitems.CustomizeBoolItem;
 import com.nmatte.mood.logbookitems.boolitems.SaveBoolItemEvent;
-import com.nmatte.mood.logbookitems.numitems.EditNumItem;
+import com.nmatte.mood.logbookitems.numitems.CustomizeNumItem;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
 import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.logbookitems.numitems.SaveNumItemEvent;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
-public class LogbookEditorFragment extends Fragment {
+public class LogbookCustomizeFragment extends Fragment {
     LinearLayout mainLayout;
     LinearLayout boolItemLayout;
     LinearLayout numItemLayout;
@@ -39,7 +39,7 @@ public class LogbookEditorFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
-        View mainView = inflater.inflate(R.layout.fragment_logbook_editor,container);
+        View mainView = inflater.inflate(R.layout.fragment_logbook_customize,container);
         initLayout(mainView);
 
         ArrayList<NumItem> numItems = NumItemTableHelper.getAll(getActivity());
@@ -92,20 +92,20 @@ public class LogbookEditorFragment extends Fragment {
 
 
     public void addNewBoolItem(BoolItem item){
-        final EditBoolItem rowView = new EditBoolItem(getActivity(),item);
+        final CustomizeBoolItem rowView = new CustomizeBoolItem(getActivity(),item);
         rowView.delButton.setOnClickListener(getDeleteBoolListener(rowView));
         boolItemLayout.addView(rowView);
     }
 
     public void addNewNumItem(NumItem item,boolean isNewItem){
         if (isNewItem){
-            final EditNumItem rowView = new EditNumItem(getActivity(),null);
+            final CustomizeNumItem rowView = new CustomizeNumItem(getActivity(),null);
 
             rowView.setNumItem(item);
             rowView.delButton.setOnClickListener(getDeleteNumItemListener(rowView));
             numItemLayout.addView(rowView);
         } else {
-            final EditNumItem rowView = new EditNumItem(getActivity(),item);
+            final CustomizeNumItem rowView = new CustomizeNumItem(getActivity(),item);
             rowView.delButton.setOnClickListener(getDeleteNumItemListener(rowView));
             numItemLayout.addView(rowView);
         }
@@ -113,18 +113,18 @@ public class LogbookEditorFragment extends Fragment {
     }
 
 
-    private View.OnClickListener getDeleteBoolListener(final EditBoolItem editBoolItem){
+    private View.OnClickListener getDeleteBoolListener(final CustomizeBoolItem customizeBoolItem){
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int viewIndex = boolItemLayout.indexOfChild(editBoolItem);
-                boolItemLayout.removeView(editBoolItem);
-                String text = "Deleted " + editBoolItem.itemName.getText();
+                final int viewIndex = boolItemLayout.indexOfChild(customizeBoolItem);
+                boolItemLayout.removeView(customizeBoolItem);
+                String text = "Deleted " + customizeBoolItem.itemName.getText();
                 Snackbar.make(mainLayout,text, Snackbar.LENGTH_LONG)
                         .setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                boolItemLayout.addView(editBoolItem,viewIndex);
+                                boolItemLayout.addView(customizeBoolItem,viewIndex);
                             }
                         })
                         .show();
@@ -132,18 +132,18 @@ public class LogbookEditorFragment extends Fragment {
         };
     }
 
-    private View.OnClickListener getDeleteNumItemListener(final EditNumItem editNumItem){
+    private View.OnClickListener getDeleteNumItemListener(final CustomizeNumItem customizeNumItem){
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int viewIndex = numItemLayout.indexOfChild(editNumItem);
-                numItemLayout.removeView(editNumItem);
-                String text = "Deleted " + editNumItem.itemName.getText();
+                final int viewIndex = numItemLayout.indexOfChild(customizeNumItem);
+                numItemLayout.removeView(customizeNumItem);
+                String text = "Deleted " + customizeNumItem.itemName.getText();
                 Snackbar.make(mainLayout,text,Snackbar.LENGTH_LONG)
                         .setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                numItemLayout.addView(editNumItem,viewIndex);
+                                numItemLayout.addView(customizeNumItem,viewIndex);
                             }
                         })
                         .show();

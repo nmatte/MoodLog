@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.nmatte.mood.logbookentries.ChartEntryContract;
+import com.nmatte.mood.logbookentries.database.ChartEntryContract;
 import com.nmatte.mood.logbookitems.LogbookItemContract;
 import com.nmatte.mood.util.DatabaseHelper;
 

@@ -52,7 +52,7 @@ public class EditEntryLayout extends LinearLayout {
     private void initWidgets() {
         setOrientation(VERTICAL);
         LayoutInflater inflater = LayoutInflater.from(context);
-        LinearLayout main = (LinearLayout) inflater.inflate(R.layout.layout_edit_single_entry, this).findViewById(R.id.mainLayout);
+        LinearLayout main = (LinearLayout) inflater.inflate(R.layout.layout_chartentry_edit, this).findViewById(R.id.mainLayout);
         dateView = (TextCellView) main.findViewById(R.id.dateHeader);
         moodModule = (MoodModule) main.findViewById(R.id.moodList);
         numItemList = (NumItemList) main.findViewById(R.id.numItemList);

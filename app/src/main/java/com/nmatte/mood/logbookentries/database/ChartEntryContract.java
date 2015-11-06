@@ -1,4 +1,4 @@
-package com.nmatte.mood.logbookentries;
+package com.nmatte.mood.logbookentries.database;
 
 public class ChartEntryContract {
     public static final String

@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.ReadonlyColumn;
 import com.nmatte.mood.logbookentries.ChartEntry;
-import com.nmatte.mood.logbookentries.ChartEntryTableHelper;
+import com.nmatte.mood.logbookentries.database.ChartEntryTableHelper;
 import com.nmatte.mood.moodlog.R;
 
 import org.joda.time.DateTime;

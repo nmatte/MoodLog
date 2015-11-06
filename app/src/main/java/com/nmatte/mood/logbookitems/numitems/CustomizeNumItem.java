@@ -13,7 +13,7 @@ import com.nmatte.mood.moodlog.R;
 
 import de.greenrobot.event.EventBus;
 
-public class EditNumItem extends RelativeLayout {
+public class CustomizeNumItem extends RelativeLayout {
 
 
     NumItem numItem = null;
@@ -25,14 +25,14 @@ public class EditNumItem extends RelativeLayout {
     public EditText maxNumText;
     Context context;
 
-    public EditNumItem(Context context) {
+    public CustomizeNumItem(Context context) {
         super(context);
         this.context = context;
         init();
 
     }
 
-    public EditNumItem(Context context, NumItem numItem){
+    public CustomizeNumItem(Context context, NumItem numItem){
         super(context);
         this.context = context;
         this.numItem = numItem;
@@ -40,7 +40,7 @@ public class EditNumItem extends RelativeLayout {
     }
 
     private void init() {
-        View mainLayout = inflate(context, R.layout.row_numitem_edit, this);
+        View mainLayout = inflate(context, R.layout.view_numitem_customize, this);
         itemName = (EditText) mainLayout.findViewById(R.id.itemName);
 
         delButton = (ImageButton) mainLayout.findViewById(R.id.delButton);

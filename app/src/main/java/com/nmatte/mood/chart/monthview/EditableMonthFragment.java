@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.ReadonlyColumn;
 import com.nmatte.mood.logbookentries.ChartEntry;
-import com.nmatte.mood.logbookentries.ChartEntryTableHelper;
+import com.nmatte.mood.logbookentries.database.ChartEntryTableHelper;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
 import com.nmatte.mood.logbookentries.editentry.EditEntryLayout;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;

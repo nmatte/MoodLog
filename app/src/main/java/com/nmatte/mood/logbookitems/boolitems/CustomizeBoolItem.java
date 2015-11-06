@@ -15,7 +15,7 @@ import com.nmatte.mood.moodlog.R;
 
 import de.greenrobot.event.EventBus;
 
-public class EditBoolItem extends RelativeLayout {
+public class CustomizeBoolItem extends RelativeLayout {
     BoolItem boolItem = null;
     public EditText itemName;
     public ImageButton delButton;
@@ -24,19 +24,19 @@ public class EditBoolItem extends RelativeLayout {
     Context context;
 
 
-    public EditBoolItem(Context context) {
+    public CustomizeBoolItem(Context context) {
         super(context);
         this.context = context;
         init();
     }
 
-    public EditBoolItem(Context context, AttributeSet attrs) {
+    public CustomizeBoolItem(Context context, AttributeSet attrs) {
         super(context,attrs);
         this.context = context;
         init();
     }
 
-    public EditBoolItem(Context context, BoolItem boolItem){
+    public CustomizeBoolItem(Context context, BoolItem boolItem){
         super(context);
         this.context = context;
         this.boolItem = boolItem;
@@ -44,7 +44,7 @@ public class EditBoolItem extends RelativeLayout {
     }
 
     private void init() {
-        View mainLayout = inflate(context,R.layout.row_boolitem_edit,this);
+        View mainLayout = inflate(context,R.layout.view_boolitem_customize,this);
         itemName = (EditText) mainLayout.findViewById(R.id.itemName);
         delButton = (ImageButton) mainLayout.findViewById(R.id.delButton);
         saveButton = (ImageButton) mainLayout.findViewById(R.id.saveButton);
