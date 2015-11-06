@@ -14,7 +14,7 @@
         android:id="@+id/dateHeader"
         />
 
-    <com.nmatte.mood.logbookentries.MoodList
+    <com.nmatte.mood.logbookentries.MoodModule
         android:layout_width="@dimen/chart_edit_entry_width"
         android:layout_height="wrap_content"
         android:id="@+id/moodList"/>

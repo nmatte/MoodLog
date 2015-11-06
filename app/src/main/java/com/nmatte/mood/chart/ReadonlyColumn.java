@@ -6,11 +6,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.cell.CellView;
-import com.nmatte.mood.chart.cell.ReadonlyCheckbox;
+import com.nmatte.mood.chart.cell.CheckboxCellView;
 import com.nmatte.mood.chart.cell.TextCellView;
 import com.nmatte.mood.chart.cell.TextCellViewBuilder;
 import com.nmatte.mood.logbookentries.ChartEntry;
-import com.nmatte.mood.logbookentries.MoodList;
+import com.nmatte.mood.logbookentries.MoodModule;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
 import com.nmatte.mood.moodlog.R;
@@ -72,7 +72,7 @@ public class ReadonlyColumn extends LinearLayout {
             color = grayToggle ? grayColor : whiteColor;
             grayToggle = !grayToggle;
             if (entry.getBoolItems().containsKey(boolItem)){
-                ReadonlyCheckbox newCell = new ReadonlyCheckbox(context);
+                CheckboxCellView newCell = new CheckboxCellView(context);
                 newCell.setBackgroundColor(color);
                 newCell.setChecked(entry.getBoolItems().get(boolItem));
                 addView(newCell);
@@ -83,7 +83,7 @@ public class ReadonlyColumn extends LinearLayout {
     }
 
     private void addMoodModule(){
-        for (ReadonlyCheckbox cellView : MoodList.getCellViews(context,entry.getMoods())){
+        for (CheckboxCellView cellView : MoodModule.getCellViews(context,entry.getMoods())){
             addView(cellView);
         }
     }

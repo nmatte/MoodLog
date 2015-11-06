@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 
-public class ReadonlyCheckbox extends CellView {
+public class CheckboxCellView extends CellView {
     Paint blackPaint;
     Rect blackRect;
 
@@ -16,16 +16,16 @@ public class ReadonlyCheckbox extends CellView {
 
     boolean isChecked;
 
-    public ReadonlyCheckbox(Context context) {
+    public CheckboxCellView(Context context) {
         super(context);
         init();
     }
 
-    public ReadonlyCheckbox(Context context, AttributeSet attrs) {
+    public CheckboxCellView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
-    public ReadonlyCheckbox(Context context, int backgroundColor) {
+    public CheckboxCellView(Context context, int backgroundColor) {
         super(context, backgroundColor);
         init();
     }

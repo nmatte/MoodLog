@@ -2,27 +2,26 @@ package com.nmatte.mood.logbookentries;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.annotation.RequiresPermission;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.cell.CheckableCellView;
-import com.nmatte.mood.chart.cell.ReadonlyCheckbox;
+import com.nmatte.mood.chart.cell.CheckboxCellView;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
 
-public class MoodList extends LinearLayout {
+public class MoodModule extends LinearLayout {
     final boolean isEnabled;
 
 
-    public MoodList(Context context, AttributeSet attrs) {
+    public MoodModule(Context context, AttributeSet attrs) {
         super(context, attrs);
         isEnabled = true;
         init(context);
     }
 
-    public MoodList(Context context, boolean isEnabled, ArrayList<Boolean> values){
+    public MoodModule(Context context, boolean isEnabled, ArrayList<Boolean> values){
         super(context);
         this.isEnabled = isEnabled;
         init(context);
@@ -38,7 +37,7 @@ public class MoodList extends LinearLayout {
                 CheckableCellView row = new CheckableCellView(context,colors[i]);
                 addView(row);
             } else {
-                ReadonlyCheckbox row = new ReadonlyCheckbox(context,colors[i]);
+                CheckboxCellView row = new CheckboxCellView(context,colors[i]);
                 addView(row);
             }
 
@@ -61,12 +60,12 @@ public class MoodList extends LinearLayout {
         }
     }
 
-    public static ArrayList<ReadonlyCheckbox> getCellViews(Context context, ArrayList<Boolean> cellValues){
-        ArrayList<ReadonlyCheckbox> result = new ArrayList<>();
+    public static ArrayList<CheckboxCellView> getCellViews(Context context, ArrayList<Boolean> cellValues){
+        ArrayList<CheckboxCellView> result = new ArrayList<>();
         Resources res = context.getResources();
         int [] colors = res.getIntArray(R.array.mood_colors);
         for (int i = 0; i < colors.length; i++){
-            ReadonlyCheckbox newRow = new ReadonlyCheckbox(context,colors[i]);
+            CheckboxCellView newRow = new CheckboxCellView(context,colors[i]);
             if (i < cellValues.size())
                 newRow.setChecked(cellValues.get(i));
             else

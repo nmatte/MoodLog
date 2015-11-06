@@ -2,17 +2,10 @@ package com.nmatte.mood.chart.cell;
 
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.support.annotation.RequiresPermission;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.nmatte.mood.chart.cell.CellView;
-import com.nmatte.mood.logbookitems.boolitems.BoolItem;
-
-public class CheckableCellView extends ReadonlyCheckbox {
+public class CheckableCellView extends CheckboxCellView {
 
     public CheckableCellView(Context context) {
         super(context);

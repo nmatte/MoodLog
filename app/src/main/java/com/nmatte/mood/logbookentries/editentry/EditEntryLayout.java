@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.cell.TextCellView;
 import com.nmatte.mood.logbookentries.ChartEntry;
-import com.nmatte.mood.logbookentries.MoodList;
+import com.nmatte.mood.logbookentries.MoodModule;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemList;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
@@ -24,7 +24,7 @@ public class EditEntryLayout extends LinearLayout {
     private Context context;
     ChartEntry entry;
     TextCellView dateView;
-    MoodList moodList;
+    MoodModule moodModule;
     NumItemList numItemList;
     BoolItemList boolItemList;
 
@@ -54,7 +54,7 @@ public class EditEntryLayout extends LinearLayout {
         LayoutInflater inflater = LayoutInflater.from(context);
         LinearLayout main = (LinearLayout) inflater.inflate(R.layout.layout_edit_single_entry, this).findViewById(R.id.mainLayout);
         dateView = (TextCellView) main.findViewById(R.id.dateHeader);
-        moodList = (MoodList) main.findViewById(R.id.moodList);
+        moodModule = (MoodModule) main.findViewById(R.id.moodList);
         numItemList = (NumItemList) main.findViewById(R.id.numItemList);
         boolItemList = (BoolItemList) main.findViewById(R.id.boolItemList);
     }
@@ -71,7 +71,7 @@ public class EditEntryLayout extends LinearLayout {
 
     public void setEntry(ChartEntry newEntry){
         this.entry = newEntry;
-        moodList.setCheckedRows(entry.getMoods());
+        moodModule.setCheckedRows(entry.getMoods());
         numItemList.setItemValues(entry.getNumItems());
         boolItemList.setItemValues(entry.getBoolItems());
         DateTimeFormatter fmt = DateTimeFormat.shortDate();
@@ -83,7 +83,7 @@ public class EditEntryLayout extends LinearLayout {
     }
 
     public ChartEntry getEntry(){
-        entry.setMoods(moodList.getCheckedItems());
+        entry.setMoods(moodModule.getCheckedItems());
         entry.setBoolItems(boolItemList.getValues());
         entry.setNumItems(numItemList.getValues());
         return entry;
