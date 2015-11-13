@@ -14,7 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
-import com.nmatte.mood.chart.ReadonlyColumn;
+import com.nmatte.mood.chart.ChartColumn;
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.database.ChartEntryTableHelper;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
@@ -84,7 +84,7 @@ public class EditableMonthFragment extends ChartMonthView {
 
         if (newList.size() > 0) {
             for (final ChartEntry entry : newList) {
-                final ReadonlyColumn column = new ReadonlyColumn(getActivity(), entry, numItems, boolItems);
+                final ChartColumn column = new ChartColumn(getActivity(), entry, numItems, boolItems);
                 column.setDuplicateParentStateEnabled(true);
                 column.setOnLongClickListener(getColumnLongClickListener(column));
                 horizontalLayout.addView(column);
@@ -95,7 +95,7 @@ public class EditableMonthFragment extends ChartMonthView {
         backgroundLayout.invalidate();
     }
 
-    private View.OnLongClickListener getColumnLongClickListener(final ReadonlyColumn column){
+    private View.OnLongClickListener getColumnLongClickListener(final ChartColumn column){
         return new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -110,7 +110,7 @@ public class EditableMonthFragment extends ChartMonthView {
         };
     }
 
-    private void openColumn(ReadonlyColumn column){
+    private void openColumn(ChartColumn column){
         editEntryViewIsOpen = true;
 
         editEntryView.setEntry(column.getEntry());
@@ -148,7 +148,7 @@ public class EditableMonthFragment extends ChartMonthView {
 
     }
 
-    private int getCenterX(ReadonlyColumn column){
+    private int getCenterX(ChartColumn column){
         /*
                     find appropriate x coord for editEntryView:
                     prefer centering on the center of the column to be edited.

@@ -10,8 +10,15 @@ public class TextCellViewBuilder {
     TextCellView.TextAlignment horizontalAlignment;
     TextCellView.TextAlignment verticalAlignment;
 
+    public TextCellViewBuilder setBackground(CellView.Background background) {
+        this.background = background;
+        return this;
+    }
+
+    CellView.Background background = CellView.Background.NONE;
+
     public TextCellViewBuilder(Context context) {
-        this.context = context;
+         this.context = context;
     }
 
     public TextCellViewBuilder setText(String text){
@@ -49,6 +56,7 @@ public class TextCellViewBuilder {
                 backgroundColor,
                 horizontalAlignment,
                 verticalAlignment);
+        newCell.setBackground(background);
         return newCell;
     }
 }

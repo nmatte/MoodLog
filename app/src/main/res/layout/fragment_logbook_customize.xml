@@ -15,7 +15,9 @@
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:id="@+id/moodModuleEnabledCheckbox"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:id="@+id/largeMoodModuleCheckbox"
+        android:onClick="largeMoodModuleCheckboxClick"
         android:text="Mood Module"/>
 
     <TextView style="@style/OptionsHeader"

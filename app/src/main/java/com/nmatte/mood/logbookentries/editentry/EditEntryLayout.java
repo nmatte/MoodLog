@@ -1,6 +1,8 @@
 package com.nmatte.mood.logbookentries.editentry;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -13,6 +15,7 @@ import com.nmatte.mood.logbookitems.boolitems.BoolItemList;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
 import com.nmatte.mood.logbookitems.numitems.NumItemList;
 import com.nmatte.mood.moodlog.R;
+import com.nmatte.mood.settings.PreferencesContract;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -54,7 +57,13 @@ public class EditEntryLayout extends LinearLayout {
         LayoutInflater inflater = LayoutInflater.from(context);
         LinearLayout main = (LinearLayout) inflater.inflate(R.layout.layout_chartentry_edit, this).findViewById(R.id.mainLayout);
         dateView = (TextCellView) main.findViewById(R.id.dateHeader);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         moodModule = (MoodModule) main.findViewById(R.id.moodList);
+        if(!settings.getBoolean(PreferencesContract.LARGE_MOOD_MODULE_ENABLED,true)) {
+            moodModule.setVisibility(GONE);
+            moodModule = null;
+
+        }
         numItemList = (NumItemList) main.findViewById(R.id.numItemList);
         boolItemList = (BoolItemList) main.findViewById(R.id.boolItemList);
     }
@@ -71,7 +80,8 @@ public class EditEntryLayout extends LinearLayout {
 
     public void setEntry(ChartEntry newEntry){
         this.entry = newEntry;
-        moodModule.setCheckedRows(entry.getMoods());
+        if (moodModule != null)
+            moodModule.setCheckedRows(entry.getMoods());
         numItemList.setItemValues(entry.getNumItems());
         boolItemList.setItemValues(entry.getBoolItems());
         DateTimeFormatter fmt = DateTimeFormat.shortDate();
@@ -83,7 +93,8 @@ public class EditEntryLayout extends LinearLayout {
     }
 
     public ChartEntry getEntry(){
-        entry.setMoods(moodModule.getCheckedItems());
+        if (moodModule != null)
+            entry.setMoods(moodModule.getCheckedItems());
         entry.setBoolItems(boolItemList.getValues());
         entry.setNumItems(numItemList.getValues());
         return entry;

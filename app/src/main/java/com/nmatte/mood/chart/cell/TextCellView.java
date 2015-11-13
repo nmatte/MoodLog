@@ -16,6 +16,8 @@ public class TextCellView extends CellView {
     TextAlignment verticalAlignment;
 
 
+
+
     public enum TextAlignment {
         LEFT,
         CENTER,

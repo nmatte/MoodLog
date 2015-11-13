@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+import com.nmatte.mood.chart.cell.CellView;
 import com.nmatte.mood.chart.cell.CheckableCellView;
 import com.nmatte.mood.chart.cell.CheckboxCellView;
 import com.nmatte.mood.moodlog.R;
@@ -66,6 +67,7 @@ public class MoodModule extends LinearLayout {
         int [] colors = res.getIntArray(R.array.mood_colors);
         for (int i = 0; i < colors.length; i++){
             CheckboxCellView newRow = new CheckboxCellView(context,colors[i]);
+            newRow.setBackground(CellView.Background.VERTICAL);
             if (i < cellValues.size())
                 newRow.setChecked(cellValues.get(i));
             else

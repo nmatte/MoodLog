@@ -27,16 +27,27 @@ public class CellView extends View {
     static final int HORIZONTAL_SHADOW_BG_ID=  R.drawable.drop_shadow_horizontal;
     int backgroundColor = -1;
 
+    public void setBackground(Background background) {
+        this.background = background;
+    }
+
+    Background background = Background.NONE;
 
 
     static final int WHITE = 0xFFFFFFFF;
     static final int BLACK = 0xFF000000;
 
+    public enum Background {
+        NONE,
+        VERTICAL
+    }
 
     public void setBg(int id) {
         this.shadowID = id;
         invalidate();
     }
+
+
 
     @Override
     public void setBackgroundColor(int backgroundColor) {
@@ -112,29 +123,25 @@ public class CellView extends View {
             backgroundColor = WHITE;
         canvas.drawColor(backgroundColor);
 
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-                leftTransparentBound = 0;
-                rightTransparentBound = getWidth();
-                topTransparentBound = 0;
-                bottomTransparentBound = getHeight();
-            } else {
-                NinePatchDrawable bg = (NinePatchDrawable) getResources().getDrawable(shadowID);
 
-                if (bg != null) {
-                    bg.setBounds(0, 0, getWidth(), getHeight());
-                    bg.draw(canvas);
-                    Rect bounds = bg.getTransparentRegion().getBounds();
-                    leftTransparentBound = bounds.left;
-                    rightTransparentBound = bounds.right;
-                    topTransparentBound = bounds.top;
-                    bottomTransparentBound = bounds.bottom;
-                } else {
-                    leftTransparentBound = 0;
-                    rightTransparentBound = getWidth();
-                    topTransparentBound = 0;
-                    bottomTransparentBound = getHeight();
-                }
+        leftTransparentBound = 0;
+        rightTransparentBound = getWidth();
+        topTransparentBound = 0;
+        bottomTransparentBound = getHeight();
+        NinePatchDrawable bg = (NinePatchDrawable) getResources().getDrawable(shadowID);
+
+        if (background != Background.NONE){
+            if (bg != null) {
+                bg.setBounds(0, 0, getWidth(), getHeight());
+                bg.draw(canvas);
+                Rect bounds = bg.getTransparentRegion().getBounds();
+                leftTransparentBound = bounds.left;
+                rightTransparentBound = bounds.right;
+                topTransparentBound = bounds.top;
+
             }
+        }
+
 
 
     }

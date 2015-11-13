@@ -1,8 +1,9 @@
 package com.nmatte.mood.chart;
 
 import android.app.Fragment;
-import android.content.res.Resources;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
 import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.moodlog.R;
+import com.nmatte.mood.settings.PreferencesContract;
 
 
 public class ChartLabelFragment extends Fragment {
@@ -33,17 +35,31 @@ public class ChartLabelFragment extends Fragment {
 
     private void refreshView(){
         mainLayout.removeAllViews();
-        int i = 0;
-        Resources res = getResources();
-        int[] colors = res.getIntArray(R.array.mood_colors);
-        String [] moodLabels = res.getStringArray(R.array.mood_labels);
         mainLayout.addView(new TextCellViewBuilder(getActivity()).setText("Date").build());
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        if(settings.getBoolean(PreferencesContract.LARGE_MOOD_MODULE_ENABLED,true))
+            addLargeMoodModule();
+
+
+        int whiteColor = getResources().getColor(R.color.white);
+        int grayColor = getResources().getColor(R.color.gray_cell_bg);
+
+        boolean grayToggle = addNumItems(whiteColor,grayColor,false);
+        addBoolItems(whiteColor,grayColor,grayToggle);
+    }
+
+    private void addLargeMoodModule(){
+        String [] moodLabels = getResources().getStringArray(R.array.mood_labels);
+        int[] moodColors = getResources().getIntArray(R.array.mood_colors);
+
+        int i = 0;
         for (String label : moodLabels){
             TextCellViewBuilder b = new TextCellViewBuilder(getActivity());
-            if (i < colors.length){
+            if (i < moodColors.length){
                 mainLayout.addView(b
                         .setText(label)
-                        .setBackgroundColor(colors[i])
+                        .setBackgroundColor(moodColors[i])
                         .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
                         .build());
                 i++;
@@ -52,9 +68,16 @@ public class ChartLabelFragment extends Fragment {
             }
         }
 
-        int grayColor = getResources().getColor(R.color.gray_cell_bg);
-        int whiteColor = getResources().getColor(R.color.white);
-        boolean grayToggle = false;
+    }
+
+    /**
+     *
+     * @param whiteColor The first color to be used (default white).
+     * @param grayColor The second color to be used (default gray).
+     * @param grayToggle Whether to start with white or gray; true is gray, false is white.
+     * @return The last value of grayToggle, for use in other functions such as addBoolItems().
+     */
+    private boolean addNumItems(int whiteColor, int grayColor, boolean grayToggle){
         int color;
         for (NumItem numItem : NumItemTableHelper.getAll(getActivity())){
             color = grayToggle ? grayColor : whiteColor;
@@ -66,7 +89,18 @@ public class ChartLabelFragment extends Fragment {
                     .setText(numItem.getName()).build();
             mainLayout.addView(textView);
         }
+        return grayToggle;
+    }
 
+    /**
+     *
+     * @param whiteColor The first color to be used (default white).
+     * @param grayColor The second color to be used (default gray).
+     * @param grayToggle Whether to start with white or gray; true is gray, false is white.
+     * @return The last value of grayToggle, for use in other functions such as addNumItems().
+     */
+    private boolean addBoolItems(int whiteColor, int grayColor, boolean grayToggle){
+        int color;
         for (BoolItem m : BoolItemTableHelper.getAll(getActivity())){
             color = grayToggle ? grayColor : whiteColor;
             grayToggle = !grayToggle;
@@ -77,6 +111,7 @@ public class ChartLabelFragment extends Fragment {
                     .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
                     .build());
         }
+        return grayToggle;
     }
 
     public void refresh(){

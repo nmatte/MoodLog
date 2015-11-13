@@ -3,6 +3,7 @@ package com.nmatte.mood.logbookitems;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -23,12 +25,14 @@ import com.nmatte.mood.logbookitems.numitems.NumItem;
 import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.logbookitems.numitems.SaveNumItemEvent;
 import com.nmatte.mood.moodlog.R;
+import com.nmatte.mood.settings.PreferencesContract;
 
 import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
 public class LogbookCustomizeFragment extends Fragment {
+    CheckBox largeMoodModuleCheckbox;
     LinearLayout mainLayout;
     LinearLayout boolItemLayout;
     LinearLayout numItemLayout;
@@ -57,6 +61,12 @@ public class LogbookCustomizeFragment extends Fragment {
 
     private void initLayout(View mainView){
         mainLayout = (LinearLayout) mainView.findViewById(R.id.logbookEditorLayout);
+
+        largeMoodModuleCheckbox = (CheckBox) mainView.findViewById(R.id.largeMoodModuleCheckbox);
+        boolean largeMoodModuleEnabled = PreferenceManager
+                .getDefaultSharedPreferences(getActivity())
+                .getBoolean(PreferencesContract.LARGE_MOOD_MODULE_ENABLED,false);
+        largeMoodModuleCheckbox.setChecked(largeMoodModuleEnabled);
 
         boolItemLayout = (LinearLayout) mainView.findViewById(R.id.boolItemList);
         numItemLayout = (LinearLayout) mainView.findViewById(R.id.numItemList);

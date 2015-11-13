@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.nmatte.mood.chart.ReadonlyColumn;
+import com.nmatte.mood.chart.ChartColumn;
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.database.ChartEntryTableHelper;
 import com.nmatte.mood.moodlog.R;
@@ -40,7 +40,7 @@ public class StaticMonthFragment extends ChartMonthView {
 
         if (newList.size() > 0) {
             for (final ChartEntry entry : newList) {
-                final ReadonlyColumn column = new ReadonlyColumn(getActivity(), entry, numItems, boolItems);
+                final ChartColumn column = new ChartColumn(getActivity(), entry, numItems, boolItems);
                 horizontalList.addView(column);
             }
         }
