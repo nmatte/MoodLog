@@ -47,12 +47,13 @@ public class ChartColumn extends LinearLayout {
     }
 
 
-    public ChartColumn(Context context, ChartEntry newEntry, ArrayList<NumItem> numItems, ArrayList<BoolItem> boolItems){
+    public ChartColumn(Context context, ChartEntry newEntry, ArrayList<NumItem> numItems, ArrayList<BoolItem> boolItems, Mode mode){
         super(context);
         this.entry = newEntry;
         this.numItems = numItems;
         this.boolItems = boolItems;
         this.context = context;
+        this.mode = mode;
         init();
 
     }

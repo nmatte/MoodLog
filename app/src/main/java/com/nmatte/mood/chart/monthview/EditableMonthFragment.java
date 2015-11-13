@@ -84,7 +84,7 @@ public class EditableMonthFragment extends ChartMonthView {
 
         if (newList.size() > 0) {
             for (final ChartEntry entry : newList) {
-                final ChartColumn column = new ChartColumn(getActivity(), entry, numItems, boolItems);
+                final ChartColumn column = new ChartColumn(getActivity(), entry, numItems, boolItems, ChartColumn.Mode.ENTRY);
                 column.setMode(ChartColumn.Mode.ENTRY);
                 column.setDuplicateParentStateEnabled(true);
                 column.setOnLongClickListener(getColumnLongClickListener(column));
