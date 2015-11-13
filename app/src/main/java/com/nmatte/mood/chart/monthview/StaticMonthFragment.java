@@ -41,6 +41,7 @@ public class StaticMonthFragment extends ChartMonthView {
         if (newList.size() > 0) {
             for (final ChartEntry entry : newList) {
                 final ChartColumn column = new ChartColumn(getActivity(), entry, numItems, boolItems);
+                column.setMode(ChartColumn.Mode.ENTRY);
                 horizontalList.addView(column);
             }
         }

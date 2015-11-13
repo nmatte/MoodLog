@@ -14,7 +14,9 @@ import com.nmatte.mood.chart.cell.TextCellViewBuilder;
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.MoodModule;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
+import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
+import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.settings.PreferencesContract;
 
@@ -31,9 +33,17 @@ public class ChartColumn extends LinearLayout {
     float lastYtouch;
 
 
-    enum Mode {
+
+    Mode mode = Mode.ENTRY;
+
+
+    public enum Mode {
         ENTRY,
         LABEL
+    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
     }
 
 
@@ -47,11 +57,14 @@ public class ChartColumn extends LinearLayout {
 
     }
 
-    private void init(){
-        this.setOrientation(VERTICAL);
-        this.setOnTouchListener(touchListener);
-        int dateNum = entry.getLogDate().getDayOfMonth();
-        this.addView(new TextCellViewBuilder(context).setText(String.valueOf(dateNum)).build());
+    private void refresh(){
+        removeAllViews();
+        if (mode == Mode.ENTRY){
+            int dateNum = entry.getLogDate().getDayOfMonth();
+            this.addView(new TextCellViewBuilder(context).setText(String.valueOf(dateNum)).build());
+        } else {
+            this.addView(new TextCellViewBuilder(context).setText("Date").build());
+        }
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         if(settings.getBoolean(PreferencesContract.LARGE_MOOD_MODULE_ENABLED,true))
@@ -59,15 +72,44 @@ public class ChartColumn extends LinearLayout {
 
         int grayColor = getResources().getColor(R.color.gray_cell_bg);
         int whiteColor = getResources().getColor(R.color.white);
+
         boolean grayToggle = addNumItems(whiteColor,grayColor,false);
-        addBoolItems(whiteColor,grayColor,grayToggle);
+        addBoolItems(whiteColor, grayColor, grayToggle);
+    }
+
+    private void init(){
+        this.setOrientation(VERTICAL);
+        this.setOnTouchListener(touchListener);
+
+        refresh();
 
     }
 
     private void addMoodModule(){
-        for (CheckboxCellView cellView : MoodModule.getCellViews(context,entry.getMoods())){
-            addView(cellView);
+        if (mode == Mode.ENTRY){
+            for (CheckboxCellView cellView : MoodModule.getCellViews(context,entry.getMoods())){
+                addView(cellView);
+            }
+        } else {
+            String [] moodLabels = getResources().getStringArray(R.array.mood_labels);
+            int[] moodColors = getResources().getIntArray(R.array.mood_colors);
+
+            int i = 0;
+            for (String label : moodLabels){
+                TextCellViewBuilder b = new TextCellViewBuilder(context);
+                if (i < moodColors.length){
+                    this.addView(b
+                            .setText(label)
+                            .setBackgroundColor(moodColors[i])
+                            .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
+                            .build());
+                    i++;
+                } else {
+                    this.addView(b.setText(label).build());
+                }
+            }
         }
+
     }
 
     /**
@@ -79,28 +121,44 @@ public class ChartColumn extends LinearLayout {
      */
     private boolean addNumItems(int whiteColor, int grayColor, boolean grayToggle){
         int color;
-        for (NumItem numItem : numItems){
-            color = grayToggle ? grayColor : whiteColor;
-            grayToggle = !grayToggle;
-            String cellText = "";
 
-            if (entry.getNumItems().containsKey(numItem)){
-                cellText = String.valueOf(entry.getNumItems().get(numItem));
+        if (mode == Mode.ENTRY){
+            for (NumItem numItem : numItems){
+                color = grayToggle ? grayColor : whiteColor;
+                grayToggle = !grayToggle;
+                String cellText = "";
+
+                if (entry.getNumItems().containsKey(numItem)){
+                    cellText = String.valueOf(entry.getNumItems().get(numItem));
+                }
+                TextCellView newCell = new TextCellViewBuilder(context)
+                        .setText(cellText)
+                        .setHorizontalAlignment(TextCellView.TextAlignment.CENTER)
+                        .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
+                        .setBackgroundColor(color)
+                        .setBackground(CellView.Background.VERTICAL)
+                        .build();
+                newCell.setEnabled(false);
+                newCell.setBackgroundColor(color);
+                newCell.setBackground(CellView.Background.VERTICAL);
+                addView(newCell);
+
+
             }
-            TextCellView newCell = new TextCellViewBuilder(context)
-                    .setText(cellText)
-                    .setHorizontalAlignment(TextCellView.TextAlignment.CENTER)
-                    .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
-                    .setBackgroundColor(color)
-                    .setBackground(CellView.Background.VERTICAL)
-                    .build();
-            newCell.setEnabled(false);
-            newCell.setBackgroundColor(color);
-            newCell.setBackground(CellView.Background.VERTICAL);
-            addView(newCell);
+        } else {
+            for (NumItem numItem : NumItemTableHelper.getAll(context)){
+                color = grayToggle ? grayColor : whiteColor;
+                grayToggle = !grayToggle;
 
-
+                TextCellView textView = new TextCellViewBuilder(context)
+                        .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
+                        .setBackgroundColor(color)
+                        .setText(numItem.getName()).build();
+                this.addView(textView);
+            }
         }
+
+
         return grayToggle;
     }
 
@@ -113,17 +171,30 @@ public class ChartColumn extends LinearLayout {
      */
     private boolean addBoolItems(int whiteColor, int grayColor, boolean grayToggle){
         int color;
-        for (BoolItem boolItem : boolItems){
-            color = grayToggle ? grayColor : whiteColor;
-            grayToggle = !grayToggle;
-            if (entry.getBoolItems().containsKey(boolItem)){
-                CheckboxCellView newCell = new CheckboxCellView(context);
-                newCell.setBackgroundColor(color);
-                newCell.setBackground(CellView.Background.VERTICAL);
-                newCell.setChecked(entry.getBoolItems().get(boolItem));
-                addView(newCell);
-            } else {
-                addView(new CellView(context,color));
+        if (mode == Mode.ENTRY) {
+            for (BoolItem boolItem : boolItems) {
+                color = grayToggle ? grayColor : whiteColor;
+                grayToggle = !grayToggle;
+                if (entry.getBoolItems().containsKey(boolItem)) {
+                    CheckboxCellView newCell = new CheckboxCellView(context);
+                    newCell.setBackgroundColor(color);
+                    newCell.setBackground(CellView.Background.VERTICAL);
+                    newCell.setChecked(entry.getBoolItems().get(boolItem));
+                    addView(newCell);
+                } else {
+                    addView(new CellView(context, color));
+                }
+            }
+        } else {
+            for (BoolItem m : BoolItemTableHelper.getAll(context)){
+                color = grayToggle ? grayColor : whiteColor;
+                grayToggle = !grayToggle;
+
+                this.addView(new TextCellViewBuilder(context)
+                        .setText(m.getName())
+                        .setBackgroundColor(color)
+                        .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
+                        .build());
             }
         }
         return grayToggle;
