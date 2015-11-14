@@ -1,7 +1,6 @@
 package com.nmatte.mood.moodlog;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
@@ -20,8 +19,16 @@ public class CustomNumberPicker extends RelativeLayout {
 
     NumItem numItem;
 
+
+
+    NumChangeListener numChangeListener = null;
+
     int currentNum;
     int maxNum;
+
+    public interface NumChangeListener {
+         void onChange(int change);
+    }
 
     public CustomNumberPicker(Context context, NumItem item){
         super(context);
@@ -45,7 +52,7 @@ public class CustomNumberPicker extends RelativeLayout {
    }
 
     private void init(){
-        inflate(context,R.layout.custom_number_picker,this);
+        inflate(context, R.layout.view_custom_number_picker, this);
 
         minusButton = (ImageButton) findViewById(R.id.minusButton);
         plusButton = (ImageButton) findViewById(R.id.plusButton);
@@ -58,6 +65,9 @@ public class CustomNumberPicker extends RelativeLayout {
         plusButton.setOnClickListener(plusListener);
     }
 
+    public void setNumChangeListener(NumChangeListener numChangeListener) {
+        this.numChangeListener = numChangeListener;
+    }
 
 
 
@@ -69,6 +79,8 @@ public class CustomNumberPicker extends RelativeLayout {
             } else if (currentNum == maxNum){
                 setCurrentNum(0);
             }
+            if (numChangeListener != null)
+                numChangeListener.onChange(getCurrentNum());
         }
     };
 
@@ -80,6 +92,9 @@ public class CustomNumberPicker extends RelativeLayout {
             } else if (currentNum == 0) {
                 setCurrentNum(maxNum);
             }
+
+            if (numChangeListener != null)
+                numChangeListener.onChange(getCurrentNum());
         }
     };
 

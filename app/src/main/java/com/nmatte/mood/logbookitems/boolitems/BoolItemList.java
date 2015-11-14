@@ -7,7 +7,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.nmatte.mood.chart.cell.CheckableCellView;
+import com.nmatte.mood.chart.ChartColumn;
+import com.nmatte.mood.chart.cell.CheckboxCellView;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class BoolItemList extends LinearLayout {
     public SimpleArrayMap<BoolItem,Boolean> getValues(){
         SimpleArrayMap<BoolItem,Boolean> result = new SimpleArrayMap<>();
         for (int i = 0; i < getChildCount(); i++){
-            CheckableCellView row = (CheckableCellView) getChildAt(i);
+            CheckboxCellView row = (CheckboxCellView) getChildAt(i);
             result.put(row.getBoolItem(),row.isChecked());
         }
         return result;
@@ -58,7 +59,7 @@ public class BoolItemList extends LinearLayout {
     public void setItems(ArrayList<BoolItem> items){
         removeAllViews();
         for (BoolItem item : items){
-            CheckableCellView checkBox = new CheckableCellView(context);
+            CheckboxCellView checkBox = new CheckboxCellView(context, ChartColumn.Mode.ENTRY_EDIT);
             checkBox.setBoolItem(item);
             addView(checkBox);
         }
@@ -66,7 +67,7 @@ public class BoolItemList extends LinearLayout {
 
     public void setItemValues(SimpleArrayMap<BoolItem,Boolean> itemMap){
         for (int i = 0; i < getChildCount(); i++){
-            final CheckableCellView checkBox = (CheckableCellView) getChildAt(i);
+            final CheckboxCellView checkBox = (CheckboxCellView) getChildAt(i);
             if (itemMap.containsKey(checkBox.getBoolItem())){
                 checkBox.setChecked(itemMap.get(checkBox.getBoolItem()));
 

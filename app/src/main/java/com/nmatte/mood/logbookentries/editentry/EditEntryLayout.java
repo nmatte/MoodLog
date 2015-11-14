@@ -29,7 +29,9 @@ public class EditEntryLayout extends LinearLayout {
     TextCellView dateView;
     MoodModule moodModule;
     NumItemList numItemList;
+    LinearLayout numList;
     BoolItemList boolItemList;
+    ArrayList<NumItem> numItems;
 
 
     public EditEntryLayout(Context context,
@@ -39,6 +41,7 @@ public class EditEntryLayout extends LinearLayout {
         super(context);
         this.context = context;
         initWidgets();
+        this.numItems = numItems;
         setNumItemList(numItems);
         setBoolItemList(boolItems);
         setEntry(initialValues);
@@ -64,8 +67,20 @@ public class EditEntryLayout extends LinearLayout {
             moodModule = null;
 
         }
-        numItemList = (NumItemList) main.findViewById(R.id.numItemList);
+        addNumItems(main);
+
         boolItemList = (BoolItemList) main.findViewById(R.id.boolItemList);
+    }
+
+    private void addNumItems(LinearLayout main){
+        numItemList = (NumItemList) main.findViewById(R.id.numItemList);
+        /*
+
+
+        numItemList.removeAllViews();
+        for (CustomNumberPicker num : NumItemList.getCells(getContext(),numItems,entry.getNumItems())){
+            numItemList.addView(num);
+        } */
     }
 
 

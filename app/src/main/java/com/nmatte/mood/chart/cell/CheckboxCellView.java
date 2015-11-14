@@ -5,7 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.View;
 
+import com.nmatte.mood.chart.ChartColumn;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 
 public class CheckboxCellView extends CellView {
@@ -15,8 +17,18 @@ public class CheckboxCellView extends CellView {
     BoolItem boolItem;
 
     boolean isChecked;
+    OnChangeListener onChangeListener = null;
+    ChartColumn.Mode mode;
 
-    public CheckboxCellView(Context context) {
+    public interface OnChangeListener{
+        void onChange(boolean value);
+    }
+
+    public void setOnChangeListener(OnChangeListener onChangeListener) {
+        this.onChangeListener = onChangeListener;
+    }
+
+    public CheckboxCellView(Context context, ChartColumn.Mode mode) {
         super(context);
         init();
     }
@@ -25,7 +37,7 @@ public class CheckboxCellView extends CellView {
         super(context, attrs);
         init();
     }
-    public CheckboxCellView(Context context, int backgroundColor) {
+    public CheckboxCellView(Context context, int backgroundColor, ChartColumn.Mode mode) {
         super(context, backgroundColor);
         init();
     }
@@ -35,6 +47,18 @@ public class CheckboxCellView extends CellView {
         this.blackPaint = new Paint();
         this.blackPaint.setColor(BLACK);
         this.blackRect = new Rect();
+        if (mode == ChartColumn.Mode.ENTRY_EDIT){
+            setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setChecked(!isChecked);
+                    if (onChangeListener != null)
+                        onChangeListener.onChange(isChecked());
+
+                }
+            });
+        }
+
     }
 
 

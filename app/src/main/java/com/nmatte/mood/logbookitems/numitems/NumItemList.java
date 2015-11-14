@@ -29,6 +29,20 @@ public class NumItemList extends LinearLayout {
         setClickable(true);
     }
 
+    public static ArrayList<CustomNumberPicker> getCells(Context context,
+                                                         ArrayList<NumItem> items,
+                                                         SimpleArrayMap<NumItem,Integer> itemMap){
+        ArrayList<CustomNumberPicker> result = new ArrayList<>();
+        for (NumItem item : items){
+            CustomNumberPicker numPicker = new CustomNumberPicker(context,item);
+            if (itemMap.containsKey(item))
+                numPicker.setCurrentNum(itemMap.get(item));
+            result.add(numPicker);
+        }
+
+        return result;
+    }
+
     public void setItems(ArrayList<NumItem> items){
         removeAllViews();
         for (NumItem item : items){

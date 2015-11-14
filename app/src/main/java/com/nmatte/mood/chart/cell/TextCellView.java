@@ -11,7 +11,7 @@ import com.nmatte.mood.moodlog.R;
 public class TextCellView extends CellView {
     Paint textPaint;
     Context context;
-    String text;
+    String text = "";
     TextAlignment horizontalAlignment;
     TextAlignment verticalAlignment;
 
@@ -22,7 +22,7 @@ public class TextCellView extends CellView {
         LEFT,
         CENTER,
         BOTTOM
-    };
+    }
 
     protected TextCellView(Context context,
                            String text,
@@ -75,12 +75,14 @@ public class TextCellView extends CellView {
 
         //String sampleText = text.length() <= 2 ? "00" : text.length() <= "Irritability".length() ? "Irritability" : text;
         textPaint.setTextSize((super.bottomTransparentBound - super.topTransparentBound) / 2);
+        if (text == null)
+            text = "";
 
 
         float textX = 0;
         float textY = 0;
         if (horizontalAlignment == TextAlignment.CENTER) {
-            textX = getWidth() / 2 - textPaint.measureText(text) / 2;
+            textX = getWidth() / 2 - textPaint.measureText( text) / 2;
         } else if (horizontalAlignment == TextAlignment.LEFT){
             textX = (float) super.leftTransparentBound;
 
