@@ -63,9 +63,6 @@ public class EditableMonthFragment extends ChartMonthView {
         backgroundLayout = (FrameLayout) fragmentLayout.findViewById(R.id.backgroundLayout);
         horizontalScrollView = (HorizontalScrollView) fragmentLayout.findViewById(R.id.horizontalScrollView);
 
-
-
-
         return fragmentLayout;
     }
 

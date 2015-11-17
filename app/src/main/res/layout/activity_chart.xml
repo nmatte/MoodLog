@@ -21,12 +21,11 @@
                 android:clickable="true"
                 android:orientation="horizontal"
                 android:id="@+id/mainLayout">
-                <fragment
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:name="com.nmatte.mood.chart.ChartLabelFragment"
-                    android:id="@+id/chartLabelFragment"
-                    />
+                <com.nmatte.mood.chart.ChartColumn
+                    android:layout_width="@dimen/chart_edit_entry_width"
+                    android:layout_height="match_parent"
+                    app:view_mode="label"
+                    android:id="@+id/labelColumn"/>
 
                 <fragment
                     android:layout_width="wrap_content"

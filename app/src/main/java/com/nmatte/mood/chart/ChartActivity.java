@@ -41,9 +41,9 @@ public class ChartActivity extends AppCompatActivity
 
     FloatingActionButton faButton;
     boolean fabIsOpen;
+    ChartColumn labelColumn;
     EditableMonthFragment editableMonthFragment;
     ChartMonthView monthFragment;
-    ChartLabelFragment labelFragment;
     Menu menu;
 
 
@@ -52,7 +52,7 @@ public class ChartActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
 
-        initFragments();
+        initViews();
     }
 
     @Override
@@ -80,10 +80,11 @@ public class ChartActivity extends AppCompatActivity
         super.onStop();
     }
 
-    private void initFragments(){
+    private void initViews(){
         monthFragment = (EditableMonthFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
-        labelFragment = (ChartLabelFragment) getFragmentManager().findFragmentById(R.id.chartLabelFragment);
         monthFragment.setRetainInstance(false);
+        labelColumn = (ChartColumn) findViewById(R.id.labelColumn);
+        labelColumn.setMode(ChartColumn.Mode.LABEL);
         faButton = (FloatingActionButton) findViewById(R.id.fabDone);
         faButton.hide();
         faButton.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +114,8 @@ public class ChartActivity extends AppCompatActivity
 
     private void refreshFragments(){
         monthFragment.refreshColumns(getChartStartDate(), getChartEndDate());
-        labelFragment.refresh();
+        labelColumn.refresh(this);
+
         LinearLayout mainLayout = (LinearLayout) findViewById(R.id.mainLayout);
         mainLayout.invalidate();
     }

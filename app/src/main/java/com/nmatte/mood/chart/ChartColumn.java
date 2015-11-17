@@ -93,7 +93,8 @@ public class ChartColumn extends LinearLayout {
         init();
     }
 
-    private void refresh(){
+    public void refresh(Context newContext){
+        this.context = newContext;
         removeAllViews();
         String cellText = (mode == Mode.ENTRY_READ) ?
                 String.valueOf(entry.getLogDate().getDayOfMonth()) : "Date";
@@ -121,7 +122,7 @@ public class ChartColumn extends LinearLayout {
         }
 
 
-        refresh();
+        refresh(context);
 
     }
 
@@ -215,13 +216,13 @@ public class ChartColumn extends LinearLayout {
             color = grayToggle ? grayColor : whiteColor;
             grayToggle = !grayToggle;
             if (mode == Mode.ENTRY_READ) {
+                CheckboxCellView checkboxCellView = new CheckboxCellView(context,Mode.ENTRY_READ);
+                checkboxCellView.setBackgroundColor(color);
+                checkboxCellView.setBackground(CellView.Background.VERTICAL);
                 if (entry.getBoolItems().containsKey(boolItem)) {
-                    CheckboxCellView checkboxCellView = new CheckboxCellView(context,Mode.ENTRY_READ);
-                    checkboxCellView.setBackgroundColor(color);
-                    checkboxCellView.setBackground(CellView.Background.VERTICAL);
                     checkboxCellView.setChecked(entry.getBoolItems().get(boolItem));
-                    this.addView(checkboxCellView);
                 }
+                this.addView(checkboxCellView);
             }
             if (mode == Mode.LABEL) {
                 TextCellView newCell = new TextCellViewBuilder(context)
