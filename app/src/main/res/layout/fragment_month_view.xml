@@ -4,7 +4,8 @@
     android:layout_width="fill_parent"
     android:background="@android:color/darker_gray"
     android:id="@+id/backgroundLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
@@ -20,10 +21,12 @@
 
 </HorizontalScrollView>
 
-    <com.nmatte.mood.logbookentries.editentry.EditEntryLayout
+
+    <com.nmatte.mood.chart.ChartColumn
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editEntryView"
+        android:id="@+id/editColumn"
+        app:view_mode="edit_entry"
         android:visibility="invisible"/>
 
 </FrameLayout>

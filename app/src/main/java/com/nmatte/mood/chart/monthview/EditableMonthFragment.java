@@ -18,7 +18,6 @@ import com.nmatte.mood.chart.ChartColumn;
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.database.ChartEntryTableHelper;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
-import com.nmatte.mood.logbookentries.editentry.EditEntryLayout;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
@@ -38,7 +37,7 @@ public class EditableMonthFragment extends ChartMonthView {
     HorizontalScrollView horizontalScrollView;
     boolean editEntryViewIsOpen = false;
 
-    EditEntryLayout editEntryView;
+    ChartColumn editEntryColumn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +59,7 @@ public class EditableMonthFragment extends ChartMonthView {
         horizontalLayout = (LinearLayout) fragmentLayout.findViewById(R.id.columnLayout);
         horizontalLayout.setClickable(true);
         horizontalLayout.setLongClickable(true);
-        editEntryView = (EditEntryLayout) fragmentLayout.findViewById(R.id.editEntryView);
+        editEntryColumn= (ChartColumn) fragmentLayout.findViewById(R.id.editColumn);
         backgroundLayout = (FrameLayout) fragmentLayout.findViewById(R.id.backgroundLayout);
         horizontalScrollView = (HorizontalScrollView) fragmentLayout.findViewById(R.id.horizontalScrollView);
 
@@ -75,8 +74,6 @@ public class EditableMonthFragment extends ChartMonthView {
         horizontalLayout.removeAllViews();
         numItems = NumItemTableHelper.getAll(getActivity());
         boolItems = BoolItemTableHelper.getAll(getActivity());
-        editEntryView.setNumItemList(numItems);
-        editEntryView.setBoolItemList(boolItems);
         this.startDate = startDate;
         this.endDate = endDate;
 
@@ -114,25 +111,25 @@ public class EditableMonthFragment extends ChartMonthView {
     private void openColumn(ChartColumn column){
         editEntryViewIsOpen = true;
 
-        editEntryView.setEntry(column.getEntry());
-        editEntryView.setX(getCenterX(column));
+        editEntryColumn.setEntry(column.getEntry());
+        editEntryColumn.setX(getCenterX(column));
 
 
         // animate opening the layout
         if (Build.VERSION.SDK_INT >= 21){
             int cx = (int) column.getLastXtouch();
             int cy = (int) column.getLastYtouch();
-            int finalRadius = Math.max(editEntryView.getWidth(), editEntryView.getHeight());
+            int finalRadius = Math.max(editEntryColumn.getWidth(), editEntryColumn.getHeight());
             Animator animator =
-                    ViewAnimationUtils.createCircularReveal(editEntryView, cx, cy, 0, finalRadius);
+                    ViewAnimationUtils.createCircularReveal(editEntryColumn, cx, cy, 0, finalRadius);
             animator.setDuration(700);
-            editEntryView.setVisibility(View.VISIBLE);
+            editEntryColumn.setVisibility(View.VISIBLE);
             animator.start();
         } else {
             Animator animator = AnimatorInflater.loadAnimator(getActivity(), R.animator.expand);
-            animator.setTarget(editEntryView);
+            animator.setTarget(editEntryColumn);
             //editEntryView.setPivotX(column.getLastXtouch());
-            editEntryView.setVisibility(View.VISIBLE);
+            editEntryColumn.setVisibility(View.VISIBLE);
             animator.start();
         }
 
@@ -171,14 +168,14 @@ public class EditableMonthFragment extends ChartMonthView {
 
         // starting from center of original column, subtracting half of the
         // edit view's width from that coordinate gives the x coord for centering it.
-        int newX = columnCenter - editEntryView.getWidth()/2;
+        int newX = columnCenter - editEntryColumn.getWidth()/2;
         // newX would be clipped on the left
         if (newX < 0)
             newX = 0;
             // the parent layout's width is the right bound, and newX plus the width is the
             // view's right x coord.
-        else if (newX + editEntryView.getWidth() > backgroundLayout.getWidth())
-            newX = backgroundLayout.getWidth() - editEntryView.getWidth();
+        else if (newX + editEntryColumn.getWidth() > backgroundLayout.getWidth())
+            newX = backgroundLayout.getWidth() - editEntryColumn.getWidth();
 
         return newX;
     }
@@ -218,7 +215,7 @@ public class EditableMonthFragment extends ChartMonthView {
 
     public void onEvent(CloseEditEntryEvent event){
         try {
-            ChartEntryTableHelper.addOrUpdateEntry(getActivity(), editEntryView.getEntry());
+            ChartEntryTableHelper.addOrUpdateEntry(getActivity(), editEntryColumn.getEntry());
 
             horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -227,7 +224,7 @@ public class EditableMonthFragment extends ChartMonthView {
                 }
             });
             clearShadows(0);
-            editEntryView.setVisibility(View.INVISIBLE);
+            editEntryColumn.setVisibility(View.INVISIBLE);
             editEntryViewIsOpen = false;
         } catch (Exception e){
             e.printStackTrace();

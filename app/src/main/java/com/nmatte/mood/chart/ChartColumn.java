@@ -2,7 +2,9 @@ package com.nmatte.mood.chart;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.preference.PreferenceManager;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,17 +16,25 @@ import com.nmatte.mood.chart.cell.TextCellViewBuilder;
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.MoodModule;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
+import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
+import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.moodlog.CustomNumberPicker;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.settings.PreferencesContract;
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 
 
 public class ChartColumn extends LinearLayout {
 
-    final ChartEntry entry;
+    public void setEntry(ChartEntry entry) {
+        this.entry = entry;
+    }
+
+    ChartEntry entry;
     ArrayList<NumItem> numItems;
     ArrayList<BoolItem> boolItems;
     Context context;
@@ -58,6 +68,31 @@ public class ChartColumn extends LinearLayout {
 
     }
 
+    public ChartColumn(Context context, AttributeSet attrs){
+        super(context, attrs);
+        entry = new ChartEntry(DateTime.now());
+        numItems = NumItemTableHelper.getAll(context);
+        boolItems = BoolItemTableHelper.getAll(context);
+        this.context = context;
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ChartColumn, 0, 0);
+        int value = a.getIndex(R.styleable.ChartColumn_view_mode);
+        switch(value){
+            case 0:
+                mode = Mode.ENTRY_EDIT;
+                break;
+            case 1:
+                mode = Mode.ENTRY_READ;
+                break;
+            case 2:
+                mode = Mode.LABEL;
+                break;
+            default:
+                mode = Mode.ENTRY_EDIT;
+                break;
+        }
+        init();
+    }
+
     private void refresh(){
         removeAllViews();
         String cellText = (mode == Mode.ENTRY_READ) ?
@@ -80,6 +115,11 @@ public class ChartColumn extends LinearLayout {
     private void init(){
         this.setOrientation(VERTICAL);
         this.setOnTouchListener(touchListener);
+        if (mode == Mode.ENTRY_EDIT){
+            this.setClickable(true);
+            this.setEnabled(true);
+        }
+
 
         refresh();
 
@@ -192,7 +232,7 @@ public class ChartColumn extends LinearLayout {
                 this.addView(newCell);
             }
             if (mode == Mode.ENTRY_EDIT){
-                CheckboxCellView cellView = new CheckboxCellView(context, mode);
+                CheckboxCellView cellView = new CheckboxCellView(context, Mode.ENTRY_EDIT);
                 cellView.setOnChangeListener(new CheckboxCellView.OnChangeListener() {
                     @Override
                     public void onChange(boolean value) {

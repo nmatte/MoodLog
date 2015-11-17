@@ -15,4 +15,12 @@
         <attr name="is_enabled" format="boolean"/>
     </declare-styleable>
 
+    <declare-styleable name="ChartColumn">
+        <attr name="view_mode" format="enum">
+            <enum name="edit_entry" value="0"/>
+            <enum name="read_entry" value="1"/>
+            <enum name="label" value="2"/>
+        </attr>
+    </declare-styleable>
+
 </resources>

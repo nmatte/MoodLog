@@ -10,7 +10,9 @@ import android.view.View;
 import com.nmatte.mood.chart.ChartColumn;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 
+
 public class CheckboxCellView extends CellView {
+
     Paint blackPaint;
     Rect blackRect;
 
@@ -20,9 +22,15 @@ public class CheckboxCellView extends CellView {
     OnChangeListener onChangeListener = null;
     ChartColumn.Mode mode;
 
+
     public interface OnChangeListener{
+        /**
+         * Called when the checkbox changes its value.
+         * @param value The value of the checkbox after its most recent click.
+         */
         void onChange(boolean value);
     }
+
 
     public void setOnChangeListener(OnChangeListener onChangeListener) {
         this.onChangeListener = onChangeListener;
@@ -30,6 +38,7 @@ public class CheckboxCellView extends CellView {
 
     public CheckboxCellView(Context context, ChartColumn.Mode mode) {
         super(context);
+        this.mode = mode;
         init();
     }
 
@@ -39,6 +48,7 @@ public class CheckboxCellView extends CellView {
     }
     public CheckboxCellView(Context context, int backgroundColor, ChartColumn.Mode mode) {
         super(context, backgroundColor);
+        this.mode = mode;
         init();
     }
 

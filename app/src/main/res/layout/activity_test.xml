@@ -11,10 +11,10 @@
         android:orientation="vertical"
         android:id="@+id/mainLinearLayout"
         >
-        <com.nmatte.mood.chart.cell.VerticalText
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:background="@color/gray_cell_bg"/>
+        <com.nmatte.mood.chart.ChartColumn
+            android:layout_width="@dimen/chart_edit_entry_width"
+            android:layout_height="match_parent"
+            app:view_mode="edit_entry"/>
     </LinearLayout>
 
 </FrameLayout>
