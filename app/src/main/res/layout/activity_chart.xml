@@ -23,7 +23,7 @@
                 android:id="@+id/mainLayout">
                 <com.nmatte.mood.chart.ChartColumn
                     android:layout_width="@dimen/chart_edit_entry_width"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     app:view_mode="label"
                     android:id="@+id/labelColumn"/>
 

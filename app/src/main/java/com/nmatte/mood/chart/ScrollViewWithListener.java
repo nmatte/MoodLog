@@ -2,6 +2,7 @@ package com.nmatte.mood.chart;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ScrollView;
 
 public class ScrollViewWithListener extends ScrollView {
@@ -27,4 +28,19 @@ public class ScrollViewWithListener extends ScrollView {
             listener.onScrollDown();
         super.onScrollChanged(l, t, oldl, oldt);
     }
+
+    @Override
+    public void fling(int velocityY) {
+        if (velocityY > 0) {
+            Log.i("Scrollview Fling", "Positive fling");
+            listener.onScrollDown();
+        }
+        if (velocityY < 0){
+            Log.i("Scrollview Fling", "Negative fling");
+            listener.onScrollUp();
+        }
+
+        super.fling(velocityY);
+    }
+
 }

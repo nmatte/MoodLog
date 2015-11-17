@@ -2,7 +2,6 @@
 <FrameLayout
     android:layout_height="match_parent"
     android:layout_width="fill_parent"
-    android:background="@android:color/darker_gray"
     android:id="@+id/backgroundLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">

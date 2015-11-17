@@ -81,7 +81,7 @@ public class EditableMonthFragment extends ChartMonthView {
                 final ChartColumn column = new ChartColumn(getActivity(), entry, numItems, boolItems, ChartColumn.Mode.ENTRY_READ);
                 column.setMode(ChartColumn.Mode.ENTRY_READ);
                 column.setDuplicateParentStateEnabled(true);
-                column.setOnLongClickListener(getColumnLongClickListener(column));
+                column.setOnClickListener(getColumnClickListener(column));
                 horizontalLayout.addView(column);
             }
         }
@@ -90,19 +90,19 @@ public class EditableMonthFragment extends ChartMonthView {
         backgroundLayout.invalidate();
     }
 
-    private View.OnLongClickListener getColumnLongClickListener(final ChartColumn column){
-        return new View.OnLongClickListener() {
+    private View.OnClickListener getColumnClickListener(final ChartColumn column){
+        return new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View v) {
                 boolean isTodayOrEarlier =
                         column.getEntry().getLogDate().getDayOfYear() <= DateTime.now().getDayOfYear();
                 if (!editEntryViewIsOpen && isTodayOrEarlier) {
                     openColumn(column);
-                    return true;
-                } else
-                    return false;
             }
+        }
         };
+                
+            
     }
 
     private void openColumn(ChartColumn column){
@@ -137,7 +137,6 @@ public class EditableMonthFragment extends ChartMonthView {
                 return true;
             }
         });
-        addShadows(0);
 
         EventBus.getDefault().post(new OpenEditEntryEvent());
 
@@ -177,38 +176,8 @@ public class EditableMonthFragment extends ChartMonthView {
         return newX;
     }
 
-    private void addShadows(long duration){
-        /*
-        for(int i = 0; i < horizontalLayout.getChildCount(); i++){
-            if (i != indexOfOpenEntry){
-                Animator anim = AnimatorInflater.loadAnimator(getActivity(),R.animator.fade_out);
-                anim.setTarget(horizontalLayout.getChildAt(i));
-                anim.setStartDelay(duration);
-                anim.start();
-            }
-        }
-*/
-        Animator anim = AnimatorInflater.loadAnimator(getActivity(),R.animator.fade_out);
-        anim.setTarget(horizontalLayout);
-        anim.setStartDelay(duration);
-        anim.start();
-    }
 
-    private void clearShadows(long duration){
-        /*
-        for(int i = 0; i < horizontalLayout.getChildCount(); i++){
-            if (i != indexOfOpenEntry){
-                Animator anim = AnimatorInflater.loadAnimator(getActivity(),R.animator.fade_in);
-                anim.setTarget(horizontalLayout.getChildAt(i));
-                anim.setStartDelay(duration);
-                anim.start();
-            }
-        }*/
-        Animator anim = AnimatorInflater.loadAnimator(getActivity(),R.animator.fade_in);
-        anim.setTarget(horizontalLayout);
-        anim.setStartDelay(duration);
-        anim.start();
-    }
+
 
     public void onEvent(CloseEditEntryEvent event){
         try {
@@ -220,7 +189,6 @@ public class EditableMonthFragment extends ChartMonthView {
                     return false;
                 }
             });
-            clearShadows(0);
             editEntryColumn.setVisibility(View.INVISIBLE);
             editEntryViewIsOpen = false;
         } catch (Exception e){
