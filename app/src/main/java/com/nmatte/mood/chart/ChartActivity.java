@@ -102,12 +102,16 @@ public class ChartActivity extends AppCompatActivity
             public void onScrollUp() {
                 if (fabIsOpen)
                     faButton.show();
+                Log.i("ScrollViewWithListener", "onScrollUp called");
             }
 
             @Override
             public void onScrollDown() {
-                if (fabIsOpen)
+                if (fabIsOpen && (faButton.getVisibility() == View.VISIBLE))
                     faButton.hide();
+                Log.i("ScrollViewWithListener", "onScrollDown called");
+
+
             }
         });
     }

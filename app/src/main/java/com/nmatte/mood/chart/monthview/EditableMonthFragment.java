@@ -73,6 +73,7 @@ public class EditableMonthFragment extends ChartMonthView {
         boolItems = BoolItemTableHelper.getAll(getActivity());
         this.startDate = startDate;
         this.endDate = endDate;
+        editEntryColumn.refresh(getActivity());
 
         ArrayList<ChartEntry> newList = ChartEntryTableHelper.getGroupWithBlanks(getActivity(), startDate, endDate);
 
