@@ -8,7 +8,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.nmatte.mood.chart.ScrollViewWithListener
+        <com.nmatte.mood.chart.monthview.ScrollViewWithListener
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
@@ -21,7 +21,7 @@
                 android:clickable="true"
                 android:orientation="horizontal"
                 android:id="@+id/mainLayout">
-                <com.nmatte.mood.chart.ChartColumn
+                <com.nmatte.mood.chart.monthview.ChartColumn
                     android:layout_width="@dimen/chart_edit_entry_width"
                     android:layout_height="wrap_content"
                     app:view_mode="label"
@@ -30,11 +30,11 @@
                 <fragment
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:name="com.nmatte.mood.chart.monthview.EditableMonthFragment"
+                    android:name="com.nmatte.mood.chart.monthview.ChartMonthView"
                     android:id="@+id/chartMainFragment"/>
 
             </LinearLayout>
-        </com.nmatte.mood.chart.ScrollViewWithListener>
+        </com.nmatte.mood.chart.monthview.ScrollViewWithListener>
         <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

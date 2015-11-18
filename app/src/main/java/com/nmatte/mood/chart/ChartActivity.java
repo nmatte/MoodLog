@@ -16,8 +16,9 @@ import com.nmatte.mood.chart.datedialog.DateRangeDialog;
 import com.nmatte.mood.chart.datedialog.OpenEndDateDialogEvent;
 import com.nmatte.mood.chart.datedialog.OpenStartDateDialogEvent;
 import com.nmatte.mood.chart.datedialog.SaveEndDateDialogEvent;
+import com.nmatte.mood.chart.monthview.ChartColumn;
 import com.nmatte.mood.chart.monthview.ChartMonthView;
-import com.nmatte.mood.chart.monthview.EditableMonthFragment;
+import com.nmatte.mood.chart.monthview.ScrollViewWithListener;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
 import com.nmatte.mood.logbookitems.ChartChangeEvent;
@@ -42,7 +43,6 @@ public class ChartActivity extends AppCompatActivity
     FloatingActionButton faButton;
     boolean fabIsOpen;
     ChartColumn labelColumn;
-    EditableMonthFragment editableMonthFragment;
     ChartMonthView monthFragment;
     Menu menu;
 
@@ -81,7 +81,7 @@ public class ChartActivity extends AppCompatActivity
     }
 
     private void initViews(){
-        monthFragment = (EditableMonthFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
+        monthFragment = (ChartMonthView) getFragmentManager().findFragmentById(R.id.chartMainFragment);
         monthFragment.setRetainInstance(false);
         labelColumn = (ChartColumn) findViewById(R.id.labelColumn);
         labelColumn.setMode(ChartColumn.Mode.LABEL);
@@ -259,7 +259,7 @@ public class ChartActivity extends AppCompatActivity
     public void onEvent(SaveEndDateDialogEvent event){
         boolean foo = event.isRememberDates();
         Log.i("Date Range Dialog", "End date chosen: " + event.getEndDate().toString("MM/dd/YYYY"));
-        editableMonthFragment.refreshColumns(event.getStartDate(), event.getEndDate());
+        monthFragment.refreshColumns(event.getStartDate(), event.getEndDate());
         refreshPickDateButton(event.getStartDate(), event.getEndDate());
 
         SharedPreferences settings = getPreferences(MODE_PRIVATE);

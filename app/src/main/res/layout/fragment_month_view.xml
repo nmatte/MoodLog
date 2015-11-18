@@ -21,7 +21,7 @@
 </HorizontalScrollView>
 
 
-    <com.nmatte.mood.chart.ChartColumn
+    <com.nmatte.mood.chart.monthview.ChartColumn
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editColumn"

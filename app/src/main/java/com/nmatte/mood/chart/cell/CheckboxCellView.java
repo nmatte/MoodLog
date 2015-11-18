@@ -7,7 +7,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.nmatte.mood.chart.ChartColumn;
+import com.nmatte.mood.chart.monthview.ChartColumn;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 
 

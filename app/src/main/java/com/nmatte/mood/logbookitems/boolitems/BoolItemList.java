@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.nmatte.mood.chart.ChartColumn;
+import com.nmatte.mood.chart.monthview.ChartColumn;
 import com.nmatte.mood.chart.cell.CheckboxCellView;
 import com.nmatte.mood.moodlog.R;
 

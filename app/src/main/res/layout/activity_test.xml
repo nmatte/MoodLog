@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:id="@+id/mainLinearLayout"
         >
-        <com.nmatte.mood.chart.ChartColumn
+        <com.nmatte.mood.chart.monthview.ChartColumn
             android:layout_width="@dimen/chart_edit_entry_width"
             android:layout_height="match_parent"
             app:view_mode="edit_entry"/>
