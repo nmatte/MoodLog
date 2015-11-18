@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.nmatte.mood.chart.cell.CellView;
-import com.nmatte.mood.chart.cell.CheckboxCellView;
+import com.nmatte.mood.chart.cell.ImageCellView;
 import com.nmatte.mood.chart.cell.TextCellView;
 import com.nmatte.mood.chart.cell.TextCellViewBuilder;
 import com.nmatte.mood.chart.monthview.ChartColumn;
@@ -17,13 +17,13 @@ import java.util.ArrayList;
 
 public class MoodModule {
 
-    public static ArrayList<CheckboxCellView>
+    public static ArrayList<ImageCellView>
     getCheckboxViews(Context context, ArrayList<Boolean> cellValues, ChartColumn.Mode mode){
-        ArrayList<CheckboxCellView> result = new ArrayList<>();
+        ArrayList<ImageCellView> result = new ArrayList<>();
         Resources res = context.getResources();
         int [] colors = res.getIntArray(R.array.mood_colors);
         for (int i = 0; i < colors.length; i++){
-            CheckboxCellView newRow = new CheckboxCellView(context,colors[i],mode);
+            ImageCellView newRow = new ImageCellView(context,colors[i],mode);
             newRow.setBackground(CellView.Background.NONE);
             if (i < cellValues.size())
                 newRow.setChecked(cellValues.get(i));

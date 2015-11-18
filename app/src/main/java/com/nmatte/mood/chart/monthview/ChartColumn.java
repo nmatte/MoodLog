@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.cell.CellView;
-import com.nmatte.mood.chart.cell.CheckboxCellView;
+import com.nmatte.mood.chart.cell.ImageCellView;
 import com.nmatte.mood.chart.cell.TextCellView;
 import com.nmatte.mood.chart.cell.TextCellViewBuilder;
 import com.nmatte.mood.logbookentries.ChartEntry;
@@ -147,18 +147,26 @@ public class ChartColumn extends LinearLayout {
                 b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width));
 
             addView(b.setStroke(TextCellView.Stroke.BOLD)
-                            .setText("NOTES")
-                            .build());
+                    .setText("NOTES")
+                    .build());
         }
+        if (mode == Mode.ENTRY_READ || mode == Mode.ENTRY_EDIT){
+            ImageCellView cellView = new ImageCellView(context,Mode.ENTRY_READ);
+            cellView.setImage(ImageCellView.Image.NOTE);
+            cellView.setChecked(true);
+            addView(cellView);
+        }
+
+
 
     }
 
     private void addMoodModule(){
         if (mode == Mode.ENTRY_EDIT) {
             int i = 0;
-            for (CheckboxCellView cellView : MoodModule.getCheckboxViews(context, entry.getMoods(), mode)){
+            for (ImageCellView cellView : MoodModule.getCheckboxViews(context, entry.getMoods(), mode)){
                 final int index = i;
-                cellView.setOnChangeListener(new CheckboxCellView.OnChangeListener() {
+                cellView.setOnChangeListener(new ImageCellView.OnChangeListener() {
                     @Override
                     public void onChange(boolean value) {
                         entry.getMoods().set(index,value);
@@ -169,7 +177,7 @@ public class ChartColumn extends LinearLayout {
             }
         }
         if (mode == Mode.ENTRY_READ){
-            for (CheckboxCellView cellView : MoodModule.getCheckboxViews(context, entry.getMoods(), mode)){
+            for (ImageCellView cellView : MoodModule.getCheckboxViews(context, entry.getMoods(), mode)){
                 cellView.setBackground(CellView.Background.NONE);
                 addView(cellView);
             }
@@ -252,13 +260,13 @@ public class ChartColumn extends LinearLayout {
             color = grayToggle ? grayColor : whiteColor;
             grayToggle = !grayToggle;
             if (mode == Mode.ENTRY_READ) {
-                CheckboxCellView checkboxCellView = new CheckboxCellView(context,Mode.ENTRY_READ);
-                checkboxCellView.setBackgroundColor(color);
-                checkboxCellView.setBackground(CellView.Background.NONE);
+                ImageCellView imageCellView = new ImageCellView(context,Mode.ENTRY_READ);
+                imageCellView.setBackgroundColor(color);
+                imageCellView.setBackground(CellView.Background.NONE);
                 if (entry.getBoolItems().containsKey(boolItem)) {
-                    checkboxCellView.setChecked(entry.getBoolItems().get(boolItem));
+                    imageCellView.setChecked(entry.getBoolItems().get(boolItem));
                 }
-                this.addView(checkboxCellView);
+                this.addView(imageCellView);
             }
             if (mode == Mode.LABEL) {
                         TextCellViewBuilder b = new TextCellViewBuilder(context);
@@ -272,8 +280,8 @@ public class ChartColumn extends LinearLayout {
                 this.addView(b.build());
             }
             if (mode == Mode.ENTRY_EDIT){
-                CheckboxCellView cellView = new CheckboxCellView(context, Mode.ENTRY_EDIT);
-                cellView.setOnChangeListener(new CheckboxCellView.OnChangeListener() {
+                ImageCellView cellView = new ImageCellView(context, Mode.ENTRY_EDIT);
+                cellView.setOnChangeListener(new ImageCellView.OnChangeListener() {
                     @Override
                     public void onChange(boolean value) {
                         entry.getBoolItems().put(boolItem,value);
