@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 
 import com.nmatte.mood.moodlog.R;
@@ -14,6 +15,8 @@ public class TextCellView extends CellView {
     String text = "";
     TextAlignment horizontalAlignment;
     TextAlignment verticalAlignment;
+    Stroke stroke;
+    float leftAlignX = 0;
 
 
 
@@ -22,6 +25,11 @@ public class TextCellView extends CellView {
         LEFT,
         CENTER,
         BOTTOM
+    }
+
+    public enum Stroke {
+        DEFAULT,
+        BOLD
     }
 
     protected TextCellView(Context context,
@@ -58,6 +66,8 @@ public class TextCellView extends CellView {
         this.verticalAlignment = TextAlignment.BOTTOM;
         if(vAlignText.equals("center"))
             this.verticalAlignment = TextAlignment.CENTER;
+
+
         init();
     }
 
@@ -66,6 +76,10 @@ public class TextCellView extends CellView {
         textPaint = new Paint();
         textPaint.setColor(BLACK);
         textPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+    }
+
+    public void setStroke(Stroke stroke){
+        this.stroke = stroke;
     }
 
 
@@ -85,7 +99,8 @@ public class TextCellView extends CellView {
             textX = getWidth() / 2 - textPaint.measureText( text) / 2;
         } else if (horizontalAlignment == TextAlignment.LEFT){
             textX = (float) super.leftTransparentBound;
-
+            if (leftAlignX > textX)
+                textX = leftAlignX;
         }
 
         if (verticalAlignment == TextAlignment.CENTER){
@@ -103,6 +118,11 @@ public class TextCellView extends CellView {
         String displayText = text;
         if (text.length() > 2)
             displayText = truncate(text);
+        if (stroke == Stroke.BOLD){
+            Typeface current = textPaint.getTypeface();
+            textPaint.setTypeface(Typeface.create(current,Typeface.BOLD));
+        }
+
         canvas.drawText(displayText, textX, textY, textPaint);
     }
 
@@ -124,7 +144,6 @@ public class TextCellView extends CellView {
                 return resultText;
         }
 
-
         return "";
     }
 
@@ -132,6 +151,10 @@ public class TextCellView extends CellView {
         this.text = newText;
         invalidate();
         return this;
+    }
+
+    public void setLeftAlignX(float offset){
+        leftAlignX = offset;
     }
 
 

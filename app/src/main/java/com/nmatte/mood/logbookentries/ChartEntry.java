@@ -18,6 +18,7 @@ public class ChartEntry{
     private ArrayList<Boolean> moods;
     private SimpleArrayMap<NumItem,Integer> numItems;
     private SimpleArrayMap<BoolItem,Boolean> boolItems;
+    private String note;
 
     public static final String DATE_PATTERN = "YYYYDDD";
 
@@ -34,6 +35,14 @@ public class ChartEntry{
         this.moods = moods;
         this.numItems = numItems;
         this.boolItems = boolItems;
+    }
+
+    public String getNote(){
+        return note;
+    }
+
+    public void setNote(String note){
+        this.note = note;
     }
 
 

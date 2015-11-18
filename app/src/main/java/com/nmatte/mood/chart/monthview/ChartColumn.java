@@ -37,9 +37,11 @@ public class ChartColumn extends LinearLayout {
     ChartEntry entry;
     ArrayList<NumItem> numItems;
     ArrayList<BoolItem> boolItems;
+    boolean moodEnabled = false;
     Context context;
     float lastXtouch;
     float lastYtouch;
+    int xOffset = 0;
 
 
 
@@ -103,15 +105,22 @@ public class ChartColumn extends LinearLayout {
 
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        if(settings.getBoolean(PreferencesContract.LARGE_MOOD_MODULE_ENABLED,true))
+        if(settings.getBoolean(PreferencesContract.LARGE_MOOD_MODULE_ENABLED,true)) {
+            moodEnabled = true;
             addMoodModule();
+        }
+
 
         int grayColor = getResources().getColor(R.color.gray_cell_bg);
         int whiteColor = getResources().getColor(R.color.white);
 
-        boolean grayToggle = addNumItems(whiteColor,grayColor,false);
+        boolean grayToggle = addNumItems(whiteColor, grayColor, false);
         addBoolItems(whiteColor, grayColor, grayToggle);
+        if(settings.getBoolean(PreferencesContract.NOTE_MODULE_ENABLED,true))
+            addNoteModule();
     }
+
+
 
     private void init(){
         this.setOrientation(VERTICAL);
@@ -127,6 +136,20 @@ public class ChartColumn extends LinearLayout {
 
 
         refresh(context);
+
+    }
+
+    private void addNoteModule() {
+
+        if (mode == Mode.LABEL){
+            TextCellViewBuilder b = new TextCellViewBuilder(context);
+            if (moodEnabled)
+                b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width));
+
+            addView(b.setStroke(TextCellView.Stroke.BOLD)
+                            .setText("NOTES")
+                            .build());
+        }
 
     }
 
@@ -190,9 +213,12 @@ public class ChartColumn extends LinearLayout {
                 this.addView(b.build());
             }
             if (mode == Mode.LABEL) {
-                TextCellViewBuilder b = new TextCellViewBuilder(context)
-                        .setBackgroundColor(color)
-                        .setVerticalAlignment(TextCellView.TextAlignment.CENTER);
+
+                TextCellViewBuilder b = new TextCellViewBuilder(context);
+                if (moodEnabled){
+                    b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width));
+                }
+                        b.setBackgroundColor(color);
                  b.setText(numItem.getName());
                 this.addView(b.build());
             }
@@ -235,12 +261,15 @@ public class ChartColumn extends LinearLayout {
                 this.addView(checkboxCellView);
             }
             if (mode == Mode.LABEL) {
-                TextCellView newCell = new TextCellViewBuilder(context)
+                        TextCellViewBuilder b = new TextCellViewBuilder(context);
+                if (moodEnabled)
+                    b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width));
+                b
                         .setText(boolItem.getName())
                         .setBackgroundColor(color)
                         .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
                         .build();
-                this.addView(newCell);
+                this.addView(b.build());
             }
             if (mode == Mode.ENTRY_EDIT){
                 CheckboxCellView cellView = new CheckboxCellView(context, Mode.ENTRY_EDIT);

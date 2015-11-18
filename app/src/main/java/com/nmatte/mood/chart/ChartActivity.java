@@ -88,12 +88,12 @@ public class ChartActivity extends AppCompatActivity
      */
     private boolean detectFirstStartup(){
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        if (settings.contains(PreferencesContract.FIRST_STARTUP)){
-            return false;
-        } else {
+        if (!settings.contains(PreferencesContract.FIRST_STARTUP)){
             settings.edit().putBoolean(PreferencesContract.FIRST_STARTUP,false).apply();
             Log.i("Startup","First startup detected");
             return true;
+        } else {
+            return false;
         }
     }
 

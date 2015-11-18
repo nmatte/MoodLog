@@ -69,4 +69,13 @@ public class SettingsActivity extends AppCompatActivity
             Log.i("Mood module prefs","success changing mood module prefs");
 
     }
+
+    public void noteModuleCheckboxClick(View view) {
+        CheckBox checkBox = (CheckBox) view;
+        SharedPreferences.Editor ed = PreferenceManager.getDefaultSharedPreferences(this)
+                .edit();
+        ed.putBoolean(PreferencesContract.NOTE_MODULE_ENABLED, checkBox.isChecked());
+        ed.commit();
+
+    }
 }

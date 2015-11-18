@@ -9,6 +9,8 @@ public class TextCellViewBuilder {
     boolean backgroundEnabled = true;
     TextCellView.TextAlignment horizontalAlignment;
     TextCellView.TextAlignment verticalAlignment;
+    float xOffset = 0;
+    TextCellView.Stroke stroke;
 
     public TextCellViewBuilder setBackground(CellView.Background background) {
         this.background = background;
@@ -47,6 +49,16 @@ public class TextCellViewBuilder {
         return this;
     }
 
+    public TextCellViewBuilder setXoffset(float offset){
+        this.xOffset = offset;
+        return this;
+    }
+
+    public TextCellViewBuilder setStroke(TextCellView.Stroke stroke){
+        this.stroke = stroke;
+        return this;
+    }
+
     public TextCellView build(){
         if (backgroundColor == -1)
             backgroundColor = CellView.WHITE;
@@ -57,6 +69,14 @@ public class TextCellViewBuilder {
                 horizontalAlignment,
                 verticalAlignment);
         newCell.setBackground(background);
+        if (newCell.horizontalAlignment == TextCellView.TextAlignment.LEFT){
+            newCell.setLeftAlignX(xOffset);
+        }
+
+        if (stroke == TextCellView.Stroke.BOLD){
+            newCell.setStroke(TextCellView.Stroke.BOLD);
+        }
+
         return newCell;
     }
 }

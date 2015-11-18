@@ -20,6 +20,14 @@
         android:id="@+id/largeMoodModuleCheckbox"
         android:onClick="largeMoodModuleCheckboxClick"
         android:text="Mood Module"/>
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:id="@+id/noteModuleCheckbox"
+        android:onClick="noteModuleCheckboxClick"
+        android:text="Notes"/>
+
     <TextView style="@style/OptionsHeader"
         android:text="NUMBERS"/>
     <RelativeLayout
