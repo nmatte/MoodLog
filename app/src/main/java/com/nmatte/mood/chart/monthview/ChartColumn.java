@@ -147,13 +147,17 @@ public class ChartColumn extends LinearLayout {
                 b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width));
 
             addView(b.setStroke(TextCellView.Stroke.BOLD)
-                    .setText("NOTES")
+                    .setText("Notes")
                     .build());
         }
         if (mode == Mode.ENTRY_READ || mode == Mode.ENTRY_EDIT){
             ImageCellView cellView = new ImageCellView(context,Mode.ENTRY_READ);
             cellView.setImage(ImageCellView.Image.NOTE);
-            cellView.setChecked(true);
+            if (entry.getNote() != null){
+                if (entry.getNote().length() > 0)
+                    cellView.setChecked(true);
+            }
+
             addView(cellView);
         }
 
