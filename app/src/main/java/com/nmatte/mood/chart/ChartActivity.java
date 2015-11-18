@@ -80,6 +80,21 @@ public class ChartActivity extends AppCompatActivity
         super.onStop();
     }
 
+    /**
+     * Detects if the app has been started before via a flag in settings.
+     * @return Whether this is the first startup.
+     */
+    private boolean detectFirstStartup(){
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        if (settings.contains(PreferencesContract.FIRST_STARTUP)){
+            settings.edit().putBoolean(PreferencesContract.FIRST_STARTUP,false).apply();
+            Log.i("Startup","First startup detected");
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private void initViews(){
         monthFragment = (ChartMonthView) getFragmentManager().findFragmentById(R.id.chartMainFragment);
         monthFragment.setRetainInstance(false);

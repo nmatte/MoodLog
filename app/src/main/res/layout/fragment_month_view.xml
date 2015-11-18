@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<io.codetail.widget.RevealFrameLayout
     android:layout_height="match_parent"
     android:layout_width="fill_parent"
     android:id="@+id/backgroundLayout"
@@ -28,4 +28,4 @@
         app:view_mode="edit_entry"
         android:visibility="invisible"/>
 
-</FrameLayout>
+</io.codetail.widget.RevealFrameLayout>

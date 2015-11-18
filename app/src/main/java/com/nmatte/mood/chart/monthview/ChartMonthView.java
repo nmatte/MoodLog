@@ -1,17 +1,12 @@
 package com.nmatte.mood.chart.monthview;
 
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
 import android.app.Fragment;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
@@ -30,6 +25,9 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
+import io.codetail.animation.SupportAnimator;
+import io.codetail.animation.ViewAnimationUtils;
+import io.codetail.widget.RevealFrameLayout;
 
 public class ChartMonthView extends Fragment {
     ArrayList<NumItem> numItems;
@@ -38,11 +36,12 @@ public class ChartMonthView extends Fragment {
     DateTime endDate;
 
     LinearLayout horizontalLayout;
-    FrameLayout backgroundLayout;
+    RevealFrameLayout backgroundLayout;
     HorizontalScrollView horizontalScrollView;
     boolean editEntryViewIsOpen = false;
 
     ChartColumn editEntryColumn;
+    ChartColumn openedColumn = null;
 
 
     @Override
@@ -98,7 +97,7 @@ public class ChartMonthView extends Fragment {
         horizontalLayout.setClickable(true);
         horizontalLayout.setLongClickable(true);
         editEntryColumn= (ChartColumn) fragmentLayout.findViewById(R.id.editColumn);
-        backgroundLayout = (FrameLayout) fragmentLayout.findViewById(R.id.backgroundLayout);
+        backgroundLayout = (RevealFrameLayout) fragmentLayout.findViewById(R.id.backgroundLayout);
         horizontalScrollView = (HorizontalScrollView) fragmentLayout.findViewById(R.id.horizontalScrollView);
 
         return fragmentLayout;
@@ -158,6 +157,8 @@ public class ChartMonthView extends Fragment {
         try {
             ChartEntryTableHelper.addOrUpdateEntry(getActivity(), editEntryColumn.getEntry());
 
+            openedColumn.setEntry(editEntryColumn.getEntry());
+            openedColumn.refresh(getActivity());
             horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -173,19 +174,15 @@ public class ChartMonthView extends Fragment {
 
     private void openColumn(ChartColumn column){
         editEntryViewIsOpen = true;
+        openedColumn = column;
         editEntryColumn.setEntry(column.getEntry());
+        editEntryColumn.refresh(getActivity());
         editEntryColumn.setX(getCenterX(column));
 
         // animate opening the layout
+        /*
         if (Build.VERSION.SDK_INT >= 21){
-            int cx = (int) column.getLastXtouch();
-            int cy = (int) column.getLastYtouch();
-            int finalRadius = Math.max(editEntryColumn.getWidth(), editEntryColumn.getHeight());
-            Animator animator =
-                    ViewAnimationUtils.createCircularReveal(editEntryColumn, cx, cy, 0, finalRadius);
-            animator.setDuration(700);
-            editEntryColumn.setVisibility(View.VISIBLE);
-            animator.start();
+
         } else {
             Animator animator = AnimatorInflater.loadAnimator(getActivity(), R.animator.expand);
             animator.setTarget(editEntryColumn);
@@ -193,7 +190,15 @@ public class ChartMonthView extends Fragment {
             editEntryColumn.setVisibility(View.VISIBLE);
             animator.start();
         }
-
+*/
+        int cx = (int) column.getLastXtouch();
+        int cy = (int) column.getLastYtouch();
+        int finalRadius = Math.max(editEntryColumn.getWidth(), editEntryColumn.getHeight());
+        SupportAnimator animator =
+                ViewAnimationUtils.createCircularReveal(editEntryColumn, cx, cy, 0, finalRadius);
+        animator.setDuration(700);
+        editEntryColumn.setVisibility(View.VISIBLE);
+        animator.start();
 
         horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override

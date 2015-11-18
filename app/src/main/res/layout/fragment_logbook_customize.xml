@@ -8,6 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
+    android:background="#eeeeee"
     android:id="@+id/logbookEditorLayout">
 
     <TextView style="@style/OptionsHeader"
@@ -28,14 +29,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:showDividers="middle"
-            android:divider="?android:attr/dividerHorizontal"
-            android:animateLayoutChanges="true"
+            style="@style/SettingsList"
             android:layout_alignParentTop="true"
             android:id="@+id/numItemList"/>
+
 
 
         <RelativeLayout
@@ -69,10 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:animateLayoutChanges="true"
+            style="@style/SettingsList"
             android:id="@+id/boolItemList"
             android:layout_alignParentTop="true"
             />

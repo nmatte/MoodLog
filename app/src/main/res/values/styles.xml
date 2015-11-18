@@ -102,13 +102,23 @@
 
 
     <style name="OptionsHeader" parent="android:Widget.TextView">
-        <item name="android:background">#dadada</item>
+        <item name="android:background">@color/settings_header</item>
         <item name="android:layout_height">36dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:paddingLeft">6dp</item>
         <item name="android:paddingRight">6dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_centerVertical">true</item>
+    </style>
+
+
+    <style name="SettingsList">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:showDividers">middle|end</item>
+        <item name="android:divider">@drawable/horizontal_divider</item>
+        <item name="android:animateLayoutChanges">true</item>
     </style>
 
 
