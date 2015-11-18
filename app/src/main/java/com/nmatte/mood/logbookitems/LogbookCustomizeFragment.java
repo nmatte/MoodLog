@@ -38,6 +38,8 @@ public class LogbookCustomizeFragment extends Fragment {
     LinearLayout numItemLayout;
     ImageButton addBoolButton;
     ImageButton addNumButton;
+    EditText addNumEditText;
+    EditText addBoolEditText;
 
     @Nullable
     @Override
@@ -68,25 +70,30 @@ public class LogbookCustomizeFragment extends Fragment {
                 .getBoolean(PreferencesContract.LARGE_MOOD_MODULE_ENABLED,false);
         largeMoodModuleCheckbox.setChecked(largeMoodModuleEnabled);
 
-        boolItemLayout = (LinearLayout) mainView.findViewById(R.id.boolItemList);
         numItemLayout = (LinearLayout) mainView.findViewById(R.id.numItemList);
 
-        addBoolButton = (ImageButton) mainView.findViewById(R.id.addBoolButton);
-        addBoolButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addNewBoolItem(null);
-            }
-        });
 
         addNumButton = (ImageButton) mainView.findViewById(R.id.addNumButton);
-        final EditText addNumEditText = (EditText) mainView.findViewById(R.id.addNumEditText);
+        addNumEditText = (EditText) mainView.findViewById(R.id.addNumEditText);
 
         addNumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addNewNumItem(new NumItem(null, addNumEditText.getText().toString()), true);
-                addNumEditText.clearComposingText();
+                addNumEditText.getText().clear();
+            }
+        });
+
+        boolItemLayout = (LinearLayout) mainView.findViewById(R.id.boolItemList);
+
+        addBoolButton = (ImageButton) mainView.findViewById(R.id.addBoolButton);
+        addBoolEditText = (EditText) mainView.findViewById(R.id.addBoolEditText);
+
+        addBoolButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNewBoolItem(new BoolItem(addBoolEditText.getText().toString()));
+                addBoolEditText.getText().clear();
             }
         });
 
@@ -110,7 +117,6 @@ public class LogbookCustomizeFragment extends Fragment {
     public void addNewNumItem(NumItem item,boolean isNewItem){
         if (isNewItem){
             final CustomizeNumItem rowView = new CustomizeNumItem(getActivity(),null);
-
             rowView.setNumItem(item);
             rowView.delButton.setOnClickListener(getDeleteNumItemListener(rowView));
             numItemLayout.addView(rowView);

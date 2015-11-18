@@ -20,11 +20,8 @@
         android:id="@+id/largeMoodModuleCheckbox"
         android:onClick="largeMoodModuleCheckboxClick"
         android:text="Mood Module"/>
-
     <TextView style="@style/OptionsHeader"
         android:text="NUMBERS"/>
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -32,9 +29,6 @@
             style="@style/SettingsList"
             android:layout_alignParentTop="true"
             android:id="@+id/numItemList"/>
-
-
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,33 +40,22 @@
                 android:id="@+id/addNumEditText"
                 android:layout_toLeftOf="@+id/addNumButton"
                 android:hint="New number..."/>
-
-
             <ImageButton
                 style="@style/LogbookItem.ImageButton_Add"
                 android:layout_alignParentRight="true"
                 android:id="@+id/addNumButton"/>
         </RelativeLayout>
-
-
-
     </RelativeLayout>
-
     <TextView
         style="@style/OptionsHeader"
         android:text="CHECKBOXES"/>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
             style="@style/SettingsList"
             android:id="@+id/boolItemList"
-            android:layout_alignParentTop="true"
-            />
-
-
-
+            android:layout_alignParentTop="true"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,16 +67,11 @@
                 android:id="@+id/addBoolEditText"
                 android:layout_toLeftOf="@+id/addBoolButton"
                 android:hint="New checkbox..."/>
-
-
             <ImageButton
                 style="@style/LogbookItem.ImageButton_Add"
                 android:layout_alignParentRight="true"
                 android:id="@+id/addBoolButton"/>
         </RelativeLayout>
-
-
     </RelativeLayout>
-
 </LinearLayout>
 </ScrollView>

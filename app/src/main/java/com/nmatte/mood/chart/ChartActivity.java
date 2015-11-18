@@ -44,6 +44,7 @@ public class ChartActivity extends AppCompatActivity
     boolean fabIsOpen;
     ChartColumn labelColumn;
     ChartMonthView monthFragment;
+    LinearLayout mainLayout;
     Menu menu;
 
 
@@ -52,6 +53,7 @@ public class ChartActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
 
+        detectFirstStartup();
         initViews();
     }
 
@@ -87,17 +89,17 @@ public class ChartActivity extends AppCompatActivity
     private boolean detectFirstStartup(){
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
         if (settings.contains(PreferencesContract.FIRST_STARTUP)){
+            return false;
+        } else {
             settings.edit().putBoolean(PreferencesContract.FIRST_STARTUP,false).apply();
             Log.i("Startup","First startup detected");
             return true;
-        } else {
-            return false;
         }
     }
 
     private void initViews(){
         monthFragment = (ChartMonthView) getFragmentManager().findFragmentById(R.id.chartMainFragment);
-        monthFragment.setRetainInstance(false);
+        mainLayout = (LinearLayout) findViewById(R.id.mainLayout);
         labelColumn = (ChartColumn) findViewById(R.id.labelColumn);
         labelColumn.setMode(ChartColumn.Mode.LABEL);
         faButton = (FloatingActionButton) findViewById(R.id.fabDone);
@@ -134,8 +136,6 @@ public class ChartActivity extends AppCompatActivity
     private void refreshFragments(){
         monthFragment.refreshColumns(getChartStartDate(), getChartEndDate());
         labelColumn.refresh(this);
-
-        LinearLayout mainLayout = (LinearLayout) findViewById(R.id.mainLayout);
         mainLayout.invalidate();
     }
 
