@@ -121,25 +121,19 @@ public class ChartColumn extends LinearLayout {
             this.setEnabled(true);
         }
 
+        if (mode == Mode.ENTRY_READ) {
+            this.setBackground(context.getResources().getDrawable(R.drawable.drop_shadow_vertical));
+        }
+
 
         refresh(context);
 
     }
 
     private void addMoodModule(){
-        if (mode == Mode.ENTRY_READ){
-            for (CheckboxCellView cellView : MoodModule.getCellViews(context,entry.getMoods(),mode)){
-                addView(cellView);
-            }
-        }
-        if (mode == Mode.LABEL){
-            for (TextCellView cellView : MoodModule.getLabelViews(context)){
-                addView(cellView);
-            }
-        }
         if (mode == Mode.ENTRY_EDIT) {
             int i = 0;
-            for (CheckboxCellView cellView : MoodModule.getCellViews(context,entry.getMoods(),mode)){
+            for (CheckboxCellView cellView : MoodModule.getCheckboxViews(context, entry.getMoods(), mode)){
                 final int index = i;
                 cellView.setOnChangeListener(new CheckboxCellView.OnChangeListener() {
                     @Override
@@ -151,6 +145,22 @@ public class ChartColumn extends LinearLayout {
                 i++;
             }
         }
+        if (mode == Mode.ENTRY_READ){
+            for (CheckboxCellView cellView : MoodModule.getCheckboxViews(context, entry.getMoods(), mode)){
+                cellView.setBackground(CellView.Background.NONE);
+                addView(cellView);
+            }
+        }
+        if (mode == Mode.LABEL){
+            /*
+            for (TextCellView cellView : MoodModule.getLabelViews(context)){
+                cellView.setBackground(CellView.Background.NONE);
+                addView(cellView);
+            }
+            */
+            addView(MoodModule.getLabelView(context));
+        }
+
 
     }
 
@@ -173,7 +183,7 @@ public class ChartColumn extends LinearLayout {
                         .setBackgroundColor(color)
                         .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
                         .setHorizontalAlignment(TextCellView.TextAlignment.CENTER)
-                        .setBackground(CellView.Background.VERTICAL);
+                        .setBackground(CellView.Background.NONE);
                 if (entry.getNumItems().containsKey(numItem)) {
                     b.setText(String.valueOf(entry.getNumItems().get(numItem)));
                 }
@@ -218,7 +228,7 @@ public class ChartColumn extends LinearLayout {
             if (mode == Mode.ENTRY_READ) {
                 CheckboxCellView checkboxCellView = new CheckboxCellView(context,Mode.ENTRY_READ);
                 checkboxCellView.setBackgroundColor(color);
-                checkboxCellView.setBackground(CellView.Background.VERTICAL);
+                checkboxCellView.setBackground(CellView.Background.NONE);
                 if (entry.getBoolItems().containsKey(boolItem)) {
                     checkboxCellView.setChecked(entry.getBoolItems().get(boolItem));
                 }

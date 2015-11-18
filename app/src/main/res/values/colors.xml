@@ -4,4 +4,5 @@
     <color name="primary_color">#0c4763</color>
     <color name="gray_cell_bg">#B8B8B8</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 </resources>

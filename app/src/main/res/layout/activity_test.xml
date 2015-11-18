@@ -5,16 +5,6 @@
     android:layout_height="match_parent"
     android:id="@+id/mainLayout">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/mainLinearLayout"
-        >
-        <com.nmatte.mood.chart.monthview.ChartColumn
-            android:layout_width="@dimen/chart_edit_entry_width"
-            android:layout_height="match_parent"
-            app:view_mode="edit_entry"/>
-    </LinearLayout>
+
 
 </FrameLayout>

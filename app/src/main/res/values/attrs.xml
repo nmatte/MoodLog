@@ -23,4 +23,7 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="VerticalText">
+        <attr name="vertical_text" format="string"/>
+    </declare-styleable>
 </resources>
