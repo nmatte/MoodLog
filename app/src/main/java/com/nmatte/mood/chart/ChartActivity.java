@@ -12,14 +12,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.nmatte.mood.chart.column.ChartColumn;
+import com.nmatte.mood.chart.column.CloseNoteEvent;
+import com.nmatte.mood.chart.column.OpenNoteEvent;
 import com.nmatte.mood.chart.datedialog.DateRangeDialog;
 import com.nmatte.mood.chart.datedialog.OpenEndDateDialogEvent;
 import com.nmatte.mood.chart.datedialog.OpenStartDateDialogEvent;
 import com.nmatte.mood.chart.datedialog.SaveEndDateDialogEvent;
-import com.nmatte.mood.chart.column.ChartColumn;
 import com.nmatte.mood.chart.monthview.ChartMonthView;
 import com.nmatte.mood.chart.monthview.ScrollViewWithListener;
+import com.nmatte.mood.logbookentries.database.ChartEntryTableHelper;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
+import com.nmatte.mood.logbookentries.editentry.NoteView;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
 import com.nmatte.mood.logbookitems.ChartChangeEvent;
 import com.nmatte.mood.moodlog.R;
@@ -41,7 +45,6 @@ public class ChartActivity extends AppCompatActivity
 {
 
     FloatingActionButton faButton;
-    boolean fabIsOpen;
     ChartColumn labelColumn;
     ChartMonthView monthFragment;
     LinearLayout mainLayout;
@@ -108,7 +111,6 @@ public class ChartActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 faButton.hide();
-                fabIsOpen = false;
                 EventBus.getDefault().post(new CloseEditEntryEvent());
             }
         });
@@ -117,14 +119,14 @@ public class ChartActivity extends AppCompatActivity
         scroll.setScrollListener(new ScrollViewWithListener.ScrollListener() {
             @Override
             public void onScrollUp() {
-                if (fabIsOpen)
+                if (faButton.isShown())
                     faButton.show();
                 Log.i("ScrollViewWithListener", "onScrollUp called");
             }
 
             @Override
             public void onScrollDown() {
-                if (fabIsOpen && (faButton.getVisibility() == View.VISIBLE))
+                if (faButton.isShown())
                     faButton.hide();
                 Log.i("ScrollViewWithListener", "onScrollDown called");
 
@@ -240,7 +242,6 @@ public class ChartActivity extends AppCompatActivity
 
     public void onEvent(OpenEditEntryEvent event){
         faButton.show();
-        fabIsOpen = true;
     }
 
     public void onEvent(OpenStartDateDialogEvent event){
@@ -281,6 +282,22 @@ public class ChartActivity extends AppCompatActivity
                     .putBoolean(PreferencesContract.BOOL_CHART_REMEMBER_DATES,event.isRememberDates())
                     .apply();
         }
+    }
+
+    public void onEvent(OpenNoteEvent event){
+        NoteView noteView = (NoteView) findViewById(R.id.entryNoteView);
+        noteView.setEntry(event.getEntry());
+        noteView.setVisibility(View.VISIBLE);
+        if (faButton.isShown())
+            faButton.hide();
+        noteView.animateUp();
+    }
+
+    public void onEvent(CloseNoteEvent event){
+        faButton.show();
+        NoteView noteView = (NoteView) findViewById(R.id.entryNoteView);
+        ChartEntryTableHelper.addOrUpdateEntry(this,event.getEntry());
+        noteView.animateDown();
     }
 
 

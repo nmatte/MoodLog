@@ -44,6 +44,13 @@
             app:layout_anchor="@id/scrollView"
             app:layout_anchorGravity="bottom|right"
             />
+
+        <com.nmatte.mood.logbookentries.editentry.NoteView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/entryNoteView"
+            android:visibility="invisible"
+            android:layout_gravity="bottom"/>
     </android.support.design.widget.CoordinatorLayout>
 
 

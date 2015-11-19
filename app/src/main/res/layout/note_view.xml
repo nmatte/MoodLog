@@ -6,7 +6,7 @@
     android:background="@drawable/high_drop_shadow_align_bottom"
     >
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:background="@color/primary_color"
         android:id="@+id/labelText"
@@ -16,14 +16,28 @@
         android:textColor="@color/white"
         android:gravity="center_vertical"
         android:textSize="@dimen/abc_text_size_medium_material"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/doneButton"/>
+    <ImageButton
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@+id/labelText"
+        android:layout_alignBottom="@id/labelText"
+        android:paddingRight="12dp"
+        android:background="@color/primary_color"
+        android:id="@+id/doneButton"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_done_white_24dp"
+        android:scaleType="centerInside"/>
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:inputType="textMultiLine"
         android:ems="15"
         android:gravity="top"
-        android:id="@+id/editText"
+        android:id="@+id/noteText"
         android:layout_below="@id/labelText"
         android:layout_alignParentBottom="true"/>
 </RelativeLayout>

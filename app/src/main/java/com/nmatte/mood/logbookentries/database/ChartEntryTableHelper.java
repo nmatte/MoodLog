@@ -32,12 +32,13 @@ public class ChartEntryTableHelper {
         ArrayList<NumItem> numItems = NumItemTableHelper.getAllVisible(db);
         ArrayList<BoolItem> boolItems = BoolItemTableHelper.getAllVisible(db);
 
-        ArrayList<String> preDefinedColumns = new ArrayList<>();
-        preDefinedColumns.add(ChartEntryContract.ENTRY_DATE_COLUMN);
-        preDefinedColumns.add(ChartEntryContract.ENTRY_MOOD_COLUMN);
+        ArrayList<String> predefinedColumns = new ArrayList<>();
+        predefinedColumns.add(ChartEntryContract.ENTRY_DATE_COLUMN);
+        predefinedColumns.add(ChartEntryContract.ENTRY_MOOD_COLUMN);
+        predefinedColumns.add(ChartEntryContract.ENTRY_NOTE_COLUMN);
 
         ArrayList<String> allColumns = new ArrayList<>();
-        allColumns.addAll(preDefinedColumns);
+        allColumns.addAll(predefinedColumns);
         allColumns.addAll(NumItem.getColumnNames(numItems));
         allColumns.addAll(BoolItem.getColumnNames(boolItems));
 
@@ -68,6 +69,8 @@ public class ChartEntryTableHelper {
                     ArrayList<Boolean> chartMoods = ChartEntry.parseMoodString(
                             c.getString(c.getColumnIndex(ChartEntryContract.ENTRY_MOOD_COLUMN)));
 
+                    String note = c.getString(c.getColumnIndex(ChartEntryContract.ENTRY_NOTE_COLUMN));
+
 
                     SimpleArrayMap<BoolItem,Boolean> boolItemMap = new SimpleArrayMap<>();
                     for (BoolItem item : boolItems){
@@ -90,6 +93,7 @@ public class ChartEntryTableHelper {
                             chartMoods,
                             numItemMap,
                             boolItemMap);
+                    entry.setNote(note);
 
                     result.add(entry);
                 } while(c.moveToNext());
@@ -150,6 +154,7 @@ public class ChartEntryTableHelper {
         ContentValues values = new ContentValues();
         values.put(ChartEntryContract.ENTRY_DATE_COLUMN,entry.getDateInt());
         values.put(ChartEntryContract.ENTRY_MOOD_COLUMN,entry.getMoodString());
+        values.put(ChartEntryContract.ENTRY_NOTE_COLUMN,entry.getNote());
 
         SimpleArrayMap<NumItem,Integer> numItemMap = entry.getNumItems();
 

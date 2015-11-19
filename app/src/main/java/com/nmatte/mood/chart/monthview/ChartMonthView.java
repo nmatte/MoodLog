@@ -176,18 +176,7 @@ public class ChartMonthView extends Fragment {
         }
     }
 
-    public void onEvent(OpenNoteEvent event){
-        NoteView noteView = (NoteView) backgroundLayout.findViewById(R.id.entryNoteView);
-        noteView.setVisibility(View.VISIBLE);
 
-        // start note at bottom of layout
-        noteView.setTranslationY(noteView.getHeight());
-
-        noteView.animate()
-                .setInterpolator(new AccelerateDecelerateInterpolator())
-                .translationY(0)
-                .start();
-    }
 
     private void openColumn(ChartColumn column){
         editEntryViewIsOpen = true;
