@@ -64,7 +64,7 @@ public class ChartEntryTableHelper {
                 do {
                     DateTime entryDate = DateTime.parse(
                             c.getString(c.getColumnIndex(ChartEntryContract.ENTRY_DATE_COLUMN)),
-                            ChartEntry.FORMATTER);
+                            ChartEntry.YEAR_DAY_FORMATTER);
 
                     ArrayList<Boolean> chartMoods = ChartEntry.parseMoodString(
                             c.getString(c.getColumnIndex(ChartEntryContract.ENTRY_MOOD_COLUMN)));

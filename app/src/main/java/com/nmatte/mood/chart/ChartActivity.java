@@ -119,7 +119,7 @@ public class ChartActivity extends AppCompatActivity
         scroll.setScrollListener(new ScrollViewWithListener.ScrollListener() {
             @Override
             public void onScrollUp() {
-                if (faButton.isShown())
+                if (!faButton.isShown())
                     faButton.show();
                 Log.i("ScrollViewWithListener", "onScrollUp called");
             }

@@ -22,7 +22,8 @@ public class ChartEntry{
 
     public static final String DATE_PATTERN = "YYYYDDD";
 
-    public static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern(DATE_PATTERN);
+    public static final DateTimeFormatter YEAR_DAY_FORMATTER = DateTimeFormat.forPattern(DATE_PATTERN),
+    EDIT_ENTRY_FORMATTER = DateTimeFormat.shortDate();
 
 
     public ChartEntry(DateTime logDate){
@@ -113,6 +114,6 @@ public class ChartEntry{
     }
 
     public int getDateInt() {
-        return Integer.valueOf(logDate.toString(FORMATTER));
+        return Integer.valueOf(logDate.toString(YEAR_DAY_FORMATTER));
     }
 }

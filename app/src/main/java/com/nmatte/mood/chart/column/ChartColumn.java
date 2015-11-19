@@ -29,6 +29,8 @@ import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
+import static com.nmatte.mood.chart.column.ChartColumn.Mode.ENTRY_READ;
+
 
 public class ChartColumn extends LinearLayout {
 
@@ -47,7 +49,7 @@ public class ChartColumn extends LinearLayout {
 
 
 
-    Mode mode = Mode.ENTRY_READ;
+    Mode mode = ENTRY_READ;
 
 
     public enum Mode {
@@ -85,7 +87,7 @@ public class ChartColumn extends LinearLayout {
                 mode = Mode.ENTRY_EDIT;
                 break;
             case 1:
-                mode = Mode.ENTRY_READ;
+                mode = ENTRY_READ;
                 break;
             case 2:
                 mode = Mode.LABEL;
@@ -97,14 +99,24 @@ public class ChartColumn extends LinearLayout {
         init();
     }
 
+    private void init(){
+        this.setOrientation(VERTICAL);
+        this.setOnTouchListener(touchListener);
+        if (mode == Mode.ENTRY_EDIT){
+            this.setClickable(true);
+            this.setEnabled(true);
+        }
+
+        if (mode == ENTRY_READ) {
+            this.setBackground(context.getResources().getDrawable(R.drawable.drop_shadow_vertical));
+        }
+        refresh(context);
+    }
+
     public void refresh(Context newContext){
         this.context = newContext;
         removeAllViews();
-        String cellText = (mode == Mode.ENTRY_READ) ?
-                String.valueOf(entry.getLogDate().getDayOfMonth()) : "Date";
-
-        this.addView(new TextCellViewBuilder(context).setText(cellText).build());
-
+        addDateRow();
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         if(settings.getBoolean(PreferencesContract.LARGE_MOOD_MODULE_ENABLED,true)) {
@@ -122,61 +134,71 @@ public class ChartColumn extends LinearLayout {
             addNoteModule();
     }
 
-
-
-    private void init(){
-        this.setOrientation(VERTICAL);
-        this.setOnTouchListener(touchListener);
-        if (mode == Mode.ENTRY_EDIT){
-            this.setClickable(true);
-            this.setEnabled(true);
+    private void addDateRow(){
+        TextCellViewBuilder b = new TextCellViewBuilder(context);
+        switch(mode){
+            case ENTRY_READ:
+                b.setText(String.valueOf(entry.getLogDate().getDayOfMonth()));
+                b.setHorizontalAlignment(TextCellView.TextAlignment.CENTER);
+                break;
+            case ENTRY_EDIT:
+                b.setText(entry.getLogDate().toString(ChartEntry.EDIT_ENTRY_FORMATTER));
+                b.setHorizontalAlignment(TextCellView.TextAlignment.CENTER);
+                break;
+            case LABEL:
+                b.setText("Date");
+                if (moodEnabled)
+                    b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width));
+                break;
+            default:
+                b.setText("");
         }
-
-        if (mode == Mode.ENTRY_READ) {
-            this.setBackground(context.getResources().getDrawable(R.drawable.drop_shadow_vertical));
-        }
-
-
-        refresh(context);
-
+        this.addView(b.build());
     }
+
+
+
+
 
     private void addNoteModule() {
 
-        if (mode == Mode.LABEL){
-            TextCellViewBuilder b = new TextCellViewBuilder(context);
-            if (moodEnabled)
-                b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width));
-
-            addView(b.setStroke(TextCellView.Stroke.BOLD)
-                    .setText("Notes")
-                    .build());
-        }
-        if (mode == Mode.ENTRY_READ){
-            ImageCellView cellView = new ImageCellView(context,Mode.ENTRY_READ);
-            cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
-            if (entry.getNote().length() > 0){
-                cellView.setChecked(true);
-           }
-
-            addView(cellView);
-        }
-
-        if (mode == Mode.ENTRY_EDIT){
-            ImageCellView cellView = new ImageCellView(context,Mode.ENTRY_READ);
-            if (entry.getNote().length() > 0){
+        switch(mode){
+            case ENTRY_READ:
+                ImageCellView cellView = new ImageCellView(context, ENTRY_READ);
                 cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
-            } else {
-                cellView.setImageResource(R.drawable.ic_edit_black_24dp);
-            }
-            cellView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EventBus.getDefault().post(new OpenNoteEvent(entry));
+                if (entry.getNote().length() > 0){
+                    cellView.setChecked(true);
                 }
-            });
-            cellView.setChecked(true);
-            addView(cellView);
+                addView(cellView);
+                break;
+            case ENTRY_EDIT:
+                cellView = new ImageCellView(context, ENTRY_READ);
+                if (entry.getNote().length() > 0){
+                    cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
+                } else {
+                    cellView.setImageResource(R.drawable.ic_edit_black_24dp);
+                }
+                cellView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EventBus.getDefault().post(new OpenNoteEvent(entry));
+                    }
+                });
+                cellView.setChecked(true);
+                addView(cellView);
+                break;
+            case LABEL:
+                TextCellViewBuilder b = new TextCellViewBuilder(context);
+                if (moodEnabled)
+                    b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width));
+
+                addView(b.setStroke(TextCellView.Stroke.BOLD)
+                        .setText("Notes")
+                        .build());
+                break;
+        }
+        if (mode == Mode.ENTRY_EDIT){
+
         }
 
 
@@ -198,7 +220,7 @@ public class ChartColumn extends LinearLayout {
                 i++;
             }
         }
-        if (mode == Mode.ENTRY_READ){
+        if (mode == ENTRY_READ){
             for (ImageCellView cellView : MoodModule.getCheckboxViews(context, entry.getMoods(), mode)){
                 cellView.setBackground(CellView.Background.NONE);
                 addView(cellView);
@@ -231,7 +253,7 @@ public class ChartColumn extends LinearLayout {
             color = grayToggle ? grayColor : whiteColor;
             grayToggle = !grayToggle;
 
-            if (mode == Mode.ENTRY_READ) {
+            if (mode == ENTRY_READ) {
                 TextCellViewBuilder b = new TextCellViewBuilder(context)
                         .setBackgroundColor(color)
                         .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
@@ -281,8 +303,8 @@ public class ChartColumn extends LinearLayout {
         for (final BoolItem boolItem : boolItems) {
             color = grayToggle ? grayColor : whiteColor;
             grayToggle = !grayToggle;
-            if (mode == Mode.ENTRY_READ) {
-                ImageCellView imageCellView = new ImageCellView(context,Mode.ENTRY_READ);
+            if (mode == ENTRY_READ) {
+                ImageCellView imageCellView = new ImageCellView(context, ENTRY_READ);
                 imageCellView.setBackgroundColor(color);
                 imageCellView.setBackground(CellView.Background.NONE);
                 if (entry.getBoolItems().containsKey(boolItem)) {
