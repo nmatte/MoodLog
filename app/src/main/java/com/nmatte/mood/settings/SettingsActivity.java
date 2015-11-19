@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -63,19 +62,17 @@ public class SettingsActivity extends AppCompatActivity
                 .edit();
 
         ed.putBoolean(PreferencesContract.LARGE_MOOD_MODULE_ENABLED, checkBox.isChecked());
-        boolean success = ed.commit();
+        ed.apply();
 
-        if(success)
-            Log.i("Mood module prefs","success changing mood module prefs");
 
     }
 
     public void noteModuleCheckboxClick(View view) {
         CheckBox checkBox = (CheckBox) view;
-        SharedPreferences.Editor ed = PreferenceManager.getDefaultSharedPreferences(this)
-                .edit();
-        ed.putBoolean(PreferencesContract.NOTE_MODULE_ENABLED, checkBox.isChecked());
-        ed.commit();
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .edit()
+                .putBoolean(PreferencesContract.NOTE_MODULE_ENABLED, checkBox.isChecked())
+                .apply();
 
     }
 }
