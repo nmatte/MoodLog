@@ -16,7 +16,7 @@ import com.nmatte.mood.chart.datedialog.DateRangeDialog;
 import com.nmatte.mood.chart.datedialog.OpenEndDateDialogEvent;
 import com.nmatte.mood.chart.datedialog.OpenStartDateDialogEvent;
 import com.nmatte.mood.chart.datedialog.SaveEndDateDialogEvent;
-import com.nmatte.mood.chart.monthview.ChartColumn;
+import com.nmatte.mood.chart.column.ChartColumn;
 import com.nmatte.mood.chart.monthview.ChartMonthView;
 import com.nmatte.mood.chart.monthview.ScrollViewWithListener;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
@@ -250,7 +250,6 @@ public class ChartActivity extends AppCompatActivity
     public void onEvent(OpenEditEntryEvent event){
         faButton.show();
         fabIsOpen = true;
-
     }
 
     public void onEvent(OpenStartDateDialogEvent event){

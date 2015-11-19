@@ -1,4 +1,4 @@
-package com.nmatte.mood.chart.monthview;
+package com.nmatte.mood.chart.column;
 
 import android.content.Context;
 

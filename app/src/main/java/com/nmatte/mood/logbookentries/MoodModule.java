@@ -10,7 +10,7 @@ import com.nmatte.mood.chart.cell.CellView;
 import com.nmatte.mood.chart.cell.ImageCellView;
 import com.nmatte.mood.chart.cell.TextCellView;
 import com.nmatte.mood.chart.cell.TextCellViewBuilder;
-import com.nmatte.mood.chart.monthview.ChartColumn;
+import com.nmatte.mood.chart.column.ChartColumn;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;

@@ -21,7 +21,7 @@
                 android:clickable="true"
                 android:orientation="horizontal"
                 android:id="@+id/mainLayout">
-                <com.nmatte.mood.chart.monthview.ChartColumn
+                <com.nmatte.mood.chart.column.ChartColumn
                     android:layout_width="@dimen/chart_edit_entry_width"
                     android:layout_height="wrap_content"
                     app:view_mode="label"

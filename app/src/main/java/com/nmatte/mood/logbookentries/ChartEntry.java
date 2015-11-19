@@ -18,7 +18,7 @@ public class ChartEntry{
     private ArrayList<Boolean> moods;
     private SimpleArrayMap<NumItem,Integer> numItems;
     private SimpleArrayMap<BoolItem,Boolean> boolItems;
-    private String note;
+    private String note = "";
 
     public static final String DATE_PATTERN = "YYYYDDD";
 

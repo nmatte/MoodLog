@@ -1,4 +1,4 @@
-package com.nmatte.mood.chart.monthview;
+package com.nmatte.mood.chart.column;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -26,6 +26,8 @@ import com.nmatte.mood.settings.PreferencesContract;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+
+import de.greenrobot.event.EventBus;
 
 
 public class ChartColumn extends LinearLayout {
@@ -153,22 +155,27 @@ public class ChartColumn extends LinearLayout {
         if (mode == Mode.ENTRY_READ){
             ImageCellView cellView = new ImageCellView(context,Mode.ENTRY_READ);
             cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
-            //if (entry.getNote() != null){
-             //   if (entry.getNote().length() > 0)
-                    cellView.setChecked(true);
-           // }
+            if (entry.getNote().length() > 0){
+                cellView.setChecked(true);
+           }
 
             addView(cellView);
         }
 
         if (mode == Mode.ENTRY_EDIT){
             ImageCellView cellView = new ImageCellView(context,Mode.ENTRY_READ);
-            cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
-            //if (entry.getNote() != null){
-            //    if (entry.getNote().length() > 0)
-                    cellView.setChecked(true);
-           // }
-
+            if (entry.getNote().length() > 0){
+                cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
+            } else {
+                cellView.setImageResource(R.drawable.ic_edit_black_24dp);
+            }
+            cellView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EventBus.getDefault().post(new OpenNoteEvent(entry));
+                }
+            });
+            cellView.setChecked(true);
             addView(cellView);
         }
 

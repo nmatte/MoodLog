@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.nmatte.mood.chart.monthview.ChartColumn;
+import com.nmatte.mood.chart.column.ChartColumn;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.moodlog.R;
 
@@ -81,20 +81,7 @@ public class ImageCellView extends CellView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int cellTop = 0;
-        int cellBottom = getHeight();
-        int cellLeft = 0;
-        int cellRight = getWidth();
-
-
         if(isChecked) {
-            // draw indicator that cell is checked
-            int heightDiff = getHeight() * 2 / 10;
-            //blackRect.left = cellLeft + getWidth()/10;
-            //blackRect.right = cellRight - getWidth()/10;
-            //blackRect.top = cellTop+ heightDiff;
-            //blackRect.bottom = cellBottom - heightDiff;
-
             Drawable d = getContext().getResources().getDrawable(imageResource);
             int length = (int) getContext().getResources().getDimension(R.dimen.small_button_length);
             int xOffset = (getWidth() - length )/ 2;
@@ -116,7 +103,6 @@ public class ImageCellView extends CellView {
     }
 
     public void setImageResource(int id){
-
         this.imageResource = id;
     }
 
