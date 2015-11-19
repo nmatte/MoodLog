@@ -7,13 +7,16 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.column.ChartColumn;
+import com.nmatte.mood.chart.column.OpenNoteEvent;
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.database.ChartEntryTableHelper;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
+import com.nmatte.mood.logbookentries.editentry.NoteView;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
@@ -173,6 +176,19 @@ public class ChartMonthView extends Fragment {
         }
     }
 
+    public void onEvent(OpenNoteEvent event){
+        NoteView noteView = (NoteView) backgroundLayout.findViewById(R.id.entryNoteView);
+        noteView.setVisibility(View.VISIBLE);
+
+        // start note at bottom of layout
+        noteView.setTranslationY(noteView.getHeight());
+
+        noteView.animate()
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .translationY(0)
+                .start();
+    }
+
     private void openColumn(ChartColumn column){
         editEntryViewIsOpen = true;
         openedColumn = column;
@@ -180,18 +196,6 @@ public class ChartMonthView extends Fragment {
         editEntryColumn.refresh(getActivity());
         editEntryColumn.setX(getCenterX(column));
 
-        // animate opening the layout
-        /*
-        if (Build.VERSION.SDK_INT >= 21){
-
-        } else {
-            Animator animator = AnimatorInflater.loadAnimator(getActivity(), R.animator.expand);
-            animator.setTarget(editEntryColumn);
-            //editEntryView.setPivotX(column.getLastXtouch());
-            editEntryColumn.setVisibility(View.VISIBLE);
-            animator.start();
-        }
-*/
         int cx = (int) column.getLastXtouch();
         int cy = (int) column.getLastYtouch();
         int finalRadius = Math.max(editEntryColumn.getWidth(), editEntryColumn.getHeight());

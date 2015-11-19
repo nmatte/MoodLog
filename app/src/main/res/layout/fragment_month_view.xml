@@ -28,4 +28,11 @@
         app:view_mode="edit_entry"
         android:visibility="invisible"/>
 
+    <com.nmatte.mood.logbookentries.editentry.NoteView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/entryNoteView"
+        android:visibility="invisible"
+        android:layout_gravity="bottom"/>
+
 </io.codetail.widget.RevealFrameLayout>

@@ -188,12 +188,9 @@ public class ChartActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_chart, menu);
         this.menu = menu;
-
         MenuItem editEntryDoneButton = menu.findItem(R.id.editEntryDoneButton);
         editEntryDoneButton.setVisible(false);
-
         refreshPickDateButton(getChartStartDate(), getChartEndDate());
-
         return true;
     }
 
@@ -203,17 +200,11 @@ public class ChartActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-
         if (id == R.id.pickDates){
             EventBus.getDefault().post(new OpenStartDateDialogEvent());
         }
-
-
         return super.onOptionsItemSelected(item);
     }
-
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
