@@ -15,9 +15,24 @@
             android:background="@drawable/high_drop_shadow_align_bottom" />
 
 -->
+    <Button
+        android:layout_width="wrap_content"
+        android:text="up"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:onClick="upAnimation"/>
+    <Button
+        android:text="down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:onClick="downAnimation"/>
     <com.nmatte.mood.logbookentries.editentry.NoteView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/testNoteView"
+        android:visibility="invisible"
         android:layout_alignParentBottom="true"/>
 
 
