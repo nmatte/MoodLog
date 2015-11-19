@@ -23,12 +23,8 @@ public class ImageCellView extends CellView {
     boolean isChecked;
     OnChangeListener onChangeListener = null;
     ChartColumn.Mode mode;
-    Image image = Image.RECT;
+    int imageResource = R.drawable.black_square;
 
-    public enum Image {
-        RECT,
-        NOTE
-    }
 
 
     public interface OnChangeListener{
@@ -99,24 +95,13 @@ public class ImageCellView extends CellView {
             //blackRect.top = cellTop+ heightDiff;
             //blackRect.bottom = cellBottom - heightDiff;
 
-            if (image == Image.RECT){
+            Drawable d = getContext().getResources().getDrawable(imageResource);
+            int length = (int) getContext().getResources().getDimension(R.dimen.small_button_length);
+            int xOffset = (getWidth() - length )/ 2;
+            int yOffset = (getHeight() - length) / 2;
+            d.setBounds(xOffset,yOffset,length + xOffset,yOffset + length);
+            d.draw(canvas);
 
-                blackRect.left = super.leftTransparentBound;
-                blackRect.right = super.rightTransparentBound;
-                blackRect.top = super.topTransparentBound;
-                blackRect.bottom = super.bottomTransparentBound;
-                canvas.drawRect(blackRect, blackPaint);
-            }
-
-
-            if (image == Image.NOTE) {
-                Drawable d = getContext().getResources().getDrawable(R.drawable.ic_assignment_black_24dp);
-                int length = (int) getContext().getResources().getDimension(R.dimen.small_button_length);
-                int xOffset = (getWidth() - length )/ 2;
-                int yOffset = (getHeight() - length) / 2;
-                d.setBounds(xOffset,yOffset,length + xOffset,yOffset + length);
-                d.draw(canvas);
-            }
         }
 
     }
@@ -130,13 +115,10 @@ public class ImageCellView extends CellView {
         invalidate();
     }
 
+    public void setImageResource(int id){
 
-
-    public void setImage (Image image){
-        this.image = image;
+        this.imageResource = id;
     }
-
-
 
     public BoolItem getBoolItem() {
         return boolItem;

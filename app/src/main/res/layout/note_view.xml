@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="240dp"
+    android:layout_height="300dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@drawable/high_drop_shadow_align_bottom"
     >
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:inputType="textMultiLine"
-        android:ems="10"
+        android:ems="15"
         android:gravity="top"
         android:id="@+id/editText"
         android:layout_below="@id/labelText"

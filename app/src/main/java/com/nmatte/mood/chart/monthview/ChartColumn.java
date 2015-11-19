@@ -150,13 +150,24 @@ public class ChartColumn extends LinearLayout {
                     .setText("Notes")
                     .build());
         }
-        if (mode == Mode.ENTRY_READ || mode == Mode.ENTRY_EDIT){
+        if (mode == Mode.ENTRY_READ){
             ImageCellView cellView = new ImageCellView(context,Mode.ENTRY_READ);
-            cellView.setImage(ImageCellView.Image.NOTE);
-            if (entry.getNote() != null){
-                if (entry.getNote().length() > 0)
+            cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
+            //if (entry.getNote() != null){
+             //   if (entry.getNote().length() > 0)
                     cellView.setChecked(true);
-            }
+           // }
+
+            addView(cellView);
+        }
+
+        if (mode == Mode.ENTRY_EDIT){
+            ImageCellView cellView = new ImageCellView(context,Mode.ENTRY_READ);
+            cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
+            //if (entry.getNote() != null){
+            //    if (entry.getNote().length() > 0)
+                    cellView.setChecked(true);
+           // }
 
             addView(cellView);
         }
