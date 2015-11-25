@@ -42,6 +42,7 @@
             android:id="@+id/fabDone"
             android:layout_margin="16dp"
             app:layout_anchor="@id/scrollView"
+            app:backgroundTint="@color/primary_color"
             app:layout_anchorGravity="bottom|right"
             />
 

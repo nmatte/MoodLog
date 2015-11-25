@@ -39,6 +39,9 @@ public class ChartMonthView extends Fragment {
     LinearLayout horizontalLayout;
     RevealFrameLayout backgroundLayout;
     HorizontalScrollView horizontalScrollView;
+
+
+
     boolean editEntryViewIsOpen = false;
 
     ChartColumn editEntryColumn;
@@ -172,6 +175,10 @@ public class ChartMonthView extends Fragment {
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public boolean isEditEntryViewOpen() {
+        return editEntryViewIsOpen;
     }
 
 
