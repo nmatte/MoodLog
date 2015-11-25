@@ -108,7 +108,7 @@ public class ChartColumn extends LinearLayout {
         }
 
         if (mode == ENTRY_READ) {
-            this.setBackground(context.getResources().getDrawable(R.drawable.drop_shadow_vertical));
+            this.setBackground(context.getResources().getDrawable(R.drawable.chartcolumn_selector));
         }
         refresh(context);
     }
