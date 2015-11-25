@@ -7,16 +7,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.column.ChartColumn;
-import com.nmatte.mood.chart.column.OpenNoteEvent;
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.database.ChartEntryTableHelper;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
-import com.nmatte.mood.logbookentries.editentry.NoteView;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
@@ -84,7 +81,7 @@ public class ChartMonthView extends Fragment {
                 final ChartColumn column = new ChartColumn(getActivity(), entry, numItems, boolItems, ChartColumn.Mode.ENTRY_READ);
                 column.setMode(ChartColumn.Mode.ENTRY_READ);
                 column.setDuplicateParentStateEnabled(true);
-                column.setOnClickListener(getColumnClickListener(column));
+                column.setOnLongClickListener(getColumnClickListener(column));
                 horizontalLayout.addView(column);
             }
         }
@@ -107,15 +104,16 @@ public class ChartMonthView extends Fragment {
         return fragmentLayout;
     }
 
-    private View.OnClickListener getColumnClickListener(final ChartColumn column){
-        return new View.OnClickListener() {
+    private View.OnLongClickListener getColumnClickListener(final ChartColumn column){
+        return new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onLongClick(View v) {
                 boolean isTodayOrEarlier =
                         column.getEntry().getLogDate().getDayOfYear() <= DateTime.now().getDayOfYear();
                 if (!editEntryViewIsOpen && isTodayOrEarlier) {
                     openColumn(column);
                 }
+                return false;
             }
         };
 

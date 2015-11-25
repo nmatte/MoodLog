@@ -156,10 +156,6 @@ public class ChartColumn extends LinearLayout {
         this.addView(b.build());
     }
 
-
-
-
-
     private void addNoteModule() {
 
         switch(mode){
@@ -168,6 +164,12 @@ public class ChartColumn extends LinearLayout {
                 cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
                 if (entry.getNote().length() > 0){
                     cellView.setChecked(true);
+                    cellView.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            EventBus.getDefault().post(new OpenNoteEvent(entry));
+                        }
+                    });
                 }
                 addView(cellView);
                 break;
@@ -197,9 +199,7 @@ public class ChartColumn extends LinearLayout {
                         .build());
                 break;
         }
-        if (mode == Mode.ENTRY_EDIT){
 
-        }
 
 
 
