@@ -142,7 +142,7 @@ public class ChartColumn extends LinearLayout {
             case ENTRY_EDIT:
                 if (entry != null){
                     String text;
-                    if (entry.getLogDate().dayOfYear() == DateTime.now().dayOfYear()){
+                    if (entry.getLogDate().getDayOfYear() == DateTime.now().getDayOfYear()){
                         text = "Today";
                     } else {
                         text = entry.getLogDate().toString(ChartEntry.EDIT_ENTRY_FORMATTER);
