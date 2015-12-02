@@ -10,10 +10,11 @@ import java.util.ArrayList;
 
 public class ChartColumnBuilder {
     ChartEntry newEntry;
-    ArrayList<NumItem> numItems;
-    ArrayList<BoolItem> boolItems;
-    ChartColumn.Mode mode;
+    ArrayList<NumItem> numItems = new ArrayList<>();
+    ArrayList<BoolItem> boolItems = new ArrayList<>();
+    ChartColumn.Mode mode = ChartColumn.Mode.ENTRY_EDIT;
     Context context;
+
     public ChartColumnBuilder setContext(Context context) {
         this.context = context;
         return this;

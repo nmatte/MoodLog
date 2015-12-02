@@ -7,11 +7,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.chart.column.ChartColumn;
+import com.nmatte.mood.chart.column.SelectorWrapper;
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.database.ChartEntryTableHelper;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
@@ -82,19 +82,10 @@ public class ChartMonthView extends Fragment {
 
         if (newList.size() > 0) {
             for (final ChartEntry entry : newList) {
-                final ChartColumn column = new ChartColumn(getActivity(), entry, numItems, boolItems, ChartColumn.Mode.ENTRY_READ);
-                column.setDuplicateParentStateEnabled(true);
-                column.setOnLongClickListener(getColumnLongClickListener(column));
-                FrameLayout newFrame = new FrameLayout(getActivity());
-                newFrame.setForeground(getActivity().getResources().getDrawable(R.drawable.chartcolumn_selector));
-                newFrame.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
-                newFrame.addView(column);
-                horizontalLayout.addView(newFrame);
+                SelectorWrapper wrapper = new SelectorWrapper(getActivity());
+                wrapper.setOnLongClickListener(getColumnLongClickListener(wrapper.getColumn()));
+                wrapper.getColumn().refresh(getActivity(), entry, boolItems, numItems);
+                horizontalLayout.addView(wrapper);
             }
         }
         horizontalLayout.invalidate();
@@ -120,11 +111,8 @@ public class ChartMonthView extends Fragment {
         return new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                boolean isTodayOrEarlier =
-                        column.getEntry().getLogDate().getDayOfYear() <= DateTime.now().getDayOfYear();
-                if (!editEntryViewIsOpen && isTodayOrEarlier) {
+                if (!editEntryViewIsOpen)
                     openColumn(column);
-                }
                 return false;
             }
         };
@@ -142,14 +130,14 @@ public class ChartMonthView extends Fragment {
         };
     }
 
+    /**
+     * Gets the x coordinate of the center of the column.
+     * If the left or right side would be clipped by the parent layout,
+     * the x should be adjusted to align with parent instead.
+     * @param column
+     * @return The center x coordinate of the column.
+     */
     private int getCenterX(ChartColumn column){
-        /*
-                    find appropriate x coord for editEntryView:
-                    prefer centering on the center of the column to be edited.
-                    However, if the left or right side would be clipped by the parent layout,
-                    the x should be adjusted to align with parent instead.
-                     */
-
         // get absolute position of the column and its parent
         int [] columnArgs = new int [2];
         column.getLocationOnScreen(columnArgs);
@@ -205,6 +193,8 @@ public class ChartMonthView extends Fragment {
         editEntryViewIsOpen = true;
         openedColumn = column;
         editEntryColumn.setEntry(column.getEntry());
+        editEntryColumn.setNumItems(numItems);
+        editEntryColumn.setBoolItems(boolItems);
         editEntryColumn.refresh(getActivity());
         editEntryColumn.setX(getCenterX(column));
 

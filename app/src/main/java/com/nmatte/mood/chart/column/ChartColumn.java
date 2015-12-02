@@ -69,7 +69,6 @@ public class ChartColumn extends LinearLayout {
 
     public ChartColumn(Context context, AttributeSet attrs){
         super(context, attrs);
-        entry = new ChartEntry(DateTime.now());
         numItems = new ArrayList<>();
         boolItems = new ArrayList<>();
         this.context = context;
@@ -103,6 +102,9 @@ public class ChartColumn extends LinearLayout {
 
     public void refresh(Context newContext){
         this.context = newContext;
+        if (entry == null){
+            entry = new ChartEntry(DateTime.now());
+        }
         removeAllViews();
         addDateRow();
 
@@ -122,6 +124,14 @@ public class ChartColumn extends LinearLayout {
             addNoteModule();
     }
 
+
+    public void refresh(Context newContext, ChartEntry entry, ArrayList<BoolItem> boolItems, ArrayList<NumItem> numItems){
+        this.entry = entry;
+        this.boolItems = boolItems;
+        this.numItems = numItems;
+        refresh(context);
+    }
+
     private void addDateRow(){
         TextCellViewBuilder b = new TextCellViewBuilder(context);
         switch(mode){
@@ -130,7 +140,8 @@ public class ChartColumn extends LinearLayout {
                 b.setHorizontalAlignment(TextCellView.TextAlignment.CENTER);
                 break;
             case ENTRY_EDIT:
-                b.setText(entry.getLogDate().toString(ChartEntry.EDIT_ENTRY_FORMATTER));
+                if (entry != null)
+                    b.setText(entry.getLogDate().toString(ChartEntry.EDIT_ENTRY_FORMATTER));
                 b.setHorizontalAlignment(TextCellView.TextAlignment.CENTER);
                 break;
             case LABEL:
@@ -194,6 +205,9 @@ public class ChartColumn extends LinearLayout {
     }
 
     private void addMoodModule(){
+        if (entry == null) {
+            entry = new ChartEntry(DateTime.now());
+        }
         if (mode == Mode.ENTRY_EDIT) {
             int i = 0;
             for (ImageCellView cellView : MoodModule.getCheckboxViews(context, entry.getMoods(), mode)){

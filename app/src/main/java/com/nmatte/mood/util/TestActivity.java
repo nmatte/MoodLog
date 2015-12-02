@@ -2,11 +2,15 @@ package com.nmatte.mood.util;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.nmatte.mood.chart.column.ChartColumn;
+import com.nmatte.mood.chart.column.SelectorWrapper;
+import com.nmatte.mood.logbookentries.ChartEntry;
+import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
+import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.moodlog.R;
+
+import org.joda.time.DateTime;
 
 public class TestActivity extends Activity{
 
@@ -18,14 +22,13 @@ public class TestActivity extends Activity{
         setContentView(R.layout.activity_test);
 
         main =  (RelativeLayout) findViewById(R.id.mainLayout);
-        View frame = getLayoutInflater().inflate(R.layout.chartcolumn_with_selector, main);
-        ChartColumn col = (ChartColumn) frame.findViewById(R.id.column);
-        frame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        SelectorWrapper col = new SelectorWrapper(this);
+        col.getColumn().refresh(this,
+                new ChartEntry(DateTime.now()),
+                BoolItemTableHelper.getAll(this),
+                NumItemTableHelper.getAll(this));
+        main.addView(col);
 
-            }
-        });
 
     }
 
