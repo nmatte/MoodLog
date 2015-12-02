@@ -23,7 +23,8 @@ public class ImageCellView extends CellView {
     boolean isChecked;
     OnChangeListener onChangeListener = null;
     ChartColumn.Mode mode;
-    int imageResource = R.drawable.black_square;
+    int imageResource = R.drawable.black_circle;
+    //R.drawable.black_square;
 
 
 

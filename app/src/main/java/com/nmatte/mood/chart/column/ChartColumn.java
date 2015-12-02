@@ -133,16 +133,19 @@ public class ChartColumn extends LinearLayout {
     }
 
     private void addDateRow(){
+        boolean isToday = entry.getLogDate().getDayOfYear() == DateTime.now().getDayOfYear();
         TextCellViewBuilder b = new TextCellViewBuilder(context);
         switch(mode){
             case ENTRY_READ:
                 b.setText(String.valueOf(entry.getLogDate().getDayOfMonth()));
+                if (isToday)
+                    b.setStroke(TextCellView.Stroke.BOLD);
                 b.setHorizontalAlignment(TextCellView.TextAlignment.CENTER);
                 break;
             case ENTRY_EDIT:
                 if (entry != null){
                     String text;
-                    if (entry.getLogDate().getDayOfYear() == DateTime.now().getDayOfYear()){
+                    if (isToday){
                         text = "Today";
                     } else {
                         text = entry.getLogDate().toString(ChartEntry.EDIT_ENTRY_FORMATTER);
