@@ -24,7 +24,7 @@
                 <com.nmatte.mood.chart.column.ChartColumn
                     android:layout_width="@dimen/chart_edit_entry_width"
                     android:layout_height="wrap_content"
-                    app:view_mode="label"
+                    app:mode_label="true"
                     android:id="@+id/labelColumn"/>
 
                 <fragment

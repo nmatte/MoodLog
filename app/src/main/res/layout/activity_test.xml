@@ -5,10 +5,9 @@
     android:layout_height="match_parent"
     android:id="@+id/mainLayout">
 
-    <ImageButton
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/chartcolumn_selector"/>
+
+
+
 
 
 </RelativeLayout>

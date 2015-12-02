@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
@@ -82,10 +83,18 @@ public class ChartMonthView extends Fragment {
         if (newList.size() > 0) {
             for (final ChartEntry entry : newList) {
                 final ChartColumn column = new ChartColumn(getActivity(), entry, numItems, boolItems, ChartColumn.Mode.ENTRY_READ);
-                column.setMode(ChartColumn.Mode.ENTRY_READ);
                 column.setDuplicateParentStateEnabled(true);
-                column.setOnLongClickListener(getColumnClickListener(column));
-                horizontalLayout.addView(column);
+                column.setOnLongClickListener(getColumnLongClickListener(column));
+                FrameLayout newFrame = new FrameLayout(getActivity());
+                newFrame.setForeground(getActivity().getResources().getDrawable(R.drawable.chartcolumn_selector));
+                newFrame.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+                newFrame.addView(column);
+                horizontalLayout.addView(newFrame);
             }
         }
         horizontalLayout.invalidate();
@@ -107,7 +116,7 @@ public class ChartMonthView extends Fragment {
         return fragmentLayout;
     }
 
-    private View.OnLongClickListener getColumnClickListener(final ChartColumn column){
+    private View.OnLongClickListener getColumnLongClickListener(final ChartColumn column){
         return new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -123,6 +132,15 @@ public class ChartMonthView extends Fragment {
 
     }
 
+
+    private View.OnClickListener getClickListener(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        };
+    }
 
     private int getCenterX(ChartColumn column){
         /*

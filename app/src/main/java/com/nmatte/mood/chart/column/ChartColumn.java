@@ -16,9 +16,7 @@ import com.nmatte.mood.chart.cell.TextCellViewBuilder;
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.MoodModule;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
-import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
-import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.moodlog.CustomNumberPicker;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.settings.PreferencesContract;
@@ -29,15 +27,12 @@ import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 
+import static com.nmatte.mood.chart.column.ChartColumn.Mode.ENTRY_EDIT;
 import static com.nmatte.mood.chart.column.ChartColumn.Mode.ENTRY_READ;
+import static com.nmatte.mood.chart.column.ChartColumn.Mode.LABEL;
 
 
 public class ChartColumn extends LinearLayout {
-
-    public void setEntry(ChartEntry entry) {
-        this.entry = entry;
-    }
-
     ChartEntry entry;
     ArrayList<NumItem> numItems;
     ArrayList<BoolItem> boolItems;
@@ -58,9 +53,7 @@ public class ChartColumn extends LinearLayout {
         LABEL
     }
 
-    public void setMode(Mode mode) {
-        this.mode = mode;
-    }
+
 
 
     public ChartColumn(Context context, ChartEntry newEntry, ArrayList<NumItem> numItems, ArrayList<BoolItem> boolItems, Mode mode){
@@ -77,24 +70,19 @@ public class ChartColumn extends LinearLayout {
     public ChartColumn(Context context, AttributeSet attrs){
         super(context, attrs);
         entry = new ChartEntry(DateTime.now());
-        numItems = NumItemTableHelper.getAll(context);
-        boolItems = BoolItemTableHelper.getAll(context);
+        numItems = new ArrayList<>();
+        boolItems = new ArrayList<>();
         this.context = context;
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ChartColumn, 0, 0);
-        int value = a.getIndex(R.styleable.ChartColumn_view_mode);
-        switch(value){
-            case 0:
-                mode = Mode.ENTRY_EDIT;
-                break;
-            case 1:
-                mode = ENTRY_READ;
-                break;
-            case 2:
-                mode = Mode.LABEL;
-                break;
-            default:
-                mode = Mode.ENTRY_EDIT;
-                break;
+        boolean editMode = a.getBoolean(R.styleable.ChartColumn_mode_edit, false);
+        boolean labelMode = a.getBoolean(R.styleable.ChartColumn_mode_label,false);
+        if (editMode) {
+            mode = ENTRY_EDIT;
+        } else {
+            mode = ENTRY_READ;
+        }
+        if (labelMode){
+            mode = LABEL;
         }
         init();
     }
@@ -108,7 +96,7 @@ public class ChartColumn extends LinearLayout {
         }
 
         if (mode == ENTRY_READ) {
-            this.setBackground(context.getResources().getDrawable(R.drawable.chartcolumn_selector));
+            this.setBackground(context.getResources().getDrawable(R.drawable.drop_shadow_vertical));
         }
         refresh(context);
     }
@@ -328,7 +316,7 @@ public class ChartColumn extends LinearLayout {
                 cellView.setOnChangeListener(new ImageCellView.OnChangeListener() {
                     @Override
                     public void onChange(boolean value) {
-                        entry.getBoolItems().put(boolItem,value);
+                        entry.getBoolItems().put(boolItem, value);
                     }
                 });
                 cellView.setBackgroundColor(color);
@@ -339,9 +327,7 @@ public class ChartColumn extends LinearLayout {
         return grayToggle;
     }
 
-    public ChartEntry getEntry() {
-        return entry;
-    }
+
 
 
     // this listener records the last touch coordinates on the column. These coordinates can be used
@@ -367,4 +353,25 @@ public class ChartColumn extends LinearLayout {
     public  float getLastYtouch(){
         return lastYtouch;
     }
+
+    public ChartEntry getEntry() {
+        return entry;
+    }
+
+    public void setEntry(ChartEntry entry) {
+        this.entry = entry;
+    }
+
+    public void setBoolItems(ArrayList<BoolItem> items){
+        this.boolItems = items;
+    }
+
+    public void setNumItems(ArrayList<NumItem> items){
+        this.numItems = items;
+    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
+    }
 }
+

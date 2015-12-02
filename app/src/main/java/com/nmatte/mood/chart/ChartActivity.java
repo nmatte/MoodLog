@@ -26,6 +26,8 @@ import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
 import com.nmatte.mood.logbookentries.editentry.NoteView;
 import com.nmatte.mood.logbookentries.editentry.OpenEditEntryEvent;
 import com.nmatte.mood.logbookitems.ChartChangeEvent;
+import com.nmatte.mood.logbookitems.boolitems.BoolItemTableHelper;
+import com.nmatte.mood.logbookitems.numitems.NumItemTableHelper;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.reminders.ReminderActivity;
 import com.nmatte.mood.settings.PreferencesContract;
@@ -105,6 +107,8 @@ public class ChartActivity extends AppCompatActivity
         mainLayout = (LinearLayout) findViewById(R.id.mainLayout);
         labelColumn = (ChartColumn) findViewById(R.id.labelColumn);
         labelColumn.setMode(ChartColumn.Mode.LABEL);
+        labelColumn.setBoolItems(BoolItemTableHelper.getAll(this));
+        labelColumn.setNumItems(NumItemTableHelper.getAll(this));
         faButton = (FloatingActionButton) findViewById(R.id.fabDone);
         faButton.hide();
         faButton.setOnClickListener(new View.OnClickListener() {
