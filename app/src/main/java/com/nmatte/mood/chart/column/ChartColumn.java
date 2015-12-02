@@ -140,8 +140,16 @@ public class ChartColumn extends LinearLayout {
                 b.setHorizontalAlignment(TextCellView.TextAlignment.CENTER);
                 break;
             case ENTRY_EDIT:
-                if (entry != null)
-                    b.setText(entry.getLogDate().toString(ChartEntry.EDIT_ENTRY_FORMATTER));
+                if (entry != null){
+                    String text;
+                    if (entry.getLogDate().dayOfYear() == DateTime.now().dayOfYear()){
+                        text = "Today";
+                    } else {
+                        text = entry.getLogDate().toString(ChartEntry.EDIT_ENTRY_FORMATTER);
+                    }
+                    b.setText(text);
+                }
+
                 b.setHorizontalAlignment(TextCellView.TextAlignment.CENTER);
                 break;
             case LABEL:

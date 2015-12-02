@@ -134,7 +134,7 @@ public class ChartMonthView extends Fragment {
      * Gets the x coordinate of the center of the column.
      * If the left or right side would be clipped by the parent layout,
      * the x should be adjusted to align with parent instead.
-     * @param column
+     * @param column The column to find the center of.
      * @return The center x coordinate of the column.
      */
     private int getCenterX(ChartColumn column){
