@@ -110,7 +110,7 @@ public class ChartColumn extends LinearLayout {
         addDateRow();
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        if(settings.getBoolean(PreferencesContract.FULL_MOOD_MODULE_ENABLED,true)) {
+        if(settings.getBoolean(PreferencesContract.FULL_MOOD_MODULE_ENABLED,false)) {
             moodEnabled = true;
             moodSize = MoodModule.Size.FULL;
             addMoodModule();

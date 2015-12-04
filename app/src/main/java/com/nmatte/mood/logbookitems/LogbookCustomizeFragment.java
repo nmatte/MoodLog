@@ -34,6 +34,7 @@ import de.greenrobot.event.EventBus;
 
 public class LogbookCustomizeFragment extends Fragment {
     CheckBox largeMoodModuleCheckbox;
+    CheckBox miniMoodModuleCheckbox;
     CheckBox noteModuleCheckbox;
     LinearLayout mainLayout;
     LinearLayout boolItemLayout;
@@ -66,22 +67,30 @@ public class LogbookCustomizeFragment extends Fragment {
     private void initLayout(View mainView){
         mainLayout = (LinearLayout) mainView.findViewById(R.id.logbookEditorLayout);
 
-        largeMoodModuleCheckbox = (CheckBox) mainView.findViewById(R.id.largeMoodModuleCheckbox);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        boolean largeMoodModuleEnabled = prefs
-                .getBoolean(PreferencesContract.FULL_MOOD_MODULE_ENABLED,false);
-        largeMoodModuleCheckbox.setChecked(largeMoodModuleEnabled);
+
+
+        // MODULES
+        largeMoodModuleCheckbox = (CheckBox) mainView.findViewById(R.id.largeMoodModuleCheckbox);
+        largeMoodModuleCheckbox.setChecked(
+                prefs.getBoolean(PreferencesContract.FULL_MOOD_MODULE_ENABLED, false)
+        );
+
+        miniMoodModuleCheckbox = (CheckBox) mainView.findViewById(R.id.miniMoodModuleCheckbox);
+        miniMoodModuleCheckbox.setChecked(
+                prefs.getBoolean(PreferencesContract.MINI_MOOD_MODULE_ENABLED, false)
+        );
 
         noteModuleCheckbox = (CheckBox) mainView.findViewById(R.id.noteModuleCheckbox);
-        boolean noteModuleEnabled = prefs.getBoolean(PreferencesContract.NOTE_MODULE_ENABLED,false);
-        noteModuleCheckbox.setChecked(noteModuleEnabled);
+        noteModuleCheckbox.setChecked(
+                prefs.getBoolean(PreferencesContract.NOTE_MODULE_ENABLED,false)
+        );
 
+
+        // NUM ITEMS
         numItemLayout = (LinearLayout) mainView.findViewById(R.id.numItemList);
-
-
         addNumButton = (ImageButton) mainView.findViewById(R.id.addNumButton);
         addNumEditText = (EditText) mainView.findViewById(R.id.addNumEditText);
-
         addNumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,11 +99,11 @@ public class LogbookCustomizeFragment extends Fragment {
             }
         });
 
-        boolItemLayout = (LinearLayout) mainView.findViewById(R.id.boolItemList);
 
+        // BOOL ITEMS
+        boolItemLayout = (LinearLayout) mainView.findViewById(R.id.boolItemList);
         addBoolButton = (ImageButton) mainView.findViewById(R.id.addBoolButton);
         addBoolEditText = (EditText) mainView.findViewById(R.id.addBoolEditText);
-
         addBoolButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +113,8 @@ public class LogbookCustomizeFragment extends Fragment {
         });
 
 
+
+        // hide keyboard on activity start
         InputMethodManager inputManager =
                 (InputMethodManager) getActivity().
                         getSystemService(Context.INPUT_METHOD_SERVICE);
