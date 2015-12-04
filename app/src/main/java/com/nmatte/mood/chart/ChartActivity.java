@@ -314,11 +314,16 @@ public class ChartActivity extends AppCompatActivity
         noteView.setVisibility(View.VISIBLE);
         if (faButton.isShown())
             faButton.hide();
+        if (monthFragment.isEditEntryViewOpen())
+            noteView.setMode(ChartColumn.Mode.ENTRY_EDIT);
+        else
+            noteView.setMode(ChartColumn.Mode.ENTRY_READ);
         noteView.animateUp();
     }
 
     public void onEvent(CloseNoteEvent event){
-        faButton.show();
+        if(monthFragment.isEditEntryViewOpen())
+            faButton.show();
         NoteView noteView = (NoteView) findViewById(R.id.entryNoteView);
         ChartEntryTableHelper.addOrUpdateEntry(this,event.getEntry());
         noteView.animateDown();

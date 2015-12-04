@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nmatte.mood.chart.column.ChartColumn;
 import com.nmatte.mood.chart.column.CloseNoteEvent;
 import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.moodlog.R;
@@ -18,6 +19,7 @@ public class NoteView extends RelativeLayout{
     Context context;
 
 
+    ChartColumn.Mode mode;
     ImageButton button;
     TextView noteText;
     ChartEntry entry;
@@ -52,6 +54,16 @@ public class NoteView extends RelativeLayout{
         this.entry = entry;
         noteText.setText(entry.getNote());
 
+    }
+
+    public void setMode(ChartColumn.Mode mode){
+        if (mode == ChartColumn.Mode.ENTRY_EDIT){
+            this.mode = mode;
+            noteText.setEnabled(true);
+        } else if (mode == ChartColumn.Mode.ENTRY_READ){
+            this.mode = mode;
+            noteText.setEnabled(false);
+        }
     }
 
     public void animateDown(){
