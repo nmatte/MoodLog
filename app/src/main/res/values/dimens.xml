@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="chart_cell_height">36dp</dimen>
-    <dimen name="chart_cell_width">32dp</dimen>
+    <dimen name="chart_cell_width">24dp</dimen>
     <dimen name="chart_edit_entry_width">120dp</dimen>
     <dimen name="small_button_length">24dp</dimen>
 </resources>

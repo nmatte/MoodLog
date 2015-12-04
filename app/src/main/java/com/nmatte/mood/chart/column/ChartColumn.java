@@ -144,12 +144,7 @@ public class ChartColumn extends LinearLayout {
                 break;
             case ENTRY_EDIT:
                 if (entry != null){
-                    String text;
-                    if (isToday){
-                        text = "Today";
-                    } else {
-                        text = entry.getLogDate().toString(ChartEntry.EDIT_ENTRY_FORMATTER);
-                    }
+                    String text = isToday ? "Today" : entry.getLogDate().toString(ChartEntry.EDIT_ENTRY_FORMATTER);
                     b.setText(text);
                 }
 

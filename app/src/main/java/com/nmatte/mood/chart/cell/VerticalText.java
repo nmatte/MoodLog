@@ -91,6 +91,7 @@ public class VerticalText extends View {
 
         path.setLastPoint(x,bottomY);
         path.lineTo(x,topY);
+        paint.setAntiAlias(true);
         canvas.drawTextOnPath(text, path, 0, 0, paint);
     }
 }

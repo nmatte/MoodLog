@@ -21,6 +21,7 @@ import com.nmatte.mood.chart.datedialog.OpenStartDateDialogEvent;
 import com.nmatte.mood.chart.datedialog.SaveEndDateDialogEvent;
 import com.nmatte.mood.chart.monthview.ChartMonthView;
 import com.nmatte.mood.chart.monthview.ScrollViewWithListener;
+import com.nmatte.mood.logbookentries.ChartEntry;
 import com.nmatte.mood.logbookentries.database.ChartEntryTableHelper;
 import com.nmatte.mood.logbookentries.editentry.CloseEditEntryEvent;
 import com.nmatte.mood.logbookentries.editentry.NoteView;
@@ -182,9 +183,9 @@ public class ChartActivity extends AppCompatActivity
         }
         DateTimeFormatter fmt = DateTimeFormat.shortDate().withLocale(Locale.getDefault());
         String title = new StringBuilder()
-                .append(startDate.toString(fmt))   
+                .append(ChartEntry.getMonthDayString(startDate))
                 .append("-")
-                .append(endDate.toString(fmt))
+                .append(ChartEntry.getMonthDayString(endDate))
                 .toString();
         menu.findItem(R.id.pickDates).setTitle(title);
     }

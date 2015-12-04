@@ -113,6 +113,50 @@ public class ChartEntry{
         return logDate;
     }
 
+
+    /**
+     * Gets the date as mm/dd or dd/mm depending on DateTime's format for the locale.
+     * @return The short date string for the date.
+     */
+    public static String getMonthDayString(DateTime workingDate){
+        String dateString = workingDate.toString(EDIT_ENTRY_FORMATTER);
+
+        // We need mm to be different from yy so we can tell them apart.
+        if (workingDate.toString("yy").equals(workingDate.toString("mm")) ) {
+            workingDate = workingDate.minusYears(1);
+        }
+        if (workingDate.toString("yy").equals(workingDate.toString("dd"))) {
+            workingDate = workingDate.minusYears(1);
+        }
+
+        // it's ok to mess with the date's year because we're not going to display it.
+        ArrayList<String> nums = new ArrayList<>();
+        String currentNum = "";
+
+        for (char c : dateString.toCharArray()) {
+            if (Character.isDigit(c)){
+                currentNum += c;
+            } else {
+                if (!currentNum.equals("")){
+                    if (!currentNum.equals(workingDate.toString("yy")) && !currentNum.equals(workingDate.toString("yyyy"))){
+                        nums.add(currentNum);
+                    }
+                    currentNum = "";
+                }
+            }
+        }
+
+        StringBuilder builder = new StringBuilder();
+        if (nums.size() >= 2){
+            builder
+                    .append(nums.get(0))
+                    .append("/")
+                    .append(nums.get(1));
+        }
+        return builder.toString();
+
+    }
+
     public int getDateInt() {
         return Integer.valueOf(logDate.toString(YEAR_DAY_FORMATTER));
     }
