@@ -69,7 +69,7 @@ public class LogbookCustomizeFragment extends Fragment {
         largeMoodModuleCheckbox = (CheckBox) mainView.findViewById(R.id.largeMoodModuleCheckbox);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         boolean largeMoodModuleEnabled = prefs
-                .getBoolean(PreferencesContract.LARGE_MOOD_MODULE_ENABLED,false);
+                .getBoolean(PreferencesContract.FULL_MOOD_MODULE_ENABLED,false);
         largeMoodModuleCheckbox.setChecked(largeMoodModuleEnabled);
 
         noteModuleCheckbox = (CheckBox) mainView.findViewById(R.id.noteModuleCheckbox);

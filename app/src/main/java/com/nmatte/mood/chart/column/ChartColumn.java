@@ -42,8 +42,7 @@ public class ChartColumn extends LinearLayout {
     float lastYtouch;
     int xOffset = 0;
 
-
-
+    MoodModule.Size moodSize;
     Mode mode = ENTRY_READ;
 
 
@@ -111,8 +110,13 @@ public class ChartColumn extends LinearLayout {
         addDateRow();
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        if(settings.getBoolean(PreferencesContract.LARGE_MOOD_MODULE_ENABLED,true)) {
+        if(settings.getBoolean(PreferencesContract.FULL_MOOD_MODULE_ENABLED,true)) {
             moodEnabled = true;
+            moodSize = MoodModule.Size.FULL;
+            addMoodModule();
+        } else if (settings.getBoolean(PreferencesContract.MINI_MOOD_MODULE_ENABLED,false)) {
+            moodEnabled = true;
+            moodSize = MoodModule.Size.MINI;
             addMoodModule();
         }
 
@@ -218,20 +222,23 @@ public class ChartColumn extends LinearLayout {
         }
         if (mode == Mode.ENTRY_EDIT) {
             int i = 0;
-            for (ImageCellView cellView : MoodModule.getCheckboxViews(context, entry.getMoods(), mode)){
+            for (ImageCellView cellView : MoodModule.getCheckboxViews(context, entry.getMoods(), mode, moodSize)){
                 final int index = i;
                 cellView.setOnChangeListener(new ImageCellView.OnChangeListener() {
                     @Override
                     public void onChange(boolean value) {
-                        entry.getMoods().set(index,value);
+                        entry.getMoods().set(index, value);
                     }
                 });
                 addView(cellView);
-                i++;
+                if (moodSize == MoodModule.Size.FULL)
+                    i++;
+                else
+                    i += 2;
             }
         }
         if (mode == ENTRY_READ){
-            for (ImageCellView cellView : MoodModule.getCheckboxViews(context, entry.getMoods(), mode)){
+            for (ImageCellView cellView : MoodModule.getCheckboxViews(context, entry.getMoods(), mode,moodSize)){
                 cellView.setBackground(CellView.Background.NONE);
                 addView(cellView);
             }
@@ -243,7 +250,7 @@ public class ChartColumn extends LinearLayout {
                 addView(cellView);
             }
             */
-            addView(MoodModule.getLabelView(context));
+            addView(MoodModule.getLabelView(context,moodSize));
         }
 
 

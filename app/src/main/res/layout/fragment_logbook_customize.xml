@@ -24,6 +24,13 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:textSize="@dimen/abc_text_size_medium_material"
+        android:id="@+id/miniMoodModuleCheckbox"
+        android:onClick="miniMoodModuleCheckboxClick"
+        android:text="Mood Module (mini)"/>
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:textSize="@dimen/abc_text_size_medium_material"
         android:id="@+id/noteModuleCheckbox"
         android:onClick="noteModuleCheckboxClick"
         android:text="Notes"/>

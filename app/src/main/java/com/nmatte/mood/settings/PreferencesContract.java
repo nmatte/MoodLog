@@ -5,7 +5,9 @@ public class PreferencesContract {
         LONG_CHART_START_DATE = "chartStartDate",
         LONG_CHART_END_DATE = "chartEndDate",
         BOOL_CHART_REMEMBER_DATES = "chartRememberDates",
-        LARGE_MOOD_MODULE_ENABLED = "largeMoodModuleEnabled",
+        FULL_MOOD_MODULE_ENABLED = "largeMoodModuleEnabled",
+        MINI_MOOD_MODULE_ENABLED = "miniMoodMOduleEnabled",
+        MOOD_MODULE_SIZE = "moodModuleSize",
         NOTE_MODULE_ENABLED = "noteModuleEnabled",
         CELL_SIZE = "cellSize",
         FIRST_STARTUP = "firstStartup";

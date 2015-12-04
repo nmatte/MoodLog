@@ -2,7 +2,6 @@ package com.nmatte.mood.settings;
 
 import android.app.NotificationManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
@@ -58,13 +57,41 @@ public class SettingsActivity extends AppCompatActivity
 
     public void largeMoodModuleCheckboxClick(View view) {
         CheckBox checkBox = (CheckBox) view;
-        SharedPreferences.Editor ed = PreferenceManager.getDefaultSharedPreferences(this)
-                .edit();
+        enableFullMoodModule(checkBox.isChecked());
 
-        ed.putBoolean(PreferencesContract.LARGE_MOOD_MODULE_ENABLED, checkBox.isChecked());
-        ed.apply();
+        CheckBox miniCheckbox = (CheckBox) findViewById(R.id.miniMoodModuleCheckbox);
+        if (miniCheckbox.isChecked() && checkBox.isChecked()){
+            miniCheckbox.setChecked(false);
+            enableMiniMoodModule(false);
+        }
 
 
+    }
+
+    private void enableFullMoodModule(boolean enabled){
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .edit()
+                .putBoolean(PreferencesContract.FULL_MOOD_MODULE_ENABLED,enabled)
+                .apply();
+    }
+
+    public void miniMoodModuleCheckboxClick(View view) {
+        CheckBox checkBox = (CheckBox) view;
+        enableMiniMoodModule(checkBox.isChecked());
+
+        CheckBox fullCheckbox = (CheckBox) findViewById(R.id.largeMoodModuleCheckbox);
+
+        if (fullCheckbox.isChecked() && checkBox.isChecked()){
+            fullCheckbox.setChecked(false);
+            enableFullMoodModule(false);
+        }
+    }
+
+    private void enableMiniMoodModule(boolean enabled){
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .edit()
+                .putBoolean(PreferencesContract.MINI_MOOD_MODULE_ENABLED,enabled)
+                .apply();
     }
 
     public void noteModuleCheckboxClick(View view) {
@@ -75,4 +102,8 @@ public class SettingsActivity extends AppCompatActivity
                 .apply();
 
     }
+
+
+
+
 }

@@ -43,6 +43,11 @@ public class VerticalText extends View {
 
     }
 
+    public void setText(String text){
+        this.text = text;
+        invalidate();
+    }
+
     public void setTextAlignment(TextAlignment alignment){
         this.alignment = alignment;
     }

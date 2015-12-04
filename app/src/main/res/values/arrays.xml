@@ -16,6 +16,16 @@
         <item>0xFFE0DBEC</item>
     </integer-array>
 
+    <integer-array name="mood_colors_mini">
+        <item>0xFFFFE0D4</item>
+        <item>0xFFFFE1C8</item>
+        <item>0xFFFFF9B3</item>
+        <item>0xFFC8E4B2</item>
+        <item>0xFFC5E7DB</item>
+        <item>0xFFA3E0F7</item>
+        <item>0xFFE0DBEC</item>
+    </integer-array>
+
     <string-array name="mood_labels">
         <item>Severe</item>
         <item> </item>
@@ -29,6 +39,17 @@
         <item> </item>
         <item>Moderate</item>
         <item> </item>
+        <item>Severe</item>
+
+    </string-array>
+
+    <string-array name="mood_labels_mini">
+        <item>Severe</item>
+        <item>Moderate</item>
+        <item>Mild</item>
+        <item>Normal</item>
+        <item>Mild</item>
+        <item>Moderate</item>
         <item>Severe</item>
 
     </string-array>
