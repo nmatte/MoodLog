@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.nmatte.mood.chart.cell.CellView;
 import com.nmatte.mood.chart.column.ChartColumn;
 import com.nmatte.mood.chart.column.CloseNoteEvent;
 import com.nmatte.mood.chart.column.OpenNoteEvent;
@@ -210,6 +212,23 @@ public class ChartActivity extends AppCompatActivity
         if (id == R.id.pickDates){
             EventBus.getDefault().post(new OpenStartDateDialogEvent());
         }
+        if (id == R.id.largeCells){
+            PreferenceManager
+                    .getDefaultSharedPreferences(this)
+                    .edit()
+                    .putInt(PreferencesContract.CELL_SIZE, CellView.Size.LARGE.sizeCode())
+                    .apply();
+            refreshFragments();
+        }
+        if (id == R.id.mediumCells){
+            PreferenceManager
+                    .getDefaultSharedPreferences(this)
+                    .edit()
+                    .putInt(PreferencesContract.CELL_SIZE, CellView.Size.MEDIUM.sizeCode())
+                    .apply();
+            refreshFragments();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

@@ -7,6 +7,14 @@
         android:title=""
         />
 
+    <item android:id="@+id/largeCells"
+        app:showAsAction="never"
+        android:title="Large Cells"/>
+
+    <item android:id="@+id/mediumCells"
+        app:showAsAction="never"
+        android:title="Medium Cells"/>
+
     <item android:id="@+id/editEntryDoneButton"
         android:title="Done"
         android:icon="@drawable/ic_done_white_24dp"

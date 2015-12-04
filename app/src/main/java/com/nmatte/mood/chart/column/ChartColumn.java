@@ -97,6 +97,8 @@ public class ChartColumn extends LinearLayout {
         if (mode == ENTRY_READ) {
             this.setBackground(context.getResources().getDrawable(R.drawable.drop_shadow_vertical));
         }
+
+
         refresh(context);
     }
 
@@ -153,7 +155,7 @@ public class ChartColumn extends LinearLayout {
             case LABEL:
                 b.setText("Date");
                 if (moodEnabled)
-                    b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width));
+                    b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width_m));
                 break;
             default:
                 b.setText("");
@@ -197,7 +199,7 @@ public class ChartColumn extends LinearLayout {
             case LABEL:
                 TextCellViewBuilder b = new TextCellViewBuilder(context);
                 if (moodEnabled)
-                    b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width));
+                    b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width_m));
 
                 addView(b.setStroke(TextCellView.Stroke.BOLD)
                         .setText("Notes")
@@ -276,7 +278,7 @@ public class ChartColumn extends LinearLayout {
 
                 TextCellViewBuilder b = new TextCellViewBuilder(context);
                 if (moodEnabled){
-                    b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width));
+                    b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width_m));
                 }
                         b.setBackgroundColor(color);
                  b.setText(numItem.getName());
@@ -323,7 +325,7 @@ public class ChartColumn extends LinearLayout {
             if (mode == Mode.LABEL) {
                         TextCellViewBuilder b = new TextCellViewBuilder(context);
                 if (moodEnabled)
-                    b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width));
+                    b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width_m));
                 b
                         .setText(boolItem.getName())
                         .setBackgroundColor(color)

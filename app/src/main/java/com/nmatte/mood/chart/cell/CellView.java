@@ -7,25 +7,31 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.NinePatchDrawable;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.nmatte.mood.moodlog.R;
+import com.nmatte.mood.settings.PreferencesContract;
 
 
 /* base class to draw background and borders */
 public class CellView extends View {
 
     Paint blackPaint;
-    protected int leftTransparentBound = -1;
-    protected int rightTransparentBound = -1;
-    protected int topTransparentBound = -1;
-    protected int bottomTransparentBound = -1;
-    int shadowID = VERTICAL_SHADOW_BG_ID;
-    static final int DEFAULT_BG_ID = R.drawable.drop_shadow3;
-    static final int VERTICAL_SHADOW_BG_ID = R.drawable.drop_shadow_vertical;
-    static final int HORIZONTAL_SHADOW_BG_ID=  R.drawable.drop_shadow_horizontal;
+    protected int
+            leftTransparentBound = -1,
+            rightTransparentBound = -1,
+            topTransparentBound = -1,
+            bottomTransparentBound = -1,
+            shadowID = VERTICAL_SHADOW_BG_ID;
+    static final int
+            DEFAULT_BG_ID = R.drawable.drop_shadow3,
+            VERTICAL_SHADOW_BG_ID = R.drawable.drop_shadow_vertical,
+            HORIZONTAL_SHADOW_BG_ID=  R.drawable.drop_shadow_horizontal;
     int backgroundColor = -1;
+
+    Context context;
 
     public void setBackground(Background background) {
         this.background = background;
@@ -33,6 +39,7 @@ public class CellView extends View {
 
     Background background = Background.NONE;
 
+    Size size = Size.MEDIUM;
 
     static final int WHITE = 0xFFFFFFFF;
     static final int BLACK = 0xFF000000;
@@ -42,36 +49,55 @@ public class CellView extends View {
         VERTICAL
     }
 
-    public void setBg(int id) {
-        this.shadowID = id;
-        invalidate();
-    }
+    public enum Size {
+        MEDIUM(1),
+        LARGE(2);
+        private final int sizeCode;
+        Size (int sizeCode){
+            this.sizeCode = sizeCode;
+        }
+
+        public static Size getSize (int sizeCode){
+            if (sizeCode == MEDIUM.sizeCode)
+                return MEDIUM;
+            if (sizeCode == LARGE.sizeCode)
+                return LARGE;
+            return MEDIUM;
+        }
+
+        public int sizeCode(){
+            return sizeCode;
+        }
 
 
-
-    @Override
-    public void setBackgroundColor(int backgroundColor) {
-        this.backgroundColor = backgroundColor;
     }
 
 
     public CellView(Context context) {
         super(context);
+        this.context = context;
         init();
     }
 
     public CellView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
         init();
     }
 
     public CellView(Context context, int backgroundColor){
         super(context);
+        this.context = context;
         init();
         this.backgroundColor = backgroundColor;
     }
 
     private void init(){
+        int sizeCode = PreferenceManager
+                .getDefaultSharedPreferences(context)
+                .getInt(PreferencesContract.CELL_SIZE,Size.MEDIUM.sizeCode);
+
+        this.size = Size.getSize(sizeCode);
         blackPaint = new Paint();
         blackPaint.setColor(BLACK);
     }
@@ -80,8 +106,25 @@ public class CellView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         Resources res = getResources();
 
-        int desiredHeight = (int) res.getDimension(R.dimen.chart_cell_height);
-        int desiredWidth = (int) res.getDimension(R.dimen.chart_cell_width);
+
+        int desiredHeight;
+        int desiredWidth;
+        switch (size){
+            case MEDIUM:
+                desiredHeight = (int) res.getDimension(R.dimen.chart_cell_height_m);
+                desiredWidth = (int) res.getDimension(R.dimen.chart_cell_width_m);
+                break;
+            case LARGE:
+                desiredHeight = (int) res.getDimension(R.dimen.chart_cell_height_l);
+                desiredWidth = (int) res.getDimension(R.dimen.chart_cell_width_l);
+                break;
+            default:
+                desiredHeight = (int) res.getDimension(R.dimen.chart_cell_height_m);
+                desiredWidth = (int) res.getDimension(R.dimen.chart_cell_width_m);
+        }
+
+
+
         if (res.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
             desiredHeight = desiredHeight/2;
             desiredWidth = (desiredWidth * 2)/3;
@@ -146,6 +189,18 @@ public class CellView extends View {
 
     }
 
+
+    public void setBg(int id) {
+        this.shadowID = id;
+        invalidate();
+    }
+
+
+
+    @Override
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
 
 
     protected float getAdjustedTextSize (String text){
