@@ -7,12 +7,13 @@
     tools:context=".ChartActivity">
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
         <com.nmatte.mood.chart.monthview.ScrollViewWithListener
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
-            android:background="#FFFFFFFF"
+            android:background="@color/primary_color"
             android:id="@+id/scrollView">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -25,7 +26,8 @@
                     android:layout_width="@dimen/chart_edit_entry_width_m"
                     android:layout_height="wrap_content"
                     app:mode_label="true"
-                    android:id="@+id/labelColumn"/>
+                    android:id="@+id/labelColumn"
+                    />
 
                 <fragment
                     android:layout_width="wrap_content"

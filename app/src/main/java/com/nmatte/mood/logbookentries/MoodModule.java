@@ -18,6 +18,9 @@ import java.util.ArrayList;
 
 public class MoodModule {
 
+    ArrayList<Boolean> fullValues;
+
+
     public enum Size {
         MINI(0),
         FULL(1);
@@ -34,28 +37,69 @@ public class MoodModule {
             }
             return FULL;
         }
-
         public int getSizeCode() {
             return sizeCode;
         }
     }
 
-    public static ArrayList<ImageCellView>
-    getCheckboxViews(Context context, ArrayList<Boolean> cellValues, ChartColumn.Mode mode, Size size){
+    public MoodModule(ArrayList<Boolean> fullValues){
+        this.fullValues = fullValues;
+    }
+
+    public MoodModule(String values){
+        this.fullValues = new ArrayList<>();
+        for (String value : values.split(" ")){
+            fullValues.add(value.equals("T"));
+        }
+    }
+
+    public ArrayList<Boolean> getFullValues() {
+        return fullValues;
+    }
+
+    public void set(int index, boolean value){
+        fullValues.set(index,value);
+    }
+
+    public ArrayList<Boolean> getMiniValues(){
+        ArrayList<Boolean> result = new ArrayList<>();
+        int i = 0;
+        for (Boolean value :
+                fullValues) {
+            if (i % 2 == 0){
+                result.add(value);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<ImageCellView>
+    getCheckboxes(Context context, ChartColumn.Mode mode, Size size){
         ArrayList<ImageCellView> result = new ArrayList<>();
         Resources res = context.getResources();
         int colorID = (size == Size.MINI) ? R.array.mood_colors_mini : R.array.mood_colors;
         int [] colors = res.getIntArray(colorID);
-        for (int i = 0; i < colors.length; i++){
-            ImageCellView newRow = new ImageCellView(context,colors[i],mode);
+        int factor = (size == Size.MINI) ? 2 : 1;
+        int i = 0;
+        for (int color :
+                colors) {
+            ImageCellView newRow = new ImageCellView(context,color,mode);
             newRow.setBackground(CellView.Background.NONE);
-            if (i < cellValues.size())
-                newRow.setChecked(cellValues.get(i));
-            else
-                newRow.setChecked(false);
+            newRow.setChecked(fullValues.get(i));
             result.add(newRow);
+            i+= factor;
         }
         return result;
+    }
+
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        for (Boolean value : fullValues) {
+            builder
+                    .append(value ? "T" : "F")
+                    .append(" ");
+        }
+        return builder.toString();
     }
 
     public static View getLabelView(Context context, Size size){

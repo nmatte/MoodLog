@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class ChartEntry{
 
     private final DateTime logDate;
-    private ArrayList<Boolean> moods;
+    MoodModule moods;
     private SimpleArrayMap<NumItem,Integer> numItems;
     private SimpleArrayMap<BoolItem,Boolean> boolItems;
     private String note = "";
@@ -33,7 +33,7 @@ public class ChartEntry{
     public ChartEntry(DateTime logDate, ArrayList<Boolean> moods,
                       SimpleArrayMap<NumItem, Integer> numItems, SimpleArrayMap<BoolItem, Boolean> boolItems) {
         this.logDate = logDate;
-        this.moods = moods;
+        this.moods = new MoodModule(moods);
         this.numItems = numItems;
         this.boolItems = boolItems;
     }
@@ -56,12 +56,8 @@ public class ChartEntry{
         this.boolItems = boolItems;
     }
 
-    public ArrayList<Boolean> getMoods() {
+    public MoodModule getMoods() {
         return moods;
-    }
-
-    public void setMoods(ArrayList<Boolean> moods) {
-        this.moods = moods;
     }
 
     public SimpleArrayMap<NumItem, Integer> getNumItems() {
@@ -84,11 +80,7 @@ public class ChartEntry{
     }
 
     public String getMoodString(){
-        String result = "";
-        for (int i = 0; i < moods.size(); i++){
-            result += moods.get(i) ? "T " : "F ";
-        }
-        return result;
+        return moods.toString();
     }
 
 

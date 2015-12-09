@@ -113,6 +113,13 @@ public class ChartActivity extends AppCompatActivity
         labelColumn.setBoolItems(BoolItemTableHelper.getAll(this));
         labelColumn.setNumItems(NumItemTableHelper.getAll(this));
         faButton = (FloatingActionButton) findViewById(R.id.fabDone);
+        labelColumn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                startSettingsActivity();
+                return false;
+            }
+        });
         faButton.hide();
         faButton.setOnClickListener(new View.OnClickListener() {
             @Override

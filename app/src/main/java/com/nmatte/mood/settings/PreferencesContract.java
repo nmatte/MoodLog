@@ -9,8 +9,10 @@ public class PreferencesContract {
         MINI_MOOD_MODULE_ENABLED = "miniMoodMOduleEnabled",
         MOOD_MODULE_SIZE = "moodModuleSize",
         NOTE_MODULE_ENABLED = "noteModuleEnabled",
+        TUTORIAL_FINISHED = "tutorialFinished",
         CELL_SIZE = "cellSize",
         FIRST_STARTUP = "firstStartup";
+
 
 
 

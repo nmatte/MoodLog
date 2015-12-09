@@ -41,6 +41,7 @@ public class ChartColumn extends LinearLayout {
     float lastXtouch;
     float lastYtouch;
     int xOffset = 0;
+    boolean tutorialFinished = false;
 
     MoodModule.Size moodSize;
     Mode mode = ENTRY_READ;
@@ -107,17 +108,23 @@ public class ChartColumn extends LinearLayout {
             entry = new ChartEntry(DateTime.now());
         }
         removeAllViews();
-        addDateRow();
-
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        if(settings.getBoolean(PreferencesContract.FULL_MOOD_MODULE_ENABLED,false)) {
-            moodEnabled = true;
-            moodSize = MoodModule.Size.FULL;
-            addMoodModule();
-        } else if (settings.getBoolean(PreferencesContract.MINI_MOOD_MODULE_ENABLED,false)) {
-            moodEnabled = true;
-            moodSize = MoodModule.Size.MINI;
-            addMoodModule();
+
+        tutorialFinished = settings.getBoolean(PreferencesContract.TUTORIAL_FINISHED, false);
+
+
+        if(tutorialFinished) {
+            addDateRow();
+            if (settings.getBoolean(PreferencesContract.FULL_MOOD_MODULE_ENABLED, false)) {
+                moodEnabled = true;
+                moodSize = MoodModule.Size.FULL;
+                addMoodModule();
+            } else if (settings.getBoolean(PreferencesContract.MINI_MOOD_MODULE_ENABLED, false)) {
+                moodEnabled = true;
+                moodSize = MoodModule.Size.MINI;
+                addMoodModule();
+            }
+
         }
 
 
@@ -222,7 +229,7 @@ public class ChartColumn extends LinearLayout {
         }
         if (mode == Mode.ENTRY_EDIT) {
             int i = 0;
-            for (ImageCellView cellView : MoodModule.getCheckboxViews(context, entry.getMoods(), mode, moodSize)){
+            for (ImageCellView cellView : entry.getMoods().getCheckboxes(context, mode, moodSize)){
                 final int index = i;
                 cellView.setOnChangeListener(new ImageCellView.OnChangeListener() {
                     @Override
@@ -238,7 +245,7 @@ public class ChartColumn extends LinearLayout {
             }
         }
         if (mode == ENTRY_READ){
-            for (ImageCellView cellView : MoodModule.getCheckboxViews(context, entry.getMoods(), mode,moodSize)){
+            for (ImageCellView cellView : entry.getMoods().getCheckboxes(context, mode, moodSize)){
                 cellView.setBackground(CellView.Background.NONE);
                 addView(cellView);
             }
