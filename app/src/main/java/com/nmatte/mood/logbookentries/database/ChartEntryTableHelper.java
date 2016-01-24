@@ -40,8 +40,8 @@ public class ChartEntryTableHelper {
         ArrayList<String> allColumns = new ArrayList<>();
         allColumns.addAll(predefinedColumns);
         allColumns.addAll(NumItem.getColumnNames(numItems));
-        allColumns.addAll(BoolItem.getColumnNames(boolItems));
-
+//        allColumns.addAll(BoolItem.getColumnNames(boolItems));
+//
         String [] columns = allColumns.toArray(new String[allColumns.size()]);
 
         String [] selection = new String[] {
@@ -74,7 +74,7 @@ public class ChartEntryTableHelper {
 
                     SimpleArrayMap<BoolItem,Boolean> boolItemMap = new SimpleArrayMap<>();
                     for (BoolItem item : boolItems){
-                        int index = c.getColumnIndex(item.getColumnName());
+                        int index = c.getColumnIndex(item.toString());
                         if (index > 0){
                             boolItemMap.put(item,c.getInt(index) != 0);
                         }
@@ -165,7 +165,7 @@ public class ChartEntryTableHelper {
         SimpleArrayMap<BoolItem,Boolean> boolItemMap = entry.getBoolItems();
         for (int i = 0; i < boolItemMap.size(); i++){
             values.put(
-                    boolItemMap.keyAt(i).getColumnName(),
+                    boolItemMap.keyAt(i).toString(),
                     boolItemMap.valueAt(i) ? 1 : 0); // 1 for true, 0 for false
         }
 

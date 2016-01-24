@@ -48,8 +48,6 @@ abstract public class LogbookItem {
         this.name = name;
     }
 
-    abstract public String getColumnName();
-
     public static String combineStringArray(ArrayList<String> strings){
         return TextUtils.join(ARRAY_SEPARATOR,strings);
     }

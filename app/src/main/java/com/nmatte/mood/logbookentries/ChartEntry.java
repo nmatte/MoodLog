@@ -2,7 +2,6 @@ package com.nmatte.mood.logbookentries;
 
 import android.support.v4.util.SimpleArrayMap;
 
-import com.nmatte.mood.logbookitems.LogbookItem;
 import com.nmatte.mood.logbookitems.boolitems.BoolItem;
 import com.nmatte.mood.logbookitems.numitems.NumItem;
 
@@ -14,22 +13,9 @@ import java.util.ArrayList;
 
 public class ChartEntry{
 
-    private final DateTime logDate;
-    MoodModule moods;
-    private SimpleArrayMap<NumItem,Integer> numItems;
-    private SimpleArrayMap<BoolItem,Boolean> boolItems;
-    private String note = "";
-
-    public static final String DATE_PATTERN = "YYYYDDD";
-
-    public static final DateTimeFormatter YEAR_DAY_FORMATTER = DateTimeFormat.forPattern(DATE_PATTERN),
-    EDIT_ENTRY_FORMATTER = DateTimeFormat.shortDate();
-
-
     public ChartEntry(DateTime logDate){
         this(logDate, getEmptyMoods(),new SimpleArrayMap<NumItem,Integer>(),new SimpleArrayMap<BoolItem,Boolean>());
     }
-
     public ChartEntry(DateTime logDate, ArrayList<Boolean> moods,
                       SimpleArrayMap<NumItem, Integer> numItems, SimpleArrayMap<BoolItem, Boolean> boolItems) {
         this.logDate = logDate;
@@ -37,6 +23,19 @@ public class ChartEntry{
         this.numItems = numItems;
         this.boolItems = boolItems;
     }
+    private final DateTime logDate;
+    MoodModule moods;
+    private SimpleArrayMap<NumItem,Integer> numItems;
+
+    private SimpleArrayMap<BoolItem,Boolean> boolItems;
+
+    private String note = "";
+    public static final String DATE_PATTERN = "YYYYDDD";
+
+
+    public static final DateTimeFormatter YEAR_DAY_FORMATTER = DateTimeFormat.forPattern(DATE_PATTERN),
+
+    EDIT_ENTRY_FORMATTER = DateTimeFormat.shortDate();
 
     public String getNote(){
         return (note == null) ? "" : note ;
@@ -46,32 +45,15 @@ public class ChartEntry{
         this.note = note;
     }
 
-
-
-    public SimpleArrayMap<BoolItem, Boolean> getBoolItems() {
-        return boolItems;
-    }
-
-    public void setBoolItems(SimpleArrayMap<BoolItem, Boolean> boolItems) {
-        this.boolItems = boolItems;
-    }
-
     public MoodModule getMoods() {
         return moods;
     }
 
-    public SimpleArrayMap<NumItem, Integer> getNumItems() {
-        return numItems;
-    }
 
-    public void setNumItems(SimpleArrayMap<NumItem, Integer> numItems) {
-        this.numItems = numItems;
-    }
-
-    public static ArrayList<Boolean> parseMoodString (String moodString){
+    public static ArrayList<Boolean> parseMoodString (String moodString) {
         ArrayList<Boolean> result = new ArrayList<>();
-        String [] boolStrings = moodString.split(" ");
-        for (String mood: boolStrings){
+        String[] boolStrings = moodString.split(" ");
+        for (String mood : boolStrings) {
             if (!mood.equals("")) {
                 result.add(mood.equals("T"));
             }
@@ -83,17 +65,7 @@ public class ChartEntry{
         return moods.toString();
     }
 
-
-    public String getNumMapString(){
-        return LogbookItem.combineStringArray(NumItem.mapToStringArray(numItems));
-    }
-
-    public String getBoolMapString(){
-        return LogbookItem.combineStringArray(BoolItem.mapToStringArray(boolItems));
-    }
-
-
-    private static ArrayList<Boolean> getEmptyMoods(){
+    private static ArrayList<Boolean> getEmptyMoods() {
         ArrayList<Boolean> result = new ArrayList<>();
         for (int i = 0; i < 13; i++) {
             result.add(false);
@@ -151,5 +123,14 @@ public class ChartEntry{
 
     public int getDateInt() {
         return Integer.valueOf(logDate.toString(YEAR_DAY_FORMATTER));
+    }
+
+
+    public SimpleArrayMap<NumItem, Integer> getNumItems() {
+        return numItems;
+    }
+
+    public SimpleArrayMap<BoolItem, Boolean> getBoolItems() {
+        return boolItems;
     }
 }

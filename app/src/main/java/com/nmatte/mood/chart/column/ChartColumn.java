@@ -107,12 +107,11 @@ public class ChartColumn extends LinearLayout {
         if (entry == null){
             entry = new ChartEntry(DateTime.now());
         }
-        removeAllViews();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
 
         tutorialFinished = settings.getBoolean(PreferencesContract.TUTORIAL_FINISHED, false);
 
-
+        removeAllViews();
         if(tutorialFinished) {
             addDateRow();
             if (settings.getBoolean(PreferencesContract.FULL_MOOD_MODULE_ENABLED, false)) {
@@ -124,17 +123,21 @@ public class ChartColumn extends LinearLayout {
                 moodSize = MoodModule.Size.MINI;
                 addMoodModule();
             }
+            int grayColor = getResources().getColor(R.color.gray_cell_bg);
+            int whiteColor = getResources().getColor(R.color.white);
+
+            boolean grayToggle = addNumItems(whiteColor, grayColor, false);
+            addBoolItems(whiteColor, grayColor, grayToggle);
+
+            if(settings.getBoolean(PreferencesContract.NOTE_MODULE_ENABLED,false))
+                addNoteModule();
+        } else {
+            removeAllViews();
 
         }
 
 
-        int grayColor = getResources().getColor(R.color.gray_cell_bg);
-        int whiteColor = getResources().getColor(R.color.white);
 
-        boolean grayToggle = addNumItems(whiteColor, grayColor, false);
-        addBoolItems(whiteColor, grayColor, grayToggle);
-        if(settings.getBoolean(PreferencesContract.NOTE_MODULE_ENABLED,true))
-            addNoteModule();
     }
 
 
