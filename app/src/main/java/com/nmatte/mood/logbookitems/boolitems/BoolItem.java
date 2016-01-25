@@ -3,7 +3,6 @@ package com.nmatte.mood.logbookitems.boolitems;
 import com.nmatte.mood.logbookitems.LogbookItem;
 
 public class BoolItem extends LogbookItem {
-    private boolean value = false;
 
     public BoolItem(Long id, String name){
         super(id,name);
@@ -15,14 +14,6 @@ public class BoolItem extends LogbookItem {
 
     public BoolItem(){
         super();
-    }
-
-    public void setValue(boolean newValue){
-        value = newValue;
-    }
-
-    public boolean value(){
-        return value;
     }
 
     @Override

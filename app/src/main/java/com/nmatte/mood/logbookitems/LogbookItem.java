@@ -1,25 +1,17 @@
 package com.nmatte.mood.logbookitems;
 
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /*
 A LogbookItem is a field that the user can add to their logbook. So far only NumItems and BoolItems
 are available--user can track an integer value or a boolean value.
  */
 abstract public class LogbookItem {
-    protected final Long id;
+    protected Long id;
+
     protected String name;
+    protected boolean isVisible;
 
-
-    protected static String ARRAY_SEPARATOR = "\t";
-
-    // the user probably won't name something using this...probably.
-    protected static String FIELD_SEPARATOR = ";-;";
-    protected static String MAP_TO = "-->";
 
     public LogbookItem(Long id, String name){
         this.id = id;
@@ -32,6 +24,12 @@ abstract public class LogbookItem {
 
     public LogbookItem(){
         this(null,null);
+    }
+
+    public void setId(Long id) {
+        if (this.id == null) {
+            this.id = id;
+        }
     }
 
     @Nullable
@@ -48,13 +46,11 @@ abstract public class LogbookItem {
         this.name = name;
     }
 
-    public static String combineStringArray(ArrayList<String> strings){
-        return TextUtils.join(ARRAY_SEPARATOR,strings);
+    public boolean isVisible(){
+        return this.isVisible;
     }
 
-    public static ArrayList<String> extractStringArray(String string){
-        return new ArrayList<>(Arrays.asList(string.split(ARRAY_SEPARATOR)));
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
     }
-
-
 }

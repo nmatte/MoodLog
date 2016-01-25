@@ -13,9 +13,16 @@ import java.util.ArrayList;
 
 public class ChartEntry{
 
-    public ChartEntry(DateTime logDate){
-        this(logDate, getEmptyMoods(),new SimpleArrayMap<NumItem,Integer>(),new SimpleArrayMap<BoolItem,Boolean>());
-    }
+    public static final String DATE_PATTERN = "YYYYDDD";
+    public static final DateTimeFormatter YEAR_DAY_FORMATTER = DateTimeFormat.forPattern(DATE_PATTERN),
+    EDIT_ENTRY_FORMATTER = DateTimeFormat.shortDate();
+    private final DateTime logDate;
+    MoodModule moods;
+    private SimpleArrayMap<NumItem,Integer> numItems;
+    private SimpleArrayMap<BoolItem,Boolean> boolItems;
+    private String note = "";
+
+
     public ChartEntry(DateTime logDate, ArrayList<Boolean> moods,
                       SimpleArrayMap<NumItem, Integer> numItems, SimpleArrayMap<BoolItem, Boolean> boolItems) {
         this.logDate = logDate;
@@ -23,32 +30,10 @@ public class ChartEntry{
         this.numItems = numItems;
         this.boolItems = boolItems;
     }
-    private final DateTime logDate;
-    MoodModule moods;
-    private SimpleArrayMap<NumItem,Integer> numItems;
 
-    private SimpleArrayMap<BoolItem,Boolean> boolItems;
-
-    private String note = "";
-    public static final String DATE_PATTERN = "YYYYDDD";
-
-
-    public static final DateTimeFormatter YEAR_DAY_FORMATTER = DateTimeFormat.forPattern(DATE_PATTERN),
-
-    EDIT_ENTRY_FORMATTER = DateTimeFormat.shortDate();
-
-    public String getNote(){
-        return (note == null) ? "" : note ;
+    public ChartEntry(DateTime logDate){
+        this(logDate, getEmptyMoods(),new SimpleArrayMap<NumItem,Integer>(),new SimpleArrayMap<BoolItem,Boolean>());
     }
-
-    public void setNote(String note){
-        this.note = note;
-    }
-
-    public MoodModule getMoods() {
-        return moods;
-    }
-
 
     public static ArrayList<Boolean> parseMoodString (String moodString) {
         ArrayList<Boolean> result = new ArrayList<>();
@@ -61,10 +46,6 @@ public class ChartEntry{
         return result;
     }
 
-    public String getMoodString(){
-        return moods.toString();
-    }
-
     private static ArrayList<Boolean> getEmptyMoods() {
         ArrayList<Boolean> result = new ArrayList<>();
         for (int i = 0; i < 13; i++) {
@@ -72,11 +53,6 @@ public class ChartEntry{
         }
         return result;
     }
-
-    public DateTime getLogDate() {
-        return logDate;
-    }
-
 
     /**
      * Gets the date as mm/dd or dd/mm depending on DateTime's format for the locale.
@@ -119,6 +95,26 @@ public class ChartEntry{
         }
         return builder.toString();
 
+    }
+
+    public String getNote(){
+        return (note == null) ? "" : note ;
+    }
+
+    public void setNote(String note){
+        this.note = note;
+    }
+
+    public MoodModule getMoods() {
+        return moods;
+    }
+
+    public String getMoodString(){
+        return moods.toString();
+    }
+
+    public DateTime getLogDate() {
+        return logDate;
     }
 
     public int getDateInt() {

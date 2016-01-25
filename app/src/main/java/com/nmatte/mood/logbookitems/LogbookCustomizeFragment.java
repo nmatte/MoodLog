@@ -191,7 +191,7 @@ public class LogbookCustomizeFragment extends Fragment {
     }
 
     public void onEvent(SaveBoolItemEvent event){
-        BoolItem saved = BoolItemTableHelper.insertOrUpdate(getActivity(),event.getItem());
+        BoolItem saved = BoolItemTableHelper.save(getActivity(), event.getItem());
         if (saved == null){
             Log.i("BoolItemTableHelper", "failed to save item");
         }

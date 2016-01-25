@@ -23,14 +23,13 @@ public class BoolItemTableHelper {
         to visible (in case user previously removed from chart, but re-made the item)
         If the BoolItem was not already in the database, add a column to the BoolChartEntry table.
          */
-    public static BoolItem insertOrUpdate(Context context, BoolItem item){
+    public static BoolItem save(Context context, BoolItem item){
         if (item == null)
             return item;
         if (item.getID() == null && item.getName() == null)
             return item;
 
-        DatabaseHelper DBHelper = new DatabaseHelper(context);
-        SQLiteDatabase db = DBHelper.getWritableDatabase();
+        SQLiteDatabase db =  new DatabaseHelper(context).getWritableDatabase();
         ContentValues values = new ContentValues();
 
         try {
@@ -55,7 +54,7 @@ public class BoolItemTableHelper {
         return item;
     }
 
-    private static BoolItem getItemWithName(SQLiteDatabase db, String itemName){
+    public static BoolItem getItemWithName(SQLiteDatabase db, String itemName){
         if (itemName == null)
             return null;
 
@@ -85,6 +84,13 @@ public class BoolItemTableHelper {
         return item;
     }
 
+    public static BoolItem getItemWithName(Context context, String itemName){
+        SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
+        BoolItem item = getItemWithName(db,itemName);
+        db.close();
+        return item;
+    }
+
     private static void addItemColumn(SQLiteDatabase db, BoolItem item){
         if (item.getID() == null){
             return;
@@ -105,63 +111,7 @@ public class BoolItemTableHelper {
 
     }
 
-    private static BoolItem getFullItem(SQLiteDatabase db, BoolItem item){
-        String [] columns = new String [] {
-                LogbookItemContract.Bool.ITEM_ID_COLUMN,
-                LogbookItemContract.Bool.ITEM_NAME_COLUMN
-        };
-        String selection = "? = ?";
-        String [] args = new String [2];
-
-        if (item.getID() != null){
-            args[0] = LogbookItemContract.Bool.ITEM_ID_COLUMN;
-            args[1] = item.getID().toString();
-        } else {
-            args[0] = LogbookItemContract.Bool.ITEM_NAME_COLUMN;
-            args[1] = item.getName();
-        }
-        Cursor c = db.query(
-                LogbookItemContract.Bool.ITEM_TABLE,
-                columns,
-                selection,
-                args,
-                null,null,
-                LogbookItemContract.Bool.ITEM_ID_COLUMN);
-
-        if(c.getCount() > 0){
-            c.moveToFirst();
-            item = new BoolItem(c.getLong(0),c.getString(1));
-        }
-        c.close();
-        return item;
-    }
-
-    public static void setVisibility(Context context, BoolItem item, boolean isVisible){
-        DatabaseHelper DBHelper = new DatabaseHelper(context);
-        SQLiteDatabase db = DBHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        try {
-            if (item.getID() == null)
-                return;
-
-            values.put(LogbookItemContract.Bool.ITEM_ID_COLUMN, item.getID());
-            values.put(LogbookItemContract.Bool.ITEM_VISIBLE_COLUMN, isVisible ? TRUE : FALSE);
-            db.update(
-                    LogbookItemContract.Bool.ITEM_TABLE,
-                    values,
-                    "? = ?",
-                    new String[]{
-                            LogbookItemContract.Bool.ITEM_ID_COLUMN,
-                            item.getID().toString()
-                    });
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-
-    public static void deleteBoolItem(Context context, BoolItem item){
+    public static void delete(Context context, BoolItem item){
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         String whereClause = LogbookItemContract.Bool.ITEM_ID_COLUMN + "=?";

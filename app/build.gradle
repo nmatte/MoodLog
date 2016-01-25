@@ -40,3 +40,6 @@ repositories {
         url "https://jitpack.io"
     }
 }
+dependencies {
+    androidTestCompile 'junit:junit:4.12'
+}

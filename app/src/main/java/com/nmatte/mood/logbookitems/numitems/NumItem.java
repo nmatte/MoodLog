@@ -27,6 +27,33 @@ public class NumItem extends LogbookItem{
         this.defaultNum = defaultNum;
     }
 
+    private NumItem (String [] valStrings){
+        super(Long.valueOf(valStrings[0]), valStrings[1]);
+        maxNum = Integer.valueOf(valStrings[2]);
+        defaultNum = Integer.valueOf(valStrings[3]);
+    }
+
+    public static SimpleArrayMap<NumItem,Integer>
+        refreshMap(ArrayList<NumItem> newItems, SimpleArrayMap<NumItem,Integer> oldMap){
+        SimpleArrayMap<NumItem,Integer> result = new SimpleArrayMap<>();
+
+        for (NumItem newItem : newItems){
+            if (oldMap.containsKey(newItem))
+                result.put(newItem,oldMap.get(newItem));
+            else
+                result.put(newItem,0);
+        }
+        return result;
+    }
+
+    public static ArrayList<String> getColumnNames (ArrayList<NumItem> items){
+        ArrayList<String> result = new ArrayList<>();
+        for (NumItem item: items){
+            result.add(item.getColumnName());
+        }
+        return result;
+    }
+
     public int getDefaultNum() {
         return defaultNum;
     }
@@ -43,59 +70,9 @@ public class NumItem extends LogbookItem{
         this.maxNum = maxNum;
     }
 
-
-    public static SimpleArrayMap<NumItem,Integer>
-        refreshMap(ArrayList<NumItem> newItems, SimpleArrayMap<NumItem,Integer> oldMap){
-        SimpleArrayMap<NumItem,Integer> result = new SimpleArrayMap<>();
-
-        for (NumItem newItem : newItems){
-            if (oldMap.containsKey(newItem))
-                result.put(newItem,oldMap.get(newItem));
-            else
-                result.put(newItem,0);
-        }
-        return result;
-    }
-
-
-
-    public static ArrayList<String> mapToStringArray(SimpleArrayMap<NumItem,Integer> map){
-        ArrayList<String> result = new ArrayList<>();
-
-        for (int i = 0; i < map.size(); i++){
-            String keyString = map.keyAt(i).toString();
-            String valString = String.valueOf(map.valueAt(i));
-
-            result.add(keyString + MAP_TO + valString);
-        }
-        return result;
-    }
-
-    public static SimpleArrayMap<NumItem,Integer> mapFromStringArray(ArrayList<String> mapStrings){
-        SimpleArrayMap<NumItem,Integer> result = new SimpleArrayMap<>();
-
-        for (String pair : mapStrings){
-            String [] keyAndVal = pair.split(MAP_TO);
-            NumItem key = new NumItem(keyAndVal[0].split(FIELD_SEPARATOR));
-            int val = Integer.valueOf(keyAndVal[1]);
-            result.put(key,val);
-        }
-
-        return result;
-    }
-
-    private NumItem (String [] valStrings){
-        super(Long.valueOf(valStrings[0]), valStrings[1]);
-        maxNum = Integer.valueOf(valStrings[2]);
-        defaultNum = Integer.valueOf(valStrings[3]);
-    }
-
     @Override
     public String toString(){
-        return String.valueOf(id) + FIELD_SEPARATOR +
-                name + FIELD_SEPARATOR +
-                maxNum + FIELD_SEPARATOR +
-                defaultNum;
+        return name;
     }
 
     @Override
@@ -124,13 +101,5 @@ public class NumItem extends LogbookItem{
 
     public String getColumnName() {
         return "N" + id.toString();
-    }
-
-    public static ArrayList<String> getColumnNames (ArrayList<NumItem> items){
-        ArrayList<String> result = new ArrayList<>();
-        for (NumItem item: items){
-            result.add(item.getColumnName());
-        }
-        return result;
     }
 }
