@@ -8,14 +8,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.nmatte.mood.logbookitems.boolitems.BoolItem;
+import com.nmatte.mood.models.BoolItem;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
 
 public class ReminderList extends LinearLayout {
-    private Context context;
     ArrayList<Reminder> reminders;
+    private Context context;
 
 
 

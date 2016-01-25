@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.nmatte.mood.chart.datedialog.IntroDialog;
+import com.nmatte.mood.controllers.chart.IntroDialog;
 import com.nmatte.mood.moodlog.R;
 
 public class TestActivity extends Activity{

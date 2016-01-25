@@ -3,6 +3,9 @@ package com.nmatte.mood.logbookitems.boolitems;
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
 
+import com.nmatte.mood.database.BoolItemTableHelper;
+import com.nmatte.mood.models.BoolItem;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

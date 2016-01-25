@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.nmatte.mood.util.DatabaseHelper;
+import com.nmatte.mood.database.DatabaseHelper;
 
 import org.joda.time.DateTime;
 

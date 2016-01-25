@@ -9,7 +9,7 @@
         android:theme="@style/AppTheme"
         >
 
-        <activity android:name="com.nmatte.mood.chart.ChartActivity"
+        <activity android:name="com.nmatte.mood.controllers.chart.ChartActivity"
             android:theme="@style/AppTheme">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -20,7 +20,7 @@
 
         <activity android:name="com.nmatte.mood.reminders.ReminderActivity"/>
         <activity android:name="com.nmatte.mood.util.TestActivity"/>
-        <activity android:name="com.nmatte.mood.settings.SettingsActivity"
+        <activity android:name="com.nmatte.mood.controllers.SettingsActivity"
             android:windowSoftInputMode="stateHidden"/>
         
         <receiver android:name="com.nmatte.mood.reminders.AlarmManagerHelper">

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frame"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:foreground="@drawable/chartcolumn_selector"
-    android:id="@+id/frame">
-    <com.nmatte.mood.chart.column.ChartColumn
+    android:foreground="@drawable/chartcolumn_selector">
+    <com.nmatte.mood.views.chart.ChartColumn
+        android:id="@+id/column"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:mode_edit="false"
-        android:id="@+id/column"/>
+        app:mode_edit="false"/>
 
 </FrameLayout>

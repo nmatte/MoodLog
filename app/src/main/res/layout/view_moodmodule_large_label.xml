@@ -4,35 +4,35 @@
     android:layout_width="@dimen/chart_edit_entry_width_m"
     android:layout_height="wrap_content">
 
-    <com.nmatte.mood.chart.cell.VerticalText
-        android:layout_width="@dimen/chart_cell_width_m"
-        android:layout_height="150dp"
-        app:vertical_text="ELEVATED"
-        android:layout_alignTop="@+id/moodLabelLayout"
-        android:layout_alignParentLeft="true"
+    <com.nmatte.mood.views.chart.VerticalText
         android:id="@+id/elevatedText"
-        />
-    <com.nmatte.mood.chart.cell.VerticalText
         android:layout_width="@dimen/chart_cell_width_m"
         android:layout_height="150dp"
-        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/moodLabelLayout"
+        app:vertical_text="ELEVATED"
+        />
+    <com.nmatte.mood.views.chart.VerticalText
         android:id="@+id/normalText"
+        android:layout_width="@dimen/chart_cell_width_m"
+        android:layout_height="150dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         app:vertical_text="NORMAL"/>
 
-    <com.nmatte.mood.chart.cell.VerticalText
+    <com.nmatte.mood.views.chart.VerticalText
+        android:id="@+id/depressedText"
         android:layout_width="@dimen/chart_cell_width_m"
         android:layout_height="150dp"
-        android:layout_alignParentLeft="true"
         android:layout_alignBottom="@+id/moodLabelLayout"
-        android:id="@+id/depressedText"
+        android:layout_alignParentLeft="true"
         app:vertical_text="DEPRESSED"/>
 
     <LinearLayout
+        android:id="@+id/moodLabelLayout"
         android:layout_width="@dimen/chart_edit_entry_width_m"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/elevatedText"
-        android:orientation="vertical"
-        android:id="@+id/moodLabelLayout"/>
+        android:orientation="vertical"/>
 
 </RelativeLayout>
