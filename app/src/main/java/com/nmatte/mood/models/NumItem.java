@@ -2,6 +2,10 @@ package com.nmatte.mood.models;
 
 import java.util.ArrayList;
 
+/**
+ * These are one of the building blocks of the chart.
+ * They represent number pickers.
+ */
 public class NumItem extends LogbookItem{
     private int maxNum;
     private int defaultNum;

@@ -1,5 +1,9 @@
 package com.nmatte.mood.models;
 
+/**
+ * These are one of the building blocks of the chart.
+ * They represent checkboxes. They are also used in the MoodModule, for instance.
+ */
 public class BoolItem extends LogbookItem {
 
     public BoolItem(Long id, String name, int color) {

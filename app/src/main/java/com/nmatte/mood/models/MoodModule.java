@@ -20,7 +20,6 @@ public class MoodModule {
 
     ArrayList<Boolean> fullValues;
 
-
     public MoodModule(ArrayList<Boolean> fullValues){
         this.fullValues = fullValues;
     }
@@ -47,8 +46,6 @@ public class MoodModule {
             elevated.setTextAlignment(VerticalText.TextAlignment.TOP);
             elevated.setText("ELEV");
         }
-
-
 
         for (TextCellView cellView : getLabelViews(context, size)){
             labelLayout.addView(cellView);
@@ -134,7 +131,9 @@ public class MoodModule {
     public enum Size {
         MINI(0),
         FULL(1);
+
         final int sizeCode;
+
         Size (int sizeCode){
             this.sizeCode = sizeCode;
         }
