@@ -2,18 +2,15 @@
 
 This is a personal project for Android. It is designed after the BEAM mood chart used in treatment of mood disorders.
 
-Its function is to allow users to record certain information about their day:
+Its function is to allow users to record certain information about their day.
 
-* mood level(s) varying from -6 to +6
-  
-* the hours they slept the night before
-  
-* anxiety level
-  
-* irritation level
-  
-* whether they took certain boolItems
+The chart has a degree of customizability. While the user can recreate the original chart, they can also extend it.
 
-It will allow users to track their logs over a 28-day period.
+#Features
 
+* There are "modules" which represent more complicated data such as the mood section on the original chart. A mini version is also available.
+* Add numeric fields like hours of sleep
+* Add checkboxes, such as for medication
+* Record longer text notes
+* Set a custom date range; view past entries
 
