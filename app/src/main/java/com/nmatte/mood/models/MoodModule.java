@@ -7,11 +7,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.nmatte.mood.moodlog.R;
-import com.nmatte.mood.views.TextCellView;
-import com.nmatte.mood.views.TextCellViewBuilder;
 import com.nmatte.mood.views.chart.CellView;
 import com.nmatte.mood.views.chart.ChartColumn;
 import com.nmatte.mood.views.chart.ImageCellView;
+import com.nmatte.mood.views.chart.TextCellView;
+import com.nmatte.mood.views.chart.TextCellViewBuilder;
 import com.nmatte.mood.views.chart.VerticalText;
 
 import java.util.ArrayList;

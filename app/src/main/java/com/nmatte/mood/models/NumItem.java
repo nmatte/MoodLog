@@ -1,7 +1,5 @@
 package com.nmatte.mood.models;
 
-import android.support.v4.util.SimpleArrayMap;
-
 import java.util.ArrayList;
 
 public class NumItem extends LogbookItem{
@@ -11,6 +9,10 @@ public class NumItem extends LogbookItem{
 
     public NumItem(Long id, String name) {
         super(id, name);
+    }
+
+    public NumItem(String name){
+        super(name);
     }
 
     public NumItem(Long id, String name, int maxNum, int defaultNum){
@@ -25,29 +27,10 @@ public class NumItem extends LogbookItem{
         this.defaultNum = defaultNum;
     }
 
-    private NumItem (String [] valStrings){
-        super(Long.valueOf(valStrings[0]), valStrings[1]);
-        maxNum = Integer.valueOf(valStrings[2]);
-        defaultNum = Integer.valueOf(valStrings[3]);
-    }
-
-    public static SimpleArrayMap<NumItem,Integer>
-        refreshMap(ArrayList<NumItem> newItems, SimpleArrayMap<NumItem,Integer> oldMap){
-        SimpleArrayMap<NumItem,Integer> result = new SimpleArrayMap<>();
-
-        for (NumItem newItem : newItems){
-            if (oldMap.containsKey(newItem))
-                result.put(newItem,oldMap.get(newItem));
-            else
-                result.put(newItem,0);
-        }
-        return result;
-    }
-
     public static ArrayList<String> getColumnNames (ArrayList<NumItem> items){
         ArrayList<String> result = new ArrayList<>();
         for (NumItem item: items){
-            result.add(item.getColumnName());
+            result.add(item.columnLabel());
         }
         return result;
     }
@@ -66,11 +49,6 @@ public class NumItem extends LogbookItem{
 
     public void setMaxNum(int maxNum) {
         this.maxNum = maxNum;
-    }
-
-    @Override
-    public String toString(){
-        return name;
     }
 
     @Override
@@ -97,7 +75,8 @@ public class NumItem extends LogbookItem{
         return (int) hash;
     }
 
-    public String getColumnName() {
-        return "N" + id.toString();
+    @Override
+    protected String prefix() {
+        return "N";
     }
 }

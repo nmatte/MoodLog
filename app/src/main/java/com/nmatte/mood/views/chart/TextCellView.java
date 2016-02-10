@@ -1,4 +1,4 @@
-package com.nmatte.mood.views;
+package com.nmatte.mood.views.chart;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,7 +8,6 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 
 import com.nmatte.mood.moodlog.R;
-import com.nmatte.mood.views.chart.CellView;
 
 public class TextCellView extends CellView {
     Paint textPaint;

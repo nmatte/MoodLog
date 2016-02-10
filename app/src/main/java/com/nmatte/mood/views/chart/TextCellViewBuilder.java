@@ -1,8 +1,6 @@
-package com.nmatte.mood.views;
+package com.nmatte.mood.views.chart;
 
 import android.content.Context;
-
-import com.nmatte.mood.views.chart.CellView;
 
 public class TextCellViewBuilder {
     Context context;

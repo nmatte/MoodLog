@@ -1,9 +1,8 @@
-package com.nmatte.mood.logbookitems.boolitems;
+package com.nmatte.mood.database;
 
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
 
-import com.nmatte.mood.database.BoolItemTableHelper;
 import com.nmatte.mood.models.BoolItem;
 
 import org.junit.After;

@@ -1,4 +1,4 @@
-package com.nmatte.mood.views;
+package com.nmatte.mood.views.chart;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.nmatte.mood.moodlog.R;
-import com.nmatte.mood.views.chart.ChartColumn;
 
 public class SelectorWrapper extends FrameLayout {
     Context context;

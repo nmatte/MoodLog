@@ -1,4 +1,4 @@
-package com.nmatte.mood.views;
+package com.nmatte.mood.views.chart;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.moodlog.R;
-import com.nmatte.mood.views.chart.ChartColumn;
 
 import de.greenrobot.event.EventBus;
 

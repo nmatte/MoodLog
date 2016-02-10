@@ -97,13 +97,13 @@ public class BoolItemTableHelper {
         Cursor c = db.rawQuery(query1, null);
 
         // column with this name wasn't found so you can safely add a new column.
-        if (c.getColumnIndex(item.toString()) == -1){
+        if (c.getColumnIndex(item.columnLabel()) == -1){
             String addColumnQuery = "ALTER TABLE " + ChartEntryContract.ENTRY_TABLE_NAME +
-                    " ADD COLUMN " + item.toString() + " " + LogbookItemContract.Bool.LOG_VALUE_TYPE ;
+                    " ADD COLUMN " + item.columnLabel() + " " + LogbookItemContract.Bool.LOG_VALUE_TYPE ;
             db.execSQL(addColumnQuery);
-            Log.i("BoolItemTableHelper", "Added column" + item.toString());
+            Log.i("BoolItemTableHelper", "Added column" + item.columnLabel());
         } else {
-            Log.i("BoolItemTableHelper", "Skipped adding column" + item.toString());
+            Log.i("BoolItemTableHelper", "Skipped adding column" + item.columnLabel());
         }
         c.close();
 

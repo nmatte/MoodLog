@@ -79,7 +79,7 @@ public class ChartEntryTableHelper {
 
                     SimpleArrayMap<NumItem,Integer> numItemMap = new SimpleArrayMap<>();
                     for (NumItem item : numItems){
-                        int index = c.getColumnIndex(item.getColumnName());
+                        int index = c.getColumnIndex(item.columnLabel());
                         if (index > 0){
                             numItemMap.put(item,c.getInt(index));
                         }
@@ -156,7 +156,7 @@ public class ChartEntryTableHelper {
         SimpleArrayMap<NumItem,Integer> numItemMap = entry.getNumItems();
 
         for (int i = 0; i < numItemMap.size();i++){
-            values.put(numItemMap.keyAt(i).getColumnName(),numItemMap.valueAt(i));
+            values.put(numItemMap.keyAt(i).columnLabel(),numItemMap.valueAt(i));
         }
 
         SimpleArrayMap<BoolItem,Boolean> boolItemMap = entry.getBoolItems();

@@ -8,10 +8,9 @@ are available--user can track an integer value or a boolean value.
  */
 abstract public class LogbookItem {
     protected Long id;
-
     protected String name;
-    protected boolean isVisible;
-
+    protected int color;
+    protected boolean isVisible = true;
 
     public LogbookItem(Long id, String name){
         this.id = id;
@@ -46,6 +45,14 @@ abstract public class LogbookItem {
         this.name = name;
     }
 
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
     public boolean isVisible(){
         return this.isVisible;
     }
@@ -53,4 +60,14 @@ abstract public class LogbookItem {
     public void setVisible(boolean isVisible) {
         this.isVisible = isVisible;
     }
+
+    public String toString(){
+        return prefix() + id.toString() + ":" + getName();
+    }
+
+    public String columnLabel(){
+        return prefix() + id.toString();
+    }
+
+    protected abstract String prefix();
 }

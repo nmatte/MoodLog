@@ -1,4 +1,4 @@
-package com.nmatte.mood.views;
+package com.nmatte.mood.views.chart;
 
 import android.content.Context;
 import android.content.res.TypedArray;

@@ -2,8 +2,12 @@ package com.nmatte.mood.models;
 
 public class BoolItem extends LogbookItem {
 
+    public BoolItem(Long id, String name, int color) {
+        this(id, name);
+    }
+
     public BoolItem(Long id, String name){
-        super(id,name);
+        super(id, name);
     }
 
     public BoolItem(String name){
@@ -15,8 +19,8 @@ public class BoolItem extends LogbookItem {
     }
 
     @Override
-    public String toString(){
-        return "B" + id.toString();
+    protected String prefix() {
+        return "B";
     }
 
     @Override

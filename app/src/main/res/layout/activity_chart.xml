@@ -47,7 +47,7 @@
             app:layout_anchorGravity="bottom|right"
             />
 
-        <com.nmatte.mood.views.NoteView
+        <com.nmatte.mood.views.chart.NoteView
             android:id="@+id/entryNoteView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

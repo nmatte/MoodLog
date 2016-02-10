@@ -197,7 +197,7 @@ public class LogbookCustomizeFragment extends Fragment {
     }
 
     public void onEvent(SaveNumItemEvent event){
-        NumItem saved = NumItemTableHelper.insertOrUpdate(getActivity(),event.getItem());
+        NumItem saved = NumItemTableHelper.save(getActivity(), event.getItem());
         Log.i("NumItem saved", "Saved NumItem"  + saved.getName() + " with ID " + saved.getID().toString());
     }
 

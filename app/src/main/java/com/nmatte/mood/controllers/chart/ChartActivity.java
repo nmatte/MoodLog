@@ -22,13 +22,13 @@ import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.reminders.ReminderActivity;
 import com.nmatte.mood.settings.PreferencesContract;
 import com.nmatte.mood.util.TestActivity;
-import com.nmatte.mood.views.CloseNoteEvent;
-import com.nmatte.mood.views.NoteView;
-import com.nmatte.mood.views.OpenNoteEvent;
 import com.nmatte.mood.views.ScrollViewWithListener;
 import com.nmatte.mood.views.chart.CellView;
 import com.nmatte.mood.views.chart.ChartColumn;
 import com.nmatte.mood.views.chart.ChartMonthView;
+import com.nmatte.mood.views.chart.CloseNoteEvent;
+import com.nmatte.mood.views.chart.NoteView;
+import com.nmatte.mood.views.chart.OpenNoteEvent;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;

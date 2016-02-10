@@ -15,10 +15,6 @@ import com.nmatte.mood.models.MoodModule;
 import com.nmatte.mood.models.NumItem;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.settings.PreferencesContract;
-import com.nmatte.mood.views.CustomNumberPicker;
-import com.nmatte.mood.views.OpenNoteEvent;
-import com.nmatte.mood.views.TextCellView;
-import com.nmatte.mood.views.TextCellViewBuilder;
 
 import org.joda.time.DateTime;
 

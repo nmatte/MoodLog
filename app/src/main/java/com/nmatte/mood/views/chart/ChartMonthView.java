@@ -19,7 +19,6 @@ import com.nmatte.mood.models.BoolItem;
 import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.NumItem;
 import com.nmatte.mood.moodlog.R;
-import com.nmatte.mood.views.SelectorWrapper;
 
 import org.joda.time.DateTime;
 
