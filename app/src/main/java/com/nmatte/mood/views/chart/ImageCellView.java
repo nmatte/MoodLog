@@ -21,39 +21,78 @@ public class ImageCellView extends CellView {
 
     boolean isChecked;
     OnChangeListener onChangeListener = null;
-    ChartColumn.Mode mode;
+
+    boolean isEnabled = true;
+
     int imageResource = R.drawable.black_circle;
-    //R.drawable.black_square;
-
-
-
-    public ImageCellView(Context context, ChartColumn.Mode mode) {
-        super(context);
-        this.mode = mode;
-        init();
-    }
-
 
     public ImageCellView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ImageCellView(Context context, int backgroundColor, ChartColumn.Mode mode) {
+    public ImageCellView(Context context, int backgroundColor, boolean isEnabled) {
         super(context, backgroundColor);
-        this.mode = mode;
+        this.isEnabled = isEnabled;
         init();
     }
 
-    public void setOnChangeListener(OnChangeListener onChangeListener) {
+    public ImageCellView(Context context, int backgroundColor) {
+        super(context, backgroundColor);
+        init();
+    }
+
+    public ImageCellView(Context context, boolean isEnabled) {
+        super(context);
+        this.isEnabled = isEnabled;
+        init();
+    }
+
+    public void setIsEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
+
+        if (isEnabled) {
+            setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setChecked(!isChecked);
+                    if (onChangeListener != null)
+                        onChangeListener.onChange(isChecked());
+
+                     }
+            });
+        } else {
+            setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
+    }
+
+    public void setOnChangeListener(final OnChangeListener onChangeListener) {
         this.onChangeListener = onChangeListener;
+
+
+        if (isEnabled) {
+            setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setChecked(!isChecked);
+                    if (onChangeListener != null)
+                        onChangeListener.onChange(isChecked());
+
+                }
+            });
+        }
     }
 
     private void init(){
         this.blackPaint = new Paint();
         this.blackPaint.setColor(BLACK);
         this.blackRect = new Rect();
-        if (mode == ChartColumn.Mode.ENTRY_EDIT){
+        if (isEnabled){
             setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -94,14 +133,6 @@ public class ImageCellView extends CellView {
 
     public void setImageResource(int id){
         this.imageResource = id;
-    }
-
-    public BoolItem getBoolItem() {
-        return boolItem;
-    }
-
-    public void setBoolItem(BoolItem boolItem) {
-        this.boolItem = boolItem;
     }
 
     public interface OnChangeListener{

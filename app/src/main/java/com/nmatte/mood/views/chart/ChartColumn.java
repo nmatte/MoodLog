@@ -9,18 +9,18 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.nmatte.mood.models.BoolItem;
+import com.nmatte.mood.adapters.BoolModuleAdapter;
+import com.nmatte.mood.adapters.ModuleAdapter;
+import com.nmatte.mood.adapters.MoodModuleAdapter;
+import com.nmatte.mood.adapters.NoteModuleAdapter;
+import com.nmatte.mood.adapters.NumModuleAdapter;
 import com.nmatte.mood.models.ChartEntry;
-import com.nmatte.mood.models.MoodModule;
-import com.nmatte.mood.models.NumItem;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.settings.PreferencesContract;
 
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-
-import de.greenrobot.event.EventBus;
 
 import static com.nmatte.mood.views.chart.ChartColumn.Mode.ENTRY_EDIT;
 import static com.nmatte.mood.views.chart.ChartColumn.Mode.ENTRY_READ;
@@ -29,19 +29,21 @@ import static com.nmatte.mood.views.chart.ChartColumn.Mode.LABEL;
 
 public class ChartColumn extends LinearLayout {
     ChartEntry entry;
-    ArrayList<NumItem> numItems;
-    ArrayList<BoolItem> boolItems;
+
     boolean moodEnabled = false;
     Context context;
     float lastXtouch;
     float lastYtouch;
     int xOffset = 0;
     boolean tutorialFinished = false;
+    boolean moodModuleIsMini = false;
 
-    MoodModule.Size moodSize;
     Mode mode = ENTRY_READ;
-    // this listener records the last touch coordinates on the column. These coordinates can be used
-    // in the circular reveal animation when opening the EditEntryView.
+    /**
+     * this listener records the last touch coordinates on the column. These coordinates can be used
+     * in the circular reveal animation when opening the EditEntryView.
+     */
+
     OnTouchListener touchListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -52,13 +54,9 @@ public class ChartColumn extends LinearLayout {
     };
 
 
-
-
-    public ChartColumn(Context context, ChartEntry newEntry, ArrayList<NumItem> numItems, ArrayList<BoolItem> boolItems, Mode mode){
+    public ChartColumn(Context context, ChartEntry newEntry, Mode mode){
         super(context);
         this.entry = newEntry;
-        this.numItems = numItems;
-        this.boolItems = boolItems;
         this.context = context;
         this.mode = mode;
         init();
@@ -67,8 +65,6 @@ public class ChartColumn extends LinearLayout {
 
     public ChartColumn(Context context, AttributeSet attrs){
         super(context, attrs);
-        numItems = new ArrayList<>();
-        boolItems = new ArrayList<>();
         this.context = context;
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ChartColumn, 0, 0);
         boolean editMode = a.getBoolean(R.styleable.ChartColumn_mode_edit, false);
@@ -114,11 +110,10 @@ public class ChartColumn extends LinearLayout {
             addDateRow();
             if (settings.getBoolean(PreferencesContract.FULL_MOOD_MODULE_ENABLED, false)) {
                 moodEnabled = true;
-                moodSize = MoodModule.Size.FULL;
                 addMoodModule();
             } else if (settings.getBoolean(PreferencesContract.MINI_MOOD_MODULE_ENABLED, false)) {
                 moodEnabled = true;
-                moodSize = MoodModule.Size.MINI;
+                moodModuleIsMini = true;
                 addMoodModule();
             }
             int grayColor = getResources().getColor(R.color.gray_cell_bg);
@@ -133,17 +128,6 @@ public class ChartColumn extends LinearLayout {
             removeAllViews();
 
         }
-
-
-
-    }
-
-
-    public void refresh(Context newContext, ChartEntry entry, ArrayList<BoolItem> boolItems, ArrayList<NumItem> numItems){
-        this.entry = entry;
-        this.boolItems = boolItems;
-        this.numItems = numItems;
-        refresh(context);
     }
 
     private void addDateRow(){
@@ -176,92 +160,31 @@ public class ChartColumn extends LinearLayout {
     }
 
     private void addNoteModule() {
-
-        switch(mode){
-            case ENTRY_READ:
-                ImageCellView cellView = new ImageCellView(context, ENTRY_READ);
-                cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
-                if (entry.getNote().length() > 0){
-                    cellView.setChecked(true);
-                    cellView.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            EventBus.getDefault().post(new OpenNoteEvent(entry));
-                        }
-                    });
-                }
-                addView(cellView);
-                break;
-            case ENTRY_EDIT:
-                cellView = new ImageCellView(context, ENTRY_READ);
-                if (entry.getNote().length() > 0){
-                    cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
-                } else {
-                    cellView.setImageResource(R.drawable.ic_edit_black_24dp);
-                }
-                cellView.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        EventBus.getDefault().post(new OpenNoteEvent(entry));
-                    }
-                });
-                cellView.setChecked(true);
-                addView(cellView);
-                break;
-            case LABEL:
-                TextCellViewBuilder b = new TextCellViewBuilder(context);
-                if (moodEnabled)
-                    b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width_m));
-
-                addView(b.setStroke(TextCellView.Stroke.BOLD)
-                        .setText("Notes")
-                        .build());
-                break;
-        }
-
-
-
-
+        addAdapter(new NoteModuleAdapter(context, getEntry().getNote()));
     }
 
     private void addMoodModule(){
-        if (entry == null) {
-            entry = new ChartEntry(DateTime.now());
-        }
-        if (mode == Mode.ENTRY_EDIT) {
-            int i = 0;
-            for (ImageCellView cellView : entry.getMoods().getCheckboxes(context, mode, moodSize)){
-                final int index = i;
-                cellView.setOnChangeListener(new ImageCellView.OnChangeListener() {
-                    @Override
-                    public void onChange(boolean value) {
-                        entry.getMoods().set(index, value);
-                    }
-                });
-                addView(cellView);
-                if (moodSize == MoodModule.Size.FULL)
-                    i++;
-                else
-                    i += 2;
-            }
-        }
-        if (mode == ENTRY_READ){
-            for (ImageCellView cellView : entry.getMoods().getCheckboxes(context, mode, moodSize)){
-                cellView.setBackground(CellView.Background.NONE);
-                addView(cellView);
-            }
-        }
-        if (mode == Mode.LABEL){
-            /*
-            for (TextCellView cellView : MoodModule.getLabelViews(context)){
-                cellView.setBackground(CellView.Background.NONE);
-                addView(cellView);
-            }
-            */
-            addView(MoodModule.getLabelView(context,moodSize));
+        addAdapter(new MoodModuleAdapter(context, getEntry().getMoods(), moodModuleIsMini));
+
+    }
+
+    private void addAdapter(ModuleAdapter adapter){
+        ArrayList<View> views = new ArrayList<>();
+
+        switch (mode) {
+            case ENTRY_EDIT:
+                views = adapter.getEditViews();
+                break;
+            case ENTRY_READ:
+                views = adapter.getReadViews();
+                break;
+            case LABEL:
+                views = adapter.getLabelViews();
         }
 
-
+        for (View view : views) {
+            addView(view);
+        }
     }
 
     /**
@@ -273,44 +196,28 @@ public class ChartColumn extends LinearLayout {
      */
     private boolean addNumItems(int whiteColor, int grayColor, boolean grayToggle){
         int color;
+        ArrayList<View> views = new ArrayList<>();
+        NumModuleAdapter adapter = new NumModuleAdapter(context, entry.getNumItems());
 
-        for (final NumItem numItem : numItems) {
+        switch (mode) {
+            case ENTRY_READ:
+                views = adapter.getReadViews();
+                break;
+            case ENTRY_EDIT:
+                views = adapter.getEditViews();
+                break;
+            case LABEL:
+                views = adapter.getLabelViews();
+                break;
+        }
+
+        // TODO: move gray-white alternation elsewhere (maybe when a new one is saved?)
+        for (View view : views) {
             color = grayToggle ? grayColor : whiteColor;
             grayToggle = !grayToggle;
 
-            if (mode == ENTRY_READ) {
-                TextCellViewBuilder b = new TextCellViewBuilder(context)
-                        .setBackgroundColor(color)
-                        .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
-                        .setHorizontalAlignment(TextCellView.TextAlignment.CENTER)
-                        .setBackground(CellView.Background.NONE);
-                if (entry.getNumItems().containsKey(numItem)) {
-                    b.setText(String.valueOf(entry.getNumItems().get(numItem)));
-                }
-                this.addView(b.build());
-            }
-            if (mode == Mode.LABEL) {
-
-                TextCellViewBuilder b = new TextCellViewBuilder(context);
-                if (moodEnabled){
-                    b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width_m));
-                }
-                        b.setBackgroundColor(color);
-                 b.setText(numItem.getName());
-                this.addView(b.build());
-            }
-            if (mode == Mode.ENTRY_EDIT){
-                final CustomNumberPicker numPicker = new CustomNumberPicker(context,numItem);
-                numPicker.setBackgroundColor(color);
-                numPicker.setNumChangeListener(new CustomNumberPicker.NumChangeListener() {
-                    @Override
-                    public void onChange(int change) {
-                        entry.getNumItems().put(numItem, change);
-                    }
-                });
-                this.addView(numPicker);
-            }
-
+            view.setBackgroundColor(color);
+            addView(view);
         }
 
         return grayToggle;
@@ -325,42 +232,29 @@ public class ChartColumn extends LinearLayout {
      */
     private boolean addBoolItems(int whiteColor, int grayColor, boolean grayToggle){
         int color;
-        for (final BoolItem boolItem : boolItems) {
+        ArrayList<View> views = new ArrayList<>();
+        BoolModuleAdapter adapter = new BoolModuleAdapter(context, entry.getBoolItems());
+
+        switch (mode) {
+            case ENTRY_READ:
+                views = adapter.getReadViews();
+                break;
+            case ENTRY_EDIT:
+                views = adapter.getEditViews();
+                break;
+            case LABEL:
+                views = adapter.getLabelViews();
+                break;
+        }
+
+        for (View view : views) {
             color = grayToggle ? grayColor : whiteColor;
             grayToggle = !grayToggle;
-            if (mode == ENTRY_READ) {
-                ImageCellView imageCellView = new ImageCellView(context, ENTRY_READ);
-                imageCellView.setBackgroundColor(color);
-                imageCellView.setBackground(CellView.Background.NONE);
-                if (entry.getBoolItems().containsKey(boolItem)) {
-                    imageCellView.setChecked(entry.getBoolItems().get(boolItem));
-                }
-                this.addView(imageCellView);
-            }
-            if (mode == Mode.LABEL) {
-                        TextCellViewBuilder b = new TextCellViewBuilder(context);
-                if (moodEnabled)
-                    b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width_m));
-                b
-                        .setText(boolItem.getName())
-                        .setBackgroundColor(color)
-                        .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
-                        .build();
-                this.addView(b.build());
-            }
-            if (mode == Mode.ENTRY_EDIT){
-                ImageCellView cellView = new ImageCellView(context, Mode.ENTRY_EDIT);
-                cellView.setOnChangeListener(new ImageCellView.OnChangeListener() {
-                    @Override
-                    public void onChange(boolean value) {
-                        entry.getBoolItems().put(boolItem, value);
-                    }
-                });
-                cellView.setBackgroundColor(color);
-                this.addView(cellView);
-            }
 
+            view.setBackgroundColor(color);
+            addView(view);
         }
+
         return grayToggle;
     }
 
@@ -371,8 +265,11 @@ public class ChartColumn extends LinearLayout {
     public float getLastXtouch(){
         return lastXtouch;
     }
-
-    public  float getLastYtouch(){
+    /**
+     * Returns the Y coordinate of the most recent touch event on this view.
+     * @return The last touch event's Y coordinate.
+     */
+    public float getLastYtouch(){
         return lastYtouch;
     }
 
@@ -382,14 +279,6 @@ public class ChartColumn extends LinearLayout {
 
     public void setEntry(ChartEntry entry) {
         this.entry = entry;
-    }
-
-    public void setBoolItems(ArrayList<BoolItem> items){
-        this.boolItems = items;
-    }
-
-    public void setNumItems(ArrayList<NumItem> items){
-        this.numItems = items;
     }
 
     public void setMode(Mode mode) {

@@ -36,7 +36,7 @@ public class ChartEntryTableHelper {
 
         ArrayList<String> allColumns = new ArrayList<>();
         allColumns.addAll(predefinedColumns);
-        allColumns.addAll(NumItem.getColumnNames(numItems));
+//        allColumns.addAll(NumItem.getColumnNames(numItems));
 //        allColumns.addAll(BoolItem.getColumnNames(boolItems));
 
         String [] columns = allColumns.toArray(new String[allColumns.size()]);

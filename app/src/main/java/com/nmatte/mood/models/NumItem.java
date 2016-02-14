@@ -1,7 +1,5 @@
 package com.nmatte.mood.models;
 
-import java.util.ArrayList;
-
 /**
  * These are one of the building blocks of the chart.
  * They represent number pickers.
@@ -9,7 +7,6 @@ import java.util.ArrayList;
 public class NumItem extends LogbookItem{
     private int maxNum;
     private int defaultNum;
-
 
     public NumItem(Long id, String name) {
         super(id, name);
@@ -29,14 +26,6 @@ public class NumItem extends LogbookItem{
         super(name);
         this.maxNum = maxNum;
         this.defaultNum = defaultNum;
-    }
-
-    public static ArrayList<String> getColumnNames (ArrayList<NumItem> items){
-        ArrayList<String> result = new ArrayList<>();
-        for (NumItem item: items){
-            result.add(item.columnLabel());
-        }
-        return result;
     }
 
     public int getDefaultNum() {

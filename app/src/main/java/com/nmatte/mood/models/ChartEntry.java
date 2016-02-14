@@ -15,17 +15,17 @@ public class ChartEntry{
     EDIT_ENTRY_FORMATTER = DateTimeFormat.shortDate();
     private final DateTime logDate;
     MoodModule moods;
-    private SimpleArrayMap<NumItem,Integer> numItems;
-    private SimpleArrayMap<BoolItem,Boolean> boolItems;
-    private String note = "";
+    private NumModule numItems;
+    private BoolModule boolItems;
+    private NoteModule note = new NoteModule("");
 
 
     public ChartEntry(DateTime logDate, ArrayList<Boolean> moods,
                       SimpleArrayMap<NumItem, Integer> numItems, SimpleArrayMap<BoolItem, Boolean> boolItems) {
         this.logDate = logDate;
         this.moods = new MoodModule(moods);
-        this.numItems = numItems;
-        this.boolItems = boolItems;
+        this.numItems = new NumModule(numItems);
+        this.boolItems = new BoolModule(boolItems);
     }
 
     public ChartEntry(DateTime logDate){
@@ -94,20 +94,12 @@ public class ChartEntry{
 
     }
 
-    public String getNote(){
-        return (note == null) ? "" : note ;
-    }
-
-    public void setNote(String note){
-        this.note = note;
+    public NoteModule getNote(){
+        return note ;
     }
 
     public MoodModule getMoods() {
         return moods;
-    }
-
-    public String getMoodString(){
-        return moods.toString();
     }
 
     public DateTime getLogDate() {
@@ -118,12 +110,11 @@ public class ChartEntry{
         return Integer.valueOf(logDate.toString(YEAR_DAY_FORMATTER));
     }
 
-
-    public SimpleArrayMap<NumItem, Integer> getNumItems() {
+    public NumModule getNumItems() {
         return numItems;
     }
 
-    public SimpleArrayMap<BoolItem, Boolean> getBoolItems() {
+    public BoolModule getBoolItems() {
         return boolItems;
     }
 }
