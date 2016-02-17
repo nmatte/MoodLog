@@ -30,8 +30,8 @@ import static com.nmatte.mood.views.chart.ChartColumn.Mode.LABEL;
 public class ChartColumn extends LinearLayout {
     ChartEntry entry;
 
-    boolean moodEnabled = false;
     Context context;
+    boolean moodEnabled = false;
     float lastXtouch;
     float lastYtouch;
     int xOffset = 0;
@@ -39,11 +39,11 @@ public class ChartColumn extends LinearLayout {
     boolean moodModuleIsMini = false;
 
     Mode mode = ENTRY_READ;
+
     /**
      * this listener records the last touch coordinates on the column. These coordinates can be used
      * in the circular reveal animation when opening the EditEntryView.
      */
-
     OnTouchListener touchListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -165,7 +165,6 @@ public class ChartColumn extends LinearLayout {
 
     private void addMoodModule(){
         addAdapter(new MoodModuleAdapter(context, getEntry().getMoods(), moodModuleIsMini));
-
     }
 
     private void addAdapter(ModuleAdapter adapter){
