@@ -12,12 +12,8 @@ import android.widget.LinearLayout;
 
 import com.nmatte.mood.controllers.chart.CloseEditEntryEvent;
 import com.nmatte.mood.controllers.chart.OpenEditEntryEvent;
-import com.nmatte.mood.database.BoolItemTableHelper;
 import com.nmatte.mood.database.ChartEntryTableHelper;
-import com.nmatte.mood.database.NumItemTableHelper;
-import com.nmatte.mood.models.BoolItem;
 import com.nmatte.mood.models.ChartEntry;
-import com.nmatte.mood.models.NumItem;
 import com.nmatte.mood.moodlog.R;
 
 import org.joda.time.DateTime;
@@ -30,8 +26,6 @@ import io.codetail.animation.ViewAnimationUtils;
 import io.codetail.widget.RevealFrameLayout;
 
 public class ChartMonthView extends Fragment {
-    ArrayList<NumItem> numItems;
-    ArrayList<BoolItem> boolItems;
     DateTime startDate;
     DateTime endDate;
 
@@ -70,8 +64,6 @@ public class ChartMonthView extends Fragment {
      */
     public void refreshColumns(DateTime startDate, DateTime endDate) {
         horizontalLayout.removeAllViews();
-        numItems = NumItemTableHelper.getAll(getActivity());
-        boolItems = BoolItemTableHelper.getAll(getActivity());
         this.startDate = startDate;
         this.endDate = endDate;
         editEntryColumn.refresh(getActivity());
@@ -82,7 +74,8 @@ public class ChartMonthView extends Fragment {
             for (final ChartEntry entry : newList) {
                 SelectorWrapper wrapper = new SelectorWrapper(getActivity());
                 wrapper.setOnLongClickListener(getColumnLongClickListener(wrapper.getColumn()));
-                wrapper.getColumn().refresh(getActivity(), entry, boolItems, numItems);
+                wrapper.getColumn().setEntry(entry);
+                wrapper.getColumn().refresh(getActivity());
                 horizontalLayout.addView(wrapper);
             }
         }
@@ -193,8 +186,6 @@ public class ChartMonthView extends Fragment {
         editEntryViewIsOpen = true;
         openedColumn = column;
         editEntryColumn.setEntry(column.getEntry());
-        editEntryColumn.setNumItems(numItems);
-        editEntryColumn.setBoolItems(boolItems);
         editEntryColumn.refresh(getActivity());
         editEntryColumn.setX(getCenterX(column));
 

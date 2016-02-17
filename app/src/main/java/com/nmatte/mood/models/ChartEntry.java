@@ -2,6 +2,11 @@ package com.nmatte.mood.models;
 
 import android.support.v4.util.SimpleArrayMap;
 
+import com.nmatte.mood.models.modules.BoolModule;
+import com.nmatte.mood.models.modules.Module;
+import com.nmatte.mood.models.modules.MoodModule;
+import com.nmatte.mood.models.modules.NumModule;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -14,22 +19,19 @@ public class ChartEntry{
     public static final DateTimeFormatter YEAR_DAY_FORMATTER = DateTimeFormat.forPattern(DATE_PATTERN),
     EDIT_ENTRY_FORMATTER = DateTimeFormat.shortDate();
     private final DateTime logDate;
-    MoodModule moods;
-    private NumModule numItems;
-    private BoolModule boolItems;
-    private NoteModule note = new NoteModule("");
 
+    ArrayList<Module> modules;
 
     public ChartEntry(DateTime logDate, ArrayList<Boolean> moods,
-                      SimpleArrayMap<NumItem, Integer> numItems, SimpleArrayMap<BoolItem, Boolean> boolItems) {
+                      SimpleArrayMap<NumComponent, Integer> numItems, SimpleArrayMap<BoolComponent, Boolean> boolItems) {
         this.logDate = logDate;
-        this.moods = new MoodModule(moods);
-        this.numItems = new NumModule(numItems);
-        this.boolItems = new BoolModule(boolItems);
+        modules.add(new MoodModule(moods));
+        modules.add(new NumModule(numItems));
+        modules.add(new BoolModule(boolItems));
     }
 
     public ChartEntry(DateTime logDate){
-        this(logDate, getEmptyMoods(),new SimpleArrayMap<NumItem,Integer>(),new SimpleArrayMap<BoolItem,Boolean>());
+        this(logDate, getEmptyMoods(),new SimpleArrayMap<NumComponent,Integer>(),new SimpleArrayMap<BoolComponent,Boolean>());
     }
 
     public static ArrayList<Boolean> parseMoodString (String moodString) {
@@ -94,27 +96,14 @@ public class ChartEntry{
 
     }
 
-    public NoteModule getNote(){
-        return note ;
+    public ArrayList<Module> getModules() {
+        return modules;
     }
-
-    public MoodModule getMoods() {
-        return moods;
-    }
-
     public DateTime getLogDate() {
         return logDate;
     }
 
     public int getDateInt() {
         return Integer.valueOf(logDate.toString(YEAR_DAY_FORMATTER));
-    }
-
-    public NumModule getNumItems() {
-        return numItems;
-    }
-
-    public BoolModule getBoolItems() {
-        return boolItems;
     }
 }

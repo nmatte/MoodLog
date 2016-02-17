@@ -1,18 +1,18 @@
 package com.nmatte.mood.controllers;
 
 
-import com.nmatte.mood.models.BoolItem;
+import com.nmatte.mood.models.BoolComponent;
 
 public class SaveBoolItemEvent {
 
-    BoolItem item;
+    BoolComponent item;
 
-    public SaveBoolItemEvent(BoolItem item){
+    public SaveBoolItemEvent(BoolComponent item){
         this.item = item;
     }
 
 
-    public BoolItem getItem() {
+    public BoolComponent getItem() {
         return item;
     }
 

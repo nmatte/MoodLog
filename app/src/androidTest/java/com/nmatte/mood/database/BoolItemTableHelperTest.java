@@ -3,7 +3,7 @@ package com.nmatte.mood.database;
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
 
-import com.nmatte.mood.models.BoolItem;
+import com.nmatte.mood.models.BoolComponent;
 
 import org.junit.After;
 import org.junit.Before;
@@ -26,17 +26,17 @@ public class BoolItemTableHelperTest extends AndroidTestCase {
 
     @Test
     public void testSave() throws Exception {
-        BoolItem item = new BoolItem("FooItem");
+        BoolComponent item = new BoolComponent("FooItem");
         BoolItemTableHelper.save(testContext, item);
 
-        BoolItem returnedItem = BoolItemTableHelper.getItemWithName(testContext,item.getName());
+        BoolComponent returnedItem = BoolItemTableHelper.getItemWithName(testContext,item.getName());
         assertNotNull(returnedItem);
         assertTrue(returnedItem.getName().equals(item.getName()));
     }
 
     @Test
     public void testDelete() throws Exception {
-        BoolItem itemDelete = new BoolItem("FooItemDelete");
+        BoolComponent itemDelete = new BoolComponent("FooItemDelete");
         BoolItemTableHelper.save(testContext,itemDelete);
 
         BoolItemTableHelper.delete(testContext, itemDelete);
@@ -46,26 +46,26 @@ public class BoolItemTableHelperTest extends AndroidTestCase {
 
     @Test
     public void testGetAll() throws Exception {
-        BoolItem itemVisible = new BoolItem("FooItemVisible");
-        BoolItem itemInvisible = new BoolItem("FooItemInvisible");
+        BoolComponent itemVisible = new BoolComponent("FooItemVisible");
+        BoolComponent itemInvisible = new BoolComponent("FooItemInvisible");
         itemInvisible.setVisible(false);
         BoolItemTableHelper.save(testContext, itemVisible);
         BoolItemTableHelper.save(testContext, itemInvisible);
 
-        ArrayList<BoolItem> afterSave = BoolItemTableHelper.getAll(testContext);
+        ArrayList<BoolComponent> afterSave = BoolItemTableHelper.getAll(testContext);
         assertTrue("doesn't contain visible item", afterSave.contains(itemVisible));
         assertTrue("doesn't contain invisible item", afterSave.contains(itemInvisible));
     }
 
     @Test
     public void testGetAllVisible() throws Exception {
-        BoolItem item1 = new BoolItem("FooItemVisible");
-        BoolItem item2 = new BoolItem("FooItemInvisible");
+        BoolComponent item1 = new BoolComponent("FooItemVisible");
+        BoolComponent item2 = new BoolComponent("FooItemInvisible");
         item2.setVisible(false);
         BoolItemTableHelper.save(testContext, item1);
         BoolItemTableHelper.save(testContext, item2);
 
-        ArrayList<BoolItem> afterSave = BoolItemTableHelper.getAll(testContext);
+        ArrayList<BoolComponent> afterSave = BoolItemTableHelper.getAll(testContext);
         assertTrue("doesn't contain visible item",afterSave.contains(item1));
         assertFalse("contains invisible item", afterSave.contains(item2));
     }

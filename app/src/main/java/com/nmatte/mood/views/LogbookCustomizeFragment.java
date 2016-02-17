@@ -21,8 +21,8 @@ import com.nmatte.mood.controllers.SaveBoolItemEvent;
 import com.nmatte.mood.controllers.SaveNumItemEvent;
 import com.nmatte.mood.database.BoolItemTableHelper;
 import com.nmatte.mood.database.NumItemTableHelper;
-import com.nmatte.mood.models.BoolItem;
-import com.nmatte.mood.models.NumItem;
+import com.nmatte.mood.models.BoolComponent;
+import com.nmatte.mood.models.NumComponent;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.settings.PreferencesContract;
 
@@ -49,13 +49,13 @@ public class LogbookCustomizeFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_logbook_customize,container);
         initLayout(mainView);
 
-        ArrayList<NumItem> numItems = NumItemTableHelper.getAll(getActivity());
-        for (final NumItem item : numItems){
+        ArrayList<NumComponent> numItems = NumItemTableHelper.getAll(getActivity());
+        for (final NumComponent item : numItems){
             addNewNumItem(item,false);
         }
 
-        ArrayList<BoolItem> boolItems = BoolItemTableHelper.getAll(getActivity());
-        for (final BoolItem item : boolItems){
+        ArrayList<BoolComponent> boolItems = BoolItemTableHelper.getAll(getActivity());
+        for (final BoolComponent item : boolItems){
             addNewBoolItem(item);
         }
 
@@ -92,7 +92,7 @@ public class LogbookCustomizeFragment extends Fragment {
         addNumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewNumItem(new NumItem(null, addNumEditText.getText().toString()), true);
+                addNewNumItem(new NumComponent(null, addNumEditText.getText().toString()), true);
                 addNumEditText.getText().clear();
             }
         });
@@ -105,7 +105,7 @@ public class LogbookCustomizeFragment extends Fragment {
         addBoolButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewBoolItem(new BoolItem(addBoolEditText.getText().toString()));
+                addNewBoolItem(new BoolComponent(addBoolEditText.getText().toString()));
                 addBoolEditText.getText().clear();
             }
         });
@@ -123,13 +123,13 @@ public class LogbookCustomizeFragment extends Fragment {
 
 
 
-    public void addNewBoolItem(BoolItem item){
+    public void addNewBoolItem(BoolComponent item){
         final CustomizeBoolItem rowView = new CustomizeBoolItem(getActivity(),item);
         rowView.delButton.setOnClickListener(getDeleteBoolListener(rowView));
         boolItemLayout.addView(rowView);
     }
 
-    public void addNewNumItem(NumItem item,boolean isNewItem){
+    public void addNewNumItem(NumComponent item,boolean isNewItem){
         if (isNewItem){
             final CustomizeNumItem rowView = new CustomizeNumItem(getActivity(),null);
             rowView.setNumItem(item);
@@ -189,16 +189,16 @@ public class LogbookCustomizeFragment extends Fragment {
     }
 
     public void onEvent(SaveBoolItemEvent event){
-        BoolItem saved = BoolItemTableHelper.save(getActivity(), event.getItem());
+        BoolComponent saved = BoolItemTableHelper.save(getActivity(), event.getItem());
         if (saved == null){
             Log.i("BoolItemTableHelper", "failed to save item");
         }
-        Log.i("BoolItem saved", "Saved BoolItem" + saved.getName() + " with ID " + saved.getID().toString());
+        Log.i("BoolComponent saved", "Saved BoolComponent" + saved.getName() + " with ID " + saved.getID().toString());
     }
 
     public void onEvent(SaveNumItemEvent event){
-        NumItem saved = NumItemTableHelper.save(getActivity(), event.getItem());
-        Log.i("NumItem saved", "Saved NumItem"  + saved.getName() + " with ID " + saved.getID().toString());
+        NumComponent saved = NumItemTableHelper.save(getActivity(), event.getItem());
+        Log.i("NumComponent saved", "Saved NumComponent"  + saved.getName() + " with ID " + saved.getID().toString());
     }
 
 

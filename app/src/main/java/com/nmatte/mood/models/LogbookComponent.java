@@ -1,26 +1,26 @@
 package com.nmatte.mood.models;
 
 /**
- * LogbookItem is a field that the user can add to their logbook.
- * This abstract class covers the common aspects of BoolItems and NumItems.
+ * LogbookComponent is a field that the user can add to their logbook.
+ * This abstract class covers the common aspects of BoolComponents and NumComponents.
  * They all have an id, name, and (optional) color.
  */
-abstract public class LogbookItem {
+abstract public class LogbookComponent {
     protected Long id;
     protected String name;
     protected int color = 0x000000;
     protected boolean isVisible = true;
 
-    public LogbookItem(Long id, String name){
+    public LogbookComponent(Long id, String name){
         this.id = id;
         this.name = name;
     }
 
-    public LogbookItem(String name){
+    public LogbookComponent(String name){
         this(null,name);
     }
 
-    public LogbookItem(){
+    public LogbookComponent(){
         this(null,null);
     }
 

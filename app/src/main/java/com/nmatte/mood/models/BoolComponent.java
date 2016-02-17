@@ -4,21 +4,21 @@ package com.nmatte.mood.models;
  * These are one of the building blocks of the chart.
  * They represent checkboxes. They are also used in the MoodModule, for instance.
  */
-public class BoolItem extends LogbookItem {
+public class BoolComponent extends LogbookComponent {
 
-    public BoolItem(Long id, String name, int color) {
+    public BoolComponent(Long id, String name, int color) {
         this(id, name);
     }
 
-    public BoolItem(Long id, String name){
+    public BoolComponent(Long id, String name){
         super(id, name);
     }
 
-    public BoolItem(String name){
+    public BoolComponent(String name){
         super(name);
     }
 
-    public BoolItem(){
+    public BoolComponent(){
         super();
     }
 
@@ -41,10 +41,10 @@ public class BoolItem extends LogbookItem {
             return true;
         if (o == null)
             return false;
-        if (!(o instanceof  BoolItem))
+        if (!(o instanceof BoolComponent))
             return false;
         else {
-            BoolItem rhs = (BoolItem) o;
+            BoolComponent rhs = (BoolComponent) o;
             if (rhs.getID() == null || getID() == null)
                 return this.getName().equals(rhs.getName());
             return this.getID().equals(rhs.getID());

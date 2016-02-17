@@ -7,9 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.util.SimpleArrayMap;
 
-import com.nmatte.mood.models.BoolItem;
+import com.nmatte.mood.models.BoolComponent;
 import com.nmatte.mood.models.ChartEntry;
-import com.nmatte.mood.models.NumItem;
+import com.nmatte.mood.models.NumComponent;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -26,8 +26,8 @@ public class ChartEntryTableHelper {
     public static ArrayList<ChartEntry> getEntryGroup(Context context, DateTime startDate, DateTime endDate){
         SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
 
-        ArrayList<NumItem> numItems = NumItemTableHelper.getAllVisible(db);
-        ArrayList<BoolItem> boolItems = BoolItemTableHelper.getAllVisible(db);
+        ArrayList<NumComponent> numItems = NumItemTableHelper.getAllVisible(db);
+        ArrayList<BoolComponent> boolItems = BoolItemTableHelper.getAllVisible(db);
 
         ArrayList<String> predefinedColumns = new ArrayList<>();
         predefinedColumns.add(ChartEntryContract.ENTRY_DATE_COLUMN);
@@ -36,8 +36,8 @@ public class ChartEntryTableHelper {
 
         ArrayList<String> allColumns = new ArrayList<>();
         allColumns.addAll(predefinedColumns);
-//        allColumns.addAll(NumItem.getColumnNames(numItems));
-//        allColumns.addAll(BoolItem.getColumnNames(boolItems));
+//        allColumns.addAll(NumComponent.getColumnNames(numItems));
+//        allColumns.addAll(BoolComponent.getColumnNames(boolItems));
 
         String [] columns = allColumns.toArray(new String[allColumns.size()]);
 
@@ -69,16 +69,16 @@ public class ChartEntryTableHelper {
                     String note = c.getString(c.getColumnIndex(ChartEntryContract.ENTRY_NOTE_COLUMN));
 
 
-                    SimpleArrayMap<BoolItem,Boolean> boolItemMap = new SimpleArrayMap<>();
-                    for (BoolItem item : boolItems){
+                    SimpleArrayMap<BoolComponent,Boolean> boolItemMap = new SimpleArrayMap<>();
+                    for (BoolComponent item : boolItems){
                         int index = c.getColumnIndex(item.toString());
                         if (index > 0){
                             boolItemMap.put(item,c.getInt(index) != 0);
                         }
                     }
 
-                    SimpleArrayMap<NumItem,Integer> numItemMap = new SimpleArrayMap<>();
-                    for (NumItem item : numItems){
+                    SimpleArrayMap<NumComponent,Integer> numItemMap = new SimpleArrayMap<>();
+                    for (NumComponent item : numItems){
                         int index = c.getColumnIndex(item.columnLabel());
                         if (index > 0){
                             numItemMap.put(item,c.getInt(index));
@@ -153,13 +153,13 @@ public class ChartEntryTableHelper {
         values.put(ChartEntryContract.ENTRY_MOOD_COLUMN,entry.getMoodString());
         values.put(ChartEntryContract.ENTRY_NOTE_COLUMN,entry.getNote());
 
-        SimpleArrayMap<NumItem,Integer> numItemMap = entry.getNumItems();
+        SimpleArrayMap<NumComponent,Integer> numItemMap = entry.getNumItems();
 
         for (int i = 0; i < numItemMap.size();i++){
             values.put(numItemMap.keyAt(i).columnLabel(),numItemMap.valueAt(i));
         }
 
-        SimpleArrayMap<BoolItem,Boolean> boolItemMap = entry.getBoolItems();
+        SimpleArrayMap<BoolComponent,Boolean> boolItemMap = entry.getBoolItems();
         for (int i = 0; i < boolItemMap.size(); i++){
             values.put(
                     boolItemMap.keyAt(i).toString(),

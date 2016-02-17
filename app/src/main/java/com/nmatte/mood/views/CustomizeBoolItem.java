@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.nmatte.mood.controllers.SaveBoolItemEvent;
 import com.nmatte.mood.controllers.chart.RefreshChartEvent;
-import com.nmatte.mood.models.BoolItem;
+import com.nmatte.mood.models.BoolComponent;
 import com.nmatte.mood.moodlog.R;
 
 import de.greenrobot.event.EventBus;
@@ -22,7 +22,7 @@ public class CustomizeBoolItem extends RelativeLayout {
     public ImageButton delButton;
     public ImageButton saveButton;
     public ImageButton editButton;
-    BoolItem boolItem = null;
+    BoolComponent boolItem = null;
     Context context;
     private OnClickListener saveButtonClickListener = new OnClickListener() {
         @Override
@@ -49,7 +49,7 @@ public class CustomizeBoolItem extends RelativeLayout {
         init();
     }
 
-    public CustomizeBoolItem(Context context, BoolItem boolItem){
+    public CustomizeBoolItem(Context context, BoolComponent boolItem){
         super(context);
         this.context = context;
         this.boolItem = boolItem;
@@ -119,9 +119,9 @@ public class CustomizeBoolItem extends RelativeLayout {
     }
 
     @Nullable
-    public BoolItem getBoolItem(){
+    public BoolComponent getBoolItem(){
         if (boolItem == null) {
-            boolItem = new BoolItem();
+            boolItem = new BoolComponent();
         }
 
         if (itemName.getText().length() > 0 && boolItem != null){

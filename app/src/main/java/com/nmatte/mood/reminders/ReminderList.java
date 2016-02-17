@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.nmatte.mood.models.BoolItem;
+import com.nmatte.mood.models.BoolComponent;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class ReminderList extends LinearLayout {
         View v = inflate(context,R.layout.row_reminder_edit,this);
     }
 
-    public void addNotification(int hour, int minute, ArrayList<BoolItem> m){
+    public void addNotification(int hour, int minute, ArrayList<BoolComponent> m){
         /*
         notifications = listener.getAll();
         DateTime time = DateTime

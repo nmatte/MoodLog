@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.nmatte.mood.models.NumItem;
+import com.nmatte.mood.models.NumComponent;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ public class NumItemTableHelper {
     private static final int TRUE = 1,FALSE = 0;
 
 
-    public static NumItem save(Context context, NumItem item){
+    public static NumComponent save(Context context, NumComponent item){
         if (item == null)
             return item;
         if (item.getID() == null && item.getName() == null)
@@ -48,7 +48,7 @@ public class NumItemTableHelper {
         return item;
     }
 
-    private static void addItemColumn(SQLiteDatabase db, NumItem item) {
+    private static void addItemColumn(SQLiteDatabase db, NumComponent item) {
         if (item.getID() == null){
             return;
         }
@@ -67,7 +67,7 @@ public class NumItemTableHelper {
         c.close();
     }
 
-    public static NumItem getItemWithName(SQLiteDatabase db, String itemName){
+    public static NumComponent getItemWithName(SQLiteDatabase db, String itemName){
         if (itemName == null)
             return null;
 
@@ -92,24 +92,24 @@ public class NumItemTableHelper {
                 LogbookItemContract.Num.ITEM_ID_COLUMN);
 
 
-        NumItem item = null;
+        NumComponent item = null;
         if(c.getCount() > 0) {
             c.moveToFirst();
-            item = new NumItem(c.getLong(0),c.getString(1),c.getInt(2),c.getInt(3));
+            item = new NumComponent(c.getLong(0),c.getString(1),c.getInt(2),c.getInt(3));
         }
 
         c.close();
         return item;
     }
 
-    public static NumItem getItemWithName(Context context, String itemName){
+    public static NumComponent getItemWithName(Context context, String itemName){
         SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
-        NumItem item = getItemWithName(db,itemName);
+        NumComponent item = getItemWithName(db,itemName);
         db.close();
         return item;
     }
 
-    public static void delete(Context context, NumItem item){
+    public static void delete(Context context, NumComponent item){
 //        DatabaseHelper DBHelper = new DatabaseHelper(context);
 //        SQLiteDatabase db = DBHelper.getWritableDatabase();
 //        String whereClause = LogbookItemContract.Num.ITEM_NAME_COLUMN + "=?";
@@ -123,7 +123,7 @@ public class NumItemTableHelper {
 //        db.close();
     }
 
-    public static ArrayList<NumItem> getAll(Context context){
+    public static ArrayList<NumComponent> getAll(Context context){
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         String [] columns = new String[] {
@@ -140,10 +140,10 @@ public class NumItemTableHelper {
                 LogbookItemContract.Num.ITEM_ID_COLUMN);
         c.moveToFirst();
 
-        ArrayList<NumItem> numItems = new ArrayList<>();
+        ArrayList<NumComponent> numItems = new ArrayList<>();
         if (c.getCount() > 0){
             do {
-                NumItem item = new NumItem(c.getLong(0),c.getString(1),c.getInt(2),c.getInt(3));
+                NumComponent item = new NumComponent(c.getLong(0),c.getString(1),c.getInt(2),c.getInt(3));
                 numItems.add(item);
             } while(c.moveToNext());
         }
@@ -153,7 +153,7 @@ public class NumItemTableHelper {
         return numItems;
     }
 
-    public static ArrayList<NumItem> getAllVisible(SQLiteDatabase db){
+    public static ArrayList<NumComponent> getAllVisible(SQLiteDatabase db){
         String [] columns = new String[] {
                 LogbookItemContract.Num.ITEM_ID_COLUMN,
                 LogbookItemContract.Num.ITEM_NAME_COLUMN,
@@ -174,10 +174,10 @@ public class NumItemTableHelper {
                 LogbookItemContract.Num.ITEM_ID_COLUMN);
         c.moveToFirst();
 
-        ArrayList<NumItem> numItems = new ArrayList<>();
+        ArrayList<NumComponent> numItems = new ArrayList<>();
         if (c.getCount() > 0){
             do {
-                NumItem item = new NumItem(c.getLong(0),c.getString(1),c.getInt(2),c.getInt(3));
+                NumComponent item = new NumComponent(c.getLong(0),c.getString(1),c.getInt(2),c.getInt(3));
                 numItems.add(item);
             } while(c.moveToNext());
         }

@@ -8,7 +8,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.nmatte.mood.models.NumItem;
+import com.nmatte.mood.models.NumComponent;
 import com.nmatte.mood.moodlog.R;
 
 
@@ -18,7 +18,7 @@ public class CustomNumberPicker extends RelativeLayout {
     TextView textCellView;
     Context context;
 
-    NumItem numItem;
+    NumComponent numItem;
 
 
 
@@ -52,7 +52,7 @@ public class CustomNumberPicker extends RelativeLayout {
         }
     };
 
-    public CustomNumberPicker(Context context, NumItem item){
+    public CustomNumberPicker(Context context, NumComponent item){
         super(context);
 
         this.context = context;
@@ -68,7 +68,7 @@ public class CustomNumberPicker extends RelativeLayout {
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CustomNumberPicker,0,0);
         int defaultNum = a.getInt(R.styleable.CustomNumberPicker_defaultNum,0);
         int maxNum = a.getInt(R.styleable.CustomNumberPicker_max, 100);
-        numItem = new NumItem(null,"",maxNum,defaultNum);
+        numItem = new NumComponent(null,"",maxNum,defaultNum);
         init();
 
    }
@@ -100,9 +100,9 @@ public class CustomNumberPicker extends RelativeLayout {
         textCellView.setText(String.valueOf(newNum));
     }
 
-    public NumItem getNumItem(){
+    public NumComponent getNumItem(){
         if (numItem == null){
-            numItem = new NumItem(null,"",maxNum,0);
+            numItem = new NumComponent(null,"",maxNum,0);
         }
         return numItem;
     }

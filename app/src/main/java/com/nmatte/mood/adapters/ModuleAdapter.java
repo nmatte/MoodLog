@@ -4,7 +4,8 @@ package com.nmatte.mood.adapters;
 import android.content.Context;
 import android.view.View;
 
-import com.nmatte.mood.models.Module;
+import com.nmatte.mood.models.modules.Module;
+import com.nmatte.mood.views.chart.ChartColumn;
 
 import java.util.ArrayList;
 
@@ -18,7 +19,20 @@ abstract public class ModuleAdapter {
         this.module = module;
     }
 
-    abstract public ArrayList<View> getLabelViews();
-    abstract public ArrayList<View> getReadViews();
-    abstract public ArrayList<View> getEditViews();
+    public ArrayList<View> getViews(ChartColumn.Mode mode) {
+        switch(mode) {
+            case ENTRY_READ:
+                return getReadViews();
+            case ENTRY_EDIT:
+                return getEditViews();
+            case LABEL:
+                return getLabelViews();
+            default:
+                return new ArrayList<>();
+        }
+    }
+
+    abstract protected ArrayList<View> getLabelViews();
+    abstract protected ArrayList<View> getReadViews();
+    abstract protected ArrayList<View> getEditViews();
 }

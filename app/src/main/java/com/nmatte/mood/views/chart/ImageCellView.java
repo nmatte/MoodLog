@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.nmatte.mood.models.BoolItem;
+import com.nmatte.mood.models.BoolComponent;
 import com.nmatte.mood.moodlog.R;
 
 
@@ -17,7 +17,7 @@ public class ImageCellView extends CellView {
     Paint blackPaint;
     Rect blackRect;
 
-    BoolItem boolItem;
+    BoolComponent boolItem;
 
     boolean isChecked;
     OnChangeListener onChangeListener = null;

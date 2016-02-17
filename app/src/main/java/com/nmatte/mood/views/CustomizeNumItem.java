@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.nmatte.mood.controllers.SaveNumItemEvent;
 import com.nmatte.mood.controllers.chart.RefreshChartEvent;
-import com.nmatte.mood.models.NumItem;
+import com.nmatte.mood.models.NumComponent;
 import com.nmatte.mood.moodlog.R;
 
 import de.greenrobot.event.EventBus;
@@ -24,7 +24,7 @@ public class CustomizeNumItem extends RelativeLayout {
     public ImageButton editButton;
     public EditText defaultNumText;
     public EditText maxNumText;
-    NumItem numItem = null;
+    NumComponent numItem = null;
     Context context;
     private OnClickListener saveButtonClickListener = new OnClickListener() {
         @Override
@@ -44,7 +44,7 @@ public class CustomizeNumItem extends RelativeLayout {
 
     }
 
-    public CustomizeNumItem(Context context, NumItem numItem){
+    public CustomizeNumItem(Context context, NumComponent numItem){
         super(context);
         this.context = context;
         this.numItem = numItem;
@@ -154,7 +154,7 @@ public class CustomizeNumItem extends RelativeLayout {
         return result;
     }
 
-    public NumItem getNumItem(){
+    public NumComponent getNumItem(){
         String name = itemName.getText().toString();
         String maxNumString = maxNumText.getText().toString();
         String defaultNumString = defaultNumText.getText().toString();
@@ -168,15 +168,15 @@ public class CustomizeNumItem extends RelativeLayout {
 
 
         if (numItem == null){
-            numItem = new NumItem(name, maxNum, defaultNum);
+            numItem = new NumComponent(name, maxNum, defaultNum);
             return numItem;
         } else {
-            numItem = new NumItem(numItem.getID(),name,maxNum,defaultNum);
+            numItem = new NumComponent(numItem.getID(),name,maxNum,defaultNum);
             return numItem;
         }
     }
 
-    public void setNumItem(NumItem numItem) {
+    public void setNumItem(NumComponent numItem) {
         this.numItem = numItem;
         itemName.setText(numItem.getName());
         defaultNumText.setText(String.valueOf(numItem.getDefaultNum()));

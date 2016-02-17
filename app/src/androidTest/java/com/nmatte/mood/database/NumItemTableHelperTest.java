@@ -3,7 +3,7 @@ package com.nmatte.mood.database;
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
 
-import com.nmatte.mood.models.NumItem;
+import com.nmatte.mood.models.NumComponent;
 
 import org.junit.After;
 import org.junit.Before;
@@ -26,10 +26,10 @@ public class NumItemTableHelperTest extends AndroidTestCase {
 
     @Test
     public void testSave() throws Exception {
-        NumItem item = new NumItem("NumItem");
+        NumComponent item = new NumComponent("NumComponent");
         NumItemTableHelper.save(testContext,item);
 
-        NumItem returnedItem = NumItemTableHelper.getItemWithName(testContext,"NumItem");
+        NumComponent returnedItem = NumItemTableHelper.getItemWithName(testContext,"NumComponent");
         assertNotNull(returnedItem);
         assertTrue(returnedItem.getName().equals(item.getName()));
     }
@@ -37,7 +37,7 @@ public class NumItemTableHelperTest extends AndroidTestCase {
 
     @Test
     public void testDelete() throws Exception {
-        NumItem item = new NumItem("DeleteNumItem");
+        NumComponent item = new NumComponent("DeleteNumItem");
         NumItemTableHelper.save(testContext,item);
         NumItemTableHelper.delete(testContext, item);
 
@@ -46,26 +46,26 @@ public class NumItemTableHelperTest extends AndroidTestCase {
 
     @Test
     public void testGetAll() throws Exception {
-        NumItem itemVisible = new NumItem("FooItemVisible");
-        NumItem itemInvisible = new NumItem("FooItemInvisible");
+        NumComponent itemVisible = new NumComponent("FooItemVisible");
+        NumComponent itemInvisible = new NumComponent("FooItemInvisible");
         itemInvisible.setVisible(false);
         NumItemTableHelper.save(testContext, itemVisible);
         NumItemTableHelper.save(testContext, itemInvisible);
 
-        ArrayList<NumItem> afterSave = NumItemTableHelper.getAll(testContext);
+        ArrayList<NumComponent> afterSave = NumItemTableHelper.getAll(testContext);
         assertTrue("doesn't contain visible item", afterSave.contains(itemVisible));
         assertTrue("doesn't contain invisible item", afterSave.contains(itemInvisible));
     }
 
     @Test
     public void testGetAllVisible() throws Exception {
-        NumItem itemVisible = new NumItem("FooItemVisible");
-        NumItem itemInvisible = new NumItem("FooItemInvisible");
+        NumComponent itemVisible = new NumComponent("FooItemVisible");
+        NumComponent itemInvisible = new NumComponent("FooItemInvisible");
         itemInvisible.setVisible(false);
         NumItemTableHelper.save(testContext, itemVisible);
         NumItemTableHelper.save(testContext, itemInvisible);
 
-        ArrayList<NumItem> afterSave = NumItemTableHelper.getAll(testContext);
+        ArrayList<NumComponent> afterSave = NumItemTableHelper.getAll(testContext);
         assertTrue("doesn't contain visible item", afterSave.contains(itemVisible));
         assertFalse("contains invisible item", afterSave.contains(itemInvisible));
 

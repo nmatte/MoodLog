@@ -3,8 +3,8 @@ package com.nmatte.mood.adapters;
 import android.content.Context;
 import android.view.View;
 
-import com.nmatte.mood.models.NumItem;
-import com.nmatte.mood.models.NumModule;
+import com.nmatte.mood.models.NumComponent;
+import com.nmatte.mood.models.modules.NumModule;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.views.chart.CellView;
 import com.nmatte.mood.views.chart.CustomNumberPicker;
@@ -22,10 +22,10 @@ public class NumModuleAdapter extends ModuleAdapter{
     }
 
     @Override
-    public ArrayList<View> getLabelViews() {
+    protected ArrayList<View> getLabelViews() {
         ArrayList<View> views = new ArrayList<>();
 
-        for (NumItem item : module.getItems()) {
+        for (NumComponent item : module.getItems()) {
             TextCellViewBuilder b = new TextCellViewBuilder(context);
             b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width_m));
 
@@ -38,10 +38,10 @@ public class NumModuleAdapter extends ModuleAdapter{
     }
 
     @Override
-    public ArrayList<View> getReadViews() {
+    protected ArrayList<View> getReadViews() {
         ArrayList<View> views = new ArrayList<>();
 
-        for (NumItem item : module.getItems()) {
+        for (NumComponent item : module.getItems()) {
             TextCellViewBuilder b = new TextCellViewBuilder(context)
                     .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
                     .setHorizontalAlignment(TextCellView.TextAlignment.CENTER)
@@ -55,10 +55,10 @@ public class NumModuleAdapter extends ModuleAdapter{
     }
 
     @Override
-    public ArrayList<View> getEditViews() {
+    protected ArrayList<View> getEditViews() {
         ArrayList<View> views = new ArrayList<>();
 
-        for (final NumItem numItem : module.getItems()) {
+        for (final NumComponent numItem : module.getItems()) {
                 final CustomNumberPicker numPicker = new CustomNumberPicker(context,numItem);
                 numPicker.setNumChangeListener(new CustomNumberPicker.NumChangeListener() {
                     @Override

@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.nmatte.mood.models.MoodModule;
+import com.nmatte.mood.models.modules.MoodModule;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.views.chart.CellView;
 import com.nmatte.mood.views.chart.ImageCellView;
@@ -17,21 +17,19 @@ import com.nmatte.mood.views.chart.VerticalText;
 import java.util.ArrayList;
 
 public class MoodModuleAdapter extends ModuleAdapter {
-    boolean isMini = false;
     MoodModule module;
 
-    public MoodModuleAdapter(Context context, MoodModule module, boolean isMini) {
+    public MoodModuleAdapter(Context context, MoodModule module) {
         super(context, module);
         this.module = module;
-        this.isMini = isMini;
     }
 
     private ArrayList<ImageCellView> getCheckboxes(){
         ArrayList<ImageCellView> result = new ArrayList<>();
         Resources res = context.getResources();
-        int colorID = (isMini) ? R.array.mood_colors_mini : R.array.mood_colors;
+        int colorID = (module.isMini()) ? R.array.mood_colors_mini : R.array.mood_colors;
         int [] colors = res.getIntArray(colorID);
-        int factor = (isMini) ? 2 : 1;
+        int factor = (module.isMini()) ? 2 : 1;
         int i = 0;
         for (int color :
                 colors) {
@@ -50,7 +48,7 @@ public class MoodModuleAdapter extends ModuleAdapter {
 
         LinearLayout labelLayout = (LinearLayout) mainView.findViewById(R.id.moodLabelLayout);
 
-        if (this.isMini){
+        if (this.module.isMini()){
             VerticalText depressed = (VerticalText) mainView.findViewById(R.id.depressedText);
             depressed.setTextAlignment(VerticalText.TextAlignment.BOTTOM);
             depressed.setText("DEP");
@@ -74,9 +72,9 @@ public class MoodModuleAdapter extends ModuleAdapter {
 
     public ArrayList<TextCellView> getLabelViewss(){
         ArrayList<TextCellView> result = new ArrayList<>();
-        int labelID = (isMini ) ? R.array.mood_labels_mini : R.array.mood_labels;
+        int labelID = (module.isMini() ) ? R.array.mood_labels_mini : R.array.mood_labels;
         String [] moodLabels = context.getResources().getStringArray(labelID);
-        int colorID = (isMini ) ? R.array.mood_colors_mini : R.array.mood_colors;
+        int colorID = (module.isMini() ) ? R.array.mood_colors_mini : R.array.mood_colors;
         int[] moodColors = context.getResources().getIntArray(colorID);
 
         int i = 0;
@@ -124,7 +122,7 @@ public class MoodModuleAdapter extends ModuleAdapter {
                 }
             });
             views.add(cellView);
-            if (this.isMini)
+            if (this.module.isMini())
                 i += 2;
             else
                 i++;

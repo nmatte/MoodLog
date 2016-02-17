@@ -7,10 +7,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class BoolItemTest extends TestCase{
-    BoolItem testItem;
+    BoolComponent testItem;
     @Before
     public void setUp() throws Exception {
-        testItem = new BoolItem((long) 1,"Foobool");
+        testItem = new BoolComponent((long) 1,"Foobool");
     }
 
     @After

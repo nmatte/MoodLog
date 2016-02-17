@@ -4,8 +4,8 @@ package com.nmatte.mood.adapters;
 import android.content.Context;
 import android.view.View;
 
-import com.nmatte.mood.models.BoolItem;
-import com.nmatte.mood.models.BoolModule;
+import com.nmatte.mood.models.BoolComponent;
+import com.nmatte.mood.models.modules.BoolModule;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.views.chart.CellView;
 import com.nmatte.mood.views.chart.ImageCellView;
@@ -23,10 +23,10 @@ public class BoolModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    public ArrayList<View> getLabelViews() {
+    protected ArrayList<View> getLabelViews() {
         ArrayList<View> views = new ArrayList<>();
 
-        for (BoolItem item : module.getItems()) {
+        for (BoolComponent item : module.getItems()) {
             TextCellViewBuilder b = new TextCellViewBuilder(context);
             b
                     .setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width_m))
@@ -40,10 +40,10 @@ public class BoolModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    public ArrayList<View> getReadViews() {
+    protected ArrayList<View> getReadViews() {
         ArrayList<View> views = new ArrayList<>();
 
-        for (BoolItem item : module.getItems()) {
+        for (BoolComponent item : module.getItems()) {
             ImageCellView imageCellView = new ImageCellView(context, false);
             imageCellView.setBackground(CellView.Background.NONE);
             imageCellView.setChecked(module.get(item));
@@ -56,10 +56,10 @@ public class BoolModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    public ArrayList<View> getEditViews() {
+    protected ArrayList<View> getEditViews() {
         ArrayList<View> views = new ArrayList<>();
 
-        for (final BoolItem item : module.getItems()) {
+        for (final BoolComponent item : module.getItems()) {
             ImageCellView cellView = new ImageCellView(context, true);
             cellView.setOnChangeListener(new ImageCellView.OnChangeListener() {
                 @Override

@@ -4,7 +4,7 @@ package com.nmatte.mood.adapters;
 import android.content.Context;
 import android.view.View;
 
-import com.nmatte.mood.models.NoteModule;
+import com.nmatte.mood.models.modules.NoteModule;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.views.chart.ImageCellView;
 import com.nmatte.mood.views.chart.OpenNoteEvent;
@@ -24,7 +24,7 @@ public class NoteModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    public ArrayList<View> getLabelViews() {
+    protected ArrayList<View> getLabelViews() {
         TextCellViewBuilder b = new TextCellViewBuilder(context)
                 .setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width_m))
                 .setStroke(TextCellView.Stroke.BOLD)
@@ -37,7 +37,7 @@ public class NoteModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    public ArrayList<View> getReadViews() {
+    protected ArrayList<View> getReadViews() {
         ImageCellView cellView = new ImageCellView(context, false);
         cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
 
@@ -58,7 +58,7 @@ public class NoteModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    public ArrayList<View> getEditViews() {
+    protected ArrayList<View> getEditViews() {
         ImageCellView cellView = new ImageCellView(context, false);
         if (module.get().length() > 0){
             cellView.setImageResource(R.drawable.ic_assignment_black_24dp);

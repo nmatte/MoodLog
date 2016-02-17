@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.nmatte.mood.models.BoolItem;
+import com.nmatte.mood.models.BoolComponent;
 
 import java.util.ArrayList;
 
@@ -15,13 +15,13 @@ public class BoolItemTableHelper {
 
     /*
         -- Item names and IDs should be unique.
-        -- If the BoolItem has the same ID as one in the database, simply update the name and set to
+        -- If the BoolComponent has the same ID as one in the database, simply update the name and set to
         visible.
-        -- If the BoolItem has the same name as one in the database, update neither name nor ID, but set
+        -- If the BoolComponent has the same name as one in the database, update neither name nor ID, but set
         to visible (in case user previously removed from chart, but re-made the item)
-        If the BoolItem was not already in the database, add a column to the BoolChartEntry table.
+        If the BoolComponent was not already in the database, add a column to the BoolChartEntry table.
          */
-    public static BoolItem save(Context context, BoolItem item){
+    public static BoolComponent save(Context context, BoolComponent item){
         if (item == null)
             return item;
         if (item.getID() == null && item.getName() == null)
@@ -52,7 +52,7 @@ public class BoolItemTableHelper {
         return item;
     }
 
-    public static BoolItem getItemWithName(SQLiteDatabase db, String itemName){
+    public static BoolComponent getItemWithName(SQLiteDatabase db, String itemName){
         if (itemName == null)
             return null;
 
@@ -73,23 +73,23 @@ public class BoolItemTableHelper {
                 null,null,
                 LogbookItemContract.Bool.ITEM_ID_COLUMN);
 
-        BoolItem item = null;
+        BoolComponent item = null;
         if(c.getCount() > 0){
             c.moveToFirst();
-            item = new BoolItem(c.getLong(0),c.getString(1));
+            item = new BoolComponent(c.getLong(0),c.getString(1));
         }
         c.close();
         return item;
     }
 
-    public static BoolItem getItemWithName(Context context, String itemName){
+    public static BoolComponent getItemWithName(Context context, String itemName){
         SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
-        BoolItem item = getItemWithName(db,itemName);
+        BoolComponent item = getItemWithName(db,itemName);
         db.close();
         return item;
     }
 
-    private static void addItemColumn(SQLiteDatabase db, BoolItem item){
+    private static void addItemColumn(SQLiteDatabase db, BoolComponent item){
         if (item.getID() == null){
             return;
         }
@@ -109,7 +109,7 @@ public class BoolItemTableHelper {
 
     }
 
-    public static void delete(Context context, BoolItem item){
+    public static void delete(Context context, BoolComponent item){
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         String whereClause = LogbookItemContract.Bool.ITEM_ID_COLUMN + "=?";
@@ -125,7 +125,7 @@ public class BoolItemTableHelper {
         // TODO delete column as well
     }
 
-    public static ArrayList<BoolItem> getAll(Context context){
+    public static ArrayList<BoolComponent> getAll(Context context){
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getReadableDatabase();
         String [] columns = new String[] {
@@ -137,10 +137,10 @@ public class BoolItemTableHelper {
                 LogbookItemContract.Bool.ITEM_ID_COLUMN);
         c.moveToFirst();
 
-        ArrayList<BoolItem> boolItems = new ArrayList<>();
+        ArrayList<BoolComponent> boolItems = new ArrayList<>();
         if(c.getCount() > 0){
             do{
-                BoolItem m = new BoolItem(c.getLong(0),c.getString(1));
+                BoolComponent m = new BoolComponent(c.getLong(0),c.getString(1));
                 boolItems.add(m);
             } while(c.moveToNext());
         }
@@ -150,14 +150,14 @@ public class BoolItemTableHelper {
     }
 
 
-    public static ArrayList<BoolItem> getAllVisible(Context context){
+    public static ArrayList<BoolComponent> getAllVisible(Context context){
         SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
-        ArrayList<BoolItem> result = getAllVisible(db);
+        ArrayList<BoolComponent> result = getAllVisible(db);
         db.close();
         return result;
     }
 
-    public static ArrayList<BoolItem> getAllVisible(SQLiteDatabase db){
+    public static ArrayList<BoolComponent> getAllVisible(SQLiteDatabase db){
         String [] columns = new String[] {
                 LogbookItemContract.Bool.ITEM_ID_COLUMN,
                 LogbookItemContract.Bool.ITEM_NAME_COLUMN
@@ -174,10 +174,10 @@ public class BoolItemTableHelper {
                 LogbookItemContract.Bool.ITEM_ID_COLUMN);
         c.moveToFirst();
 
-        ArrayList<BoolItem> boolItems = new ArrayList<>();
+        ArrayList<BoolComponent> boolItems = new ArrayList<>();
         if(c.getCount() > 0){
             do{
-                BoolItem m = new BoolItem(c.getLong(0),c.getString(1));
+                BoolComponent m = new BoolComponent(c.getLong(0),c.getString(1));
                 boolItems.add(m);
             } while(c.moveToNext());
         }

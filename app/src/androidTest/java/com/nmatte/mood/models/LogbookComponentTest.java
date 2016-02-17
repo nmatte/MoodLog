@@ -5,11 +5,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class LogbookItemTest {
-    BoolItem testItem;
+public class LogbookComponentTest {
+    BoolComponent testItem;
     @Before
     public void setUp() throws Exception {
-        testItem = new BoolItem((long)1,"Foobool");
+        testItem = new BoolComponent((long)1,"Foobool");
     }
 
     @After
@@ -60,14 +60,14 @@ public class LogbookItemTest {
 
     @Test
     public void testEquals() throws Exception {
-        BoolItem equalNoID = new BoolItem(testItem.getName());
-        BoolItem equalNoName = new BoolItem();
-        BoolItem equalSame = new BoolItem(testItem.getID(),testItem.getName());
+        BoolComponent equalNoID = new BoolComponent(testItem.getName());
+        BoolComponent equalNoName = new BoolComponent();
+        BoolComponent equalSame = new BoolComponent(testItem.getID(),testItem.getName());
 
 
-        BoolItem notEqualNoID = new BoolItem(testItem.getName() + ";");
-        BoolItem notEqualID = new BoolItem(testItem.getID() + 1,testItem.getName());
-        BoolItem notEqualSame = new BoolItem(testItem.getID() + 1,testItem.getName() + ";");
+        BoolComponent notEqualNoID = new BoolComponent(testItem.getName() + ";");
+        BoolComponent notEqualID = new BoolComponent(testItem.getID() + 1,testItem.getName());
+        BoolComponent notEqualSame = new BoolComponent(testItem.getID() + 1,testItem.getName() + ";");
         equalNoName.setId(testItem.getID());
 
         Assert.assertTrue("equals() doesn't detect items with same name but no ID", testItem.equals(equalNoID));

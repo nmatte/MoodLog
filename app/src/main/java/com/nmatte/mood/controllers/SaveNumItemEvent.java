@@ -1,16 +1,16 @@
 package com.nmatte.mood.controllers;
 
 
-import com.nmatte.mood.models.NumItem;
+import com.nmatte.mood.models.NumComponent;
 
 public class SaveNumItemEvent {
-    NumItem item;
+    NumComponent item;
 
-    public SaveNumItemEvent(NumItem item) {
+    public SaveNumItemEvent(NumComponent item) {
         this.item = item;
     }
 
-    public NumItem getItem(){
+    public NumComponent getItem(){
         return item;
     }
 }

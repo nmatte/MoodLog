@@ -4,25 +4,25 @@ package com.nmatte.mood.models;
  * These are one of the building blocks of the chart.
  * They represent number pickers.
  */
-public class NumItem extends LogbookItem{
+public class NumComponent extends LogbookComponent {
     private int maxNum;
     private int defaultNum;
 
-    public NumItem(Long id, String name) {
+    public NumComponent(Long id, String name) {
         super(id, name);
     }
 
-    public NumItem(String name){
+    public NumComponent(String name){
         super(name);
     }
 
-    public NumItem(Long id, String name, int maxNum, int defaultNum){
+    public NumComponent(Long id, String name, int maxNum, int defaultNum){
         super (id,name);
         this.maxNum = maxNum;
         this.defaultNum = defaultNum;
     }
 
-    public NumItem(String name, int maxNum, int defaultNum){
+    public NumComponent(String name, int maxNum, int defaultNum){
         super(name);
         this.maxNum = maxNum;
         this.defaultNum = defaultNum;
@@ -50,10 +50,10 @@ public class NumItem extends LogbookItem{
             return true;
         if (o == null)
             return false;
-        if (!(o instanceof  NumItem))
+        if (!(o instanceof NumComponent))
             return false;
         else {
-            NumItem rhs = (NumItem) o;
+            NumComponent rhs = (NumComponent) o;
             if (rhs.getID() == null || getID() == null)
                 return false;
             return this.getID().equals(rhs.getID());
