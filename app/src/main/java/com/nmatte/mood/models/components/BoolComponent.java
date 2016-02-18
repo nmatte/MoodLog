@@ -1,4 +1,4 @@
-package com.nmatte.mood.models;
+package com.nmatte.mood.models.components;
 
 /**
  * These are one of the building blocks of the chart.
@@ -45,9 +45,9 @@ public class BoolComponent extends LogbookComponent {
             return false;
         else {
             BoolComponent rhs = (BoolComponent) o;
-            if (rhs.getID() == null || getID() == null)
+            if (rhs.getId() == null || getId() == null)
                 return this.getName().equals(rhs.getName());
-            return this.getID().equals(rhs.getID());
+            return this.getId().equals(rhs.getId());
         }
     }
 }

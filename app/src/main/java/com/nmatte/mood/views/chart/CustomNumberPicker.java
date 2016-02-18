@@ -8,7 +8,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.nmatte.mood.models.NumComponent;
+import com.nmatte.mood.models.components.NumComponent;
 import com.nmatte.mood.moodlog.R;
 
 

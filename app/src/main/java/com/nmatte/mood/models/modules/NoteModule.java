@@ -25,4 +25,9 @@ public class NoteModule extends Module {
     public ModuleAdapter getAdapter(Context context) {
         return new NoteModuleAdapter(context, this);
     }
+
+    @Override
+    public String moduleName() {
+        return "NOTE_MODULE";
+    }
 }

@@ -3,7 +3,7 @@ package com.nmatte.mood.adapters;
 import android.content.Context;
 import android.view.View;
 
-import com.nmatte.mood.models.NumComponent;
+import com.nmatte.mood.models.components.NumComponent;
 import com.nmatte.mood.models.modules.NumModule;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.views.chart.CellView;

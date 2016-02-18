@@ -1,5 +1,7 @@
 package com.nmatte.mood.models;
 
+import com.nmatte.mood.models.components.BoolComponent;
+
 import junit.framework.TestCase;
 
 import org.junit.After;

@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.nmatte.mood.controllers.SaveNumItemEvent;
 import com.nmatte.mood.controllers.chart.RefreshChartEvent;
-import com.nmatte.mood.models.NumComponent;
+import com.nmatte.mood.models.components.NumComponent;
 import com.nmatte.mood.moodlog.R;
 
 import de.greenrobot.event.EventBus;
@@ -171,7 +171,7 @@ public class CustomizeNumItem extends RelativeLayout {
             numItem = new NumComponent(name, maxNum, defaultNum);
             return numItem;
         } else {
-            numItem = new NumComponent(numItem.getID(),name,maxNum,defaultNum);
+            numItem = new NumComponent(numItem.getId(),name,maxNum,defaultNum);
             return numItem;
         }
     }

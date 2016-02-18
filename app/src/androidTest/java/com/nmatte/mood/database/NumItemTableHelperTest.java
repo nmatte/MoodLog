@@ -3,7 +3,8 @@ package com.nmatte.mood.database;
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
 
-import com.nmatte.mood.models.NumComponent;
+import com.nmatte.mood.database.components.NumItemTableHelper;
+import com.nmatte.mood.models.components.NumComponent;
 
 import org.junit.After;
 import org.junit.Before;
@@ -27,7 +28,7 @@ public class NumItemTableHelperTest extends AndroidTestCase {
     @Test
     public void testSave() throws Exception {
         NumComponent item = new NumComponent("NumComponent");
-        NumItemTableHelper.save(testContext,item);
+        NumItemTableHelper.save(testContext, item);
 
         NumComponent returnedItem = NumItemTableHelper.getItemWithName(testContext,"NumComponent");
         assertNotNull(returnedItem);

@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.nmatte.mood.controllers.SaveBoolItemEvent;
 import com.nmatte.mood.controllers.chart.RefreshChartEvent;
-import com.nmatte.mood.models.BoolComponent;
+import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.moodlog.R;
 
 import de.greenrobot.event.EventBus;

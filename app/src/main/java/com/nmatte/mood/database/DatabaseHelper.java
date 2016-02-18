@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.nmatte.mood.database.components.LogbookItemContract;
 import com.nmatte.mood.reminders.ReminderContract;
 
 

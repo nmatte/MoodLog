@@ -1,4 +1,4 @@
-package com.nmatte.mood.database;
+package com.nmatte.mood.database.components;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.nmatte.mood.models.BoolComponent;
+import com.nmatte.mood.database.ChartEntryContract;
+import com.nmatte.mood.database.DatabaseHelper;
+import com.nmatte.mood.models.components.BoolComponent;
 
 import java.util.ArrayList;
 
@@ -24,15 +26,15 @@ public class BoolItemTableHelper {
     public static BoolComponent save(Context context, BoolComponent item){
         if (item == null)
             return item;
-        if (item.getID() == null && item.getName() == null)
+        if (item.getId() == null && item.getName() == null)
             return item;
 
         SQLiteDatabase db =  new DatabaseHelper(context).getWritableDatabase();
         ContentValues values = new ContentValues();
 
         try {
-            if (item.getID() != null)
-                values.put(LogbookItemContract.Bool.ITEM_ID_COLUMN, item.getID());
+            if (item.getId() != null)
+                values.put(LogbookItemContract.Bool.ITEM_ID_COLUMN, item.getId());
             if (item.getName() != null)
                 values.put(LogbookItemContract.Bool.ITEM_NAME_COLUMN,item.getName());
 
@@ -90,7 +92,7 @@ public class BoolItemTableHelper {
     }
 
     private static void addItemColumn(SQLiteDatabase db, BoolComponent item){
-        if (item.getID() == null){
+        if (item.getId() == null){
             return;
         }
         String query1 = "SELECT * FROM "+ ChartEntryContract.ENTRY_TABLE_NAME +" LIMIT 0,1";
@@ -117,7 +119,7 @@ public class BoolItemTableHelper {
         try{
             db.delete(LogbookItemContract.Bool.ITEM_TABLE,
                     whereClause,
-                    new String[]{String.valueOf(item.getID())});
+                    new String[]{String.valueOf(item.getId())});
         } catch (Exception e) {
             Log.e("SQL exception", "error deleting medication");
         }

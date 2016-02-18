@@ -4,7 +4,6 @@ package com.nmatte.mood.adapters;
 import android.content.Context;
 import android.view.View;
 
-import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.modules.LogDateModule;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.views.chart.TextCellView;
@@ -54,7 +53,7 @@ public class LogDateAdapter extends ModuleAdapter{
         ArrayList<View> views = new ArrayList<>();
         TextCellViewBuilder b = new TextCellViewBuilder(context);
 
-        String text = module.isToday() ? "Today" : module.getDate().toString(ChartEntry.EDIT_ENTRY_FORMATTER);
+        String text = module.isToday() ? "Today" : module.getDate().toString(LogDateModule.EDIT_ENTRY_FORMATTER);
         b
                 .setText(text)
                 .setHorizontalAlignment(TextCellView.TextAlignment.CENTER);

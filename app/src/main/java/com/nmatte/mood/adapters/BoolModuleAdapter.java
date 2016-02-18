@@ -4,7 +4,7 @@ package com.nmatte.mood.adapters;
 import android.content.Context;
 import android.view.View;
 
-import com.nmatte.mood.models.BoolComponent;
+import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.models.modules.BoolModule;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.views.chart.CellView;

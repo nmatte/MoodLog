@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.nmatte.mood.models.BoolComponent;
+import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.moodlog.R;
 
 

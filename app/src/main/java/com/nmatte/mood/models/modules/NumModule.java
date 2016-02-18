@@ -6,7 +6,7 @@ import android.support.v4.util.SimpleArrayMap;
 
 import com.nmatte.mood.adapters.ModuleAdapter;
 import com.nmatte.mood.adapters.NumModuleAdapter;
-import com.nmatte.mood.models.NumComponent;
+import com.nmatte.mood.models.components.NumComponent;
 
 import java.util.ArrayList;
 
@@ -16,19 +16,24 @@ import java.util.ArrayList;
  */
 public class NumModule extends Module {
     private SimpleArrayMap<NumComponent,Integer> numItems;
+    private ArrayList<NumComponent> components = new ArrayList<>();
 
     public NumModule(SimpleArrayMap<NumComponent, Integer> numItems) {
         this.numItems = numItems;
     }
 
-    public ArrayList<NumComponent> getItems() {
-        ArrayList<NumComponent> items = new ArrayList<>();
+    public NumModule(ArrayList<NumComponent> components) {
+        this.components = components;
+    }
 
-        for (int i = 0; i < numItems.size(); i++) {
-            items.add(numItems.keyAt(i));
+    public ArrayList<NumComponent> getItems() {
+        if (components.isEmpty()) {
+            for (int i = 0; i < numItems.size(); i++) {
+                components.add(numItems.keyAt(i));
+            }
         }
 
-        return items;
+        return components;
     }
 
     public int get(NumComponent numlItem){
@@ -43,4 +48,5 @@ public class NumModule extends Module {
     public ModuleAdapter getAdapter(Context context) {
         return new NumModuleAdapter(context, this);
     }
+
 }

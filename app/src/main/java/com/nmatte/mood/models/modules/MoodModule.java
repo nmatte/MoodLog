@@ -12,15 +12,27 @@ public class MoodModule extends Module {
     ArrayList<Boolean> fullValues;
     boolean isMini = false;
 
-    public MoodModule(String values){
-        this.fullValues = new ArrayList<>();
-        for (String value : values.split(" ")){
-            fullValues.add(value.equals("T"));
-        }
-    }
-
     public MoodModule(ArrayList<Boolean> fullValues){
         this.fullValues = fullValues;
+    }
+
+    public static ArrayList<Boolean> parseMoodString (String moodString) {
+        ArrayList<Boolean> result = new ArrayList<>();
+        String[] boolStrings = moodString.split(" ");
+        for (String mood : boolStrings) {
+            if (!mood.equals("")) {
+                result.add(mood.equals("T"));
+            }
+        }
+        return result;
+    }
+
+    private static ArrayList<Boolean> getEmptyMoods() {
+        ArrayList<Boolean> result = new ArrayList<>();
+        for (int i = 0; i < 13; i++) {
+            result.add(false);
+        }
+        return result;
     }
 
     public boolean isMini() {
@@ -52,5 +64,10 @@ public class MoodModule extends Module {
     @Override
     public ModuleAdapter getAdapter(Context context) {
         return new MoodModuleAdapter(context, this);
+    }
+
+    @Override
+    public String moduleName() {
+        return "MOOD_MODULE";
     }
 }

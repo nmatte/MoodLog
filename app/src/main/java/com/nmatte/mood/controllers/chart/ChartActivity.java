@@ -14,9 +14,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.controllers.SettingsActivity;
-import com.nmatte.mood.database.BoolItemTableHelper;
 import com.nmatte.mood.database.ChartEntryTableHelper;
-import com.nmatte.mood.database.NumItemTableHelper;
 import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.reminders.ReminderActivity;
@@ -96,8 +94,6 @@ public class ChartActivity extends AppCompatActivity
         mainLayout = (LinearLayout) findViewById(R.id.mainLayout);
         labelColumn = (ChartColumn) findViewById(R.id.labelColumn);
         labelColumn.setMode(ChartColumn.Mode.LABEL);
-        labelColumn.setBoolItems(BoolItemTableHelper.getAll(this));
-        labelColumn.setNumItems(NumItemTableHelper.getAll(this));
         faButton = (FloatingActionButton) findViewById(R.id.fabDone);
         labelColumn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

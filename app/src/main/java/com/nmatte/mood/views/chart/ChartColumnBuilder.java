@@ -2,9 +2,9 @@ package com.nmatte.mood.views.chart;
 
 import android.content.Context;
 
-import com.nmatte.mood.models.BoolComponent;
 import com.nmatte.mood.models.ChartEntry;
-import com.nmatte.mood.models.NumComponent;
+import com.nmatte.mood.models.components.BoolComponent;
+import com.nmatte.mood.models.components.NumComponent;
 
 import java.util.ArrayList;
 

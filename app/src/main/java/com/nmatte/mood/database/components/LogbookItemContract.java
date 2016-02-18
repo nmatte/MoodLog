@@ -1,4 +1,4 @@
-package com.nmatte.mood.database;
+package com.nmatte.mood.database.components;
 
 
 /*

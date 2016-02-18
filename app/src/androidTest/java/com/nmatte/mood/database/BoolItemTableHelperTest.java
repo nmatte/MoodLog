@@ -3,7 +3,8 @@ package com.nmatte.mood.database;
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
 
-import com.nmatte.mood.models.BoolComponent;
+import com.nmatte.mood.database.components.BoolItemTableHelper;
+import com.nmatte.mood.models.components.BoolComponent;
 
 import org.junit.After;
 import org.junit.Before;

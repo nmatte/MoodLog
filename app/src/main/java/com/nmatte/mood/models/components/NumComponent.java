@@ -1,4 +1,4 @@
-package com.nmatte.mood.models;
+package com.nmatte.mood.models.components;
 
 /**
  * These are one of the building blocks of the chart.
@@ -54,9 +54,9 @@ public class NumComponent extends LogbookComponent {
             return false;
         else {
             NumComponent rhs = (NumComponent) o;
-            if (rhs.getID() == null || getID() == null)
+            if (rhs.getId() == null || getId() == null)
                 return false;
-            return this.getID().equals(rhs.getID());
+            return this.getId().equals(rhs.getId());
         }
     }
 
@@ -64,7 +64,7 @@ public class NumComponent extends LogbookComponent {
     public int hashCode() {
         long prime = 457;
         long hash = 1;
-        hash = hash * (( getID() + prime));
+        hash = hash * (( getId() + prime));
         return (int) hash;
     }
 

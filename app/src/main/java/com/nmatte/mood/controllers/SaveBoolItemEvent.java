@@ -1,7 +1,7 @@
 package com.nmatte.mood.controllers;
 
 
-import com.nmatte.mood.models.BoolComponent;
+import com.nmatte.mood.models.components.BoolComponent;
 
 public class SaveBoolItemEvent {
 

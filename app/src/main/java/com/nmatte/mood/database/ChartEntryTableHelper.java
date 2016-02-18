@@ -7,9 +7,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.util.SimpleArrayMap;
 
-import com.nmatte.mood.models.BoolComponent;
+import com.nmatte.mood.database.modules.BoolModuleDatabaseAdapter;
+import com.nmatte.mood.database.modules.ModuleDatabaseAdapter;
+import com.nmatte.mood.database.modules.ModuleTableHelper;
+import com.nmatte.mood.database.modules.NumModuleDatabaseAdapter;
 import com.nmatte.mood.models.ChartEntry;
-import com.nmatte.mood.models.NumComponent;
+import com.nmatte.mood.models.components.BoolComponent;
+import com.nmatte.mood.models.components.NumComponent;
+import com.nmatte.mood.models.modules.LogDateModule;
+import com.nmatte.mood.models.modules.Module;
+import com.nmatte.mood.models.modules.MoodModule;
+import com.nmatte.mood.models.modules.NoteModule;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -18,32 +26,45 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ChartEntryTableHelper {
-    /*
-    the ChartEntry table has two predefined columns, the ID (which is also the date) and the mood
-    values.
-    it also has user-defined columns in the form of NumItems and BoolItems.
-     */
+    private static ArrayList<ModuleDatabaseAdapter> getAdapters(ModuleTableHelper helper) {
+        ArrayList<ModuleDatabaseAdapter> adapters = new ArrayList<>();
+        BoolModuleDatabaseAdapter boolAdapter = new BoolModuleDatabaseAdapter(helper);
+        if (boolAdapter.isVisible()) {
+            adapters.add(boolAdapter);
+        }
+
+        NumModuleDatabaseAdapter numAdapter = new NumModuleDatabaseAdapter(helper);
+        if (numAdapter.isVisible()) {
+            adapters.add(numAdapter);
+        }
+
+        return adapters;
+    }
+
     public static ArrayList<ChartEntry> getEntryGroup(Context context, DateTime startDate, DateTime endDate){
         SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
+        ModuleTableHelper helper = new ModuleTableHelper(db);
 
-        ArrayList<NumComponent> numItems = NumItemTableHelper.getAllVisible(db);
-        ArrayList<BoolComponent> boolItems = BoolItemTableHelper.getAllVisible(db);
+        ArrayList<ModuleDatabaseAdapter> adapters = getAdapters(helper);
+
+        ArrayList<String> allColumns = new ArrayList<>();
+
+        for (ModuleDatabaseAdapter adapter : adapters) {
+            allColumns.addAll(adapter.getColumnNames());
+        }
 
         ArrayList<String> predefinedColumns = new ArrayList<>();
         predefinedColumns.add(ChartEntryContract.ENTRY_DATE_COLUMN);
         predefinedColumns.add(ChartEntryContract.ENTRY_MOOD_COLUMN);
         predefinedColumns.add(ChartEntryContract.ENTRY_NOTE_COLUMN);
 
-        ArrayList<String> allColumns = new ArrayList<>();
         allColumns.addAll(predefinedColumns);
-//        allColumns.addAll(NumComponent.getColumnNames(numItems));
-//        allColumns.addAll(BoolComponent.getColumnNames(boolItems));
 
         String [] columns = allColumns.toArray(new String[allColumns.size()]);
 
         String [] selection = new String[] {
-                String.valueOf(startDate.toLocalDate().toString(ChartEntry.DATE_PATTERN)),
-                String.valueOf(endDate.toLocalDate().toString(ChartEntry.DATE_PATTERN))
+                String.valueOf(startDate.toLocalDate().toString(LogDateModule.DATE_PATTERN)),
+                String.valueOf(endDate.toLocalDate().toString(LogDateModule.DATE_PATTERN))
         };
 
         Cursor c = db.query(
@@ -56,8 +77,9 @@ public class ChartEntryTableHelper {
         ArrayList<ChartEntry> result = new ArrayList<>();
 
         c.moveToFirst();
-        try{
-            if (c.getCount() > 0){
+
+        if (c.getCount() > 0) {
+            try {
                 do {
                     DateTime entryDate = DateTime.parse(
                             c.getString(c.getColumnIndex(ChartEntryContract.ENTRY_DATE_COLUMN)),
@@ -69,35 +91,24 @@ public class ChartEntryTableHelper {
                     String note = c.getString(c.getColumnIndex(ChartEntryContract.ENTRY_NOTE_COLUMN));
 
 
-                    SimpleArrayMap<BoolComponent,Boolean> boolItemMap = new SimpleArrayMap<>();
-                    for (BoolComponent item : boolItems){
-                        int index = c.getColumnIndex(item.toString());
-                        if (index > 0){
-                            boolItemMap.put(item,c.getInt(index) != 0);
-                        }
+                    ArrayList<Module> mods = new ArrayList<>();
+
+                    for (ModuleDatabaseAdapter adapter : adapters) {
+                        mods.add(adapter.constructModule(c));
                     }
 
-                    SimpleArrayMap<NumComponent,Integer> numItemMap = new SimpleArrayMap<>();
-                    for (NumComponent item : numItems){
-                        int index = c.getColumnIndex(item.columnLabel());
-                        if (index > 0){
-                            numItemMap.put(item,c.getInt(index));
-                        }
-                    }
-
-                    ChartEntry entry = new ChartEntry(
-                            entryDate,
-                            chartMoods,
-                            numItemMap,
-                            boolItemMap);
-                    entry.setNote(note);
+                    mods.add(new MoodModule(chartMoods));
+                    mods.add(new NoteModule(note));
+                    ChartEntry entry = new ChartEntry(entryDate, mods);
 
                     result.add(entry);
-                } while(c.moveToNext());
-            }
-        } catch (Exception e){
+                } while (c.moveToNext());
+
+            } catch (Exception e) {
                 e.printStackTrace();
+            }
         }
+
         c.close();
         db.close();
         return result;

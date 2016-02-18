@@ -1,15 +1,22 @@
-package com.nmatte.mood.models;
+package com.nmatte.mood.models.components;
 
 /**
  * LogbookComponent is a field that the user can add to their logbook.
  * This abstract class covers the common aspects of BoolComponents and NumComponents.
- * They all have an id, name, and (optional) color.
+ * It has an id, name, and (optional) color, and belongs to a given module.
  */
 abstract public class LogbookComponent {
     protected Long id;
+    protected long moduleId = -1;
     protected String name;
     protected int color = 0x000000;
     protected boolean isVisible = true;
+
+    public LogbookComponent(Long id, String name, long moduleId) {
+        this.id = id;
+        this.name = name;
+        this.moduleId = moduleId;
+    }
 
     public LogbookComponent(Long id, String name){
         this.id = id;
@@ -24,17 +31,17 @@ abstract public class LogbookComponent {
         this(null,null);
     }
 
-    public void setId(Long id) {
-        if (this.id == null) {
-            this.id = id;
-        }
-    }
-
-    public Long getID() {
+    public Long getId() {
         if (this.id == null) {
             return (long) -1;
         }
         return id;
+    }
+
+    public void setId(Long id) {
+        if (this.id == null) {
+            this.id = id;
+        }
     }
 
     public String getName() {

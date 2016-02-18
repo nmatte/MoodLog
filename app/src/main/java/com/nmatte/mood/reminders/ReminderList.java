@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.nmatte.mood.models.BoolComponent;
+import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;

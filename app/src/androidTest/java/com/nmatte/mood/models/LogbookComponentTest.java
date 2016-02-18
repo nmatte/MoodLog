@@ -1,5 +1,7 @@
 package com.nmatte.mood.models;
 
+import com.nmatte.mood.models.components.BoolComponent;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -19,14 +21,14 @@ public class LogbookComponentTest {
 
     @Test
     public void testSetId() throws Exception {
-        long oldID = testItem.getID();
+        long oldID = testItem.getId();
         testItem.setId((long) 1000);
-        Assert.assertTrue("changes existing ID", testItem.getID() == oldID);
+        Assert.assertTrue("changes existing ID", testItem.getId() == oldID);
     }
 
     @Test
     public void testGetID() throws Exception {
-        Assert.assertTrue(testItem.getID() == 1);
+        Assert.assertTrue(testItem.getId() == 1);
     }
 
     @Test
@@ -62,13 +64,13 @@ public class LogbookComponentTest {
     public void testEquals() throws Exception {
         BoolComponent equalNoID = new BoolComponent(testItem.getName());
         BoolComponent equalNoName = new BoolComponent();
-        BoolComponent equalSame = new BoolComponent(testItem.getID(),testItem.getName());
+        BoolComponent equalSame = new BoolComponent(testItem.getId(),testItem.getName());
 
 
         BoolComponent notEqualNoID = new BoolComponent(testItem.getName() + ";");
-        BoolComponent notEqualID = new BoolComponent(testItem.getID() + 1,testItem.getName());
-        BoolComponent notEqualSame = new BoolComponent(testItem.getID() + 1,testItem.getName() + ";");
-        equalNoName.setId(testItem.getID());
+        BoolComponent notEqualID = new BoolComponent(testItem.getId() + 1,testItem.getName());
+        BoolComponent notEqualSame = new BoolComponent(testItem.getId() + 1,testItem.getName() + ";");
+        equalNoName.setId(testItem.getId());
 
         Assert.assertTrue("equals() doesn't detect items with same name but no ID", testItem.equals(equalNoID));
         Assert.assertTrue("equals() doesn't detect items with same name but no name", testItem.equals(equalNoName));

@@ -19,10 +19,10 @@ import android.widget.LinearLayout;
 
 import com.nmatte.mood.controllers.SaveBoolItemEvent;
 import com.nmatte.mood.controllers.SaveNumItemEvent;
-import com.nmatte.mood.database.BoolItemTableHelper;
-import com.nmatte.mood.database.NumItemTableHelper;
-import com.nmatte.mood.models.BoolComponent;
-import com.nmatte.mood.models.NumComponent;
+import com.nmatte.mood.database.components.BoolItemTableHelper;
+import com.nmatte.mood.database.components.NumItemTableHelper;
+import com.nmatte.mood.models.components.BoolComponent;
+import com.nmatte.mood.models.components.NumComponent;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.settings.PreferencesContract;
 
@@ -193,12 +193,12 @@ public class LogbookCustomizeFragment extends Fragment {
         if (saved == null){
             Log.i("BoolItemTableHelper", "failed to save item");
         }
-        Log.i("BoolComponent saved", "Saved BoolComponent" + saved.getName() + " with ID " + saved.getID().toString());
+        Log.i("BoolComponent saved", "Saved BoolComponent" + saved.getName() + " with ID " + saved.getId().toString());
     }
 
     public void onEvent(SaveNumItemEvent event){
         NumComponent saved = NumItemTableHelper.save(getActivity(), event.getItem());
-        Log.i("NumComponent saved", "Saved NumComponent"  + saved.getName() + " with ID " + saved.getID().toString());
+        Log.i("NumComponent saved", "Saved NumComponent"  + saved.getName() + " with ID " + saved.getId().toString());
     }
 
 
