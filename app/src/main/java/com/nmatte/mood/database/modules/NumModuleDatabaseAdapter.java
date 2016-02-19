@@ -12,8 +12,8 @@ public class NumModuleDatabaseAdapter extends ModuleDatabaseAdapter {
     ArrayList<String> columnNames = new ArrayList<>();
     ArrayList<NumComponent> components = new ArrayList<>();
 
-    public NumModuleDatabaseAdapter(ModuleTableHelper helper) {
-        super(helper, ModuleContract.NUM_MODULE_NAME);
+    public NumModuleDatabaseAdapter(ModuleInfo info) {
+        super(info);
     }
 
     @Override

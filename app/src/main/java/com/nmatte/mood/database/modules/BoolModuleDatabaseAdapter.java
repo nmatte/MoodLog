@@ -12,8 +12,8 @@ public class BoolModuleDatabaseAdapter extends ModuleDatabaseAdapter {
     ArrayList<BoolComponent> components = new ArrayList<>();
 
 
-    public BoolModuleDatabaseAdapter(ModuleTableHelper helper) {
-        super(helper, ModuleContract.BOOL_MODULE_NAME);
+    public BoolModuleDatabaseAdapter(ModuleInfo info) {
+        super(info);
     }
 
     @Override

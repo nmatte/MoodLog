@@ -13,6 +13,7 @@ public class BoolModule extends Module {
     private SimpleArrayMap<BoolComponent,Boolean> valuesMap;
     private ArrayList<BoolComponent> components = new ArrayList<>();
 
+
     public BoolModule(SimpleArrayMap<BoolComponent, Boolean> valuesMap) {
         this.valuesMap = valuesMap;
     }

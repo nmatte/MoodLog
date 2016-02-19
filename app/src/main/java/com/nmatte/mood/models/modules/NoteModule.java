@@ -26,8 +26,4 @@ public class NoteModule extends Module {
         return new NoteModuleAdapter(context, this);
     }
 
-    @Override
-    public String moduleName() {
-        return "NOTE_MODULE";
-    }
 }

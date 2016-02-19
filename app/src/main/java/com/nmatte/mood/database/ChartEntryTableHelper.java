@@ -8,16 +8,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.util.SimpleArrayMap;
 
 import com.nmatte.mood.database.modules.BoolModuleDatabaseAdapter;
+import com.nmatte.mood.database.modules.ModuleContract;
 import com.nmatte.mood.database.modules.ModuleDatabaseAdapter;
 import com.nmatte.mood.database.modules.ModuleTableHelper;
+import com.nmatte.mood.database.modules.MoodModuleDatabaseAdapter;
+import com.nmatte.mood.database.modules.NoteModuleDatabaseAdapter;
 import com.nmatte.mood.database.modules.NumModuleDatabaseAdapter;
 import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.models.components.NumComponent;
 import com.nmatte.mood.models.modules.LogDateModule;
 import com.nmatte.mood.models.modules.Module;
-import com.nmatte.mood.models.modules.MoodModule;
-import com.nmatte.mood.models.modules.NoteModule;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -26,41 +27,54 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ChartEntryTableHelper {
-    private static ArrayList<ModuleDatabaseAdapter> getAdapters(ModuleTableHelper helper) {
-        ArrayList<ModuleDatabaseAdapter> adapters = new ArrayList<>();
-        BoolModuleDatabaseAdapter boolAdapter = new BoolModuleDatabaseAdapter(helper);
-        if (boolAdapter.isVisible()) {
-            adapters.add(boolAdapter);
-        }
+    ArrayList<ModuleDatabaseAdapter> adapters;
+    private Context context;
 
-        NumModuleDatabaseAdapter numAdapter = new NumModuleDatabaseAdapter(helper);
-        if (numAdapter.isVisible()) {
-            adapters.add(numAdapter);
-        }
-
-        return adapters;
+    public ChartEntryTableHelper(Context context) {
+        this.context = context;
+        setAdapters();
     }
 
-    public static ArrayList<ChartEntry> getEntryGroup(Context context, DateTime startDate, DateTime endDate){
+    private void setAdapters() {
+        ArrayList<ModuleDatabaseAdapter> adapters = new ArrayList<>();
         SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
         ModuleTableHelper helper = new ModuleTableHelper(db);
+        adapters.add(new BoolModuleDatabaseAdapter(helper.getModuleInfo(ModuleContract.BOOL_MODULE_NAME)));
+        adapters.add(new NumModuleDatabaseAdapter(helper.getModuleInfo(ModuleContract.NUM_MODULE_NAME)));
+        adapters.add(new NoteModuleDatabaseAdapter(helper.getModuleInfo(ModuleContract.NOTE_MODULE_NAME)));
+        adapters.add(
+                new MoodModuleDatabaseAdapter(
+                        helper.getModuleInfo(ModuleContract.MOOD_MODULE_NAME),
+                        MoodModuleDatabaseAdapter.getIsMini(context)
+                )
+        );
 
-        ArrayList<ModuleDatabaseAdapter> adapters = getAdapters(helper);
+        for (ModuleDatabaseAdapter adapter :
+                adapters) {
+            if (adapter.isVisible()) {
+                this.adapters.add(adapter);
+            }
+        }
+
+        db.close();
+    }
+
+    public ArrayList<ChartEntry> getEntryGroup(DateTime startDate, DateTime endDate){
+        // swap dates if out of order
+        if (startDate.isAfter(endDate)){
+            DateTime tmp = startDate;
+            startDate = endDate;
+            endDate = tmp;
+        }
+
+        SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
 
         ArrayList<String> allColumns = new ArrayList<>();
 
+        allColumns.add(ChartEntryContract.ENTRY_DATE_COLUMN);
         for (ModuleDatabaseAdapter adapter : adapters) {
             allColumns.addAll(adapter.getColumnNames());
         }
-
-        ArrayList<String> predefinedColumns = new ArrayList<>();
-        predefinedColumns.add(ChartEntryContract.ENTRY_DATE_COLUMN);
-        predefinedColumns.add(ChartEntryContract.ENTRY_MOOD_COLUMN);
-        predefinedColumns.add(ChartEntryContract.ENTRY_NOTE_COLUMN);
-
-        allColumns.addAll(predefinedColumns);
-
-        String [] columns = allColumns.toArray(new String[allColumns.size()]);
 
         String [] selection = new String[] {
                 String.valueOf(startDate.toLocalDate().toString(LogDateModule.DATE_PATTERN)),
@@ -69,7 +83,7 @@ public class ChartEntryTableHelper {
 
         Cursor c = db.query(
                 ChartEntryContract.ENTRY_TABLE_NAME,
-                columns,
+                allColumns.toArray(new String[allColumns.size()]),
                 ChartEntryContract.ENTRY_DATE_COLUMN + " BETWEEN ? AND ?",
                 selection,
                 null, null, null);
@@ -82,14 +96,9 @@ public class ChartEntryTableHelper {
             try {
                 do {
                     DateTime entryDate = DateTime.parse(
-                            c.getString(c.getColumnIndex(ChartEntryContract.ENTRY_DATE_COLUMN)),
-                            ChartEntry.YEAR_DAY_FORMATTER);
-
-                    ArrayList<Boolean> chartMoods = ChartEntry.parseMoodString(
-                            c.getString(c.getColumnIndex(ChartEntryContract.ENTRY_MOOD_COLUMN)));
-
-                    String note = c.getString(c.getColumnIndex(ChartEntryContract.ENTRY_NOTE_COLUMN));
-
+                            String.valueOf(c.getInt(c.getColumnIndex(ChartEntryContract.ENTRY_DATE_COLUMN))),
+                            LogDateModule.YEAR_DAY_FORMATTER
+                    );
 
                     ArrayList<Module> mods = new ArrayList<>();
 
@@ -97,8 +106,6 @@ public class ChartEntryTableHelper {
                         mods.add(adapter.constructModule(c));
                     }
 
-                    mods.add(new MoodModule(chartMoods));
-                    mods.add(new NoteModule(note));
                     ChartEntry entry = new ChartEntry(entryDate, mods);
 
                     result.add(entry);
@@ -115,19 +122,17 @@ public class ChartEntryTableHelper {
 
     }
 
-    public static ArrayList<ChartEntry> getGroupWithBlanks(Context context, DateTime startDate, DateTime endDate){
-        // swap dates if out of order
-        if (startDate.isAfter(endDate)){
-            DateTime tmp = startDate;
-            startDate = endDate;
-            endDate = tmp;
-        }
-        int numDays = Days.daysBetween(startDate.toLocalDate(),endDate.toLocalDate()).getDays();
+    public ArrayList<ChartEntry> getGroupWithBlanks(DateTime startDate, DateTime endDate){
+
+        int numDays = Days.daysBetween(startDate.toLocalDate(),endDate.toLocalDate()).getDays() + 1;
         // Joda-time's daysBetween function takes the end date as exclusive.
         // We need to add 1 so that numDays includes the end date.
-        numDays++;
-        ArrayList<ChartEntry> sparseEntries = getEntryGroup(context, startDate, endDate);
-        ArrayList<ChartEntry> result = new ArrayList<>();
+        ArrayList<ChartEntry> sparseEntries = getEntryGroup(startDate, endDate);
+
+        Iterator<ChartEntry> iterator = getEntryGroup(startDate, endDate).iterator();
+
+        ArrayList<ChartEntry> result = new ArrayList<>(numDays);
+
         DateTime currentDate = new DateTime(startDate);
 
         ChartEntry currentEntry = null;
@@ -157,7 +162,7 @@ public class ChartEntryTableHelper {
         return result;
     }
 
-    public static void addOrUpdateEntry(Context context, ChartEntry entry) {
+    public void addOrUpdateEntry(Context context, ChartEntry entry) {
         SQLiteDatabase db = new DatabaseHelper(context).getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(ChartEntryContract.ENTRY_DATE_COLUMN,entry.getDateInt());

@@ -7,32 +7,18 @@ import com.nmatte.mood.models.modules.Module;
 import java.util.ArrayList;
 
 public abstract class ModuleDatabaseAdapter {
-    ModuleTableHelper helper;
-    private String moduleName;
-    private ModuleInfo info = null;
+    private ModuleInfo info;
 
-    public ModuleDatabaseAdapter(ModuleTableHelper helper, String moduleName) {
-        this.helper = helper;
-        this.moduleName = moduleName;
+    public ModuleDatabaseAdapter(ModuleInfo info) {
+        this.info = info;
     }
 
-    private void queryInfo() {
-        info = helper.getModuleInfo(moduleName);
-    }
 
     public boolean isVisible() {
-        if (info == null) {
-            queryInfo();
-        }
-
         return info.isVisible;
     }
 
     public long getId() {
-        if (info == null) {
-            queryInfo();
-        }
-
         return info.id;
     }
 

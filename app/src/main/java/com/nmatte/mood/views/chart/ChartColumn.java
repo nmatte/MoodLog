@@ -127,13 +127,6 @@ public class ChartColumn extends LinearLayout {
         LABEL
     }
 
-//            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-
-//        tutorialFinished = settings.getBoolean(PreferencesContract.TUTORIAL_FINISHED, false);
-
-
-
-
 //                int grayColor = getResources().getColor(R.color.gray_cell_bg);
 //            int whiteColor = getResources().getColor(R.color.white);
 

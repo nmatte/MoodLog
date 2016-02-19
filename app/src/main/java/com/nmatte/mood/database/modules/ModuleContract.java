@@ -14,5 +14,7 @@ public class ModuleContract {
 
     public static final String
         BOOL_MODULE_NAME = "BoolModule",
-        NUM_MODULE_NAME = "NumModule";
+        NUM_MODULE_NAME = "NumModule",
+        NOTE_MODULE_NAME = "NoteModule",
+        MOOD_MODULE_NAME = "MoodModule";
 }
