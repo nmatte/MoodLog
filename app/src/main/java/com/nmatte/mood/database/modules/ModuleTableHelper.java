@@ -3,6 +3,8 @@ package com.nmatte.mood.database.modules;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 public class ModuleTableHelper {
     private SQLiteDatabase db;
 
@@ -43,5 +45,25 @@ public class ModuleTableHelper {
         c.close();
 
         return info;
+    }
+
+
+    public ArrayList<ModuleDatabaseAdapter> getAdapters() {
+        ArrayList<ModuleDatabaseAdapter> result = new ArrayList<>();
+
+        ArrayList<ModuleDatabaseAdapter> adapters = new ArrayList<>();
+        adapters.add(new BoolModuleDatabaseAdapter(this.getModuleInfo(ModuleContract.BOOL_MODULE_NAME)));
+        adapters.add(new NumModuleDatabaseAdapter(this.getModuleInfo(ModuleContract.NUM_MODULE_NAME)));
+        adapters.add(new NoteModuleDatabaseAdapter(this.getModuleInfo(ModuleContract.NOTE_MODULE_NAME)));
+        adapters.add(new MoodModuleDatabaseAdapter(this.getModuleInfo(ModuleContract.MOOD_MODULE_NAME)));
+
+        for (ModuleDatabaseAdapter adapter :
+                adapters) {
+            if (adapter.isVisible()) {
+                result.add(adapter);
+            }
+        }
+
+        return result;
     }
 }

@@ -18,7 +18,7 @@ public class MoodModuleDatabaseAdapter extends ModuleDatabaseAdapter {
     ArrayList<BoolComponent> components = new ArrayList<>();
     boolean isMini;
 
-    public MoodModuleDatabaseAdapter(ModuleInfo info, boolean isMini) {
+    public MoodModuleDatabaseAdapter(ModuleInfo info) {
         super(info);
         this.isMini = isMini;
     }
