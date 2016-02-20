@@ -1,12 +1,10 @@
 package com.nmatte.mood.database.components;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.nmatte.mood.database.DatabaseHelper;
 import com.nmatte.mood.models.components.BoolComponent;
 
 import java.util.ArrayList;
@@ -22,22 +20,21 @@ public class BoolItemTableHelper extends ComponentTableHelper{
         to visible (in case user previously removed from chart, but re-made the item)
         If the BoolComponent was not already in the database, add a column to the BoolChartEntry table.
          */
-    public BoolComponent save(Context context, BoolComponent item){
+    public BoolComponent save(SQLiteDatabase db, BoolComponent item){
         if (item == null)
             return item;
         if (item.getId() == null && item.getName() == null)
             return item;
 
-        SQLiteDatabase db =  new DatabaseHelper(context).getWritableDatabase();
         ContentValues values = new ContentValues();
 
         try {
             if (item.getId() != null)
-                values.put(LogbookItemContract.Bool.ITEM_ID_COLUMN, item.getId());
+                values.put(LogbookItemContract.ID_COLUMN, item.getId());
             if (item.getName() != null)
-                values.put(LogbookItemContract.Bool.ITEM_NAME_COLUMN,item.getName());
+                values.put(LogbookItemContract.NAME_COLUMN,item.getName());
 
-            values.put(LogbookItemContract.Bool.ITEM_VISIBLE_COLUMN, TRUE);
+            values.put(LogbookItemContract.VISIBLE_COLUMN, TRUE);
             db.insertWithOnConflict(
                     LogbookItemContract.Bool.ITEM_TABLE,
                     null,
@@ -48,8 +45,7 @@ public class BoolItemTableHelper extends ComponentTableHelper{
         }
 
         item = getItemWithName(db, item.getName());
-        addColumn(db, item);
-        db.close();
+        addColumn(db, item.columnLabel());
         return item;
     }
 
@@ -58,10 +54,10 @@ public class BoolItemTableHelper extends ComponentTableHelper{
             return null;
 
         String [] columns = new String [] {
-                LogbookItemContract.Bool.ITEM_ID_COLUMN,
-                LogbookItemContract.Bool.ITEM_NAME_COLUMN
+                LogbookItemContract.ID_COLUMN,
+                LogbookItemContract.NAME_COLUMN
         };
-        String selection = LogbookItemContract.Bool.ITEM_NAME_COLUMN + " = ?";
+        String selection = LogbookItemContract.NAME_COLUMN + " = ?";
         String [] args = new String []{
                 itemName
         };
@@ -72,7 +68,7 @@ public class BoolItemTableHelper extends ComponentTableHelper{
                 selection,
                 args,
                 null, null,
-                LogbookItemContract.Bool.ITEM_ID_COLUMN);
+                LogbookItemContract.ID_COLUMN);
 
         BoolComponent item = null;
         if(c.getCount() > 0){
@@ -83,17 +79,8 @@ public class BoolItemTableHelper extends ComponentTableHelper{
         return item;
     }
 
-    public BoolComponent getItemWithName(Context context, String itemName){
-        SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
-        BoolComponent item = getItemWithName(db,itemName);
-        db.close();
-        return item;
-    }
-
-    public void delete(Context context, BoolComponent item){
-        DatabaseHelper DBHelper = new DatabaseHelper(context);
-        SQLiteDatabase db = DBHelper.getWritableDatabase();
-        String whereClause = LogbookItemContract.Bool.ITEM_ID_COLUMN + "=?";
+    public void delete(SQLiteDatabase db, BoolComponent item){
+        String whereClause = LogbookItemContract.ID_COLUMN + "=?";
 
         try{
             db.delete(LogbookItemContract.Bool.ITEM_TABLE,
@@ -103,19 +90,23 @@ public class BoolItemTableHelper extends ComponentTableHelper{
             Log.e("SQL exception", "error deleting medication");
         }
         db.close();
-        // TODO delete column as well
+        // TODO delete column as well!
     }
 
-    public ArrayList<BoolComponent> getAll(Context context){
-        DatabaseHelper DBHelper = new DatabaseHelper(context);
-        SQLiteDatabase db = DBHelper.getReadableDatabase();
+    public ArrayList<BoolComponent> getAll(SQLiteDatabase db){
         String [] columns = new String[] {
-                LogbookItemContract.Bool.ITEM_ID_COLUMN,
-                LogbookItemContract.Bool.ITEM_NAME_COLUMN
+                LogbookItemContract.ID_COLUMN,
+                LogbookItemContract.NAME_COLUMN
         };
 
-        Cursor c = db.query(LogbookItemContract.Bool.ITEM_TABLE, columns, null, null, null, null,
-                LogbookItemContract.Bool.ITEM_ID_COLUMN);
+        Cursor c = db.query(
+                LogbookItemContract.Bool.ITEM_TABLE,
+                columns,
+                null,
+                null,
+                null,
+                null,
+                LogbookItemContract.ID_COLUMN);
         c.moveToFirst();
 
         ArrayList<BoolComponent> boolItems = new ArrayList<>();
@@ -130,29 +121,21 @@ public class BoolItemTableHelper extends ComponentTableHelper{
         return boolItems;
     }
 
-
-    public ArrayList<BoolComponent> getAllVisible(Context context){
-        SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
-        ArrayList<BoolComponent> result = getAllVisible(db);
-        db.close();
-        return result;
-    }
-
     public ArrayList<BoolComponent> getAllVisible(SQLiteDatabase db){
         String [] columns = new String[] {
-                LogbookItemContract.Bool.ITEM_ID_COLUMN,
-                LogbookItemContract.Bool.ITEM_NAME_COLUMN
+                LogbookItemContract.ID_COLUMN,
+                LogbookItemContract.NAME_COLUMN
         };
         Cursor c = db.query(
                 LogbookItemContract.Bool.ITEM_TABLE,
                 columns,
-                LogbookItemContract.Bool.ITEM_VISIBLE_COLUMN + " = ?",
+                LogbookItemContract.VISIBLE_COLUMN + " = ?",
                 new String[]{
                         String.valueOf(TRUE)
                 },
                 null,
                 null,
-                LogbookItemContract.Bool.ITEM_ID_COLUMN);
+                LogbookItemContract.ID_COLUMN);
         c.moveToFirst();
 
         ArrayList<BoolComponent> boolItems = new ArrayList<>();

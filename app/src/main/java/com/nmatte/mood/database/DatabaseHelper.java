@@ -56,12 +56,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void makeBoolItemTable(SQLiteDatabase db){
-        String medTableQuery =
-                "CREATE TABLE IF NOT EXISTS "+ LogbookItemContract.Bool.ITEM_TABLE + " ("
-                + LogbookItemContract.Bool.ITEM_ID_COLUMN + " " + LogbookItemContract.Bool.ITEM_ID_TYPE + ", "
-                + LogbookItemContract.Bool.ITEM_NAME_COLUMN + " " + LogbookItemContract.Bool.ITEM_NAME_TYPE + ", "
-                + LogbookItemContract.Bool.ITEM_VISIBLE_COLUMN + " " + LogbookItemContract.Bool.ITEM_VISIBLE_TYPE + ")";
-        db.execSQL(medTableQuery);
+        StringBuilder builder = new StringBuilder("CREATE TABLE IF NOT EXISTS")
+                .append(LogbookItemContract.Bool.ITEM_TABLE).append(" (")
+                .append(String.format("%s %s,", LogbookItemContract.ID_COLUMN, LogbookItemContract.ID_TYPE))
+                .append(String.format("%s %s,", LogbookItemContract.NAME_COLUMN, LogbookItemContract.NAME_TYPE))
+                .append(String.format("%s %s,", LogbookItemContract.VISIBLE_COLUMN, LogbookItemContract.VISIBLE_TYPE))
+                .append(String.format("%s %s,", LogbookItemContract.COLOR_COLUMN, LogbookItemContract.COLOR_TYPE))
+                .append(String.format("%s %s,", LogbookItemContract.PARENT_MODULE_COLUMN, LogbookItemContract.PARENT_MODULE_TYPE))
+                .append(LogbookItemContract.FOREIGN_KEY_CONSTRAINT)
+                .append(")");
+
+
+//        String medTableQuery =
+//                "CREATE TABLE IF NOT EXISTS "+ LogbookItemContract.Bool.ITEM_TABLE + " ("
+//                + LogbookItemContract.ID_COLUMN + " " + LogbookItemContract.ID_TYPE + ", "
+//                + LogbookItemContract.NAME_COLUMN + " " + LogbookItemContract.NAME_TYPE + ", "
+//                + LogbookItemContract.VISIBLE_COLUMN + " " + LogbookItemContract.VISIBLE_TYPE + ")";
+        db.execSQL(builder.toString());
     }
 
     private void makeReminderTable(SQLiteDatabase db){

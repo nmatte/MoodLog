@@ -3,6 +3,7 @@ package com.nmatte.mood.views;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.widget.LinearLayout;
 
 import com.nmatte.mood.controllers.SaveBoolItemEvent;
 import com.nmatte.mood.controllers.SaveNumItemEvent;
+import com.nmatte.mood.database.DatabaseHelper;
 import com.nmatte.mood.database.components.BoolItemTableHelper;
 import com.nmatte.mood.database.components.NumItemTableHelper;
 import com.nmatte.mood.models.components.BoolComponent;
@@ -53,11 +55,14 @@ public class LogbookCustomizeFragment extends Fragment {
         for (final NumComponent item : numItems){
             addNewNumItem(item,false);
         }
-
-        ArrayList<BoolComponent> boolItems = BoolItemTableHelper.getAll(getActivity());
+        SQLiteDatabase db = new DatabaseHelper(getActivity()).getReadableDatabase();
+        BoolItemTableHelper bHelper = new BoolItemTableHelper();
+        ArrayList<BoolComponent> boolItems = bHelper.getAll(db);
         for (final BoolComponent item : boolItems){
             addNewBoolItem(item);
         }
+
+        db.close();
 
         return mainView;
     }
@@ -189,7 +194,8 @@ public class LogbookCustomizeFragment extends Fragment {
     }
 
     public void onEvent(SaveBoolItemEvent event){
-        BoolComponent saved = BoolItemTableHelper.save(getActivity(), event.getItem());
+        //  FIXME: 2/20/16
+        BoolComponent saved = new BoolComponent(); // = BoolItemTableHelper.save(getActivity(), event.getItem());
         if (saved == null){
             Log.i("BoolItemTableHelper", "failed to save item");
         }
