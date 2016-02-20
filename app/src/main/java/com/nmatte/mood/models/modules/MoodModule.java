@@ -9,17 +9,8 @@ import com.nmatte.mood.models.components.BoolComponent;
 import java.util.ArrayList;
 
 public class MoodModule extends BoolModule {
-
-    boolean isMini;
-
-    public MoodModule(ArrayList<BoolComponent> components, boolean isMini) {
+    public MoodModule(ArrayList<BoolComponent> components) {
         super(components);
-
-        this.isMini = isMini;
-    }
-
-    public boolean isMini() {
-        return isMini;
     }
 
     @Override
