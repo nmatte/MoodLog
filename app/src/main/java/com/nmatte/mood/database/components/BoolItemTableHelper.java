@@ -6,13 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.nmatte.mood.database.ChartEntryContract;
 import com.nmatte.mood.database.DatabaseHelper;
 import com.nmatte.mood.models.components.BoolComponent;
 
 import java.util.ArrayList;
 
-public class BoolItemTableHelper {
+public class BoolItemTableHelper extends ComponentTableHelper{
     private static final int TRUE = 1,FALSE = 0;
 
     /*
@@ -23,7 +22,7 @@ public class BoolItemTableHelper {
         to visible (in case user previously removed from chart, but re-made the item)
         If the BoolComponent was not already in the database, add a column to the BoolChartEntry table.
          */
-    public static BoolComponent save(Context context, BoolComponent item){
+    public BoolComponent save(Context context, BoolComponent item){
         if (item == null)
             return item;
         if (item.getId() == null && item.getName() == null)
@@ -49,12 +48,12 @@ public class BoolItemTableHelper {
         }
 
         item = getItemWithName(db, item.getName());
-        addItemColumn(db,item);
+        addColumn(db, item);
         db.close();
         return item;
     }
 
-    public static BoolComponent getItemWithName(SQLiteDatabase db, String itemName){
+    public BoolComponent getItemWithName(SQLiteDatabase db, String itemName){
         if (itemName == null)
             return null;
 
@@ -72,7 +71,7 @@ public class BoolItemTableHelper {
                 columns,
                 selection,
                 args,
-                null,null,
+                null, null,
                 LogbookItemContract.Bool.ITEM_ID_COLUMN);
 
         BoolComponent item = null;
@@ -84,34 +83,14 @@ public class BoolItemTableHelper {
         return item;
     }
 
-    public static BoolComponent getItemWithName(Context context, String itemName){
+    public BoolComponent getItemWithName(Context context, String itemName){
         SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
         BoolComponent item = getItemWithName(db,itemName);
         db.close();
         return item;
     }
 
-    private static void addItemColumn(SQLiteDatabase db, BoolComponent item){
-        if (item.getId() == null){
-            return;
-        }
-        String query1 = "SELECT * FROM "+ ChartEntryContract.ENTRY_TABLE_NAME +" LIMIT 0,1";
-        Cursor c = db.rawQuery(query1, null);
-
-        // column with this name wasn't found so you can safely add a new column.
-        if (c.getColumnIndex(item.columnLabel()) == -1){
-            String addColumnQuery = "ALTER TABLE " + ChartEntryContract.ENTRY_TABLE_NAME +
-                    " ADD COLUMN " + item.columnLabel() + " " + LogbookItemContract.Bool.LOG_VALUE_TYPE ;
-            db.execSQL(addColumnQuery);
-            Log.i("BoolItemTableHelper", "Added column" + item.columnLabel());
-        } else {
-            Log.i("BoolItemTableHelper", "Skipped adding column" + item.columnLabel());
-        }
-        c.close();
-
-    }
-
-    public static void delete(Context context, BoolComponent item){
+    public void delete(Context context, BoolComponent item){
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         String whereClause = LogbookItemContract.Bool.ITEM_ID_COLUMN + "=?";
@@ -127,7 +106,7 @@ public class BoolItemTableHelper {
         // TODO delete column as well
     }
 
-    public static ArrayList<BoolComponent> getAll(Context context){
+    public ArrayList<BoolComponent> getAll(Context context){
         DatabaseHelper DBHelper = new DatabaseHelper(context);
         SQLiteDatabase db = DBHelper.getReadableDatabase();
         String [] columns = new String[] {
@@ -152,14 +131,14 @@ public class BoolItemTableHelper {
     }
 
 
-    public static ArrayList<BoolComponent> getAllVisible(Context context){
+    public ArrayList<BoolComponent> getAllVisible(Context context){
         SQLiteDatabase db = new DatabaseHelper(context).getReadableDatabase();
         ArrayList<BoolComponent> result = getAllVisible(db);
         db.close();
         return result;
     }
 
-    public static ArrayList<BoolComponent> getAllVisible(SQLiteDatabase db){
+    public ArrayList<BoolComponent> getAllVisible(SQLiteDatabase db){
         String [] columns = new String[] {
                 LogbookItemContract.Bool.ITEM_ID_COLUMN,
                 LogbookItemContract.Bool.ITEM_NAME_COLUMN

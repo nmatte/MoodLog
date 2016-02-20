@@ -42,7 +42,7 @@ public class LogDateModule extends Module {
      * Gets the date as mm/dd or dd/mm depending on DateTime's format for the locale.
      * @return The short date string for the date.
      */
-    public  String getMonthDayString(){
+    public String getMonthDayString(){
         String dateString = date.toString(EDIT_ENTRY_FORMATTER);
 
         DateTime testDate = date;

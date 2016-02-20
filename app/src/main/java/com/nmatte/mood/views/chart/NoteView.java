@@ -42,7 +42,9 @@ public class NoteView extends RelativeLayout{
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                entry.setNote(noteText.getText().toString());
+                // TODO
+
+//                entry.setNote(noteText.getText().toString());
                 EventBus.getDefault().post(new CloseNoteEvent(entry));
             }
         });
@@ -50,8 +52,9 @@ public class NoteView extends RelativeLayout{
 
     public void setEntry(ChartEntry entry) {
         this.entry = entry;
-        noteText.setText(entry.getNote());
-
+        // TODO
+        noteText.setText("placeholder");
+//        noteText.setText(entry.getNote());
     }
 
     public void setMode(ChartColumn.Mode mode){

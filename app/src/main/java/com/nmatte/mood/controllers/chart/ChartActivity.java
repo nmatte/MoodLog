@@ -14,8 +14,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.controllers.SettingsActivity;
-import com.nmatte.mood.database.ChartEntryTableHelper;
-import com.nmatte.mood.models.ChartEntry;
+import com.nmatte.mood.models.modules.LogDateModule;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.reminders.ReminderActivity;
 import com.nmatte.mood.settings.PreferencesContract;
@@ -172,11 +171,13 @@ public class ChartActivity extends AppCompatActivity
             startDate = endDate;
             endDate = tmp;
         }
+
+
         DateTimeFormatter fmt = DateTimeFormat.shortDate().withLocale(Locale.getDefault());
         String title = new StringBuilder()
-                .append(ChartEntry.getMonthDayString(startDate))
+                .append(new LogDateModule(startDate).getMonthDayString())
                 .append("-")
-                .append(ChartEntry.getMonthDayString(endDate))
+                .append(new LogDateModule(startDate).getMonthDayString())
                 .toString();
         menu.findItem(R.id.pickDates).setTitle(title);
     }
@@ -299,7 +300,8 @@ public class ChartActivity extends AppCompatActivity
 
     public void onEvent(OpenNoteEvent event){
         NoteView noteView = (NoteView) findViewById(R.id.entryNoteView);
-        noteView.setEntry(event.getEntry());
+        // TODO fix!!
+//        noteView.setEntry(event.getEntry());
         noteView.setVisibility(View.VISIBLE);
         if (faButton.isShown())
             faButton.hide();
@@ -314,7 +316,8 @@ public class ChartActivity extends AppCompatActivity
         if(monthFragment.isEditEntryViewOpen())
             faButton.show();
         NoteView noteView = (NoteView) findViewById(R.id.entryNoteView);
-        ChartEntryTableHelper.addOrUpdateEntry(this,event.getEntry());
+        // TODO
+//        ChartEntryTableHelper.addOrUpdateEntry(this,event.getEntry());
         noteView.animateDown();
     }
 

@@ -1,17 +1,16 @@
 package com.nmatte.mood.views.chart;
 
 
-import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.modules.NoteModule;
 
 public class OpenNoteEvent {
-    ChartEntry entry;
+    NoteModule module;
 
-    public OpenNoteEvent(NoteModule entry){
-        this.entry = entry;
+    public OpenNoteEvent(NoteModule module){
+        this.module = module;
     }
 
-    public ChartEntry getEntry() {
-        return entry;
+    public NoteModule getModule() {
+        return module;
     }
 }

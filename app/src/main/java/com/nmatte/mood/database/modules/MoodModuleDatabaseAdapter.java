@@ -13,16 +13,14 @@ import java.util.ArrayList;
 public class MoodModuleDatabaseAdapter extends ModuleDatabaseAdapter {
     ArrayList<String> columnNames = new ArrayList<>();
     ArrayList<BoolComponent> components = new ArrayList<>();
-    boolean isMini;
 
     public MoodModuleDatabaseAdapter(ModuleInfo info) {
         super(info);
-        this.isMini = isMini;
     }
 
     @Override
     public Module constructModule(Cursor cursor) {
-        MoodModule module = new MoodModule(getComponents(), isMini);
+        MoodModule module = new MoodModule(getComponents());
 
         for (BoolComponent component :
                 getComponents()) {

@@ -1,6 +1,7 @@
 package com.nmatte.mood.database.modules;
 
 
+import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.nmatte.mood.database.ChartEntryContract;
@@ -19,6 +20,17 @@ public class NoteModuleDatabaseAdapter extends ModuleDatabaseAdapter{
         return new NoteModule(
                 cursor.getString(cursor.getColumnIndex(ChartEntryContract.ENTRY_NOTE_COLUMN))
         );
+    }
+
+    @Override
+    public Module blankModule() {
+        //TODO
+        return null;
+    }
+
+    @Override
+    public void putModule(ContentValues values, Module module) {
+        //TODO
     }
 
     @Override

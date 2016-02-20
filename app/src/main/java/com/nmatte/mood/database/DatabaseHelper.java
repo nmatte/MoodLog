@@ -38,8 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String logbookEntryQuery =
                 "CREATE TABLE IF NOT EXISTS "+ ChartEntryContract.ENTRY_TABLE_NAME+ " ("
                 + ChartEntryContract.ENTRY_DATE_COLUMN + " " + ChartEntryContract.ENTRY_DATE_TYPE + ", "
-                + ChartEntryContract.ENTRY_NOTE_COLUMN + " " + ChartEntryContract.ENTRY_NOTE_TYPE + ", "
-                + ChartEntryContract.ENTRY_MOOD_COLUMN + " " + ChartEntryContract.ENTRY_MOOD_TYPE +  ")";
+                + ChartEntryContract.ENTRY_NOTE_COLUMN + " " + ChartEntryContract.ENTRY_NOTE_TYPE +  ")";
 
         db.execSQL(logbookEntryQuery);
     }

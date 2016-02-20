@@ -1,5 +1,6 @@
 package com.nmatte.mood.database.modules;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.nmatte.mood.models.components.NumComponent;
@@ -27,6 +28,17 @@ public class NumModuleDatabaseAdapter extends ModuleDatabaseAdapter {
         }
 
         return module;
+    }
+
+    @Override
+    public Module blankModule() {
+        // TODO
+        return null;
+    }
+
+    @Override
+    public void putModule(ContentValues values, Module module) {
+        // TODO
     }
 
     @Override

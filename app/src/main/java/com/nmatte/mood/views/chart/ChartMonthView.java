@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import com.nmatte.mood.controllers.chart.CloseEditEntryEvent;
 import com.nmatte.mood.controllers.chart.OpenEditEntryEvent;
 import com.nmatte.mood.database.ChartEntryTableHelper;
+import com.nmatte.mood.database.DatabaseHelper;
 import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.moodlog.R;
 
@@ -67,14 +68,17 @@ public class ChartMonthView extends Fragment {
         this.startDate = startDate;
         this.endDate = endDate;
         editEntryColumn.refresh(getActivity());
-
-        ArrayList<ChartEntry> newList = ChartEntryTableHelper.getGroupWithBlanks(getActivity(), startDate, endDate);
+        // TODO getGroupWithBlanks (currently doesn't include blanks!!)
+//        ArrayList<ChartEntry> newList = ChartEntryTableHelper.getGroupWithBlanks(getActivity(), startDate, endDate);
+        ArrayList<ChartEntry> newList =
+            new ChartEntryTableHelper(new DatabaseHelper(getActivity())).getEntryGroup(startDate, endDate);
 
         if (newList.size() > 0) {
             for (final ChartEntry entry : newList) {
                 SelectorWrapper wrapper = new SelectorWrapper(getActivity());
                 wrapper.setOnLongClickListener(getColumnLongClickListener(wrapper.getColumn()));
-                wrapper.getColumn().setEntry(entry);
+                // TODO
+//                wrapper.getColumn().setEntry(entry);
                 wrapper.getColumn().refresh(getActivity());
                 horizontalLayout.addView(wrapper);
             }
@@ -102,10 +106,11 @@ public class ChartMonthView extends Fragment {
         return new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                boolean isTodayOrEarlier =
-                        column.getEntry().getLogDate().getDayOfYear() <= DateTime.now().getDayOfYear();
-                if (!editEntryViewIsOpen && isTodayOrEarlier)
-                    openColumn(column);
+//                boolean isTodayOrEarlier =
+//                        column.getEntry().getLogDate().getDayOfYear() <= DateTime.now().getDayOfYear();
+//                if (!editEntryViewIsOpen && isTodayOrEarlier)
+//                    openColumn(column);
+                // TODO fix!!!
                 return false;
             }
         };
@@ -159,9 +164,10 @@ public class ChartMonthView extends Fragment {
 
     public void onEvent(CloseEditEntryEvent event){
         try {
-            ChartEntryTableHelper.addOrUpdateEntry(getActivity(), editEntryColumn.getEntry());
-
-            openedColumn.setEntry(editEntryColumn.getEntry());
+            // TODO fix!!
+//            ChartEntryTableHelper.addOrUpdateEntry(getActivity(), editEntryColumn.getEntry());
+//
+//            openedColumn.setEntry(editEntryColumn.getEntry());
             openedColumn.refresh(getActivity());
             horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -185,7 +191,8 @@ public class ChartMonthView extends Fragment {
     private void openColumn(ChartColumn column){
         editEntryViewIsOpen = true;
         openedColumn = column;
-        editEntryColumn.setEntry(column.getEntry());
+        // // FIXME: 2/20/16 !!!
+//        editEntryColumn.setEntry(column.getEntry());
         editEntryColumn.refresh(getActivity());
         editEntryColumn.setX(getCenterX(column));
 

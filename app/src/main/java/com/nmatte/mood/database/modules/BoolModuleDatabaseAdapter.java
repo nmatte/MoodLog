@@ -1,9 +1,11 @@
 package com.nmatte.mood.database.modules;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.models.modules.BoolModule;
+import com.nmatte.mood.models.modules.Module;
 
 import java.util.ArrayList;
 
@@ -39,5 +41,16 @@ public class BoolModuleDatabaseAdapter extends ModuleDatabaseAdapter {
         }
 
         return module;
+    }
+
+    @Override
+    public Module blankModule() {
+        // TODO!!
+        return null;
+    }
+
+    @Override
+    public void putModule(ContentValues values, Module module) {
+        //TODO!!
     }
 }

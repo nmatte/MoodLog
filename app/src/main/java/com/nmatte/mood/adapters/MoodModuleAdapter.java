@@ -1,22 +1,18 @@
 package com.nmatte.mood.adapters;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.nmatte.mood.models.modules.MoodModule;
 import com.nmatte.mood.moodlog.R;
-import com.nmatte.mood.views.chart.CellView;
-import com.nmatte.mood.views.chart.ImageCellView;
 import com.nmatte.mood.views.chart.TextCellView;
 import com.nmatte.mood.views.chart.TextCellViewBuilder;
-import com.nmatte.mood.views.chart.VerticalText;
 
 import java.util.ArrayList;
 
-public class MoodModuleAdapter extends ModuleAdapter {
+public class MoodModuleAdapter extends BoolModuleAdapter {
     MoodModule module;
 
     public MoodModuleAdapter(Context context, MoodModule module) {
@@ -24,23 +20,23 @@ public class MoodModuleAdapter extends ModuleAdapter {
         this.module = module;
     }
 
-    private ArrayList<ImageCellView> getCheckboxes(){
-        ArrayList<ImageCellView> result = new ArrayList<>();
-        Resources res = context.getResources();
-        int colorID = (module.isMini()) ? R.array.mood_colors_mini : R.array.mood_colors;
-        int [] colors = res.getIntArray(colorID);
-        int factor = (module.isMini()) ? 2 : 1;
-        int i = 0;
-        for (int color :
-                colors) {
-            ImageCellView newRow = new ImageCellView(context, color);
-            newRow.setBackground(CellView.Background.NONE);
-            newRow.setChecked(module.get(i));
-            result.add(newRow);
-            i+= factor;
-        }
-        return result;
-    }
+//    private ArrayList<ImageCellView> getCheckboxes(){
+//        ArrayList<ImageCellView> result = new ArrayList<>();
+//        Resources res = context.getResources();
+//        int colorID = (module.isMini()) ? R.array.mood_colors_mini : R.array.mood_colors;
+//        int [] colors = res.getIntArray(colorID);
+//        int factor = (module.isMini()) ? 2 : 1;
+//        int i = 0;
+//        for (int color :
+//                colors) {
+//            ImageCellView newRow = new ImageCellView(context, color);
+//            newRow.setBackground(CellView.Background.NONE);
+//            newRow.setChecked(module.get(i));
+//            result.add(newRow);
+//            i+= factor;
+//        }
+//        return result;
+//    }
 
     @Override
     public ArrayList<View> getLabelViews() {
@@ -48,34 +44,22 @@ public class MoodModuleAdapter extends ModuleAdapter {
 
         LinearLayout labelLayout = (LinearLayout) mainView.findViewById(R.id.moodLabelLayout);
 
-        if (this.module.isMini()){
-            VerticalText depressed = (VerticalText) mainView.findViewById(R.id.depressedText);
-            depressed.setTextAlignment(VerticalText.TextAlignment.BOTTOM);
-            depressed.setText("DEP");
-            VerticalText normal = (VerticalText) mainView.findViewById(R.id.normalText);
-            normal.setText("NORM");
-            VerticalText elevated = (VerticalText) mainView.findViewById(R.id.elevatedText);
-            elevated.setTextAlignment(VerticalText.TextAlignment.TOP);
-            elevated.setText("ELEV");
-        }
+//        if (this.module.isMini()){
+//            VerticalText depressed = (VerticalText) mainView.findViewById(R.id.depressedText);
+//            depressed.setTextAlignment(VerticalText.TextAlignment.BOTTOM);
+//            depressed.setText("DEP");
+//            VerticalText normal = (VerticalText) mainView.findViewById(R.id.normalText);
+//            normal.setText("NORM");
+//            VerticalText elevated = (VerticalText) mainView.findViewById(R.id.elevatedText);
+//            elevated.setTextAlignment(VerticalText.TextAlignment.TOP);
+//            elevated.setText("ELEV");
+//        }
 
-        for (TextCellView cellView : getLabelViewss()){
-            labelLayout.addView(cellView);
-        }
-
-        ArrayList<View> result = new ArrayList<>();
-        result.add(mainView);
-        return result;
-    }
-
-
-
-    public ArrayList<TextCellView> getLabelViewss(){
         ArrayList<TextCellView> result = new ArrayList<>();
-        int labelID = (module.isMini() ) ? R.array.mood_labels_mini : R.array.mood_labels;
-        String [] moodLabels = context.getResources().getStringArray(labelID);
-        int colorID = (module.isMini() ) ? R.array.mood_colors_mini : R.array.mood_colors;
-        int[] moodColors = context.getResources().getIntArray(colorID);
+//        int labelID = (module.isMini() ) ? R.array.mood_labels_mini : R.array.mood_labels;
+        String [] moodLabels = context.getResources().getStringArray(R.array.mood_labels);
+//        int colorID = (module.isMini() ) ? R.array.mood_colors_mini : R.array.mood_colors;
+        int[] moodColors = context.getResources().getIntArray(R.array.mood_colors);
 
         int i = 0;
         for (String label : moodLabels){
@@ -91,42 +75,17 @@ public class MoodModuleAdapter extends ModuleAdapter {
                 result.add(b.setText(label).build());
             }
         }
-        return result;
-    }
 
-    @Override
-    public ArrayList<View> getReadViews() {
-        ArrayList<View> views = new ArrayList<>();
 
-        for (ImageCellView view : this.getCheckboxes()) {
-            view.setEnabled(false);
-            views.add(view);
+
+
+
+        for (TextCellView cellView : result){
+            labelLayout.addView(cellView);
         }
 
-        return views;
-    }
-
-
-
-    @Override
-    public ArrayList<View> getEditViews() {
-        ArrayList<View> views = new ArrayList<>();
-        int i = 0;
-        for (ImageCellView cellView : getCheckboxes()){
-            final int index = i;
-            cellView.setEnabled(true);
-            cellView.setOnChangeListener(new ImageCellView.OnChangeListener() {
-                @Override
-                public void onChange(boolean value) {
-                    module.set(index, value);
-                }
-            });
-            views.add(cellView);
-            if (this.module.isMini())
-                i += 2;
-            else
-                i++;
-        }
-        return views;
+        ArrayList<View> mainResult = new ArrayList<>();
+        mainResult.add(mainView);
+        return mainResult;
     }
 }
