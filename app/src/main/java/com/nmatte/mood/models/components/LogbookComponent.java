@@ -6,40 +6,34 @@ package com.nmatte.mood.models.components;
  * It has an id, name, and (optional) color, and belongs to a given module.
  */
 abstract public class LogbookComponent {
-    protected Long id;
+    protected long id = -1;
     protected long moduleId = -1;
     protected String name;
     protected int color = 0x000000;
     protected boolean isVisible = true;
 
-    public LogbookComponent(Long id, String name, long moduleId) {
+    public LogbookComponent(long id, String name, long moduleId) {
         this.id = id;
         this.name = name;
         this.moduleId = moduleId;
     }
 
-    public LogbookComponent(Long id, String name){
+    public LogbookComponent(long id, String name){
         this.id = id;
         this.name = name;
     }
 
     public LogbookComponent(String name){
-        this(null,name);
+        this.name = name;
     }
 
-    public LogbookComponent(){
-        this(null,null);
-    }
-
-    public Long getId() {
-        if (this.id == null) {
-            return (long) -1;
-        }
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        if (this.id == null) {
+    public void setId(long id) {
+        // (id should be immutable unless it wasn't provided)
+        if (this.id == -1) {
             this.id = id;
         }
     }
@@ -72,11 +66,11 @@ abstract public class LogbookComponent {
     }
 
     public String toString(){
-        return prefix() + id.toString() + ":" + getName();
+        return prefix() + String.valueOf(getId()) + "_" + getName();
     }
 
     public String columnLabel(){
-        return prefix() + id.toString();
+        return toString();
     }
 
     protected abstract String prefix();

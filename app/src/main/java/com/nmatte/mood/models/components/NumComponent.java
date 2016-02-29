@@ -54,9 +54,7 @@ public class NumComponent extends LogbookComponent {
             return false;
         else {
             NumComponent rhs = (NumComponent) o;
-            if (rhs.getId() == null || getId() == null)
-                return false;
-            return this.getId().equals(rhs.getId());
+            return this.toString().equals(rhs.toString());
         }
     }
 

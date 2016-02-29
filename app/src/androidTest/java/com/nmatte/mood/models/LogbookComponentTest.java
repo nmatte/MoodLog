@@ -63,17 +63,14 @@ public class LogbookComponentTest {
     @Test
     public void testEquals() throws Exception {
         BoolComponent equalNoID = new BoolComponent(testItem.getName());
-        BoolComponent equalNoName = new BoolComponent();
         BoolComponent equalSame = new BoolComponent(testItem.getId(),testItem.getName());
 
 
         BoolComponent notEqualNoID = new BoolComponent(testItem.getName() + ";");
         BoolComponent notEqualID = new BoolComponent(testItem.getId() + 1,testItem.getName());
         BoolComponent notEqualSame = new BoolComponent(testItem.getId() + 1,testItem.getName() + ";");
-        equalNoName.setId(testItem.getId());
 
         Assert.assertTrue("equals() doesn't detect items with same name but no ID", testItem.equals(equalNoID));
-        Assert.assertTrue("equals() doesn't detect items with same name but no name", testItem.equals(equalNoName));
         Assert.assertTrue("equals() doesn't detect same item", testItem.equals(equalSame));
         Assert.assertFalse("equals() detects items with different ID and no name", testItem.equals(notEqualNoID));
         Assert.assertFalse("equals() detects items with different name", testItem.equals(notEqualID));

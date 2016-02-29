@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.nmatte.mood.database.components.LogbookItemContract;
+import com.nmatte.mood.database.modules.ModuleContract;
 import com.nmatte.mood.reminders.ReminderContract;
 
 
@@ -25,6 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             makeBoolItemTable(db);
             makeNumItemTable(db);
+            makeModuleTable(db);
 
             makeReminderTable(db);
 
@@ -44,35 +46,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void makeNumItemTable(SQLiteDatabase db){
-        String numItemTableQuery =
+        String query =
                 "CREATE TABLE IF NOT EXISTS "+ LogbookItemContract.Num.ITEM_TABLE + " ("
-                + LogbookItemContract.Num.ITEM_ID_COLUMN + " " + LogbookItemContract.Num.ITEM_ID_TYPE + ", "
-                + LogbookItemContract.Num.ITEM_NAME_COLUMN + " " + LogbookItemContract.Num.ITEM_NAME_TYPE + ", "
-                + LogbookItemContract.Num.ITEM_VISIBLE_COLUMN + " " + LogbookItemContract.Num.ITEM_VISIBLE_TYPE + ", "
+                + LogbookItemContract.ID_COLUMN + " " + LogbookItemContract.ID_TYPE + ", "
+                + LogbookItemContract.NAME_COLUMN + " " + LogbookItemContract.NAME_TYPE + ", "
+                + LogbookItemContract.COLOR_COLUMN + " " + LogbookItemContract.COLOR_TYPE + ", "
                 + LogbookItemContract.Num.ITEM_MAX_COLUMN + " " + LogbookItemContract.Num.ITEM_MAX_TYPE + ", "
-                + LogbookItemContract.Num.ITEM_DEFAULT_COLUMN + " " + LogbookItemContract.Num.ITEM_DEFAULT_TYPE + ")";
+                + LogbookItemContract.Num.ITEM_DEFAULT_COLUMN + " " + LogbookItemContract.Num.ITEM_DEFAULT_TYPE + ", "
+                + LogbookItemContract.PARENT_MODULE_COLUMN + " " + LogbookItemContract.PARENT_MODULE_TYPE + ", "
+                + LogbookItemContract.FOREIGN_KEY_CONSTRAINT + ")";
 
-        db.execSQL(numItemTableQuery);
+        db.execSQL(query);
     }
 
     private void makeBoolItemTable(SQLiteDatabase db){
-        StringBuilder builder = new StringBuilder("CREATE TABLE IF NOT EXISTS")
-                .append(LogbookItemContract.Bool.ITEM_TABLE).append(" (")
-                .append(String.format("%s %s,", LogbookItemContract.ID_COLUMN, LogbookItemContract.ID_TYPE))
-                .append(String.format("%s %s,", LogbookItemContract.NAME_COLUMN, LogbookItemContract.NAME_TYPE))
-                .append(String.format("%s %s,", LogbookItemContract.VISIBLE_COLUMN, LogbookItemContract.VISIBLE_TYPE))
-                .append(String.format("%s %s,", LogbookItemContract.COLOR_COLUMN, LogbookItemContract.COLOR_TYPE))
-                .append(String.format("%s %s,", LogbookItemContract.PARENT_MODULE_COLUMN, LogbookItemContract.PARENT_MODULE_TYPE))
-                .append(LogbookItemContract.FOREIGN_KEY_CONSTRAINT)
-                .append(")");
-
-
-//        String medTableQuery =
-//                "CREATE TABLE IF NOT EXISTS "+ LogbookItemContract.Bool.ITEM_TABLE + " ("
-//                + LogbookItemContract.ID_COLUMN + " " + LogbookItemContract.ID_TYPE + ", "
-//                + LogbookItemContract.NAME_COLUMN + " " + LogbookItemContract.NAME_TYPE + ", "
-//                + LogbookItemContract.VISIBLE_COLUMN + " " + LogbookItemContract.VISIBLE_TYPE + ")";
-        db.execSQL(builder.toString());
+        String query =
+                "CREATE TABLE IF NOT EXISTS "+ LogbookItemContract.Bool.ITEM_TABLE + " ("
+                + LogbookItemContract.ID_COLUMN + " " + LogbookItemContract.ID_TYPE + ", "
+                + LogbookItemContract.NAME_COLUMN + " " + LogbookItemContract.NAME_TYPE + ", "
+                + LogbookItemContract.COLOR_COLUMN + " " + LogbookItemContract.COLOR_TYPE + ", "
+                + LogbookItemContract.PARENT_MODULE_COLUMN + " " + LogbookItemContract.PARENT_MODULE_TYPE + ", "
+                + LogbookItemContract.FOREIGN_KEY_CONSTRAINT + ")";
+        db.execSQL(query);
     }
 
     private void makeReminderTable(SQLiteDatabase db){
@@ -83,6 +78,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ReminderContract.REMINDER_MESSAGE_COLUMN + " " + ReminderContract.REMINDER_MESSAGE_TYPE + ")";
 
         db.execSQL(medReminderTableQuery);
+    }
+
+    private void makeModuleTable(SQLiteDatabase db) {
+        String query =
+                "CREATE TABLE IF NOT EXISTS " + ModuleContract.MODULE_TABLE_NAME + " ("
+                + ModuleContract.MODULE_ID_COLUMN + " " + ModuleContract.MODULE_ID_TYPE + ", "
+                + ModuleContract.MODULE_NAME_COLUMN + " " + ModuleContract.MODULE_NAME_TYPE + ", "
+                + ModuleContract.MODULE_VISIBLE_COLUMN + " " + ModuleContract.MODULE_VISIBLE_TYPE + ")";
+        db.execSQL(query);
     }
 
     @Override

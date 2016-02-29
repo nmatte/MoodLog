@@ -1,5 +1,6 @@
 package com.nmatte.mood.database;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
 
@@ -7,42 +8,46 @@ import com.nmatte.mood.database.components.NumItemTableHelper;
 import com.nmatte.mood.models.components.NumComponent;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
-public class NumItemTableHelperTest extends AndroidTestCase {
-    RenamingDelegatingContext testContext;
+public class NumItemTableHelperTest extends AndroidTestCase{
+//    RenamingDelegatingContext testContext;
+    SQLiteDatabase db;
+    NumItemTableHelper helper;
     @Before
     public void setUp() throws Exception {
-        super.setUp();
-        testContext = new RenamingDelegatingContext(getContext(), "test_");
+        RenamingDelegatingContext testContext =
+                new RenamingDelegatingContext(getContext(), "test_");
+        helper = new NumItemTableHelper();
+        db = new DatabaseHelper(testContext).getWritableDatabase();
     }
 
     @After
     public void tearDown() throws Exception {
-        super.tearDown();
+        db.close();
     }
 
     @Test
     public void testSave() throws Exception {
         NumComponent item = new NumComponent("NumComponent");
-        NumItemTableHelper.save(testContext, item);
+        item = helper.save(db, item);
 
-        NumComponent returnedItem = NumItemTableHelper.getItemWithName(testContext,"NumComponent");
-        assertNotNull(returnedItem);
-        assertTrue(returnedItem.getName().equals(item.getName()));
+
+        Assert.assertFalse("id not updated on save", item.getId() != -1);
     }
 
 
     @Test
     public void testDelete() throws Exception {
-        NumComponent item = new NumComponent("DeleteNumItem");
-        NumItemTableHelper.save(testContext,item);
-        NumItemTableHelper.delete(testContext, item);
-
-        assertNull(NumItemTableHelper.getItemWithName(testContext,"DeleteNumItem"));
+//        NumComponent item = new NumComponent("DeleteNumItem");
+//        helper.save(db,item);
+//        helper.delete(db, item);
+//
+//        Assert.assertFalse(helper.getAll(db).contains(item));
     }
 
     @Test
@@ -50,25 +55,12 @@ public class NumItemTableHelperTest extends AndroidTestCase {
         NumComponent itemVisible = new NumComponent("FooItemVisible");
         NumComponent itemInvisible = new NumComponent("FooItemInvisible");
         itemInvisible.setVisible(false);
-        NumItemTableHelper.save(testContext, itemVisible);
-        NumItemTableHelper.save(testContext, itemInvisible);
+        helper.save(db, itemVisible);
+        helper.save(db, itemInvisible);
 
-        ArrayList<NumComponent> afterSave = NumItemTableHelper.getAll(testContext);
-        assertTrue("doesn't contain visible item", afterSave.contains(itemVisible));
-        assertTrue("doesn't contain invisible item", afterSave.contains(itemInvisible));
+        ArrayList<NumComponent> afterSave = helper.getAll(db);
+        Assert.assertTrue("doesn't contain visible item", afterSave.contains(itemVisible));
+        Assert.assertTrue("doesn't contain invisible item", afterSave.contains(itemInvisible));
     }
 
-    @Test
-    public void testGetAllVisible() throws Exception {
-        NumComponent itemVisible = new NumComponent("FooItemVisible");
-        NumComponent itemInvisible = new NumComponent("FooItemInvisible");
-        itemInvisible.setVisible(false);
-        NumItemTableHelper.save(testContext, itemVisible);
-        NumItemTableHelper.save(testContext, itemInvisible);
-
-        ArrayList<NumComponent> afterSave = NumItemTableHelper.getAll(testContext);
-        assertTrue("doesn't contain visible item", afterSave.contains(itemVisible));
-        assertFalse("contains invisible item", afterSave.contains(itemInvisible));
-
-    }
 }

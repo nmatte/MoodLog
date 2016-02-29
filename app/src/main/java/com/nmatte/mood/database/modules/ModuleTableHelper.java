@@ -1,5 +1,6 @@
 package com.nmatte.mood.database.modules;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -45,6 +46,22 @@ public class ModuleTableHelper {
         c.close();
 
         return info;
+    }
+
+    public void save(String name) {
+        ContentValues values = new ContentValues();
+        try {
+            values.put(ModuleContract.MODULE_VISIBLE_COLUMN, true);
+            values.put(ModuleContract.MODULE_NAME_COLUMN, name);
+
+            db.insertWithOnConflict(
+                    ModuleContract.MODULE_TABLE_NAME,
+                    null,
+                    values,
+                    SQLiteDatabase.CONFLICT_REPLACE);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

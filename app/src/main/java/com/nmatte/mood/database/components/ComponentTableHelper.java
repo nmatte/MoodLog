@@ -9,9 +9,9 @@ import com.nmatte.mood.database.ChartEntryContract;
 
 public class ComponentTableHelper {
 
-    protected void addColumn(SQLiteDatabase db, String columnName){
-        String query1 = "SELECT * FROM "+ ChartEntryContract.ENTRY_TABLE_NAME +" LIMIT 0,1";
-        Cursor c = db.rawQuery(query1, null);
+    public void addColumn(SQLiteDatabase db, String columnName){
+        String columnCheckQuery = "SELECT * FROM "+ ChartEntryContract.ENTRY_TABLE_NAME +" LIMIT 0,1";
+        Cursor c = db.rawQuery(columnCheckQuery, null);
 
         if (c.getColumnIndex(columnName) == -1){
             // column with this name wasn't found so you can safely add a new column.

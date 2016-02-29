@@ -51,7 +51,7 @@ public class LogbookCustomizeFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_logbook_customize,container);
         initLayout(mainView);
 
-        ArrayList<NumComponent> numItems = NumItemTableHelper.getAll(getActivity());
+        ArrayList<NumComponent> numItems = new ArrayList<>(); // NumItemTableHelper.getAll(getActivity());
         for (final NumComponent item : numItems){
             addNewNumItem(item,false);
         }
@@ -195,16 +195,18 @@ public class LogbookCustomizeFragment extends Fragment {
 
     public void onEvent(SaveBoolItemEvent event){
         //  FIXME: 2/20/16
-        BoolComponent saved = new BoolComponent(); // = BoolItemTableHelper.save(getActivity(), event.getItem());
+        BoolComponent saved = new BoolComponent(""); // = BoolItemTableHelper.save(getActivity(), event.getItem());
         if (saved == null){
             Log.i("BoolItemTableHelper", "failed to save item");
         }
-        Log.i("BoolComponent saved", "Saved BoolComponent" + saved.getName() + " with ID " + saved.getId().toString());
+        Log.i("BoolComponent saved", "Saved BoolComponent" + saved.getName() + " with ID " + saved.getId());
     }
 
     public void onEvent(SaveNumItemEvent event){
-        NumComponent saved = NumItemTableHelper.save(getActivity(), event.getItem());
-        Log.i("NumComponent saved", "Saved NumComponent"  + saved.getName() + " with ID " + saved.getId().toString());
+        SQLiteDatabase db = new DatabaseHelper(getActivity()).getWritableDatabase();
+        NumComponent saved = new NumItemTableHelper().save(db, event.getItem());
+        Log.i("NumComponent saved", "Saved NumComponent"  + saved.getName() + " with ID " + saved.getId());
+        db.close();
     }
 
 

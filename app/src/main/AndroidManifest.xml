@@ -30,7 +30,6 @@
         </receiver>
 
 
-        
         <service android:name="com.nmatte.mood.reminders.ReminderService"/>
     </application>
 

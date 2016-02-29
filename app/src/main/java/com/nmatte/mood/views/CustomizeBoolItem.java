@@ -121,7 +121,7 @@ public class CustomizeBoolItem extends RelativeLayout {
     @Nullable
     public BoolComponent getBoolItem(){
         if (boolItem == null) {
-            boolItem = new BoolComponent();
+            boolItem = new BoolComponent("");
         }
 
         if (itemName.getText().length() > 0 && boolItem != null){

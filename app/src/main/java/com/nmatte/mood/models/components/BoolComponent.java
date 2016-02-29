@@ -6,6 +6,10 @@ package com.nmatte.mood.models.components;
  */
 public class BoolComponent extends LogbookComponent {
 
+    public BoolComponent(long id, String name, long moduleId) {
+        super(id, name, moduleId);
+    }
+
     public BoolComponent(Long id, String name, int color) {
         this(id, name);
     }
@@ -18,9 +22,7 @@ public class BoolComponent extends LogbookComponent {
         super(name);
     }
 
-    public BoolComponent(){
-        super();
-    }
+
 
     @Override
     protected String prefix() {
@@ -31,7 +33,7 @@ public class BoolComponent extends LogbookComponent {
     public int hashCode() {
         long prime = 331;
         long hash = 1;
-        hash = hash * ((id == null? 0 : id) + prime);
+        hash = (hash * id) + prime;
         return (int) hash;
     }
 
@@ -45,9 +47,7 @@ public class BoolComponent extends LogbookComponent {
             return false;
         else {
             BoolComponent rhs = (BoolComponent) o;
-            if (rhs.getId() == null || getId() == null)
-                return this.getName().equals(rhs.getName());
-            return this.getId().equals(rhs.getId());
+            return this.toString().equals(rhs.toString());
         }
     }
 }
