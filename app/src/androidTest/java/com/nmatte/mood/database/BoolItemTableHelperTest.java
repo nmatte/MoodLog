@@ -67,6 +67,7 @@ public class BoolItemTableHelperTest extends AndroidTestCase {
         ArrayList<BoolComponent> afterSave = boolHelper.getAll(db);
         assertTrue("doesn't contain visible item", afterSave.contains(itemVisible));
         assertTrue("doesn't contain invisible item", afterSave.contains(itemInvisible));
+//        testContext.getContentResolver().query("content:// com.nmatte.mood.provider", );
         db.close();
     }
 }

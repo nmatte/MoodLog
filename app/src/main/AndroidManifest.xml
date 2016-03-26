@@ -28,7 +28,9 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-
+        <provider
+            android:name="com.nmatte.mood.providers.ConfigProvider"
+            android:authorities="com.nmatte.mood.provider"/>
 
         <service android:name="com.nmatte.mood.reminders.ReminderService"/>
     </application>
