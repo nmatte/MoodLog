@@ -17,7 +17,8 @@ public class ConfigProvider extends ContentProvider {
     static {
         sURIMatcher.addURI("components", "bools", 1);
         sURIMatcher.addURI("components", "bools/#", 2);
-
+        sURIMatcher.addURI("components", "nums", 3);
+        sURIMatcher.addURI("components", "nums/#", 4);
     }
 
     SQLiteDatabase db;
@@ -32,11 +33,21 @@ public class ConfigProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        String table = LogbookItemContract.Bool.ITEM_TABLE;
+        String table = null;
         switch(sURIMatcher.match(uri)) {
             case 1:
+                table = LogbookItemContract.Bool.ITEM_TABLE;
                 break;
             case 2:
+                selection = "_ID = ?";
+                selectionArgs = new String[] {uri.getLastPathSegment()};
+                table = LogbookItemContract.Bool.ITEM_TABLE;
+                break;
+            case 3:
+                table = LogbookItemContract.Num.ITEM_TABLE;
+                break;
+            case 4:
+                table = LogbookItemContract.Num.ITEM_TABLE;
                 selection = "_ID = ?";
                 selectionArgs = new String[] {uri.getLastPathSegment()};
                 break;
