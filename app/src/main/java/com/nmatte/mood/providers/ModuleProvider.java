@@ -10,14 +10,13 @@ import android.support.annotation.Nullable;
 
 import com.nmatte.mood.database.DatabaseHelper;
 
-/**
- * Created by natin on 3/27/16.
- */
+
 public class ModuleProvider extends ContentProvider {
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
         sURIMatcher.addURI("modules", "all", 1);
+        sURIMatcher.addURI("modules", "#", 1);
     }
 
     SQLiteDatabase db;
@@ -32,6 +31,10 @@ public class ModuleProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        switch(sURIMatcher.match(uri)) {
+
+        }
+
         return null;
     }
 
