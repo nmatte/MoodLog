@@ -19,6 +19,8 @@ public class ConfigProvider extends ContentProvider {
         sURIMatcher.addURI("components", "bools/#", 2);
         sURIMatcher.addURI("components", "nums", 3);
         sURIMatcher.addURI("components", "nums/#", 4);
+        sURIMatcher.addURI("modules", "all", 5);
+        sURIMatcher.addURI("modules", "#", 6);
     }
 
     SQLiteDatabase db;
