@@ -4,7 +4,17 @@ import android.content.Context;
 
 import com.nmatte.mood.adapters.ModuleAdapter;
 
-public abstract class Module {
-    abstract public ModuleAdapter getAdapter(Context context);
+import java.util.ArrayList;
 
+public abstract class Module {
+    long id;
+    String name;
+    boolean isEnabled;
+    ArrayList<String> columns;
+
+    public ArrayList<String> getColumns() {
+        return columns;
+    }
+
+    abstract public ModuleAdapter getViewAdapter(Context context);
 }

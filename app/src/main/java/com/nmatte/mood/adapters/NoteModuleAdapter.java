@@ -19,12 +19,12 @@ public class NoteModuleAdapter extends ModuleAdapter {
     NoteModule module;
 
     public NoteModuleAdapter(Context context, NoteModule module) {
-        super(context, module);
+        super(module);
         this.module = module;
     }
 
     @Override
-    protected ArrayList<View> getLabelViews() {
+    protected ArrayList<View> getLabelViews(Context context) {
         TextCellViewBuilder b = new TextCellViewBuilder(context)
                 .setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width_m))
                 .setStroke(TextCellView.Stroke.BOLD)
@@ -37,7 +37,7 @@ public class NoteModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    protected ArrayList<View> getReadViews() {
+    protected ArrayList<View> getReadViews(Context context) {
         ImageCellView cellView = new ImageCellView(context, false);
         cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
 
@@ -58,7 +58,7 @@ public class NoteModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    protected ArrayList<View> getEditViews() {
+    protected ArrayList<View> getEditViews(Context context) {
         ImageCellView cellView = new ImageCellView(context, false);
         if (module.get().length() > 0){
             cellView.setImageResource(R.drawable.ic_assignment_black_24dp);

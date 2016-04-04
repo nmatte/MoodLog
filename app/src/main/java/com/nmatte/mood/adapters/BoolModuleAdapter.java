@@ -18,12 +18,12 @@ public class BoolModuleAdapter extends ModuleAdapter {
     BoolModule module;
 
     public BoolModuleAdapter(Context context, BoolModule module) {
-        super(context, module);
+        super(module);
         this.module = module;
     }
 
     @Override
-    protected ArrayList<View> getLabelViews() {
+    protected ArrayList<View> getLabelViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
 
         for (BoolComponent item : module.getItems()) {
@@ -40,7 +40,7 @@ public class BoolModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    protected ArrayList<View> getReadViews() {
+    protected ArrayList<View> getReadViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
 
         for (BoolComponent item : module.getItems()) {
@@ -56,7 +56,7 @@ public class BoolModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    protected ArrayList<View> getEditViews() {
+    protected ArrayList<View> getEditViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
 
         for (final BoolComponent item : module.getItems()) {

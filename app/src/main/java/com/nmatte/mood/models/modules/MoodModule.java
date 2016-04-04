@@ -14,7 +14,7 @@ public class MoodModule extends BoolModule {
     }
 
     @Override
-    public ModuleAdapter getAdapter(Context context) {
+    public ModuleAdapter getViewAdapter(Context context) {
         return new MoodModuleAdapter(context, this);
     }
 

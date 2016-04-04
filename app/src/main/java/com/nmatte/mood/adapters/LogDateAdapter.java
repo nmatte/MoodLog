@@ -15,12 +15,12 @@ public class LogDateAdapter extends ModuleAdapter{
     LogDateModule module;
 
     public LogDateAdapter(Context context, LogDateModule module) {
-        super(context, module);
+        super(module);
         this.module = module;
     }
 
     @Override
-    protected ArrayList<View> getLabelViews() {
+    protected ArrayList<View> getLabelViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
         TextCellViewBuilder b = new TextCellViewBuilder(context);
         b
@@ -33,7 +33,7 @@ public class LogDateAdapter extends ModuleAdapter{
     }
 
     @Override
-    protected ArrayList<View> getReadViews() {
+    protected ArrayList<View> getReadViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
         TextCellViewBuilder b = new TextCellViewBuilder(context);
         b
@@ -49,7 +49,7 @@ public class LogDateAdapter extends ModuleAdapter{
     }
 
     @Override
-    protected ArrayList<View> getEditViews() {
+    protected ArrayList<View> getEditViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
         TextCellViewBuilder b = new TextCellViewBuilder(context);
 

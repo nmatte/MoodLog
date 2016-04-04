@@ -11,28 +11,26 @@ import java.util.ArrayList;
 
 abstract public class ModuleAdapter {
 
-    protected final Context context;
     protected final Module module;
 
-    public ModuleAdapter(Context context, Module module) {
-        this.context = context;
+    public ModuleAdapter(Module module) {
         this.module = module;
     }
 
-    public ArrayList<View> getViews(ChartColumn.Mode mode) {
+    public ArrayList<View> getViews(ChartColumn.Mode mode, Context context) {
         switch(mode) {
             case ENTRY_READ:
-                return getReadViews();
+                return getReadViews(context);
             case ENTRY_EDIT:
-                return getEditViews();
+                return getEditViews(context);
             case LABEL:
-                return getLabelViews();
+                return getLabelViews(context);
             default:
                 return new ArrayList<>();
         }
     }
 
-    abstract protected ArrayList<View> getLabelViews();
-    abstract protected ArrayList<View> getReadViews();
-    abstract protected ArrayList<View> getEditViews();
+    abstract protected ArrayList<View> getLabelViews(Context context);
+    abstract protected ArrayList<View> getReadViews(Context context);
+    abstract protected ArrayList<View> getEditViews(Context context);
 }

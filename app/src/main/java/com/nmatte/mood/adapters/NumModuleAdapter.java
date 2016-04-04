@@ -17,12 +17,12 @@ public class NumModuleAdapter extends ModuleAdapter{
     NumModule module;
 
     public NumModuleAdapter(Context context, NumModule module) {
-        super(context, module);
+        super(module);
         this.module = module;
     }
 
     @Override
-    protected ArrayList<View> getLabelViews() {
+    protected ArrayList<View> getLabelViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
 
         for (NumComponent item : module.getItems()) {
@@ -38,7 +38,7 @@ public class NumModuleAdapter extends ModuleAdapter{
     }
 
     @Override
-    protected ArrayList<View> getReadViews() {
+    protected ArrayList<View> getReadViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
 
         for (NumComponent item : module.getItems()) {
@@ -55,7 +55,7 @@ public class NumModuleAdapter extends ModuleAdapter{
     }
 
     @Override
-    protected ArrayList<View> getEditViews() {
+    protected ArrayList<View> getEditViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
 
         for (final NumComponent numItem : module.getItems()) {

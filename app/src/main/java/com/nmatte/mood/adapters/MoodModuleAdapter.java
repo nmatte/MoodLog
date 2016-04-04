@@ -39,7 +39,7 @@ public class MoodModuleAdapter extends BoolModuleAdapter {
 //    }
 
     @Override
-    public ArrayList<View> getLabelViews() {
+    public ArrayList<View> getLabelViews(Context context) {
         RelativeLayout mainView = (RelativeLayout) View.inflate(this.context, R.layout.view_moodmodule_large_label, null);
 
         LinearLayout labelLayout = (LinearLayout) mainView.findViewById(R.id.moodLabelLayout);

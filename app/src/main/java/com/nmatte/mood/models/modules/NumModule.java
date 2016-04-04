@@ -45,7 +45,7 @@ public class NumModule extends Module {
     }
 
     @Override
-    public ModuleAdapter getAdapter(Context context) {
+    public ModuleAdapter getViewAdapter(Context context) {
         return new NumModuleAdapter(context, this);
     }
 

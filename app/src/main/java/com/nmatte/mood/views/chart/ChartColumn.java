@@ -97,7 +97,7 @@ public class ChartColumn extends LinearLayout {
     }
 
     private void addAdapter(ModuleAdapter adapter){
-        for (View view : adapter.getViews(mode)) {
+        for (View view : adapter.getViews(mode, context)) {
             addView(view);
         }
     }

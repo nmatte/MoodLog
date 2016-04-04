@@ -24,7 +24,7 @@ public class LogDateModule extends Module {
     }
 
     @Override
-    public ModuleAdapter getAdapter(Context context) {
+    public ModuleAdapter getViewAdapter(Context context) {
         return new LogDateAdapter(context, this);
     }
 
