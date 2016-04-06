@@ -57,7 +57,7 @@ public class LogbookCustomizeFragment extends Fragment {
         }
         SQLiteDatabase db = new DatabaseHelper(getActivity()).getReadableDatabase();
         BoolItemTableHelper bHelper = new BoolItemTableHelper();
-        ArrayList<BoolComponent> boolItems = bHelper.getAll(db);
+        ArrayList<BoolComponent> boolItems = bHelper.getAll(getActivity());
         for (final BoolComponent item : boolItems){
             addNewBoolItem(item);
         }

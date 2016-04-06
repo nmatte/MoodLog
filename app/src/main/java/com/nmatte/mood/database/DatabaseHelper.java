@@ -1,8 +1,10 @@
 package com.nmatte.mood.database;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.nmatte.mood.database.components.LogbookItemContract;
 import com.nmatte.mood.database.modules.ModuleContract;
@@ -17,6 +19,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
+    }
+
+    public static void addColumn(String tableName, String columnName, String type, SQLiteDatabase db){
+        String columnCheckQuery = "SELECT * FROM "+ tableName +" LIMIT 0,1";
+        Cursor c = db.rawQuery(columnCheckQuery, null);
+
+        if (c.getColumnIndex(columnName) == -1){
+            // column with this name wasn't found so you can safely add a new column.
+            String addColumnQuery = "ALTER TABLE " + tableName +
+                    " ADD COLUMN " + columnName + " " + type ;
+            db.execSQL(addColumnQuery);
+            Log.i("ComponentTableHelper", "Added column " + columnName);
+        } else {
+            Log.i("ComponentTableHelper", "Skipped adding column " + columnName);
+        }
+        c.close();
     }
 
     @Override
@@ -34,7 +52,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
-
 
     private void makeChartEntryTable(SQLiteDatabase db){
         String logbookEntryQuery =
@@ -92,6 +109,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
-
-
 }

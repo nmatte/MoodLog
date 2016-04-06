@@ -1,5 +1,9 @@
 package com.nmatte.mood.models.components;
 
+import android.database.Cursor;
+
+import com.nmatte.mood.database.components.LogbookItemContract;
+
 /**
  * These are one of the building blocks of the chart.
  * They represent checkboxes. They are also used in the MoodModule, for instance.
@@ -22,7 +26,16 @@ public class BoolComponent extends LogbookComponent {
         super(name);
     }
 
-
+    public BoolComponent(Cursor c) {
+        super("");
+        int idCol = c.getColumnIndex(LogbookItemContract.ID_COLUMN);
+        id = c.getLong(idCol);
+        int nameCol = c.getColumnIndex(LogbookItemContract.NAME_COLUMN);
+        name = c.getString(nameCol);
+        int modCol = c.getColumnIndex(LogbookItemContract.PARENT_MODULE_COLUMN);
+        moduleId = c.getLong(modCol);
+        color = c.getInt(c.getColumnIndex(LogbookItemContract.COLOR_COLUMN));
+    }
 
     @Override
     protected String prefix() {

@@ -1,6 +1,5 @@
 package com.nmatte.mood.database;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import android.test.RenamingDelegatingContext;
 
@@ -16,13 +15,12 @@ import java.util.ArrayList;
 public class BoolItemTableHelperTest extends AndroidTestCase {
     RenamingDelegatingContext testContext;
     BoolItemTableHelper boolHelper;
-    DatabaseHelper DbHelper;
+
     @Before
     public void setUp() throws Exception {
         super.setUp();
         testContext = new RenamingDelegatingContext(getContext(), "test_");
         boolHelper = new BoolItemTableHelper();
-        DbHelper = new DatabaseHelper(testContext);
     }
 
     @After
@@ -32,26 +30,25 @@ public class BoolItemTableHelperTest extends AndroidTestCase {
 
     @Test
     public void testSave() throws Exception {
-//        BoolComponent item = new BoolComponent("FooItem");
-//        SQLiteDatabase db = DbHelper.getWritableDatabase();
-//        boolHelper.save(db, item);
-//
-//        BoolComponent returnedItem = boolHelper.getItemWithName(db,item.getName());
+        BoolComponent item = new BoolComponent("TestItem");
+        item = boolHelper.save(testContext, item);
+        BoolComponent returnedItem = boolHelper.find(testContext, item.getId());
+
+        assertTrue("BoolComponent id not updated on save", item.getId() > 0);
+//        Log.d("yooo", returnedItem.toString());
 //        assertNotNull(returnedItem);
-//        assertTrue(returnedItem.getName().equals(item.getName()));
-//        db.close();
+        assertTrue(returnedItem.getName().equals(item.getName()));
     }
 
     @Test
     public void testDelete() throws Exception {
         BoolComponent itemDelete = new BoolComponent("FooItemDelete");
 
-        SQLiteDatabase db = DbHelper.getWritableDatabase();
-        boolHelper.save(db, itemDelete);
+        BoolComponent comp = boolHelper.save(testContext, itemDelete);
 
-        boolHelper.delete(db, itemDelete);
-
-        db.close();
+        assertNotNull(boolHelper.find(testContext, comp.getId()));
+        boolHelper.delete(testContext, itemDelete);
+        assertNull(boolHelper.find(testContext, comp.getId()));
     }
 
     @Test
@@ -59,15 +56,13 @@ public class BoolItemTableHelperTest extends AndroidTestCase {
         BoolComponent itemVisible = new BoolComponent("FooItemVisible");
         BoolComponent itemInvisible = new BoolComponent("FooItemInvisible");
 
-        SQLiteDatabase db = DbHelper.getWritableDatabase();
         itemInvisible.setVisible(false);
-        boolHelper.save(db, itemVisible);
-        boolHelper.save(db, itemInvisible);
+        boolHelper.save(testContext, itemVisible);
+        boolHelper.save(testContext, itemInvisible);
 
-        ArrayList<BoolComponent> afterSave = boolHelper.getAll(db);
+        ArrayList<BoolComponent> afterSave = boolHelper.getAll(testContext);
         assertTrue("doesn't contain visible item", afterSave.contains(itemVisible));
         assertTrue("doesn't contain invisible item", afterSave.contains(itemInvisible));
 //        testContext.getContentResolver().query("content:// com.nmatte.mood.provider", );
-        db.close();
     }
 }

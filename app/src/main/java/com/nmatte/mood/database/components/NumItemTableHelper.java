@@ -32,7 +32,6 @@ public class NumItemTableHelper extends ComponentTableHelper {
             e.printStackTrace();
         }
 
-        this.addColumn(db, component.columnLabel());
         return component;
     }
 

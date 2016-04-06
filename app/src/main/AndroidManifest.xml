@@ -29,7 +29,7 @@
             </intent-filter>
         </receiver>
         <provider
-            android:name="com.nmatte.mood.providers.ConfigProvider"
+            android:name="com.nmatte.mood.providers.ComponentProvider"
             android:authorities="com.nmatte.mood.provider"/>
 
         <service android:name="com.nmatte.mood.reminders.ReminderService"/>
