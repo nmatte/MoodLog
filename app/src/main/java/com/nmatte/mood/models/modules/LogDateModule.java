@@ -20,6 +20,7 @@ public class LogDateModule extends Module {
 
 
     public LogDateModule(DateTime date) {
+        super(-1, "LogDateModule", true);
         this.date = date;
     }
 
@@ -82,5 +83,24 @@ public class LogDateModule extends Module {
 
     public int getDateInt() {
         return Integer.valueOf(date.toString(YEAR_DAY_FORMATTER));
+    }
+
+    public ArrayList<DateTime> getDatesInRange (DateTime start, DateTime end) {
+        ArrayList<DateTime> dates = new ArrayList<>();
+
+        if (start.isAfter(end)) {
+            DateTime tmp = start;
+            start = end;
+            end = tmp;
+        }
+
+        DateTime current = start;
+
+        while (current.isBefore(end)) {
+            dates.add(current);
+            current = current.plusDays(1);
+        }
+
+        return dates;
     }
 }

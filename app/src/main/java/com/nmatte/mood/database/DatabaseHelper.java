@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.nmatte.mood.database.components.LogbookItemContract;
+import com.nmatte.mood.database.entries.ChartEntryContract;
 import com.nmatte.mood.database.modules.ModuleContract;
 import com.nmatte.mood.reminders.ReminderContract;
 

@@ -9,8 +9,10 @@ import com.nmatte.mood.models.components.BoolComponent;
 import java.util.ArrayList;
 
 public class MoodModule extends BoolModule {
-    public MoodModule(ArrayList<BoolComponent> components) {
-        super(components);
+
+
+    public MoodModule(long id, String name, boolean isEnabled, ArrayList<BoolComponent> components) {
+        super(id, name, isEnabled, components);
     }
 
     @Override

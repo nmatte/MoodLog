@@ -18,13 +18,10 @@ public class NumModule extends Module {
     private SimpleArrayMap<NumComponent,Integer> numItems;
     private ArrayList<NumComponent> components = new ArrayList<>();
 
-    public NumModule(SimpleArrayMap<NumComponent, Integer> numItems) {
-        this.numItems = numItems;
+    public NumModule(long id, String name, boolean isEnabled, ArrayList<NumComponent> components) {
+        super(id, name, isEnabled);
     }
 
-    public NumModule(ArrayList<NumComponent> components) {
-        this.components = components;
-    }
 
     public ArrayList<NumComponent> getItems() {
         if (components.isEmpty()) {

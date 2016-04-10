@@ -13,20 +13,21 @@ public class BoolModule extends Module {
     private SimpleArrayMap<BoolComponent,Boolean> valuesMap;
     private ArrayList<BoolComponent> components = new ArrayList<>();
 
-
-    public BoolModule(SimpleArrayMap<BoolComponent, Boolean> valuesMap) {
-        this.valuesMap = valuesMap;
+    public BoolModule(long id, String name, boolean isEnabled, ArrayList<BoolComponent> components) {
+        super(id, name, isEnabled);
     }
 
-    public BoolModule(ArrayList<BoolComponent> components) {
-        this.valuesMap = new SimpleArrayMap<>();
-        this.components = components;
 
-        for (BoolComponent component :
-                components) {
-            valuesMap.put(component, false);
-        }
-    }
+//
+//    public BoolModule(ArrayList<BoolComponent> components) {
+//        this.valuesMap = new SimpleArrayMap<>();
+//        this.components = components;
+//
+//        for (BoolComponent component :
+//                components) {
+//            valuesMap.put(component, false);
+//        }
+//    }
 
     public ArrayList<BoolComponent> getItems() {
         if (this.components.isEmpty()) {

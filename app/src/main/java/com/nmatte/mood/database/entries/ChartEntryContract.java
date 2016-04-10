@@ -1,4 +1,4 @@
-package com.nmatte.mood.database;
+package com.nmatte.mood.database.entries;
 
 public class ChartEntryContract {
     public static final String

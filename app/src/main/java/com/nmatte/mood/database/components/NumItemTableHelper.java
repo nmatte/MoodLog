@@ -79,4 +79,11 @@ public class NumItemTableHelper extends ComponentTableHelper {
 
         return numItems;
     }
+
+    public ArrayList<NumComponent> getByParentId(long id) {
+        ArrayList<NumComponent> components = new ArrayList<>();
+
+
+        return components;
+    }
 }

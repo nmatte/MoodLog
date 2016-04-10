@@ -12,8 +12,8 @@ import android.widget.LinearLayout;
 
 import com.nmatte.mood.controllers.chart.CloseEditEntryEvent;
 import com.nmatte.mood.controllers.chart.OpenEditEntryEvent;
-import com.nmatte.mood.database.ChartEntryTableHelper;
 import com.nmatte.mood.database.DatabaseHelper;
+import com.nmatte.mood.database.entries.ChartEntryTableHelper;
 import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.moodlog.R;
 
