@@ -20,7 +20,7 @@ public class BoolItemTableHelperTest extends AndroidTestCase {
     public void setUp() throws Exception {
         super.setUp();
         testContext = new RenamingDelegatingContext(getContext(), "test_");
-        boolHelper = new BoolItemTableHelper();
+        boolHelper = new BoolItemTableHelper(testContext);
     }
 
     @After
@@ -31,24 +31,23 @@ public class BoolItemTableHelperTest extends AndroidTestCase {
     @Test
     public void testSave() throws Exception {
         BoolComponent item = new BoolComponent("TestItem");
-        item = boolHelper.save(testContext, item);
-        BoolComponent returnedItem = boolHelper.find(testContext, item.getId());
+        long id = boolHelper.save(item);
+        BoolComponent returnedItem = boolHelper.find(id);
 
-        assertTrue("BoolComponent id not updated on save", item.getId() > 0);
-//        Log.d("yooo", returnedItem.toString());
-//        assertNotNull(returnedItem);
-        assertTrue(returnedItem.getName().equals(item.getName()));
+        assertTrue("BoolComponent id updates on save", id  > 0);
+        assertNotNull("BoolComponent is found", returnedItem);
+        assertTrue("Component name saves correctly",returnedItem.getName().equals(item.getName()));
     }
 
     @Test
     public void testDelete() throws Exception {
         BoolComponent itemDelete = new BoolComponent("FooItemDelete");
 
-        BoolComponent comp = boolHelper.save(testContext, itemDelete);
+        long id = boolHelper.save(itemDelete);
 
-        assertNotNull(boolHelper.find(testContext, comp.getId()));
-        boolHelper.delete(testContext, itemDelete);
-        assertNull(boolHelper.find(testContext, comp.getId()));
+        assertNotNull(boolHelper.find(id));
+        boolHelper.delete(itemDelete);
+        assertNull(boolHelper.find(id));
     }
 
     @Test
@@ -57,12 +56,11 @@ public class BoolItemTableHelperTest extends AndroidTestCase {
         BoolComponent itemInvisible = new BoolComponent("FooItemInvisible");
 
         itemInvisible.setVisible(false);
-        boolHelper.save(testContext, itemVisible);
-        boolHelper.save(testContext, itemInvisible);
+        boolHelper.save(itemVisible);
+        boolHelper.save(itemInvisible);
 
-        ArrayList<BoolComponent> afterSave = boolHelper.getAll(testContext);
+        ArrayList<BoolComponent> afterSave = boolHelper.getAll();
         assertTrue("doesn't contain visible item", afterSave.contains(itemVisible));
         assertTrue("doesn't contain invisible item", afterSave.contains(itemInvisible));
-//        testContext.getContentResolver().query("content:// com.nmatte.mood.provider", );
     }
 }

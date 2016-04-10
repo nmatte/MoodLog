@@ -56,8 +56,8 @@ public class LogbookCustomizeFragment extends Fragment {
             addNewNumItem(item,false);
         }
         SQLiteDatabase db = new DatabaseHelper(getActivity()).getReadableDatabase();
-        BoolItemTableHelper bHelper = new BoolItemTableHelper();
-        ArrayList<BoolComponent> boolItems = bHelper.getAll(getActivity());
+        BoolItemTableHelper bHelper = new BoolItemTableHelper(getActivity());
+        ArrayList<BoolComponent> boolItems = bHelper.getAll();
         for (final BoolComponent item : boolItems){
             addNewBoolItem(item);
         }
@@ -204,7 +204,7 @@ public class LogbookCustomizeFragment extends Fragment {
 
     public void onEvent(SaveNumItemEvent event){
         SQLiteDatabase db = new DatabaseHelper(getActivity()).getWritableDatabase();
-        NumComponent saved = new NumItemTableHelper().save(db, event.getItem());
+        NumComponent saved = new NumItemTableHelper(getActivity()).save(db, event.getItem());
         Log.i("NumComponent saved", "Saved NumComponent"  + saved.getName() + " with ID " + saved.getId());
         db.close();
     }

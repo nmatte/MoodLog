@@ -67,7 +67,9 @@ public class ComponentProvider extends ContentProvider {
                 break;
         }
         Cursor c = db.query(table, projection, selection, selectionArgs, sortOrder, null, null);
-        c.moveToFirst();
+        if (c != null) {
+            c.moveToFirst();
+        }
         return c;
     }
 

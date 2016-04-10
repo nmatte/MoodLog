@@ -1,6 +1,7 @@
 package com.nmatte.mood.database.components;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -10,6 +11,10 @@ import java.util.ArrayList;
 
 public class NumItemTableHelper extends ComponentTableHelper {
     private static final int TRUE = 1,FALSE = 0;
+
+    public NumItemTableHelper(Context context) {
+        super(context);
+    }
 
 
     public NumComponent save(SQLiteDatabase db, NumComponent component){
