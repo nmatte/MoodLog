@@ -3,6 +3,7 @@ package com.nmatte.mood.views.chart;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.util.SimpleArrayMap;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,14 +13,11 @@ import android.widget.LinearLayout;
 
 import com.nmatte.mood.controllers.chart.CloseEditEntryEvent;
 import com.nmatte.mood.controllers.chart.OpenEditEntryEvent;
-import com.nmatte.mood.database.DatabaseHelper;
 import com.nmatte.mood.database.entries.ChartEntryTableHelper;
 import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.moodlog.R;
 
 import org.joda.time.DateTime;
-
-import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 import io.codetail.animation.SupportAnimator;
@@ -70,19 +68,19 @@ public class ChartMonthView extends Fragment {
         editEntryColumn.refresh(getActivity());
         // TODO getGroupWithBlanks (currently doesn't include blanks!!)
 //        ArrayList<ChartEntry> newList = ChartEntryTableHelper.getGroupWithBlanks(getActivity(), startDate, endDate);
-        ArrayList<ChartEntry> newList =
-            new ChartEntryTableHelper(new DatabaseHelper(getActivity())).getEntryGroup(startDate, endDate);
+        SimpleArrayMap<DateTime, ChartEntry> vals =
+            new ChartEntryTableHelper(getActivity()).getEntryGroup(startDate, endDate);
 
-        if (newList.size() > 0) {
-            for (final ChartEntry entry : newList) {
-                SelectorWrapper wrapper = new SelectorWrapper(getActivity());
-                wrapper.setOnLongClickListener(getColumnLongClickListener(wrapper.getColumn()));
-                // TODO
-//                wrapper.getColumn().setEntry(entry);
-                wrapper.getColumn().refresh(getActivity());
-                horizontalLayout.addView(wrapper);
-            }
-        }
+//        if (newList.size() > 0) {
+//            for (final ChartEntry entry : newList) {
+//                SelectorWrapper wrapper = new SelectorWrapper(getActivity());
+//                wrapper.setOnLongClickListener(getColumnLongClickListener(wrapper.getColumn()));
+//                // TODO
+////                wrapper.getColumn().setEntry(entry);
+//                wrapper.getColumn().refresh(getActivity());
+//                horizontalLayout.addView(wrapper);
+//            }
+//        }
         horizontalLayout.invalidate();
         horizontalScrollView.invalidate();
         backgroundLayout.invalidate();

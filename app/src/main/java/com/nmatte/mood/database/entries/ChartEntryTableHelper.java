@@ -4,11 +4,11 @@ package com.nmatte.mood.database.entries;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.util.SimpleArrayMap;
 
 import com.nmatte.mood.database.modules.ModuleTableHelper;
 import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.modules.LogDateModule;
-import com.nmatte.mood.models.modules.Module;
 import com.nmatte.mood.models.modules.ModuleConfig;
 import com.nmatte.mood.providers.EntryProvider;
 
@@ -22,23 +22,16 @@ public class ChartEntryTableHelper {
         this.context = context;
     }
 
-    public ArrayList<ChartEntry> getEntryGroup(DateTime startDate, DateTime endDate){
+    public SimpleArrayMap<DateTime, ChartEntry> getEntryGroup(DateTime startDate, DateTime endDate){
         ModuleConfig config = new ModuleTableHelper(context).getModules();
         EntryCursorAdapter adapter = new EntryCursorAdapter(config);
-
-        // swap dates if out of order
-        if (startDate.isAfter(endDate)){
-            DateTime tmp = startDate;
-            startDate = endDate;
-            endDate = tmp;
-        }
-        ArrayList<String> allColumns = new ArrayList<>();
-
-        allColumns.add(ChartEntryContract.ENTRY_DATE_COLUMN);
+        ArrayList<String> allColumns = config.allColumns();
+        ArrayList<DateTime> dates = LogDateModule.getDatesInRange(startDate, endDate);
+        SimpleArrayMap<DateTime, ChartEntry> result = new SimpleArrayMap<>(dates.size());
 
         String [] selection = new String[] {
-                String.valueOf(startDate.toLocalDate().toString(LogDateModule.DATE_PATTERN)),
-                String.valueOf(endDate.toLocalDate().toString(LogDateModule.DATE_PATTERN))
+                LogDateModule.getString(startDate),
+                LogDateModule.getString(endDate)
         };
 
         Cursor c = context.getContentResolver().query(
@@ -47,25 +40,22 @@ public class ChartEntryTableHelper {
                 ChartEntryContract.ENTRY_DATE_COLUMN + " BETWEEN ? AND ?",
                 selection,
                 null);
-
-        ArrayList<ChartEntry> result = new ArrayList<>();
-
+        c.moveToFirst();
         if (c.getCount() > 0) {
             try {
-                do {
-                    DateTime entryDate = DateTime.parse(
-                            String.valueOf(c.getInt(c.getColumnIndex(ChartEntryContract.ENTRY_DATE_COLUMN))),
-                            LogDateModule.YEAR_DAY_FORMATTER
-                    );
+                int dateIndex = 0;
+                int dateColumnIndex = c.getColumnIndexOrThrow(config.dateColumn());
 
-                    ArrayList<Module> mods = new ArrayList<>();
-
-
-
-//                    ChartEntry entry = new ChartEntry(entryDate, mods);
-
-//                    result.add(entry);
-                } while (c.moveToNext());
+                for (int i = 0; i < dates.size(); i++) {
+                    DateTime date = dates.get(i);
+                    int dateInt = LogDateModule.getDateInt(date);
+                    if (!c.isAfterLast() && dateInt == c.getInt(dateColumnIndex)) {
+                        result.put(date, adapter.getEntry(c));
+                        c.moveToNext();
+                    } else {
+                        result.put(date, adapter.getBlank(date));
+                    }
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();

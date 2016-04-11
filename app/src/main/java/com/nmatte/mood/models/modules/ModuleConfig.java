@@ -1,5 +1,7 @@
 package com.nmatte.mood.models.modules;
 
+import android.content.ContentValues;
+
 import com.nmatte.mood.database.entries.ChartEntryContract;
 import com.nmatte.mood.database.modules.ModuleContract;
 import com.nmatte.mood.models.components.BoolComponent;
@@ -12,6 +14,7 @@ public class ModuleConfig {
     MoodModule moodMod;
     NumModule  numMod;
     NoteModule noteMod;
+    ContentValues defaults;
 
     public ModuleConfig(ArrayList<Module> modules) {
         for (Module module :
@@ -30,7 +33,32 @@ public class ModuleConfig {
                     this.noteMod = (NoteModule) module;
             }
         }
+
+        makeDefaults();
     }
+
+    private void makeDefaults() {
+        for (BoolComponent comp : boolMod.getItems()) {
+            defaults.put(comp.columnLabel(), 0);
+        }
+
+        for (BoolComponent comp : moodMod.getItems()) {
+            defaults.put(comp.columnLabel(), 0);
+        }
+
+        for (NumComponent comp : numMod.getItems()) {
+            defaults.put(comp.columnLabel(), comp.getDefaultNum());
+        }
+
+        for (String col : strColumns()) {
+            defaults.put(col, "");
+        }
+    }
+
+    public ContentValues getDefaults() {
+        return defaults;
+    }
+
 
     public ArrayList<String> boolColumns() {
         ArrayList<String> columns = new ArrayList<>();

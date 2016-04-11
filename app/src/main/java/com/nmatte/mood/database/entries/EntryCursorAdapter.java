@@ -4,7 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.nmatte.mood.models.ChartEntry;
+import com.nmatte.mood.models.modules.LogDateModule;
 import com.nmatte.mood.models.modules.ModuleConfig;
+
+import org.joda.time.DateTime;
 
 public class EntryCursorAdapter {
     ModuleConfig config;
@@ -42,5 +45,11 @@ public class EntryCursorAdapter {
         }
 
         return new ChartEntry(values);
+    }
+
+    public ChartEntry getBlank(DateTime date) {
+        ContentValues defaults = config.getDefaults();
+        defaults.put(config.dateColumn(), LogDateModule.getDateInt(date));
+        return new ChartEntry(defaults);
     }
 }

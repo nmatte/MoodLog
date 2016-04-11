@@ -44,8 +44,6 @@ public class BoolItemTableHelperTest extends AndroidTestCase {
         BoolComponent itemDelete = new BoolComponent("FooItemDelete");
 
         long id = boolHelper.save(itemDelete);
-
-        assertNotNull(boolHelper.find(id));
         boolHelper.delete(itemDelete);
         assertNull(boolHelper.find(id));
     }
