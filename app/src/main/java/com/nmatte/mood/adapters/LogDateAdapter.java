@@ -14,8 +14,7 @@ import java.util.ArrayList;
 public class LogDateAdapter extends ModuleAdapter{
     LogDateModule module;
 
-    public LogDateAdapter(Context context, LogDateModule module) {
-        super(module);
+    public LogDateAdapter(LogDateModule module) {
         this.module = module;
     }
 

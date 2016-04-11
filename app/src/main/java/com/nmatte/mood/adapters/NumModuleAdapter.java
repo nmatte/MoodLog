@@ -13,8 +13,7 @@ import java.util.ArrayList;
 public class NumModuleAdapter extends ModuleAdapter{
     NumModule module;
 
-    public NumModuleAdapter(Context context, NumModule module) {
-        super(module);
+    public NumModuleAdapter(NumModule module) {
         this.module = module;
     }
 

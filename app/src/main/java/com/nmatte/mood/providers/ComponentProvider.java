@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 
 import com.nmatte.mood.database.DatabaseHelper;
-import com.nmatte.mood.database.components.LogbookItemContract;
+import com.nmatte.mood.database.components.ComponentContract;
 
 public class ComponentProvider extends ContentProvider {
     public static final String CONTENT_AUTHORITY = "com.nmatte.mood.provider";
@@ -36,40 +36,32 @@ public class ComponentProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         String table = null;
+
         switch(sURIMatcher.match(uri)) {
             case 1:
-                table = LogbookItemContract.Bool.ITEM_TABLE;
-                projection = new String[] {
-                    LogbookItemContract.ID_COLUMN,
-                    LogbookItemContract.PARENT_MODULE_COLUMN,
-                    LogbookItemContract.NAME_COLUMN,
-                    LogbookItemContract.COLOR_COLUMN,
-            };
+                table = ComponentContract.Bool.ITEM_TABLE;
                 break;
             case 2:
                 selection = "_ID = ?";
                 selectionArgs = new String[] {uri.getLastPathSegment()};
-                projection = new String[] {
-                        LogbookItemContract.ID_COLUMN,
-                        LogbookItemContract.PARENT_MODULE_COLUMN,
-                        LogbookItemContract.NAME_COLUMN,
-                        LogbookItemContract.COLOR_COLUMN,
-                };
-                table = LogbookItemContract.Bool.ITEM_TABLE;
+                table = ComponentContract.Bool.ITEM_TABLE;
                 break;
             case 3:
-                table = LogbookItemContract.Num.ITEM_TABLE;
+                table = ComponentContract.Num.ITEM_TABLE;
                 break;
             case 4:
-                table = LogbookItemContract.Num.ITEM_TABLE;
+                table = ComponentContract.Num.ITEM_TABLE;
                 selection = "_ID = ?";
                 selectionArgs = new String[] {uri.getLastPathSegment()};
                 break;
         }
+
         Cursor c = db.query(table, projection, selection, selectionArgs, sortOrder, null, null);
+
         if (c != null) {
             c.moveToFirst();
         }
+
         return c;
     }
 
@@ -86,16 +78,16 @@ public class ComponentProvider extends ContentProvider {
         String table = null;
         switch(sURIMatcher.match(uri)) {
             case 1:
-                table = LogbookItemContract.Bool.ITEM_TABLE;
+                table = ComponentContract.Bool.ITEM_TABLE;
                 break;
             case 2:
-                table = LogbookItemContract.Bool.ITEM_TABLE;
+                table = ComponentContract.Bool.ITEM_TABLE;
                 break;
             case 3:
-                table = LogbookItemContract.Num.ITEM_TABLE;
+                table = ComponentContract.Num.ITEM_TABLE;
                 break;
             case 4:
-                table = LogbookItemContract.Num.ITEM_TABLE;
+                table = ComponentContract.Num.ITEM_TABLE;
                 break;
         }
 
@@ -121,17 +113,17 @@ public class ComponentProvider extends ContentProvider {
             case 1:
                 return 0;
             case 2:
-                table = LogbookItemContract.Bool.ITEM_TABLE;
+                table = ComponentContract.Bool.ITEM_TABLE;
                 break;
             case 3:
                 return 0;
             case 4:
-                table = LogbookItemContract.Num.ITEM_TABLE;
+                table = ComponentContract.Num.ITEM_TABLE;
                 break;
         }
 
 
-        return db.delete(table, LogbookItemContract.ID_COLUMN + "=?", new String []{uri.getLastPathSegment()});
+        return db.delete(table, ComponentContract.ID_COLUMN + "=?", new String []{uri.getLastPathSegment()});
     }
 
     @Override

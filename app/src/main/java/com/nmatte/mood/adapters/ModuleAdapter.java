@@ -4,18 +4,11 @@ package com.nmatte.mood.adapters;
 import android.content.Context;
 import android.view.View;
 
-import com.nmatte.mood.models.modules.Module;
 import com.nmatte.mood.views.chart.ChartColumn;
 
 import java.util.ArrayList;
 
 abstract public class ModuleAdapter {
-
-    protected final Module module;
-
-    public ModuleAdapter(Module module) {
-        this.module = module;
-    }
 
     public ArrayList<View> getViews(ChartColumn.Mode mode, Context context) {
         switch(mode) {

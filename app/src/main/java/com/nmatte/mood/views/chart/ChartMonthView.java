@@ -11,8 +11,7 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
-import com.nmatte.mood.controllers.chart.CloseEditEntryEvent;
-import com.nmatte.mood.controllers.chart.OpenEditEntryEvent;
+import com.nmatte.mood.controllers.chart.ChartEvents;
 import com.nmatte.mood.database.entries.ChartEntryTableHelper;
 import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.moodlog.R;
@@ -160,7 +159,7 @@ public class ChartMonthView extends Fragment {
         return newX;
     }
 
-    public void onEvent(CloseEditEntryEvent event){
+    public void onEvent(ChartEvents.CloseEditEntryEvent event){
         try {
             // TODO fix!!
 //            ChartEntryTableHelper.addOrUpdateEntry(getActivity(), editEntryColumn.getEntry());
@@ -209,8 +208,8 @@ public class ChartMonthView extends Fragment {
                 return true;
             }
         });
-
-        EventBus.getDefault().post(new OpenEditEntryEvent());
+        ChartEvents.OpenEditEntryEvent e = new ChartEvents.OpenEditEntryEvent();
+        EventBus.getDefault().post(new ChartEvents.OpenEditEntryEvent());
 
     }
 

@@ -15,8 +15,7 @@ import java.util.ArrayList;
 public class BoolModuleAdapter extends ModuleAdapter {
     BoolModule module;
 
-    public BoolModuleAdapter(Context context, BoolModule module) {
-        super(module);
+    public BoolModuleAdapter(BoolModule module) {
         this.module = module;
     }
 

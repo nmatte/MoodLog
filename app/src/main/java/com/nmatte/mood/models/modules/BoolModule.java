@@ -1,7 +1,5 @@
 package com.nmatte.mood.models.modules;
 
-import android.content.Context;
-
 import com.nmatte.mood.adapters.BoolModuleAdapter;
 import com.nmatte.mood.adapters.ModuleAdapter;
 import com.nmatte.mood.models.components.BoolComponent;
@@ -21,8 +19,8 @@ public class BoolModule extends Module {
     }
 
     @Override
-    public ModuleAdapter getViewAdapter(Context context) {
-        return new BoolModuleAdapter(context, this);
+    public ModuleAdapter getViewAdapter() {
+        return new BoolModuleAdapter(this);
     }
 
 }

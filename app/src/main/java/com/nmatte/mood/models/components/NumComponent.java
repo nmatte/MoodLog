@@ -1,5 +1,9 @@
 package com.nmatte.mood.models.components;
 
+import android.database.Cursor;
+
+import com.nmatte.mood.database.components.ComponentContract;
+
 /**
  * These are one of the building blocks of the chart.
  * They represent number pickers.
@@ -26,6 +30,18 @@ public class NumComponent extends LogbookComponent {
         super(name);
         this.maxNum = maxNum;
         this.defaultNum = defaultNum;
+    }
+
+    public NumComponent(Cursor cursor) {
+        super("");
+        this.name       = cursor.getString(cursor.getColumnIndex(ComponentContract.NAME_COLUMN));
+
+        this.id         = cursor.getLong(cursor.getColumnIndex(ComponentContract.ID_COLUMN));
+        this.moduleId   = cursor.getLong(cursor.getColumnIndex(ComponentContract.PARENT_MODULE_COLUMN));
+
+        this.color      = cursor.getInt(cursor.getColumnIndex(ComponentContract.COLOR_COLUMN));
+        this.maxNum     = cursor.getInt(cursor.getColumnIndex(ComponentContract.Num.ITEM_MAX_COLUMN));
+        this.defaultNum = cursor.getInt(cursor.getColumnIndex(ComponentContract.Num.ITEM_DEFAULT_COLUMN));
     }
 
     public int getDefaultNum() {

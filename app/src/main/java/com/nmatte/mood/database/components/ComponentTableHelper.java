@@ -21,16 +21,18 @@ public class ComponentTableHelper {
 
     public long save(BoolComponent comp) {
         long id = -1;
-        try {
-            ContentValues values = new ContentValues();
-            values.put(LogbookItemContract.NAME_COLUMN, comp.getName());
+        ContentValues values = new ContentValues();
+        values.put(ComponentContract.NAME_COLUMN, comp.getName());
+        values.put(ComponentContract.COLOR_COLUMN, comp.getColor());
+        values.put(ComponentContract.PARENT_MODULE_COLUMN, comp.getModuleId());
 
+        try {
             if (comp.getId() != -1) {
-                values.put(LogbookItemContract.ID_COLUMN, comp.getId());
+                values.put(ComponentContract.ID_COLUMN, comp.getId());
                 context.getContentResolver().update(Uri.withAppendedPath(BOOL_URI, String.valueOf(comp.getId())), values, null, null);
             } else {
                 Uri result = context.getContentResolver().insert(BOOL_URI, values);
-                id = Long.valueOf(result.getLastPathSegment());
+                id = result == null ? -1 : Long.valueOf(result.getLastPathSegment());
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -43,14 +45,14 @@ public class ComponentTableHelper {
         ContentValues values = new ContentValues();
 
         try {
-            values.put(LogbookItemContract.NAME_COLUMN,component.getName());
-            values.put(LogbookItemContract.Num.ITEM_MAX_COLUMN,component.getMaxNum());
-            values.put(LogbookItemContract.Num.ITEM_DEFAULT_COLUMN,component.getDefaultNum());
+            values.put(ComponentContract.NAME_COLUMN,component.getName());
+            values.put(ComponentContract.Num.ITEM_MAX_COLUMN,component.getMaxNum());
+            values.put(ComponentContract.Num.ITEM_DEFAULT_COLUMN,component.getDefaultNum());
             Uri uri = Uri.withAppendedPath(ComponentProvider.BASE_URI, "nums");
 
 
             if (component.getId() != -1) {
-                values.put(LogbookItemContract.ID_COLUMN, component.getId());
+                values.put(ComponentContract.ID_COLUMN, component.getId());
                 context.getContentResolver().update(
                         Uri.withAppendedPath(uri, String.valueOf(component.getId())),
                         values,

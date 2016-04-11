@@ -3,7 +3,7 @@ package com.nmatte.mood.database.components;
 
 import com.nmatte.mood.database.modules.ModuleContract;
 
-public class LogbookItemContract {
+public class ComponentContract {
     public static final String
             ID_COLUMN = "_ID",
             ID_TYPE = "INTEGER PRIMARY KEY AUTOINCREMENT",

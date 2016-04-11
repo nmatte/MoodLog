@@ -12,12 +12,6 @@ abstract public class LogbookComponent {
     protected int color = 0x000000;
     protected boolean isVisible = true;
 
-    public LogbookComponent(long id, String name, long moduleId) {
-        this.id = id;
-        this.name = name;
-        this.moduleId = moduleId;
-    }
-
     public LogbookComponent(long id, String name){
         this.id = id;
         this.name = name;

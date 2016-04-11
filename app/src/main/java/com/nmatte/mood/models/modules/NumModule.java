@@ -1,8 +1,6 @@
 package com.nmatte.mood.models.modules;
 
 
-import android.content.Context;
-
 import com.nmatte.mood.adapters.ModuleAdapter;
 import com.nmatte.mood.adapters.NumModuleAdapter;
 import com.nmatte.mood.models.components.NumComponent;
@@ -26,8 +24,8 @@ public class NumModule extends Module {
     }
 
     @Override
-    public ModuleAdapter getViewAdapter(Context context) {
-        return new NumModuleAdapter(context, this);
+    public ModuleAdapter getViewAdapter() {
+        return new NumModuleAdapter(this);
     }
 
 }

@@ -106,7 +106,7 @@ public class ChartActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 faButton.hide();
-                EventBus.getDefault().post(new CloseEditEntryEvent());
+                EventBus.getDefault().post(new ChartEvents.CloseEditEntryEvent());
             }
         });
         // FIXME: 9/8/15 fix erratic show/hide behavior
@@ -254,7 +254,7 @@ public class ChartActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    public void onEvent(OpenEditEntryEvent event){
+    public void onEvent(ChartEvents.OpenEditEntryEvent event){
         faButton.show();
     }
 

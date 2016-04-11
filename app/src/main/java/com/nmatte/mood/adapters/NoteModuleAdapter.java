@@ -18,8 +18,7 @@ import de.greenrobot.event.EventBus;
 public class NoteModuleAdapter extends ModuleAdapter {
     NoteModule module;
 
-    public NoteModuleAdapter(Context context, NoteModule module) {
-        super(module);
+    public NoteModuleAdapter(NoteModule module) {
         this.module = module;
     }
 

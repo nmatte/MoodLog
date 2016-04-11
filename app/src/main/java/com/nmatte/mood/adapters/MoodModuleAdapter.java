@@ -15,8 +15,9 @@ import java.util.ArrayList;
 public class MoodModuleAdapter extends BoolModuleAdapter {
     MoodModule module;
 
-    public MoodModuleAdapter(Context context, MoodModule module) {
-        super(context, module);
+    public MoodModuleAdapter(MoodModule module) {
+        super(module);
+
         this.module = module;
     }
 
@@ -75,10 +76,6 @@ public class MoodModuleAdapter extends BoolModuleAdapter {
                 result.add(b.setText(label).build());
             }
         }
-
-
-
-
 
         for (TextCellView cellView : result){
             labelLayout.addView(cellView);

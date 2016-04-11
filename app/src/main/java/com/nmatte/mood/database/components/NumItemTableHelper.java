@@ -2,24 +2,27 @@ package com.nmatte.mood.database.components;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.util.Log;
 
 import com.nmatte.mood.models.components.NumComponent;
+import com.nmatte.mood.providers.ComponentProvider;
 
 import java.util.ArrayList;
 
 public class NumItemTableHelper extends ComponentTableHelper {
     private static final int TRUE = 1,FALSE = 0;
+    Uri NUM_URI = Uri.withAppendedPath(ComponentProvider.BASE_URI, "nums");
 
     public NumItemTableHelper(Context context) {
         super(context);
     }
 
     public void delete(NumComponent component){
-//        String whereClause = LogbookItemContract.Num.ITEM_NAME_COLUMN + "=?";
+//        String whereClause = ComponentContract.Num.ITEM_NAME_COLUMN + "=?";
 //
 //        try{
-//            db.delete(LogbookItemContract.Num.ITEM_TABLE, whereClause, new String[]{name});
+//            db.delete(ComponentContract.Num.ITEM_TABLE, whereClause, new String[]{name});
 //        } catch (Exception e){
 //            e.printStackTrace();
 //        }
@@ -27,37 +30,45 @@ public class NumItemTableHelper extends ComponentTableHelper {
     }
 
 
-    public ArrayList<NumComponent> getAll(SQLiteDatabase db){
-        String [] columns = new String[] {
-                LogbookItemContract.ID_COLUMN,
-                LogbookItemContract.NAME_COLUMN,
-                LogbookItemContract.Num.ITEM_MAX_COLUMN,
-                LogbookItemContract.Num.ITEM_DEFAULT_COLUMN
-        };
+    public ArrayList<NumComponent> getAll(){
+        ArrayList<NumComponent> components = new ArrayList<>();
 
-        Cursor c = db.query(
-                LogbookItemContract.Num.ITEM_TABLE,
-                columns,
-                null,null,null,null,
-                LogbookItemContract.ID_COLUMN);
-        c.moveToFirst();
+        try {
+            Cursor cursor = context.getContentResolver().query(NUM_URI, columns(), null, null, ComponentContract.ID_COLUMN);
 
-        ArrayList<NumComponent> numItems = new ArrayList<>();
-        if (c.getCount() > 0){
-            do {
-                NumComponent component = new NumComponent(c.getLong(0),c.getString(1),c.getInt(2),c.getInt(3));
-                numItems.add(component);
-            } while(c.moveToNext());
+            if (cursor == null) {
+                return components;
+            }
+            cursor.moveToFirst();
+
+            if (cursor.getCount() > 0){
+                do {
+                    NumComponent component = new NumComponent(cursor);
+                    components.add(component);
+                } while(cursor.moveToNext());
+            }
+            cursor.close();
+        } catch (Exception e) {
+            Log.e("NumComponentTableHelper", e.getMessage());
         }
-        c.close();
 
-        return numItems;
+        return components;
     }
 
     public ArrayList<NumComponent> getByParentId(long id) {
         ArrayList<NumComponent> components = new ArrayList<>();
 
-
         return components;
+    }
+
+    public String[] columns() {
+        return new String[] {
+                ComponentContract.ID_COLUMN,
+                ComponentContract.NAME_COLUMN,
+                ComponentContract.COLOR_COLUMN,
+                ComponentContract.PARENT_MODULE_COLUMN,
+                ComponentContract.Num.ITEM_MAX_COLUMN,
+                ComponentContract.Num.ITEM_DEFAULT_COLUMN
+        };
     }
 }

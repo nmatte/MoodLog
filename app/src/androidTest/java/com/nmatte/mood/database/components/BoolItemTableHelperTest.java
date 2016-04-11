@@ -1,9 +1,8 @@
-package com.nmatte.mood.database;
+package com.nmatte.mood.database.components;
 
-import android.test.AndroidTestCase;
+import android.test.InstrumentationTestCase;
 import android.test.RenamingDelegatingContext;
 
-import com.nmatte.mood.database.components.BoolItemTableHelper;
 import com.nmatte.mood.models.components.BoolComponent;
 
 import org.junit.After;
@@ -12,14 +11,14 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-public class BoolItemTableHelperTest extends AndroidTestCase {
+public class BoolItemTableHelperTest extends InstrumentationTestCase {
     RenamingDelegatingContext testContext;
     BoolItemTableHelper boolHelper;
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        testContext = new RenamingDelegatingContext(getContext(), "test_");
+        testContext = new RenamingDelegatingContext(getInstrumentation().getContext(), "test_");
         boolHelper = new BoolItemTableHelper(testContext);
     }
 
@@ -28,15 +27,10 @@ public class BoolItemTableHelperTest extends AndroidTestCase {
         super.tearDown();
     }
 
-    @Test
-    public void testSave() throws Exception {
-        BoolComponent item = new BoolComponent("TestItem");
-        long id = boolHelper.save(item);
-        BoolComponent returnedItem = boolHelper.find(id);
 
-        assertTrue("BoolComponent id updates on save", id  > 0);
-        assertNotNull("BoolComponent is found", returnedItem);
-        assertTrue("Component name saves correctly",returnedItem.getName().equals(item.getName()));
+    @Test
+    public void testFind() throws Exception {
+
     }
 
     @Test
@@ -60,5 +54,31 @@ public class BoolItemTableHelperTest extends AndroidTestCase {
         ArrayList<BoolComponent> afterSave = boolHelper.getAll();
         assertTrue("doesn't contain invisible item", afterSave.contains(itemInvisible));
         assertTrue("doesn't contain visible item", afterSave.contains(itemVisible));
+    }
+
+    @Test
+    public void testGetByParentId() throws Exception {
+        BoolComponent item = new BoolComponent("TestItem");
+        item.setModuleId(1);
+
+        long id = boolHelper.save(item);
+        item.setId(id);
+        ArrayList<BoolComponent> components = boolHelper.getByParentId(1);
+        ArrayList<BoolComponent> all = boolHelper.getAll();
+        assertTrue("fetches any components", components.size() > 0);
+        assertTrue("fetches components by parent id", components.contains(item));
+    }
+
+    @Test
+    public void testSave() throws Exception {
+        BoolComponent item = new BoolComponent("TestItem");
+        item.setModuleId(1);
+        long id = boolHelper.save(item);
+        BoolComponent returnedItem = boolHelper.find(id);
+
+        assertTrue("BoolComponent id updates on save", id  > 0);
+        assertNotNull("BoolComponent is found", returnedItem);
+        assertEquals(1, returnedItem.getModuleId());
+        assertTrue("Component name saves correctly",returnedItem.getName().equals(item.getName()));
     }
 }

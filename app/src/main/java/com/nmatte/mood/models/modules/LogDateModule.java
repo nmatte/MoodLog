@@ -1,8 +1,6 @@
 package com.nmatte.mood.models.modules;
 
 
-import android.content.Context;
-
 import com.nmatte.mood.adapters.LogDateAdapter;
 import com.nmatte.mood.adapters.ModuleAdapter;
 
@@ -56,8 +54,8 @@ public class LogDateModule extends Module {
     }
 
     @Override
-    public ModuleAdapter getViewAdapter(Context context) {
-        return new LogDateAdapter(context, this);
+    public ModuleAdapter getViewAdapter() {
+        return new LogDateAdapter( this);
     }
 
     public DateTime getDate() {

@@ -1,7 +1,5 @@
 package com.nmatte.mood.models.modules;
 
-import android.content.Context;
-
 import com.nmatte.mood.adapters.ModuleAdapter;
 import com.nmatte.mood.models.components.LogbookComponent;
 
@@ -20,5 +18,5 @@ public abstract class Module {
 //        this.components = components;
     }
 
-    abstract public ModuleAdapter getViewAdapter(Context context);
+    abstract public ModuleAdapter getViewAdapter();
 }

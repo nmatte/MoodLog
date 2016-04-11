@@ -2,39 +2,25 @@ package com.nmatte.mood.models.components;
 
 import android.database.Cursor;
 
-import com.nmatte.mood.database.components.LogbookItemContract;
+import com.nmatte.mood.database.components.ComponentContract;
 
 /**
  * These are one of the building blocks of the chart.
  * They represent checkboxes. They are also used in the MoodModule, for instance.
  */
 public class BoolComponent extends LogbookComponent {
-
-    public BoolComponent(long id, String name, long moduleId) {
-        super(id, name, moduleId);
-    }
-
-    public BoolComponent(Long id, String name, int color) {
-        this(id, name);
-    }
-
-    public BoolComponent(Long id, String name){
-        super(id, name);
-    }
-
     public BoolComponent(String name){
         super(name);
     }
 
-    public BoolComponent(Cursor c) {
+    public BoolComponent(Cursor cursor) {
         super("");
-        int idCol = c.getColumnIndex(LogbookItemContract.ID_COLUMN);
-        id = c.getLong(idCol);
-        int nameCol = c.getColumnIndex(LogbookItemContract.NAME_COLUMN);
-        name = c.getString(nameCol);
-        int modCol = c.getColumnIndex(LogbookItemContract.PARENT_MODULE_COLUMN);
-        moduleId = c.getLong(modCol);
-        color = c.getInt(c.getColumnIndex(LogbookItemContract.COLOR_COLUMN));
+        this.name       = cursor.getString(cursor.getColumnIndex(ComponentContract.NAME_COLUMN));
+
+        this.id         = cursor.getLong(cursor.getColumnIndex(ComponentContract.ID_COLUMN));
+        this.moduleId   = cursor.getLong(cursor.getColumnIndex(ComponentContract.PARENT_MODULE_COLUMN));
+
+        this.color      = cursor.getInt(cursor.getColumnIndex(ComponentContract.COLOR_COLUMN));
     }
 
     @Override

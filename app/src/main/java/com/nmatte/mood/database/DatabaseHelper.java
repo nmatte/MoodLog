@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.nmatte.mood.database.components.LogbookItemContract;
+import com.nmatte.mood.database.components.ComponentContract;
 import com.nmatte.mood.database.entries.ChartEntryContract;
 import com.nmatte.mood.database.modules.ModuleContract;
 import com.nmatte.mood.reminders.ReminderContract;
@@ -65,26 +65,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private void makeNumItemTable(SQLiteDatabase db){
         String query =
-                "CREATE TABLE IF NOT EXISTS "+ LogbookItemContract.Num.ITEM_TABLE + " ("
-                + LogbookItemContract.ID_COLUMN + " " + LogbookItemContract.ID_TYPE + ", "
-                + LogbookItemContract.NAME_COLUMN + " " + LogbookItemContract.NAME_TYPE + ", "
-                + LogbookItemContract.COLOR_COLUMN + " " + LogbookItemContract.COLOR_TYPE + ", "
-                + LogbookItemContract.Num.ITEM_MAX_COLUMN + " " + LogbookItemContract.Num.ITEM_MAX_TYPE + ", "
-                + LogbookItemContract.Num.ITEM_DEFAULT_COLUMN + " " + LogbookItemContract.Num.ITEM_DEFAULT_TYPE + ", "
-                + LogbookItemContract.PARENT_MODULE_COLUMN + " " + LogbookItemContract.PARENT_MODULE_TYPE + ", "
-                + LogbookItemContract.FOREIGN_KEY_CONSTRAINT + ")";
+                "CREATE TABLE IF NOT EXISTS "+ ComponentContract.Num.ITEM_TABLE + " ("
+                + ComponentContract.ID_COLUMN + " " + ComponentContract.ID_TYPE + ", "
+                + ComponentContract.NAME_COLUMN + " " + ComponentContract.NAME_TYPE + ", "
+                + ComponentContract.COLOR_COLUMN + " " + ComponentContract.COLOR_TYPE + ", "
+                + ComponentContract.Num.ITEM_MAX_COLUMN + " " + ComponentContract.Num.ITEM_MAX_TYPE + ", "
+                + ComponentContract.Num.ITEM_DEFAULT_COLUMN + " " + ComponentContract.Num.ITEM_DEFAULT_TYPE + ", "
+                + ComponentContract.PARENT_MODULE_COLUMN + " " + ComponentContract.PARENT_MODULE_TYPE + ", "
+                + ComponentContract.FOREIGN_KEY_CONSTRAINT + ")";
 
         db.execSQL(query);
     }
 
     private void makeBoolItemTable(SQLiteDatabase db){
         String query =
-                "CREATE TABLE IF NOT EXISTS "+ LogbookItemContract.Bool.ITEM_TABLE + " ("
-                + LogbookItemContract.ID_COLUMN + " " + LogbookItemContract.ID_TYPE + ", "
-                + LogbookItemContract.NAME_COLUMN + " " + LogbookItemContract.NAME_TYPE + ", "
-                + LogbookItemContract.COLOR_COLUMN + " " + LogbookItemContract.COLOR_TYPE + ", "
-                + LogbookItemContract.PARENT_MODULE_COLUMN + " " + LogbookItemContract.PARENT_MODULE_TYPE + ", "
-                + LogbookItemContract.FOREIGN_KEY_CONSTRAINT + ")";
+                "CREATE TABLE IF NOT EXISTS "+ ComponentContract.Bool.ITEM_TABLE + " ("
+                + ComponentContract.ID_COLUMN + " " + ComponentContract.ID_TYPE + ", "
+                + ComponentContract.NAME_COLUMN + " " + ComponentContract.NAME_TYPE + ", "
+                + ComponentContract.COLOR_COLUMN + " " + ComponentContract.COLOR_TYPE + ", "
+                + ComponentContract.PARENT_MODULE_COLUMN + " " + ComponentContract.PARENT_MODULE_TYPE + ", "
+                + ComponentContract.FOREIGN_KEY_CONSTRAINT + ")";
         db.execSQL(query);
     }
 

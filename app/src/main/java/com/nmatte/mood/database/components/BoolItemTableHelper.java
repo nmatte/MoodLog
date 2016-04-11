@@ -11,29 +11,11 @@ import java.util.ArrayList;
 
 public class BoolItemTableHelper extends ComponentTableHelper{
     private static final String TRUE = "1", FALSE ="0";
-    private static final Uri BOOL_URI = ComponentProvider.BASE_URI.buildUpon().appendPath("bools").build();
+    private static final Uri BOOL_URI = Uri.withAppendedPath(ComponentProvider.BASE_URI, "bools");
 
     public BoolItemTableHelper(Context context) {
         super(context);
     }
-
-    public BoolComponent find(long id) {
-        BoolComponent item = null;
-    try {
-        Uri uri = Uri.withAppendedPath(BOOL_URI, String.valueOf(id));
-        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
-
-        if (cursor != null) {
-            item = new BoolComponent(cursor);
-            cursor.close();
-        }
-
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-
-    return item;
-}
 
     public int delete(BoolComponent component) {
         try {
@@ -45,27 +27,35 @@ public class BoolItemTableHelper extends ComponentTableHelper{
         return 0;
     }
 
+    public BoolComponent find(long id) {
+        BoolComponent item = null;
+        try {
+            Uri uri = Uri.withAppendedPath(BOOL_URI, String.valueOf(id));
+            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+
+            if (cursor != null) {
+                item = new BoolComponent(cursor);
+                cursor.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return item;
+    }
+
     public ArrayList<BoolComponent> getAll(){
         ArrayList<BoolComponent> boolItems = new ArrayList<>();
 
         try {
-            String [] columns = new String[] {
-                    LogbookItemContract.ID_COLUMN,
-                    LogbookItemContract.NAME_COLUMN,
-                    LogbookItemContract.COLOR_COLUMN,
-                    LogbookItemContract.PARENT_MODULE_COLUMN
-            };
+            Cursor cursor = context.getContentResolver().query(BOOL_URI, columns(), null, null, ComponentContract.ID_COLUMN);
+            if (cursor == null) {
+                return boolItems;
+            }
 
-            Cursor cursor = context.getContentResolver().query(
-                    BOOL_URI,
-                    columns,
-                    null,
-                    null,
-                    LogbookItemContract.ID_COLUMN);
-
-            if(cursor != null && cursor.getCount() > 0){
+            if(cursor.getCount() > 0){
                 cursor.moveToFirst();
-                do{
+                do {
                     BoolComponent item = new BoolComponent(cursor);
                     boolItems.add(item);
                 } while(cursor.moveToNext());
@@ -78,13 +68,7 @@ public class BoolItemTableHelper extends ComponentTableHelper{
     }
 
     public ArrayList<BoolComponent> getByParentId(long parentId){
-        String [] columns = new String[] {
-                LogbookItemContract.ID_COLUMN,
-                LogbookItemContract.NAME_COLUMN,
-                LogbookItemContract.PARENT_MODULE_COLUMN
-        };
-
-        String selection = LogbookItemContract.PARENT_MODULE_COLUMN + "= ?";
+        String selection = ComponentContract.PARENT_MODULE_COLUMN + "= ?";
 
         String [] args = new String[] {
                 String.valueOf(parentId)
@@ -92,21 +76,30 @@ public class BoolItemTableHelper extends ComponentTableHelper{
 
         Cursor cursor = context.getContentResolver().query(
                 BOOL_URI,
-                columns,
+                columns(),
                 selection,
                 args,
-                LogbookItemContract.ID_COLUMN);
+                ComponentContract.ID_COLUMN);
         cursor.moveToFirst();
 
         ArrayList<BoolComponent> boolItems = new ArrayList<>();
         if(cursor.getCount() > 0){
             do{
-                BoolComponent m = new BoolComponent(cursor.getLong(0),cursor.getString(1),cursor.getLong(2));
+                BoolComponent m = new BoolComponent(cursor);
                 boolItems.add(m);
             } while(cursor.moveToNext());
         }
         cursor.close();
         return boolItems;
+    }
+
+    public String[] columns() {
+        return new String[] {
+                ComponentContract.ID_COLUMN,
+                ComponentContract.NAME_COLUMN,
+                ComponentContract.COLOR_COLUMN,
+                ComponentContract.PARENT_MODULE_COLUMN
+        };
     }
 }
 
