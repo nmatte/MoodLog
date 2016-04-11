@@ -35,9 +35,9 @@ public class DateRangeDialog extends DialogFragment {
             // datePicker provides month as 0-11 while DateTime takes 1-12, so increment
             DateTime chosenDate = new DateTime(datePicker.getYear(),datePicker.getMonth()+1,datePicker.getDayOfMonth(),0,0);
             if(isStart)
-                EventBus.getDefault().post(new OpenEndDateDialogEvent(chosenDate));
+                EventBus.getDefault().post(new ChartEvents.OpenEndDateDialogEvent(chosenDate));
             else
-                EventBus.getDefault().post(new SaveEndDateDialogEvent(startDate,chosenDate,saveDateCheckBox.isChecked()));
+                EventBus.getDefault().post(new ChartEvents.SaveEndDateDialogEvent(startDate,chosenDate,saveDateCheckBox.isChecked()));
 
         }
     };

@@ -17,8 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import com.nmatte.mood.controllers.SaveBoolItemEvent;
-import com.nmatte.mood.controllers.SaveNumItemEvent;
+import com.nmatte.mood.controllers.chart.ChartEvents;
 import com.nmatte.mood.database.DatabaseHelper;
 import com.nmatte.mood.database.components.BoolItemTableHelper;
 import com.nmatte.mood.database.components.ComponentTableHelper;
@@ -192,11 +191,11 @@ public class LogbookCustomizeFragment extends Fragment {
         super.onDestroy();
     }
 
-    public void onEvent(SaveBoolItemEvent event){
+    public void onEvent(ChartEvents.SaveBoolItemEvent event){
         ComponentTableHelper helper = new ComponentTableHelper(getActivity());
         helper.save(event.getItem());
     }
-    public void onEvent(SaveNumItemEvent event){
+    public void onEvent(ChartEvents.SaveNumItemEvent event){
         ComponentTableHelper helper = new ComponentTableHelper(getActivity());
         helper.save(event.getItem());
     }

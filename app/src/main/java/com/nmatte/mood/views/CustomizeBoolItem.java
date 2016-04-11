@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-import com.nmatte.mood.controllers.SaveBoolItemEvent;
+import com.nmatte.mood.controllers.chart.ChartEvents;
 import com.nmatte.mood.controllers.chart.RefreshChartEvent;
 import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.moodlog.R;
@@ -30,7 +30,7 @@ public class CustomizeBoolItem extends RelativeLayout {
 
             if (validateFields()){
                 setEditable(false);
-                EventBus.getDefault().post(new SaveBoolItemEvent(getBoolItem()));
+                EventBus.getDefault().post(new ChartEvents.SaveBoolItemEvent(getBoolItem()));
                 //EventBus.getDefault().postSticky(new ChartChangeEvent());
                 EventBus.getDefault().post(new RefreshChartEvent());
             }

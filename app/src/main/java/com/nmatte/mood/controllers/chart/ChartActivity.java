@@ -200,7 +200,7 @@ public class ChartActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.pickDates){
-            EventBus.getDefault().post(new OpenStartDateDialogEvent());
+            EventBus.getDefault().post(new ChartEvents.OpenStartDateDialogEvent());
         }
         if (id == R.id.largeCells){
             PreferenceManager
@@ -258,7 +258,7 @@ public class ChartActivity extends AppCompatActivity
         faButton.show();
     }
 
-    public void onEvent(OpenStartDateDialogEvent event){
+    public void onEvent(ChartEvents.OpenStartDateDialogEvent event){
         DialogFragment d = new DateRangeDialog();
         Bundle args = new Bundle();
         args.putBoolean(DateRangeDialog.BOOL_IS_START_PICKER, true);
@@ -266,7 +266,7 @@ public class ChartActivity extends AppCompatActivity
         d.show(getFragmentManager(), "foo");
     }
 
-    public void onEvent(OpenEndDateDialogEvent event){
+    public void onEvent(ChartEvents.OpenEndDateDialogEvent event){
         DialogFragment dialog = new DateRangeDialog();
         Bundle args = new Bundle();
         args.putBoolean(DateRangeDialog.BOOL_IS_START_PICKER,false);
@@ -276,7 +276,7 @@ public class ChartActivity extends AppCompatActivity
         dialog.show(getFragmentManager(), "bar");
     }
 
-    public void onEvent(SaveEndDateDialogEvent event){
+    public void onEvent(ChartEvents.SaveEndDateDialogEvent event){
         boolean foo = event.isRememberDates();
         Log.i("Date Range Dialog", "End date chosen: " + event.getEndDate().toString("MM/dd/YYYY"));
         monthFragment.refreshColumns(event.getStartDate(), event.getEndDate());

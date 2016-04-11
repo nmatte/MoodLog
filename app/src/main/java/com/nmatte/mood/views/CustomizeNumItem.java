@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-import com.nmatte.mood.controllers.SaveNumItemEvent;
+import com.nmatte.mood.controllers.chart.ChartEvents;
 import com.nmatte.mood.controllers.chart.RefreshChartEvent;
 import com.nmatte.mood.models.components.NumComponent;
 import com.nmatte.mood.moodlog.R;
@@ -31,7 +31,7 @@ public class CustomizeNumItem extends RelativeLayout {
         public void onClick(View v) {
             if(validateFields()){
                 setEditable(false);
-                EventBus.getDefault().post(new SaveNumItemEvent(getNumItem()));
+                EventBus.getDefault().post(new ChartEvents.SaveNumItemEvent(getNumItem()));
                 EventBus.getDefault().postSticky(new RefreshChartEvent());
             }
         }
