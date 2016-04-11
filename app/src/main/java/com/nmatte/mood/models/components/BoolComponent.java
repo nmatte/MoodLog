@@ -60,7 +60,7 @@ public class BoolComponent extends LogbookComponent {
             return false;
         else {
             BoolComponent rhs = (BoolComponent) o;
-            return this.toString().equals(rhs.toString());
+            return (this.getId() == rhs.getId() && this.getName().equals(rhs.getName()));
         }
     }
 }

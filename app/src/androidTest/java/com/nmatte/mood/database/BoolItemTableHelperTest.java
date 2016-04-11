@@ -44,8 +44,8 @@ public class BoolItemTableHelperTest extends AndroidTestCase {
         BoolComponent itemDelete = new BoolComponent("FooItemDelete");
 
         long id = boolHelper.save(itemDelete);
-        boolHelper.delete(itemDelete);
-        assertNull(boolHelper.find(id));
+        itemDelete.setId(id);
+        assertEquals(1, boolHelper.delete(itemDelete));
     }
 
     @Test
@@ -54,11 +54,11 @@ public class BoolItemTableHelperTest extends AndroidTestCase {
         BoolComponent itemInvisible = new BoolComponent("FooItemInvisible");
 
         itemInvisible.setVisible(false);
-        boolHelper.save(itemVisible);
-        boolHelper.save(itemInvisible);
+        itemVisible.setId(boolHelper.save(itemVisible));
+        itemInvisible.setId(boolHelper.save(itemInvisible));
 
         ArrayList<BoolComponent> afterSave = boolHelper.getAll();
-        assertTrue("doesn't contain visible item", afterSave.contains(itemVisible));
         assertTrue("doesn't contain invisible item", afterSave.contains(itemInvisible));
+        assertTrue("doesn't contain visible item", afterSave.contains(itemVisible));
     }
 }

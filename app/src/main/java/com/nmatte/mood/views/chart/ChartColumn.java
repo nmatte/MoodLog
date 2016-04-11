@@ -18,7 +18,7 @@ import static com.nmatte.mood.views.chart.ChartColumn.Mode.LABEL;
 
 
 public class ChartColumn extends LinearLayout {
-    ArrayList<ModuleAdapter> adapters;
+    ArrayList<ModuleAdapter> adapters = new ArrayList<>();
 
     Context context;
     float lastXtouch;

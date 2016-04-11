@@ -48,7 +48,7 @@ public class DeleteBoolDialog extends DialogFragment{
     }
 
     public interface DeleteBoolItemListener {
-        public void onDeleteDialogPositiveClick(String name);
+        void onDeleteDialogPositiveClick(String name);
     }
 
 

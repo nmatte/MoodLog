@@ -13,7 +13,7 @@ import com.nmatte.mood.database.DatabaseHelper;
 import com.nmatte.mood.database.modules.ModuleContract;
 
 public class ModuleProvider extends ContentProvider {
-    public static final String CONTENT_AUTHORITY = "com.nmatte.mood.provider";
+    public static final String CONTENT_AUTHORITY = "com.nmatte.mood.mod_provider";
     public static final Uri BASE_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -54,7 +54,8 @@ public class ModuleProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        return null;
+        long id = db.insertWithOnConflict(ModuleContract.MODULE_TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        return Uri.withAppendedPath(BASE_URI, String.valueOf(id));
     }
 
     @Override

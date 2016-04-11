@@ -35,13 +35,14 @@ public class BoolItemTableHelper extends ComponentTableHelper{
     return item;
 }
 
-    public void delete(BoolComponent component) {
+    public int delete(BoolComponent component) {
         try {
             Uri uri = Uri.withAppendedPath(BOOL_URI, String.valueOf(component.getId()));
-            context.getContentResolver().delete(uri, null, null);
+            return context.getContentResolver().delete(uri, null, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return 0;
     }
 
     public ArrayList<BoolComponent> getAll(){
@@ -65,10 +66,11 @@ public class BoolItemTableHelper extends ComponentTableHelper{
             if(cursor != null && cursor.getCount() > 0){
                 cursor.moveToFirst();
                 do{
-                    BoolComponent item = new BoolComponent(cursor.getLong(0),cursor.getString(1), cursor.getInt(2));
+                    BoolComponent item = new BoolComponent(cursor);
                     boolItems.add(item);
                 } while(cursor.moveToNext());
             }
+            cursor.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

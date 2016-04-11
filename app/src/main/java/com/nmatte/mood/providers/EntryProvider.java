@@ -15,7 +15,7 @@ import com.nmatte.mood.models.modules.LogDateModule;
 import org.joda.time.DateTime;
 
 public class EntryProvider extends ContentProvider{
-    public static final String CONTENT_AUTHORITY = "com.nmatte.mood.provider";
+    public static final String CONTENT_AUTHORITY = "com.nmatte.mood.entry_provider";
     public static final Uri BASE_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 

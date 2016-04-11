@@ -2,7 +2,6 @@ package com.nmatte.mood.models.modules;
 
 
 import android.content.Context;
-import android.support.v4.util.SimpleArrayMap;
 
 import com.nmatte.mood.adapters.ModuleAdapter;
 import com.nmatte.mood.adapters.NumModuleAdapter;
@@ -15,30 +14,15 @@ import java.util.ArrayList;
  * It maps numItems to their values for a given day.
  */
 public class NumModule extends Module {
-    private SimpleArrayMap<NumComponent,Integer> numItems;
     private ArrayList<NumComponent> components = new ArrayList<>();
 
     public NumModule(long id, String name, boolean isEnabled, ArrayList<NumComponent> components) {
         super(id, name, isEnabled);
+        this.components = components;
     }
-
 
     public ArrayList<NumComponent> getItems() {
-        if (components.isEmpty()) {
-            for (int i = 0; i < numItems.size(); i++) {
-                components.add(numItems.keyAt(i));
-            }
-        }
-
         return components;
-    }
-
-    public int get(NumComponent numlItem){
-        return this.numItems.get(numlItem);
-    }
-
-    public void set(NumComponent numlItem, int value) {
-        this.numItems.put(numlItem, value);
     }
 
     @Override

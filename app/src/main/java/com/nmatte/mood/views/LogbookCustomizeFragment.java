@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,7 @@ import com.nmatte.mood.controllers.SaveBoolItemEvent;
 import com.nmatte.mood.controllers.SaveNumItemEvent;
 import com.nmatte.mood.database.DatabaseHelper;
 import com.nmatte.mood.database.components.BoolItemTableHelper;
-import com.nmatte.mood.database.components.NumItemTableHelper;
+import com.nmatte.mood.database.components.ComponentTableHelper;
 import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.models.components.NumComponent;
 import com.nmatte.mood.moodlog.R;
@@ -194,19 +193,12 @@ public class LogbookCustomizeFragment extends Fragment {
     }
 
     public void onEvent(SaveBoolItemEvent event){
-        //  FIXME: 2/20/16
-        BoolComponent saved = new BoolComponent(""); // = BoolItemTableHelper.save(getActivity(), event.getItem());
-        if (saved == null){
-            Log.i("BoolItemTableHelper", "failed to save item");
-        }
-        Log.i("BoolComponent saved", "Saved BoolComponent" + saved.getName() + " with ID " + saved.getId());
+        ComponentTableHelper helper = new ComponentTableHelper(getActivity());
+        helper.save(event.getItem());
     }
-
     public void onEvent(SaveNumItemEvent event){
-        SQLiteDatabase db = new DatabaseHelper(getActivity()).getWritableDatabase();
-        NumComponent saved = new NumItemTableHelper(getActivity()).save(db, event.getItem());
-        Log.i("NumComponent saved", "Saved NumComponent"  + saved.getName() + " with ID " + saved.getId());
-        db.close();
+        ComponentTableHelper helper = new ComponentTableHelper(getActivity());
+        helper.save(event.getItem());
     }
 
 

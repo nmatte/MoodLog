@@ -1,6 +1,5 @@
 package com.nmatte.mood.database.components;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,33 +15,7 @@ public class NumItemTableHelper extends ComponentTableHelper {
         super(context);
     }
 
-
-    public NumComponent save(SQLiteDatabase db, NumComponent component){
-        ContentValues values = new ContentValues();
-
-        try {
-            if (component.getId() != -1)
-                values.put(LogbookItemContract.ID_COLUMN, component.getId());
-            values.put(LogbookItemContract.NAME_COLUMN,component.getName());
-            values.put(LogbookItemContract.Num.ITEM_MAX_COLUMN,component.getMaxNum());
-            values.put(LogbookItemContract.Num.ITEM_DEFAULT_COLUMN,component.getDefaultNum());
-
-            long id = db.insertWithOnConflict(
-                    LogbookItemContract.Num.ITEM_TABLE,
-                    null,
-                    values,
-                    SQLiteDatabase.CONFLICT_REPLACE);
-            component.setId(id);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return component;
-    }
-
-    public void delete(SQLiteDatabase db, NumComponent component){
-//        DatabaseHelper DBHelper = new DatabaseHelper(context);
-//        SQLiteDatabase db = DBHelper.getWritableDatabase();
+    public void delete(NumComponent component){
 //        String whereClause = LogbookItemContract.Num.ITEM_NAME_COLUMN + "=?";
 //
 //        try{
@@ -50,8 +23,9 @@ public class NumItemTableHelper extends ComponentTableHelper {
 //        } catch (Exception e){
 //            e.printStackTrace();
 //        }
-//
+
     }
+
 
     public ArrayList<NumComponent> getAll(SQLiteDatabase db){
         String [] columns = new String[] {

@@ -31,6 +31,12 @@
         <provider
             android:name="com.nmatte.mood.providers.ComponentProvider"
             android:authorities="com.nmatte.mood.provider"/>
+        <provider
+            android:name="com.nmatte.mood.providers.ModuleProvider"
+            android:authorities="com.nmatte.mood.mod_provider"/>
+        <provider
+            android:name="com.nmatte.mood.providers.EntryProvider"
+            android:authorities="com.nmatte.mood.entry_provider"/>
 
         <service android:name="com.nmatte.mood.reminders.ReminderService"/>
     </application>

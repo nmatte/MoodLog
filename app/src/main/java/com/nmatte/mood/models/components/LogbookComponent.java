@@ -65,6 +65,14 @@ abstract public class LogbookComponent {
         this.isVisible = isVisible;
     }
 
+    public long getModuleId() {
+        return this.moduleId;
+    }
+
+    public void setModuleId(long newId) {
+        this.moduleId = newId;
+    }
+
     public String toString(){
         return prefix() + String.valueOf(getId()) + "_" + getName();
     }

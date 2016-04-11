@@ -39,8 +39,38 @@ public class ComponentTableHelper {
         return id;
     }
 
-    public void save(NumComponent comp) {
+    public long save(NumComponent component){
+        ContentValues values = new ContentValues();
 
+        try {
+            values.put(LogbookItemContract.NAME_COLUMN,component.getName());
+            values.put(LogbookItemContract.Num.ITEM_MAX_COLUMN,component.getMaxNum());
+            values.put(LogbookItemContract.Num.ITEM_DEFAULT_COLUMN,component.getDefaultNum());
+            Uri uri = Uri.withAppendedPath(ComponentProvider.BASE_URI, "nums");
+
+
+            if (component.getId() != -1) {
+                values.put(LogbookItemContract.ID_COLUMN, component.getId());
+                context.getContentResolver().update(
+                        Uri.withAppendedPath(uri, String.valueOf(component.getId())),
+                        values,
+                        null,
+                        null
+                );
+                return component.getId();
+            } else {
+                Uri result = context.getContentResolver().insert(
+                        uri,
+                        values
+                );
+
+                return Long.valueOf(result.getLastPathSegment());
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return -1;
     }
 
 

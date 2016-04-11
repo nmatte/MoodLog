@@ -37,7 +37,7 @@ public class IntroDialog extends DialogFragment{
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                    };
+                    }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override

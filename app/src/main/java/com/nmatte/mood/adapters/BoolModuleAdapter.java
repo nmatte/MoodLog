@@ -7,8 +7,6 @@ import android.view.View;
 import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.models.modules.BoolModule;
 import com.nmatte.mood.moodlog.R;
-import com.nmatte.mood.views.chart.CellView;
-import com.nmatte.mood.views.chart.ImageCellView;
 import com.nmatte.mood.views.chart.TextCellView;
 import com.nmatte.mood.views.chart.TextCellViewBuilder;
 
@@ -43,13 +41,13 @@ public class BoolModuleAdapter extends ModuleAdapter {
     protected ArrayList<View> getReadViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
 
-        for (BoolComponent item : module.getItems()) {
-            ImageCellView imageCellView = new ImageCellView(context, false);
-            imageCellView.setBackground(CellView.Background.NONE);
-            imageCellView.setChecked(module.get(item));
-
-            views.add(imageCellView);
-        }
+//        for (BoolComponent item : module.getItems()) {
+//            ImageCellView imageCellView = new ImageCellView(context, false);
+//            imageCellView.setBackground(CellView.Background.NONE);
+//            imageCellView.setChecked(module.get(item));
+//
+//            views.add(imageCellView);
+//        }
 
 
         return views;
@@ -58,17 +56,17 @@ public class BoolModuleAdapter extends ModuleAdapter {
     @Override
     protected ArrayList<View> getEditViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
-
-        for (final BoolComponent item : module.getItems()) {
-            ImageCellView cellView = new ImageCellView(context, true);
-            cellView.setOnChangeListener(new ImageCellView.OnChangeListener() {
-                @Override
-                public void onChange(boolean value) {
-                    module.set(item, value);
-                }
-            });
-            views.add(cellView);
-        }
+//
+//        for (final BoolComponent item : module.getItems()) {
+//            ImageCellView cellView = new ImageCellView(context, true);
+//            cellView.setOnChangeListener(new ImageCellView.OnChangeListener() {
+//                @Override
+//                public void onChange(boolean value) {
+//                    module.set(item, value);
+//                }
+//            });
+//            views.add(cellView);
+//        }
 
 
         return views;

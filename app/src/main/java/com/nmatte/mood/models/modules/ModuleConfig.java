@@ -3,7 +3,6 @@ package com.nmatte.mood.models.modules;
 import android.content.ContentValues;
 
 import com.nmatte.mood.database.entries.ChartEntryContract;
-import com.nmatte.mood.database.modules.ModuleContract;
 import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.models.components.NumComponent;
 
@@ -14,26 +13,13 @@ public class ModuleConfig {
     MoodModule moodMod;
     NumModule  numMod;
     NoteModule noteMod;
-    ContentValues defaults;
+    ContentValues defaults = new ContentValues();
 
-    public ModuleConfig(ArrayList<Module> modules) {
-        for (Module module :
-                modules) {
-            switch(module.name) {
-                case ModuleContract.BOOL_MODULE_NAME:
-                    this.boolMod = (BoolModule) module;
-                    break;
-                case ModuleContract.MOOD_MODULE_NAME:
-                    this.moodMod = (MoodModule) module;
-                    break;
-                case ModuleContract.NUM_MODULE_NAME:
-                    this.numMod = (NumModule) module;
-                    break;
-                case ModuleContract.NOTE_MODULE_NAME:
-                    this.noteMod = (NoteModule) module;
-            }
-        }
-
+    public ModuleConfig(BoolModule boolMod, MoodModule moodMod, NumModule numMod, NoteModule noteMod) {
+        this.boolMod = boolMod;
+        this.moodMod = moodMod;
+        this.numMod = numMod;
+        this.noteMod = noteMod;
         makeDefaults();
     }
 

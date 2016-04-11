@@ -6,9 +6,6 @@ import android.view.View;
 import com.nmatte.mood.models.components.NumComponent;
 import com.nmatte.mood.models.modules.NumModule;
 import com.nmatte.mood.moodlog.R;
-import com.nmatte.mood.views.chart.CellView;
-import com.nmatte.mood.views.chart.CustomNumberPicker;
-import com.nmatte.mood.views.chart.TextCellView;
 import com.nmatte.mood.views.chart.TextCellViewBuilder;
 
 import java.util.ArrayList;
@@ -41,15 +38,15 @@ public class NumModuleAdapter extends ModuleAdapter{
     protected ArrayList<View> getReadViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
 
-        for (NumComponent item : module.getItems()) {
-            TextCellViewBuilder b = new TextCellViewBuilder(context)
-                    .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
-                    .setHorizontalAlignment(TextCellView.TextAlignment.CENTER)
-                    .setBackground(CellView.Background.NONE)
-                    .setText(String.valueOf(module.get(item)));
-
-            views.add(b.build());
-        }
+//        for (NumComponent item : module.getItems()) {
+//            TextCellViewBuilder b = new TextCellViewBuilder(context)
+//                    .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
+//                    .setHorizontalAlignment(TextCellView.TextAlignment.CENTER)
+//                    .setBackground(CellView.Background.NONE)
+//                    .setText(String.valueOf(module.get(item)));
+//
+//            views.add(b.build());
+//        }
 
         return views;
     }
@@ -57,18 +54,18 @@ public class NumModuleAdapter extends ModuleAdapter{
     @Override
     protected ArrayList<View> getEditViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
-
-        for (final NumComponent numItem : module.getItems()) {
-                final CustomNumberPicker numPicker = new CustomNumberPicker(context,numItem);
-                numPicker.setNumChangeListener(new CustomNumberPicker.NumChangeListener() {
-                    @Override
-                    public void onChange(int change) {
-                        module.set(numItem, change);
-                    }
-                });
-                views.add(numPicker);
-
-        }
+//
+//        for (final NumComponent numItem : module.getItems()) {
+//                final CustomNumberPicker numPicker = new CustomNumberPicker(context,numItem);
+//                numPicker.setNumChangeListener(new CustomNumberPicker.NumChangeListener() {
+//                    @Override
+//                    public void onChange(int change) {
+//                        module.set(numItem, change);
+//                    }
+//                });
+//                views.add(numPicker);
+//
+//        }
 
         return views;
     }

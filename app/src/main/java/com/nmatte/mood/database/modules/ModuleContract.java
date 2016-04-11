@@ -9,7 +9,7 @@ public class ModuleContract {
         MODULE_VISIBLE_COLUMN = "module_is_visible",
         MODULE_VISIBLE_TYPE = "INTEGER",
         MODULE_NAME_COLUMN = "module_name",
-        MODULE_NAME_TYPE = "TEXT";
+        MODULE_NAME_TYPE = "TEXT UNIQUE";
 
 
     public static final String
