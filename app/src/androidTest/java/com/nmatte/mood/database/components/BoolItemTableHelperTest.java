@@ -1,9 +1,12 @@
 package com.nmatte.mood.database.components;
 
+import android.database.Cursor;
+import android.net.Uri;
 import android.test.InstrumentationTestCase;
 import android.test.RenamingDelegatingContext;
 
 import com.nmatte.mood.models.components.BoolComponent;
+import com.nmatte.mood.providers.ColumnProvider;
 
 import org.junit.After;
 import org.junit.Before;
@@ -14,7 +17,6 @@ import java.util.ArrayList;
 public class BoolItemTableHelperTest extends InstrumentationTestCase {
     RenamingDelegatingContext testContext;
     BoolItemTableHelper boolHelper;
-
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -76,9 +78,14 @@ public class BoolItemTableHelperTest extends InstrumentationTestCase {
         long id = boolHelper.save(item);
         BoolComponent returnedItem = boolHelper.find(id);
 
+
         assertTrue("BoolComponent id updates on save", id  > 0);
         assertNotNull("BoolComponent is found", returnedItem);
         assertEquals(1, returnedItem.getModuleId());
         assertTrue("Component name saves correctly",returnedItem.getName().equals(item.getName()));
+
+        Cursor colExists = testContext.getContentResolver().query(Uri.withAppendedPath(ColumnProvider.BASE_URI, "bools"), null, null, null, null);
+        assertFalse("Component column added correctly", colExists.getColumnIndex(returnedItem.columnLabel()) != -1);
+        colExists.close();
     }
 }

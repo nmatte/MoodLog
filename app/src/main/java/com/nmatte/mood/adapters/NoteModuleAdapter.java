@@ -4,10 +4,10 @@ package com.nmatte.mood.adapters;
 import android.content.Context;
 import android.view.View;
 
+import com.nmatte.mood.controllers.chart.ChartEvents;
 import com.nmatte.mood.models.modules.NoteModule;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.views.chart.ImageCellView;
-import com.nmatte.mood.views.chart.OpenNoteEvent;
 import com.nmatte.mood.views.chart.TextCellView;
 import com.nmatte.mood.views.chart.TextCellViewBuilder;
 
@@ -23,7 +23,7 @@ public class NoteModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    protected ArrayList<View> getLabelViews(Context context) {
+    public ArrayList<View> getLabelViews(Context context) {
         TextCellViewBuilder b = new TextCellViewBuilder(context)
                 .setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width_m))
                 .setStroke(TextCellView.Stroke.BOLD)
@@ -45,7 +45,7 @@ public class NoteModuleAdapter extends ModuleAdapter {
             cellView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EventBus.getDefault().post(new OpenNoteEvent(module));
+                    EventBus.getDefault().post(new ChartEvents.OpenNoteEvent(module));
                 }
             });
         }
@@ -67,7 +67,7 @@ public class NoteModuleAdapter extends ModuleAdapter {
         cellView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new OpenNoteEvent(module));
+                EventBus.getDefault().post(new ChartEvents.OpenNoteEvent(module));
             }
         });
         cellView.setChecked(true);

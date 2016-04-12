@@ -3,10 +3,12 @@ package com.nmatte.mood.database.components;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 
 import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.models.components.NumComponent;
+import com.nmatte.mood.providers.ColumnProvider;
 import com.nmatte.mood.providers.ComponentProvider;
 
 public class ComponentTableHelper {
@@ -33,7 +35,23 @@ public class ComponentTableHelper {
             } else {
                 Uri result = context.getContentResolver().insert(BOOL_URI, values);
                 id = result == null ? -1 : Long.valueOf(result.getLastPathSegment());
+                comp.setId(id);
             }
+
+            Cursor colExistsCursor = context
+                    .getContentResolver()
+                    .query(Uri.withAppendedPath(ColumnProvider.BASE_URI, "bools"), null, null, null, null);
+
+            if (colExistsCursor != null) {
+                if (colExistsCursor.getColumnIndex(comp.columnLabel()) == -1) {
+                    Uri insertUri = ColumnProvider.BASE_URI.buildUpon().appendPath("bools").appendPath(comp.columnLabel()).build();
+                    context.getContentResolver().insert(insertUri, null);
+
+                }
+                colExistsCursor.close();
+            }
+
+
         } catch (Exception e){
             e.printStackTrace();
         }

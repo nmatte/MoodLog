@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nmatte.mood.controllers.chart.ChartEvents;
 import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.moodlog.R;
 
@@ -45,7 +46,7 @@ public class NoteView extends RelativeLayout{
                 // TODO
 
 //                entry.setNote(noteText.getText().toString());
-                EventBus.getDefault().post(new CloseNoteEvent(entry));
+                EventBus.getDefault().post(new ChartEvents.CloseNoteEvent(entry));
             }
         });
     }

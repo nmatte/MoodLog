@@ -20,7 +20,7 @@ public class BoolModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    protected ArrayList<View> getLabelViews(Context context) {
+    public ArrayList<View> getLabelViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
 
         for (BoolComponent item : module.getItems()) {

@@ -19,7 +19,7 @@ public class LogDateAdapter extends ModuleAdapter{
     }
 
     @Override
-    protected ArrayList<View> getLabelViews(Context context) {
+    public ArrayList<View> getLabelViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
         TextCellViewBuilder b = new TextCellViewBuilder(context);
         b

@@ -18,7 +18,7 @@ public class NumModuleAdapter extends ModuleAdapter{
     }
 
     @Override
-    protected ArrayList<View> getLabelViews(Context context) {
+    public ArrayList<View> getLabelViews(Context context) {
         ArrayList<View> views = new ArrayList<>();
 
         for (NumComponent item : module.getItems()) {

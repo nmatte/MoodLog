@@ -14,7 +14,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.controllers.SettingsActivity;
+import com.nmatte.mood.database.modules.ModuleTableHelper;
 import com.nmatte.mood.models.modules.LogDateModule;
+import com.nmatte.mood.models.modules.ModuleConfig;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.reminders.ReminderActivity;
 import com.nmatte.mood.settings.PreferencesContract;
@@ -23,9 +25,8 @@ import com.nmatte.mood.views.ScrollViewWithListener;
 import com.nmatte.mood.views.chart.CellView;
 import com.nmatte.mood.views.chart.ChartColumn;
 import com.nmatte.mood.views.chart.ChartMonthView;
-import com.nmatte.mood.views.chart.CloseNoteEvent;
+import com.nmatte.mood.views.chart.LabelView;
 import com.nmatte.mood.views.chart.NoteView;
-import com.nmatte.mood.views.chart.OpenNoteEvent;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -40,7 +41,7 @@ public class ChartActivity extends AppCompatActivity
 {
 
     FloatingActionButton faButton;
-    ChartColumn labelColumn;
+//    ChartColumn labelColumn;
     ChartMonthView monthFragment;
     LinearLayout mainLayout;
     Menu menu;
@@ -91,10 +92,11 @@ public class ChartActivity extends AppCompatActivity
     private void initViews(){
         monthFragment = (ChartMonthView) getFragmentManager().findFragmentById(R.id.chartMainFragment);
         mainLayout = (LinearLayout) findViewById(R.id.mainLayout);
-        labelColumn = (ChartColumn) findViewById(R.id.labelColumn);
-        labelColumn.setMode(ChartColumn.Mode.LABEL);
+        ModuleConfig config = new ModuleTableHelper(this).getModules();
+        LabelView labelView = (LabelView) findViewById(R.id.labelView);
+        labelView.setConfig(config);
         faButton = (FloatingActionButton) findViewById(R.id.fabDone);
-        labelColumn.setOnLongClickListener(new View.OnLongClickListener() {
+        labelView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 startSettingsActivity();
@@ -132,7 +134,6 @@ public class ChartActivity extends AppCompatActivity
 
     private void refreshFragments(){
         monthFragment.refreshColumns(getChartStartDate(), getChartEndDate());
-        labelColumn.refresh(this);
         mainLayout.invalidate();
     }
 
@@ -298,7 +299,7 @@ public class ChartActivity extends AppCompatActivity
         }
     }
 
-    public void onEvent(OpenNoteEvent event){
+    public void onEvent(ChartEvents.OpenNoteEvent event){
         NoteView noteView = (NoteView) findViewById(R.id.entryNoteView);
         // TODO fix!!
 //        noteView.setEntry(event.getEntry());
@@ -312,7 +313,7 @@ public class ChartActivity extends AppCompatActivity
         noteView.animateUp();
     }
 
-    public void onEvent(CloseNoteEvent event){
+    public void onEvent(ChartEvents.CloseNoteEvent event){
         if(monthFragment.isEditEntryViewOpen())
             faButton.show();
         NoteView noteView = (NoteView) findViewById(R.id.entryNoteView);

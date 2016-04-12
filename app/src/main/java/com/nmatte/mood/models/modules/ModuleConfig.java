@@ -13,6 +13,7 @@ public class ModuleConfig {
     MoodModule moodMod;
     NumModule  numMod;
     NoteModule noteMod;
+    LogDateModule dateMod;
     ContentValues defaults = new ContentValues();
 
     public ModuleConfig(BoolModule boolMod, MoodModule moodMod, NumModule numMod, NoteModule noteMod) {
@@ -20,6 +21,7 @@ public class ModuleConfig {
         this.moodMod = moodMod;
         this.numMod = numMod;
         this.noteMod = noteMod;
+        this.dateMod = new LogDateModule();
         makeDefaults();
     }
 
@@ -91,5 +93,28 @@ public class ModuleConfig {
         columns.addAll(strColumns());
 
         return columns;
+    }
+
+    public ArrayList<Module> all() {
+        ArrayList<Module> modules = new ArrayList<>();
+
+        if (dateMod != null) {
+            modules.add(dateMod);
+        }
+        if (moodMod != null) {
+            modules.add(moodMod);
+        }
+        if (boolMod != null) {
+            modules.add(boolMod);
+        }
+        if (numMod != null) {
+            modules.add(numMod);
+        }
+        if (noteMod != null) {
+            modules.add(noteMod);
+        }
+
+
+        return modules;
     }
 }

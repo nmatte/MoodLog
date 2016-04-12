@@ -37,6 +37,9 @@
         <provider
             android:name="com.nmatte.mood.providers.EntryProvider"
             android:authorities="com.nmatte.mood.entry_provider"/>
+        <provider
+            android:name="com.nmatte.mood.providers.ColumnProvider"
+            android:authorities="com.nmatte.mood.col_provider"/>
 
         <service android:name="com.nmatte.mood.reminders.ReminderService"/>
     </application>

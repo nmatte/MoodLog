@@ -23,7 +23,7 @@ abstract public class ModuleAdapter {
         }
     }
 
-    abstract protected ArrayList<View> getLabelViews(Context context);
+    public abstract ArrayList<View> getLabelViews(Context context);
     abstract protected ArrayList<View> getReadViews(Context context);
     abstract protected ArrayList<View> getEditViews(Context context);
 }

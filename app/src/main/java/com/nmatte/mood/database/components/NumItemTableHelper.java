@@ -18,15 +18,14 @@ public class NumItemTableHelper extends ComponentTableHelper {
         super(context);
     }
 
-    public void delete(NumComponent component){
-//        String whereClause = ComponentContract.Num.ITEM_NAME_COLUMN + "=?";
-//
-//        try{
-//            db.delete(ComponentContract.Num.ITEM_TABLE, whereClause, new String[]{name});
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
-
+    public int delete(NumComponent component){
+        try {
+            Uri uri = Uri.withAppendedPath(NUM_URI, String.valueOf(component.getId()));
+            return context.getContentResolver().delete(uri, null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 

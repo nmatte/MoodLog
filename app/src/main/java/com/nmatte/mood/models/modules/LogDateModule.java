@@ -22,6 +22,11 @@ public class LogDateModule extends Module {
         this.date = date;
     }
 
+    public LogDateModule() {
+        super(-1, "LogDateModule", true);
+        this.date = DateTime.now();
+    }
+
     public static int getDateInt(DateTime date) {
         return Integer.valueOf(date.toString(YEAR_DAY_FORMATTER));
     }

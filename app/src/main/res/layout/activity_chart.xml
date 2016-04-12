@@ -1,10 +1,8 @@
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ChartActivity">
+    android:layout_height="match_parent">
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,13 +19,11 @@
                 android:layout_height="match_parent"
                 android:clickable="true"
                 android:orientation="horizontal">
-                <com.nmatte.mood.views.chart.ChartColumn
-                    android:id="@+id/labelColumn"
+                <com.nmatte.mood.views.chart.LabelView
+                    android:id="@+id/labelView"
                     android:layout_width="@dimen/chart_edit_entry_width_m"
                     android:layout_height="match_parent"
-                    app:mode_label="true"
                     />
-
                 <fragment
                     android:id="@+id/chartMainFragment"
                     android:name="com.nmatte.mood.views.chart.ChartMonthView"

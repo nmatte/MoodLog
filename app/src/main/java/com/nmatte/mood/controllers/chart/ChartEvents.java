@@ -1,8 +1,10 @@
 package com.nmatte.mood.controllers.chart;
 
 
+import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.models.components.NumComponent;
+import com.nmatte.mood.models.modules.NoteModule;
 
 import org.joda.time.DateTime;
 
@@ -85,6 +87,32 @@ public class ChartEvents {
 
         public NumComponent getItem(){
             return item;
+        }
+    }
+
+    public static class CloseNoteEvent {
+        ChartEntry entry;
+
+        public CloseNoteEvent (ChartEntry entry){
+            this.entry = entry;
+        }
+
+        public ChartEntry getEntry() {
+            return entry;
+        }
+
+
+    }
+
+    public static class OpenNoteEvent {
+        NoteModule module;
+
+        public OpenNoteEvent(NoteModule module){
+            this.module = module;
+        }
+
+        public NoteModule getModule() {
+            return module;
         }
     }
 }
