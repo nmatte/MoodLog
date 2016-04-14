@@ -4,7 +4,7 @@ import com.nmatte.mood.adapters.ModuleAdapter;
 import com.nmatte.mood.adapters.NoteModuleAdapter;
 
 public class NoteModule extends Module {
-    String note;
+    String note = "";
 
     public NoteModule(long id, String name, boolean isEnabled) {
         super(id, name, isEnabled);

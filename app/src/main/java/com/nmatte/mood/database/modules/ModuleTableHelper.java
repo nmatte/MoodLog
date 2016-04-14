@@ -66,25 +66,27 @@ public class ModuleTableHelper {
             MoodModule mMod = new MoodModule(-1, ModuleContract.MOOD_MODULE_NAME, false, new ArrayList<BoolComponent>());
             NumModule numMod = new NumModule(-1, ModuleContract.NUM_MODULE_NAME, false, new ArrayList<NumComponent>());
             NoteModule noteMod = new NoteModule(-1, ModuleContract.NOTE_MODULE_NAME, false);
-            do {
-                long id = cursor.getLong(0);
-                String name = cursor.getString(1);
-                boolean isVisible = cursor.getInt(2) == 1;
-                switch (name) {
-                    case ModuleContract.BOOL_MODULE_NAME:
-                        bMod = new BoolModule(id, name, isVisible, bHelper.getByParentId(id));
-                        break;
-                    case ModuleContract.MOOD_MODULE_NAME:
-                        mMod = new MoodModule(id, name, isVisible, bHelper.getByParentId(id));
-                        break;
-                    case ModuleContract.NOTE_MODULE_NAME:
-                        noteMod = new NoteModule(id, name, isVisible);
-                        break;
-                    case ModuleContract.NUM_MODULE_NAME:
-                        numMod = new NumModule(id, name, isVisible, nHelper.getByParentId(id));
-                        break;
-                }
-            } while (cursor.moveToNext());
+            if (cursor.getCount() > 0) {
+                do {
+                    long id = cursor.getLong(0);
+                    String name = cursor.getString(1);
+                    boolean isVisible = cursor.getInt(2) == 1;
+                    switch (name) {
+                        case ModuleContract.BOOL_MODULE_NAME:
+                            bMod = new BoolModule(id, name, isVisible, bHelper.getByParentId(id));
+                            break;
+                        case ModuleContract.MOOD_MODULE_NAME:
+                            mMod = new MoodModule(id, name, isVisible, bHelper.getByParentId(id));
+                            break;
+                        case ModuleContract.NOTE_MODULE_NAME:
+                            noteMod = new NoteModule(id, name, isVisible);
+                            break;
+                        case ModuleContract.NUM_MODULE_NAME:
+                            numMod = new NumModule(id, name, isVisible, nHelper.getByParentId(id));
+                            break;
+                    }
+                } while (cursor.moveToNext());
+            }
             cursor.close();
             return new ModuleConfig(bMod, mMod, numMod, noteMod);
         } catch (Exception e) {

@@ -2,9 +2,14 @@ package com.nmatte.mood.models.modules;
 
 import android.content.ContentValues;
 
+import com.nmatte.mood.adapters.ModuleAdapter;
 import com.nmatte.mood.database.entries.ChartEntryContract;
+import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.models.components.NumComponent;
+import com.nmatte.mood.util.DateUtils;
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 
@@ -116,5 +121,33 @@ public class ModuleConfig {
 
 
         return modules;
+    }
+
+    public ArrayList<ModuleAdapter> adapters() {
+        ArrayList<ModuleAdapter> adapters = new ArrayList<>();
+
+        if (dateMod != null) {
+            adapters.add(dateMod.getViewAdapter());
+        }
+        if (moodMod != null) {
+            adapters.add(moodMod.getViewAdapter());
+        }
+        if (boolMod != null) {
+            adapters.add(boolMod.getViewAdapter());
+        }
+        if (numMod != null) {
+            adapters.add(numMod.getViewAdapter());
+        }
+        if (noteMod != null) {
+            adapters.add(noteMod.getViewAdapter());
+        }
+
+        return adapters;
+    }
+
+    public ChartEntry getBlank(DateTime date) {
+        ContentValues defaults = getDefaults();
+        defaults.put(dateColumn(), DateUtils.getDateInt(date));
+        return new ChartEntry(defaults);
     }
 }

@@ -4,7 +4,7 @@ package com.nmatte.mood.adapters;
 import android.content.Context;
 import android.view.View;
 
-import com.nmatte.mood.views.chart.ChartColumn;
+import com.nmatte.mood.views.chart.columns.ChartColumn;
 
 import java.util.ArrayList;
 

@@ -14,7 +14,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.controllers.SettingsActivity;
+import com.nmatte.mood.database.components.BoolItemTableHelper;
+import com.nmatte.mood.database.entries.ChartEntryTableHelper;
+import com.nmatte.mood.database.modules.ModuleContract;
 import com.nmatte.mood.database.modules.ModuleTableHelper;
+import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.models.modules.LogDateModule;
 import com.nmatte.mood.models.modules.ModuleConfig;
 import com.nmatte.mood.moodlog.R;
@@ -23,10 +27,10 @@ import com.nmatte.mood.settings.PreferencesContract;
 import com.nmatte.mood.util.TestActivity;
 import com.nmatte.mood.views.ScrollViewWithListener;
 import com.nmatte.mood.views.chart.CellView;
-import com.nmatte.mood.views.chart.ChartColumn;
 import com.nmatte.mood.views.chart.ChartMonthView;
 import com.nmatte.mood.views.chart.LabelView;
 import com.nmatte.mood.views.chart.NoteView;
+import com.nmatte.mood.views.chart.columns.ChartColumn;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -41,7 +45,6 @@ public class ChartActivity extends AppCompatActivity
 {
 
     FloatingActionButton faButton;
-//    ChartColumn labelColumn;
     ChartMonthView monthFragment;
     LinearLayout mainLayout;
     Menu menu;
@@ -51,15 +54,8 @@ public class ChartActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getBoolean("firstStart",true)){
-            prefs
-                    .edit()
-                    .putBoolean("firstStart",false)
-                    .putBoolean(PreferencesContract.NOTE_MODULE_ENABLED,false)
-                    .apply();
 
-        }
+        checkFirstStart();
         initViews();
     }
 
@@ -74,7 +70,6 @@ public class ChartActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         refreshFragments();
-        Log.i("onResume", "Refreshing fragments...");
     }
 
     @Override
@@ -88,14 +83,32 @@ public class ChartActivity extends AppCompatActivity
         super.onStop();
     }
 
+    private void checkFirstStart() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (prefs.getBoolean("firstStart",true)){
+            prefs
+                    .edit()
+                    .putBoolean("firstStart",false)
+                    .putBoolean(PreferencesContract.NOTE_MODULE_ENABLED,false)
+                    .apply();
+
+
+        }
+        setUpModules();
+    }
 
     private void initViews(){
         monthFragment = (ChartMonthView) getFragmentManager().findFragmentById(R.id.chartMainFragment);
         mainLayout = (LinearLayout) findViewById(R.id.mainLayout);
+        initLabelView();
+        addFabListener();
+        addScrollViewListener();
+    }
+
+    private void initLabelView() {
         ModuleConfig config = new ModuleTableHelper(this).getModules();
         LabelView labelView = (LabelView) findViewById(R.id.labelView);
         labelView.setConfig(config);
-        faButton = (FloatingActionButton) findViewById(R.id.fabDone);
         labelView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -103,6 +116,11 @@ public class ChartActivity extends AppCompatActivity
                 return false;
             }
         });
+    }
+
+    private void addFabListener() {
+        faButton = (FloatingActionButton) findViewById(R.id.fabDone);
+
         faButton.hide();
         faButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +129,9 @@ public class ChartActivity extends AppCompatActivity
                 EventBus.getDefault().post(new ChartEvents.CloseEditEntryEvent());
             }
         });
+    }
+
+    private void addScrollViewListener() {
         // FIXME: 9/8/15 fix erratic show/hide behavior
         final ScrollViewWithListener scroll = (ScrollViewWithListener) findViewById(R.id.scrollView);
         scroll.setScrollListener(new ScrollViewWithListener.ScrollListener() {
@@ -118,36 +139,34 @@ public class ChartActivity extends AppCompatActivity
             public void onScrollUp() {
                 if (!faButton.isShown() && monthFragment.isEditEntryViewOpen())
                     faButton.show();
-                Log.i("ScrollViewWithListener", "onScrollUp called");
+//                Log.i("ScrollViewWithListener", "onScrollUp called");
             }
 
             @Override
             public void onScrollDown() {
                 if (faButton.isShown())
                     faButton.hide();
-                Log.i("ScrollViewWithListener", "onScrollDown called");
-
-
+//                Log.i("ScrollViewWithListener", "onScrollDown called");
             }
         });
     }
 
     private void refreshFragments(){
-        monthFragment.refreshColumns(getChartStartDate(), getChartEndDate());
+        monthFragment.refreshColumns(
+                new ChartEntryTableHelper(this).getEntryGroup(getChartStartDate(), getChartEndDate()),
+                new ModuleTableHelper(this).getModules()
+        );
         mainLayout.invalidate();
     }
 
 
 
     private DateTime getChartStartDate(){
-
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        if(settings.getBoolean(PreferencesContract.BOOL_CHART_REMEMBER_DATES,false)){
-            if(settings.contains(PreferencesContract.LONG_CHART_START_DATE)){
+        if(settings.getBoolean(PreferencesContract.BOOL_CHART_REMEMBER_DATES,false) && settings.contains(PreferencesContract.LONG_CHART_START_DATE)){
                 long millis = settings.getLong(PreferencesContract.LONG_CHART_START_DATE,0);
                 if (millis != 0)
                     return new DateTime(millis);
-            }
         }
         return DateTime.now().withDayOfMonth(1);
     }
@@ -178,7 +197,7 @@ public class ChartActivity extends AppCompatActivity
         String title = new StringBuilder()
                 .append(new LogDateModule(startDate).getMonthDayString())
                 .append("-")
-                .append(new LogDateModule(startDate).getMonthDayString())
+                .append(new LogDateModule(endDate).getMonthDayString())
                 .toString();
         menu.findItem(R.id.pickDates).setTitle(title);
     }
@@ -255,6 +274,23 @@ public class ChartActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    private void setUpModules() {
+        ModuleTableHelper helper = new ModuleTableHelper(this);
+
+
+        long moodId = helper.save(ModuleContract.MOOD_MODULE_NAME);
+        helper.save(ModuleContract.BOOL_MODULE_NAME);
+        helper.save(ModuleContract.NUM_MODULE_NAME);
+        helper.save(ModuleContract.NOTE_MODULE_NAME);
+
+        BoolItemTableHelper bHelper = new BoolItemTableHelper(this);
+
+        for (int i = 0; i < 13; i++) {
+            BoolComponent comp = new BoolComponent(moodId, "MoodComponent_" + String.valueOf(i),0x000000, true);
+            bHelper.save(comp);
+        }
+    }
+
     public void onEvent(ChartEvents.OpenEditEntryEvent event){
         faButton.show();
     }
@@ -280,7 +316,7 @@ public class ChartActivity extends AppCompatActivity
     public void onEvent(ChartEvents.SaveEndDateDialogEvent event){
         boolean foo = event.isRememberDates();
         Log.i("Date Range Dialog", "End date chosen: " + event.getEndDate().toString("MM/dd/YYYY"));
-        monthFragment.refreshColumns(event.getStartDate(), event.getEndDate());
+//        monthFragment.refreshColumns(new ChartEntryTableHelper(this).getEntryGroup(getChartStartDate(), getChartEndDate()));
         refreshPickDateButton(event.getStartDate(), event.getEndDate());
 
         SharedPreferences settings = getPreferences(MODE_PRIVATE);

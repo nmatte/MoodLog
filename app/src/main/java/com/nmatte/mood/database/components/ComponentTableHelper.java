@@ -29,34 +29,39 @@ public class ComponentTableHelper {
         values.put(ComponentContract.PARENT_MODULE_COLUMN, comp.getModuleId());
 
         try {
-            if (comp.getId() != -1) {
-                values.put(ComponentContract.ID_COLUMN, comp.getId());
-                context.getContentResolver().update(Uri.withAppendedPath(BOOL_URI, String.valueOf(comp.getId())), values, null, null);
-            } else {
+            if (comp.getId() == -1) {
                 Uri result = context.getContentResolver().insert(BOOL_URI, values);
                 id = result == null ? -1 : Long.valueOf(result.getLastPathSegment());
                 comp.setId(id);
-            }
 
-            Cursor colExistsCursor = context
-                    .getContentResolver()
-                    .query(Uri.withAppendedPath(ColumnProvider.BASE_URI, "bools"), null, null, null, null);
-
-            if (colExistsCursor != null) {
-                if (colExistsCursor.getColumnIndex(comp.columnLabel()) == -1) {
-                    Uri insertUri = ColumnProvider.BASE_URI.buildUpon().appendPath("bools").appendPath(comp.columnLabel()).build();
-                    context.getContentResolver().insert(insertUri, null);
-
+                if (id > 0) {
+                    saveBoolColumn(comp);
                 }
-                colExistsCursor.close();
+            } else {
+                values.put(ComponentContract.ID_COLUMN, comp.getId());
+                context.getContentResolver().update(Uri.withAppendedPath(BOOL_URI, String.valueOf(comp.getId())), values, null, null);
             }
-
 
         } catch (Exception e){
             e.printStackTrace();
         }
 
         return id;
+    }
+
+    public void saveBoolColumn(BoolComponent component) {
+        Cursor colExistsCursor = context
+                .getContentResolver()
+                .query(Uri.withAppendedPath(ColumnProvider.BASE_URI, "bools"), null, null, null, null);
+
+        if (colExistsCursor != null) {
+            if (colExistsCursor.getColumnIndex(component.columnLabel()) == -1) {
+                Uri insertUri = ColumnProvider.BASE_URI.buildUpon().appendPath("bools").appendPath(component.columnLabel()).build();
+                context.getContentResolver().insert(insertUri, null);
+
+            }
+            colExistsCursor.close();
+        }
     }
 
     public long save(NumComponent component){

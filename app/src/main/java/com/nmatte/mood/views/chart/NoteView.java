@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.nmatte.mood.controllers.chart.ChartEvents;
 import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.moodlog.R;
+import com.nmatte.mood.views.chart.columns.ChartColumn;
 
 import de.greenrobot.event.EventBus;
 

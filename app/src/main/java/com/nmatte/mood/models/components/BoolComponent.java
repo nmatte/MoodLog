@@ -9,6 +9,16 @@ import com.nmatte.mood.database.components.ComponentContract;
  * They represent checkboxes. They are also used in the MoodModule, for instance.
  */
 public class BoolComponent extends LogbookComponent {
+
+
+    public BoolComponent(long id, long moduleId, String name, int color, boolean isVisible) {
+        super(id, moduleId, name, color, isVisible);
+    }
+
+    public BoolComponent(long moduleId, String name, int color, boolean isVisible) {
+        super(moduleId, name, color, isVisible);
+    }
+
     public BoolComponent(String name){
         super(name);
     }

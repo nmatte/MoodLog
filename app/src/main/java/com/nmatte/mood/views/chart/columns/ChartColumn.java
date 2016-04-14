@@ -1,4 +1,4 @@
-package com.nmatte.mood.views.chart;
+package com.nmatte.mood.views.chart.columns;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,9 +12,9 @@ import com.nmatte.mood.moodlog.R;
 
 import java.util.ArrayList;
 
-import static com.nmatte.mood.views.chart.ChartColumn.Mode.ENTRY_EDIT;
-import static com.nmatte.mood.views.chart.ChartColumn.Mode.ENTRY_READ;
-import static com.nmatte.mood.views.chart.ChartColumn.Mode.LABEL;
+import static com.nmatte.mood.views.chart.columns.ChartColumn.Mode.ENTRY_EDIT;
+import static com.nmatte.mood.views.chart.columns.ChartColumn.Mode.ENTRY_READ;
+import static com.nmatte.mood.views.chart.columns.ChartColumn.Mode.LABEL;
 
 
 public class ChartColumn extends LinearLayout {
@@ -74,10 +74,6 @@ public class ChartColumn extends LinearLayout {
             this.setEnabled(true);
         }
 
-        if (mode == ENTRY_READ) {
-            this.setBackground(context.getResources().getDrawable(R.drawable.drop_shadow_vertical));
-        }
-
         refresh(context);
     }
 
@@ -117,33 +113,11 @@ public class ChartColumn extends LinearLayout {
         return lastYtouch;
     }
 
-    public void setMode(Mode mode) {
-        this.mode = mode;
-    }
-
     public enum Mode {
         ENTRY_READ,
         ENTRY_EDIT,
         LABEL
     }
 
-//                int grayColor = getResources().getColor(R.color.gray_cell_bg);
-//            int whiteColor = getResources().getColor(R.color.white);
-
-//            boolean grayToggle = addNumItems(whiteColor, grayColor, false);
-//            addBoolItems(whiteColor, grayColor, grayToggle);
-
-//            if(settings.getBoolean(PreferencesContract.NOTE_MODULE_ENABLED,false))
-//                addNoteModule();
-
-
-    // TODO: move gray-white alternation elsewhere (maybe when a new one is saved?)
-//        for (View view : views) {
-//            color = grayToggle ? grayColor : whiteColor;
-//            grayToggle = !grayToggle;
-//
-//            view.setBackgroundColor(color);
-//            addView(view);
-//        }
 }
 

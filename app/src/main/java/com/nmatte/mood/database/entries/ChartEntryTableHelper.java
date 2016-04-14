@@ -1,6 +1,7 @@
 package com.nmatte.mood.database.entries;
 
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -8,9 +9,9 @@ import android.support.v4.util.SimpleArrayMap;
 
 import com.nmatte.mood.database.modules.ModuleTableHelper;
 import com.nmatte.mood.models.ChartEntry;
-import com.nmatte.mood.models.modules.LogDateModule;
 import com.nmatte.mood.models.modules.ModuleConfig;
 import com.nmatte.mood.providers.EntryProvider;
+import com.nmatte.mood.util.DateUtils;
 
 import org.joda.time.DateTime;
 
@@ -24,14 +25,14 @@ public class ChartEntryTableHelper {
 
     public SimpleArrayMap<DateTime, ChartEntry> getEntryGroup(DateTime startDate, DateTime endDate){
         ModuleConfig config = new ModuleTableHelper(context).getModules();
+        config.all();
         EntryCursorAdapter adapter = new EntryCursorAdapter(config);
         ArrayList<String> allColumns = config.allColumns();
-        ArrayList<DateTime> dates = LogDateModule.getDatesInRange(startDate, endDate);
-        SimpleArrayMap<DateTime, ChartEntry> result = new SimpleArrayMap<>(dates.size());
+        SimpleArrayMap<DateTime, ChartEntry> result = DateUtils.getEmptyMapInRange(startDate, endDate, config);
 
         String [] selection = new String[] {
-                LogDateModule.getString(startDate),
-                LogDateModule.getString(endDate)
+                DateUtils.getString(startDate),
+                DateUtils.getString(endDate)
         };
 
         Cursor c = context.getContentResolver().query(
@@ -41,25 +42,21 @@ public class ChartEntryTableHelper {
                 selection,
                 null);
         c.moveToFirst();
-        if (c.getCount() > 0) {
-            try {
-                int dateIndex = 0;
-                int dateColumnIndex = c.getColumnIndexOrThrow(config.dateColumn());
 
-                for (int i = 0; i < dates.size(); i++) {
-                    DateTime date = dates.get(i);
-                    int dateInt = LogDateModule.getDateInt(date);
-                    if (!c.isAfterLast() && dateInt == c.getInt(dateColumnIndex)) {
-                        result.put(date, adapter.getEntry(c));
-                        c.moveToNext();
-                    } else {
-                        result.put(date, adapter.getBlank(date));
-                    }
-                }
+        try {
+            int dateColumnIndex = c.getColumnIndexOrThrow(config.dateColumn());
 
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (c.getCount() > 0) {
+                do {
+                    int dateInt = c.getInt(dateColumnIndex);
+                    DateTime date = DateUtils.fromInt(dateInt);
+
+                    result.put(date, adapter.getEntry(c));
+                } while(c.moveToNext());
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         c.close();
@@ -71,6 +68,14 @@ public class ChartEntryTableHelper {
         long id = -1;
 
         return id;
+    }
+
+    public ChartEntry get(int dateId) {
+        ModuleConfig config = new ModuleTableHelper(context).getModules();
+
+
+
+        return new ChartEntry(new ContentValues());
     }
 
 }

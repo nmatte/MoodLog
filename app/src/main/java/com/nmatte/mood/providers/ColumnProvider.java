@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.nmatte.mood.database.DatabaseHelper;
 import com.nmatte.mood.database.components.ComponentContract;
+import com.nmatte.mood.database.entries.ChartEntryContract;
 
 public class ColumnProvider extends ContentProvider {
     public static final String CONTENT_AUTHORITY = "com.nmatte.mood.col_provider";
@@ -68,27 +69,24 @@ public class ColumnProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        String table = null;
         String col = null;
         String type = null;
         switch (sURIMatcher.match(uri)) {
             case BOOL_INSERT_ID:
-                table = ComponentContract.Bool.ITEM_TABLE;
                 col = uri.getLastPathSegment();
                 type = ComponentContract.Bool.LOG_VALUE_TYPE;
                 break;
             case NUM_INSERT_ID:
-                table = ComponentContract.Num.ITEM_TABLE;
                 col = uri.getLastPathSegment();
                 type = ComponentContract.Num.LOG_VALUE_TYPE;
                 break;
         }
 
         try {
-            if (table != null && col != null && type != null ) {
+            if (col != null && type != null ) {
                 String addColumnQuery =
                         "ALTER TABLE " +
-                                table +
+                                ChartEntryContract.ENTRY_TABLE_NAME +
                                 " ADD COLUMN "
                                 + col + " " + type;
                 db.execSQL(addColumnQuery);

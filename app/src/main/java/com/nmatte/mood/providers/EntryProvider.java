@@ -10,7 +10,7 @@ import android.support.annotation.Nullable;
 
 import com.nmatte.mood.database.DatabaseHelper;
 import com.nmatte.mood.database.entries.ChartEntryContract;
-import com.nmatte.mood.models.modules.LogDateModule;
+import com.nmatte.mood.util.DateUtils;
 
 import org.joda.time.DateTime;
 
@@ -41,8 +41,8 @@ public class EntryProvider extends ContentProvider{
         }
 
         if (selection == null && selectionArgs == null) {
-            String end = DateTime.now().toLocalDate().toString(LogDateModule.DATE_PATTERN);
-            String begin = DateTime.now().minusDays(28).toLocalDate().toString(LogDateModule.DATE_PATTERN);
+            String end = DateTime.now().toLocalDate().toString(DateUtils.DATE_PATTERN);
+            String begin = DateTime.now().minusDays(28).toLocalDate().toString(DateUtils.DATE_PATTERN);
             selection = ChartEntryContract.ENTRY_DATE_COLUMN + " BETWEEN ? AND ?";
             selectionArgs = new String[] {begin, end};
         }

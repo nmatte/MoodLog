@@ -11,10 +11,12 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import com.nmatte.mood.adapters.EntryAdapter;
 import com.nmatte.mood.controllers.chart.ChartEvents;
-import com.nmatte.mood.database.entries.ChartEntryTableHelper;
 import com.nmatte.mood.models.ChartEntry;
+import com.nmatte.mood.models.modules.ModuleConfig;
 import com.nmatte.mood.moodlog.R;
+import com.nmatte.mood.views.chart.columns.ChartColumn;
 
 import org.joda.time.DateTime;
 
@@ -24,14 +26,9 @@ import io.codetail.animation.ViewAnimationUtils;
 import io.codetail.widget.RevealFrameLayout;
 
 public class ChartMonthView extends Fragment {
-    DateTime startDate;
-    DateTime endDate;
-
     LinearLayout horizontalLayout;
     RevealFrameLayout backgroundLayout;
     HorizontalScrollView horizontalScrollView;
-
-
 
     boolean editEntryViewIsOpen = false;
 
@@ -55,31 +52,23 @@ public class ChartMonthView extends Fragment {
 
 
     /**
-     * Refreshes the entries to be shown in the specified date range.
+     * Refreshes the entries to be shown.
      *
-     * @param startDate The first day to be shown
-     * @param endDate The last day to be shown, inclusive
      */
-    public void refreshColumns(DateTime startDate, DateTime endDate) {
+    public void refreshColumns(SimpleArrayMap<DateTime, ChartEntry> values, ModuleConfig config) {
         horizontalLayout.removeAllViews();
-        this.startDate = startDate;
-        this.endDate = endDate;
         editEntryColumn.refresh(getActivity());
-        // TODO getGroupWithBlanks (currently doesn't include blanks!!)
-//        ArrayList<ChartEntry> newList = ChartEntryTableHelper.getGroupWithBlanks(getActivity(), startDate, endDate);
-        SimpleArrayMap<DateTime, ChartEntry> vals =
-            new ChartEntryTableHelper(getActivity()).getEntryGroup(startDate, endDate);
+        EntryAdapter adapter = new EntryAdapter(config);
 
-//        if (newList.size() > 0) {
-//            for (final ChartEntry entry : newList) {
-//                SelectorWrapper wrapper = new SelectorWrapper(getActivity());
-//                wrapper.setOnLongClickListener(getColumnLongClickListener(wrapper.getColumn()));
-//                // TODO
-////                wrapper.getColumn().setEntry(entry);
-//                wrapper.getColumn().refresh(getActivity());
-//                horizontalLayout.addView(wrapper);
-//            }
-//        }
+        for (int i = 0; i < values.size(); i++) {
+            ChartEntry entry = values.valueAt(i);
+//            SelectorWrapper wrapper = new SelectorWrapper(getActivity());
+//            wrapper.setOnLongClickListener(getColumnLongClickListener(wrapper.getColumn()));
+//            wrapper.getColumn().refresh(getActivity());
+            horizontalLayout.addView(new SelectorWrapper(getActivity(), adapter.getView(getActivity(), entry)));
+        }
+
+
         horizontalLayout.invalidate();
         horizontalScrollView.invalidate();
         backgroundLayout.invalidate();
@@ -105,7 +94,7 @@ public class ChartMonthView extends Fragment {
             public boolean onLongClick(View v) {
 //                boolean isTodayOrEarlier =
 //                        column.getEntry().getLogDate().getDayOfYear() <= DateTime.now().getDayOfYear();
-//                if (!editEntryViewIsOpen && isTodayOrEarlier)
+//                if (!editEntr yViewIsOpen && isTodayOrEarlier)
 //                    openColumn(column);
                 // TODO fix!!!
                 return false;

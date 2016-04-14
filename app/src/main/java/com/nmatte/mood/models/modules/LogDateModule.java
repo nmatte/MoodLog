@@ -27,36 +27,6 @@ public class LogDateModule extends Module {
         this.date = DateTime.now();
     }
 
-    public static int getDateInt(DateTime date) {
-        return Integer.valueOf(date.toString(YEAR_DAY_FORMATTER));
-    }
-
-    public static String getString(DateTime date) {
-        return date.toString(YEAR_DAY_FORMATTER);
-    }
-
-    public static DateTime fromInt(int dateInt) {
-        return DateTime.parse(String.valueOf(dateInt), YEAR_DAY_FORMATTER);
-    }
-
-    public static ArrayList<DateTime> getDatesInRange (DateTime start, DateTime end) {
-        ArrayList<DateTime> dates = new ArrayList<>();
-
-        if (start.isAfter(end)) {
-            DateTime tmp = start;
-            start = end;
-            end = tmp;
-        }
-
-        DateTime current = start;
-
-        while (current.isBefore(end)) {
-            dates.add(current);
-            current = current.plusDays(1);
-        }
-
-        return dates;
-    }
 
     @Override
     public ModuleAdapter getViewAdapter() {

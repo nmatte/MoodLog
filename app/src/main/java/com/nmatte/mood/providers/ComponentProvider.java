@@ -96,7 +96,7 @@ public class ComponentProvider extends ContentProvider {
                     table,
                     null,
                     values,
-                    SQLiteDatabase.CONFLICT_REPLACE);
+                    SQLiteDatabase.CONFLICT_IGNORE);
 
             return Uri.withAppendedPath(uri, String.valueOf(id));
         } catch (Exception e){
