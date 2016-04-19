@@ -48,7 +48,7 @@ public class ChartActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
-//        checkFirstStart();
+        checkFirstStart();
 //        initViews();
     }
 
@@ -86,8 +86,8 @@ public class ChartActivity extends AppCompatActivity
                     .apply();
 
 
+            setUpModules();
         }
-//        setUpModules();
     }
 
     private void initViews(){
@@ -172,7 +172,7 @@ public class ChartActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_chart, menu);
         this.menu = menu;
-        rxAndroidThing();
+        setDateButton();
 //        MenuItem editEntryDoneButton = menu.findItem(R.id.editEntryDoneButton);
 //        editEntryDoneButton.setVisible(false);
 //        refreshPickDateButton(getChartStartDate(), getChartEndDate());
@@ -239,20 +239,59 @@ public class ChartActivity extends AppCompatActivity
     }
 
     private void setUpModules() {
-        ModuleTableHelper helper = new ModuleTableHelper(this);
+        final ModuleTableHelper helper = new ModuleTableHelper(this);
+        Observable.just(ModuleContract.MOOD_MODULE_NAME, ModuleContract.BOOL_MODULE_NAME, ModuleContract.NUM_MODULE_NAME, ModuleContract.NOTE_MODULE_NAME)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        new Observer<String>() {
+                            long moodId = -1;
+                            @Override
+                            public void onCompleted() {
+                                EventBus.getDefault().post(new ChartEvents.PopulateMoodModule(moodId));
+                            }
 
+                            @Override
+                            public void onError(Throwable e) {
+                                e.printStackTrace();
+                            }
 
-        long moodId = helper.save(ModuleContract.MOOD_MODULE_NAME);
-        helper.save(ModuleContract.BOOL_MODULE_NAME);
-        helper.save(ModuleContract.NUM_MODULE_NAME);
-        helper.save(ModuleContract.NOTE_MODULE_NAME);
+                            @Override
+                            public void onNext(String s) {
+                                if (s.equals(ModuleContract.MOOD_MODULE_NAME)) {
+                                    moodId = helper.save(s);
+                                } else {
+                                    helper.save(s);
+                                }
+                            }
+                        });
+    }
 
-        BoolItemTableHelper bHelper = new BoolItemTableHelper(this);
+    public void onEvent(final ChartEvents.PopulateMoodModule event) {
+        final BoolItemTableHelper bHelper = new BoolItemTableHelper(this);
 
-        for (int i = 0; i < 13; i++) {
-            BoolComponent comp = new BoolComponent(moodId, "MoodComponent_" + String.valueOf(i),0x000000, true);
-            bHelper.insert(comp);
-        }
+        Observable.range(0, 13)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        new Observer<Integer>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                e.printStackTrace();
+                            }
+
+                            @Override
+                            public void onNext(Integer i) {
+                                BoolComponent comp = new BoolComponent(event.id, "MoodComponent_" + String.valueOf(i),0x000000, true);
+                                bHelper.insert(comp);
+                            }
+                        }
+                );
     }
 
 //    public void onEvent(ChartEvents.OpenEditEntryEvent event){
@@ -322,11 +361,11 @@ public class ChartActivity extends AppCompatActivity
 //    }
 
     public void onEvent(ChartEvents.StartEndDatesLoaded event) {
-        Log.i("refreshPickDateButton", "refreshing dates...");
+        Log.i("refreshPickDateButton", "refreshing dates");
         refreshPickDateButton(event.start, event.end);
     }
 
-    private void rxAndroidThing() {
+    private void setDateButton() {
         Observable.just("start", "end")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

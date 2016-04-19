@@ -74,10 +74,9 @@ public class ColumnProvider extends ContentProvider {
         try {
             if (col != null && type != null ) {
                 String addColumnQuery =
-                        "ALTER TABLE ? ADD COLUMN ? ? ";
+                        "ALTER TABLE "+ ChartEntryContract.ENTRY_TABLE_NAME+" ADD COLUMN ? ? ";
 
                 String[] args = new String[] {
-                        ChartEntryContract.ENTRY_TABLE_NAME,
                         col,
                         type
                 };

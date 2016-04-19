@@ -18,6 +18,13 @@ public class ChartEvents {
         }
     }
 
+    public static class PopulateMoodModule {
+        final long id;
+        public PopulateMoodModule(long id) {
+            this.id = id;
+        }
+    }
+
     public static class CloseEditEntryEvent {
     }
 
