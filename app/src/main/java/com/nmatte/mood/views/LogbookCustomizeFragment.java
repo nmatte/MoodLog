@@ -193,11 +193,11 @@ public class LogbookCustomizeFragment extends Fragment {
 
     public void onEvent(ChartEvents.SaveBoolItemEvent event){
         ComponentTableHelper helper = new ComponentTableHelper(getActivity());
-        helper.save(event.getItem());
+        helper.insert(event.getItem());
     }
     public void onEvent(ChartEvents.SaveNumItemEvent event){
         ComponentTableHelper helper = new ComponentTableHelper(getActivity());
-        helper.save(event.getItem());
+        helper.insert(event.getItem());
     }
 
 

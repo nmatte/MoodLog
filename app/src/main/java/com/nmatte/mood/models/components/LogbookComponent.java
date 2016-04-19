@@ -1,5 +1,7 @@
 package com.nmatte.mood.models.components;
 
+import android.content.ContentValues;
+
 /**
  * LogbookComponent is a field that the user can add to their logbook.
  * This abstract class covers the common aspects of BoolComponents and NumComponents.
@@ -29,13 +31,15 @@ abstract public class LogbookComponent {
     }
 
     public LogbookComponent(long id, String name){
-        this.id = id;
-        this.name = name;
+        this.id     = id;
+        this.name   = name;
     }
 
     public LogbookComponent(String name){
         this.name = name;
     }
+
+    public abstract ContentValues asValues();
 
     public long getId() {
         return id;

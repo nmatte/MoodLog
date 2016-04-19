@@ -9,6 +9,15 @@ import com.nmatte.mood.models.modules.NoteModule;
 import org.joda.time.DateTime;
 
 public class ChartEvents {
+    public static class StartEndDatesLoaded {
+        DateTime start;
+        DateTime end;
+        public StartEndDatesLoaded(DateTime start, DateTime end){
+            this.start = start;
+            this.end = end;
+        }
+    }
+
     public static class CloseEditEntryEvent {
     }
 

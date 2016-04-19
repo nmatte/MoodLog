@@ -39,7 +39,7 @@ public class ModuleTableHelperTest extends AndroidTestCase {
         long id = helper.save(ModuleContract.BOOL_MODULE_NAME);
         BoolComponent comp = new BoolComponent("TestItem");
         comp.setModuleId(id);
-        long compId = new BoolItemTableHelper(testContext).save(comp);
+        long compId = new BoolItemTableHelper(testContext).insert(comp);
         comp.setId(compId);
 
         ModuleConfig config = helper.getModules();

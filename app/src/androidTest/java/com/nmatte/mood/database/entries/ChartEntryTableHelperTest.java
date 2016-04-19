@@ -32,7 +32,7 @@ public class ChartEntryTableHelperTest extends InstrumentationTestCase {
 
         comp.setModuleId(modId);
         BoolItemTableHelper bHelper = new BoolItemTableHelper(testContext);
-        bHelper.save(comp);
+        bHelper.insert(comp);
 
 
         mod = new BoolModule(modId, modName, true, bHelper.getByParentId(modId));

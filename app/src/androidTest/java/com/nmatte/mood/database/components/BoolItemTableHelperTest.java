@@ -8,6 +8,7 @@ import android.test.RenamingDelegatingContext;
 import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.providers.ColumnProvider;
 
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,31 +40,27 @@ public class BoolItemTableHelperTest extends InstrumentationTestCase {
     public void testDelete() throws Exception {
         BoolComponent itemDelete = new BoolComponent("FooItemDelete");
 
-        long id = boolHelper.save(itemDelete);
+        long id = boolHelper.insert(itemDelete);
         itemDelete.setId(id);
         assertEquals(1, boolHelper.delete(itemDelete));
     }
 
     @Test
     public void testGetAll() throws Exception {
-        BoolComponent itemVisible = new BoolComponent("FooItemVisible");
-        BoolComponent itemInvisible = new BoolComponent("FooItemInvisible");
+        BoolComponent itemVisible = new BoolComponent("TestGetAll");
 
-        itemInvisible.setVisible(false);
-        itemVisible.setId(boolHelper.save(itemVisible));
-        itemInvisible.setId(boolHelper.save(itemInvisible));
+        itemVisible.setId(boolHelper.insert(itemVisible));
 
         ArrayList<BoolComponent> afterSave = boolHelper.getAll();
-        assertTrue("doesn't contain invisible item", afterSave.contains(itemInvisible));
-        assertTrue("doesn't contain visible item", afterSave.contains(itemVisible));
+        assertTrue("contains visible item", afterSave.contains(itemVisible));
     }
 
     @Test
     public void testGetByParentId() throws Exception {
-        BoolComponent item = new BoolComponent("TestItem");
+        BoolComponent item = new BoolComponent("TestGetByParentId" + DateTime.now().toString("DDDHHmmssSSS"));
         item.setModuleId(1);
 
-        long id = boolHelper.save(item);
+        long id = boolHelper.insert(item);
         item.setId(id);
         ArrayList<BoolComponent> components = boolHelper.getByParentId(1);
         ArrayList<BoolComponent> all = boolHelper.getAll();
@@ -72,20 +69,20 @@ public class BoolItemTableHelperTest extends InstrumentationTestCase {
     }
 
     @Test
-    public void testSave() throws Exception {
-        BoolComponent item = new BoolComponent("TestItem");
+    public void testInsert() throws Exception {
+        BoolComponent item = new BoolComponent("TestInsert" + DateTime.now().toString("DDDHHmmssSSS"));
         item.setModuleId(1);
-        long id = boolHelper.save(item);
-        BoolComponent returnedItem = boolHelper.find(id);
+        long id = boolHelper.insert(item);
 
+        assertTrue("Inserts component with new id", id != -1);
+        assertTrue("Doesn't insert component twice", boolHelper.insert(item) == -1);
+        item.setId(id);
 
-        assertTrue("BoolComponent id updates on save", id  > 0);
-        assertNotNull("BoolComponent is found", returnedItem);
-        assertEquals(1, returnedItem.getModuleId());
-        assertTrue("Component name saves correctly",returnedItem.getName().equals(item.getName()));
 
         Cursor colExists = testContext.getContentResolver().query(Uri.withAppendedPath(ColumnProvider.BASE_URI, "bools"), null, null, null, null);
-        assertFalse("Component column added correctly", colExists.getColumnIndex(returnedItem.columnLabel()) != -1);
+        assertTrue("Component column added correctly", colExists.getColumnIndex(item.columnLabel()) != -1);
         colExists.close();
+
+        boolHelper.delete(item);
     }
 }

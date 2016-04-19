@@ -29,6 +29,10 @@ public class BoolItemTableHelper extends ComponentTableHelper{
 
     public BoolComponent find(long id) {
         BoolComponent item = null;
+        if (id == -1) {
+            return null;
+        }
+
         try {
             Uri uri = Uri.withAppendedPath(BOOL_URI, String.valueOf(id));
             Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);

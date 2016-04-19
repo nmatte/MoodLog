@@ -1,5 +1,6 @@
 package com.nmatte.mood.models.components;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.nmatte.mood.database.components.ComponentContract;
@@ -42,6 +43,22 @@ public class NumComponent extends LogbookComponent {
         this.color      = cursor.getInt(cursor.getColumnIndex(ComponentContract.COLOR_COLUMN));
         this.maxNum     = cursor.getInt(cursor.getColumnIndex(ComponentContract.Num.ITEM_MAX_COLUMN));
         this.defaultNum = cursor.getInt(cursor.getColumnIndex(ComponentContract.Num.ITEM_DEFAULT_COLUMN));
+    }
+
+    @Override
+    public ContentValues asValues() {
+        ContentValues values = new ContentValues();
+        values.put(ComponentContract.NAME_COLUMN, this.getName());
+        values.put(ComponentContract.COLOR_COLUMN, this.getColor());
+        values.put(ComponentContract.PARENT_MODULE_COLUMN, this.getModuleId());
+        values.put(ComponentContract.Num.ITEM_DEFAULT_COLUMN, this.getDefaultNum());
+        values.put(ComponentContract.Num.ITEM_MAX_COLUMN, this.getMaxNum());
+
+        if (id != -1) {
+            values.put(ComponentContract.ID_COLUMN, this.getId());
+        }
+
+        return values;
     }
 
     public int getDefaultNum() {

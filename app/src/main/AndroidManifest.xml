@@ -30,7 +30,7 @@
         </receiver>
         <provider
             android:name="com.nmatte.mood.providers.ComponentProvider"
-            android:authorities="com.nmatte.mood.provider" />
+            android:authorities="com.nmatte.mood.comp_provider" />
         <provider
             android:name="com.nmatte.mood.providers.ModuleProvider"
             android:authorities="com.nmatte.mood.mod_provider" />
@@ -38,7 +38,6 @@
             android:name="com.nmatte.mood.providers.EntryProvider"
             android:authorities="com.nmatte.mood.entry_provider" />
         <provider
-
             android:name="com.nmatte.mood.providers.ColumnProvider"
             android:authorities="com.nmatte.mood.col_provider" />
 

@@ -42,22 +42,11 @@ public class ColumnProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        String table = null;
-        switch (sURIMatcher.match(uri)) {
-            case BOOL_QUERY_ID:
-                table = ComponentContract.Bool.ITEM_TABLE;
-                break;
-            case NUM_QUERY_ID:
-                table = ComponentContract.Num.ITEM_TABLE;
-                break;
-        }
+        String table = ChartEntryContract.ENTRY_TABLE_NAME;
 
-        if (table != null) {
-            String columnCheckQuery = "SELECT * FROM "+ table +" LIMIT 0,1";
-            return db.rawQuery(columnCheckQuery, null);
-        } else {
-            return null;
-        }
+
+        String columnCheckQuery = "SELECT * FROM "+ table +" LIMIT 0,1";
+        return db.rawQuery(columnCheckQuery, null);
     }
 
     @Nullable
@@ -85,11 +74,16 @@ public class ColumnProvider extends ContentProvider {
         try {
             if (col != null && type != null ) {
                 String addColumnQuery =
-                        "ALTER TABLE " +
-                                ChartEntryContract.ENTRY_TABLE_NAME +
-                                " ADD COLUMN "
-                                + col + " " + type;
-                db.execSQL(addColumnQuery);
+                        "ALTER TABLE ? ADD COLUMN ? ? ";
+
+                String[] args = new String[] {
+                        ChartEntryContract.ENTRY_TABLE_NAME,
+                        col,
+                        type
+                };
+
+                db.execSQL(addColumnQuery, args);
+
                 return uri;
             } else {
                 Log.e("ColumnProvider", "Failed to add column");

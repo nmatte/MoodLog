@@ -12,7 +12,7 @@ import com.nmatte.mood.database.DatabaseHelper;
 import com.nmatte.mood.database.components.ComponentContract;
 
 public class ComponentProvider extends ContentProvider {
-    public static final String CONTENT_AUTHORITY = "com.nmatte.mood.provider";
+    public static final String CONTENT_AUTHORITY = "com.nmatte.mood.comp_provider";
     public static final Uri BASE_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -68,7 +68,7 @@ public class ComponentProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(Uri uri) {
-
+        //TODO
         return null;
     }
 
@@ -76,27 +76,23 @@ public class ComponentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         String table = null;
+
         switch(sURIMatcher.match(uri)) {
             case 1:
-                table = ComponentContract.Bool.ITEM_TABLE;
-                break;
             case 2:
                 table = ComponentContract.Bool.ITEM_TABLE;
                 break;
             case 3:
-                table = ComponentContract.Num.ITEM_TABLE;
-                break;
             case 4:
                 table = ComponentContract.Num.ITEM_TABLE;
                 break;
         }
 
         try {
-            long id = db.insertWithOnConflict(
+            long id = db.insertOrThrow(
                     table,
                     null,
-                    values,
-                    SQLiteDatabase.CONFLICT_IGNORE);
+                    values);
 
             return Uri.withAppendedPath(uri, String.valueOf(id));
         } catch (Exception e){
@@ -111,12 +107,10 @@ public class ComponentProvider extends ContentProvider {
         String table = null;
         switch(sURIMatcher.match(uri)) {
             case 1:
-                return 0;
             case 2:
                 table = ComponentContract.Bool.ITEM_TABLE;
                 break;
             case 3:
-                return 0;
             case 4:
                 table = ComponentContract.Num.ITEM_TABLE;
                 break;
@@ -128,6 +122,7 @@ public class ComponentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        // TODO
         return 0;
     }
 }

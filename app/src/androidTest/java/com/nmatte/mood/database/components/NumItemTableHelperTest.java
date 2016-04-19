@@ -31,14 +31,14 @@ public class NumItemTableHelperTest extends InstrumentationTestCase {
 
     @Test
     public void testDelete() throws Exception {
-        long id = helper.save(comp);
+        long id = helper.insert(comp);
         comp.setId(id);
         assertEquals(1, helper.delete(comp));
     }
 
     @Test
     public void testGetAll() throws Exception {
-        comp.setId(helper.save(comp));
+        comp.setId(helper.insert(comp));
 
         ArrayList<NumComponent> all = helper.getAll();
 
@@ -52,7 +52,7 @@ public class NumItemTableHelperTest extends InstrumentationTestCase {
 
     @Test
     public void testSave() throws Exception {
-        long id = helper.save(comp);
+        long id = helper.insert(comp);
 
         assertTrue("id of new component returned", id > -1);
     }

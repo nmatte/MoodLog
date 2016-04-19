@@ -1,5 +1,6 @@
 package com.nmatte.mood.models.components;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.nmatte.mood.database.components.ComponentContract;
@@ -31,6 +32,20 @@ public class BoolComponent extends LogbookComponent {
         this.moduleId   = cursor.getLong(cursor.getColumnIndex(ComponentContract.PARENT_MODULE_COLUMN));
 
         this.color      = cursor.getInt(cursor.getColumnIndex(ComponentContract.COLOR_COLUMN));
+    }
+
+    @Override
+    public ContentValues asValues() {
+        ContentValues values = new ContentValues();
+        values.put(ComponentContract.NAME_COLUMN, this.getName());
+        values.put(ComponentContract.COLOR_COLUMN, this.getColor());
+        values.put(ComponentContract.PARENT_MODULE_COLUMN, this.getModuleId());
+
+        if (id != -1) {
+            values.put(ComponentContract.ID_COLUMN, this.getId());
+        }
+
+        return values;
     }
 
     @Override
