@@ -48,8 +48,7 @@ public class ChartActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
-        checkFirstStart();
-//        initViews();
+//        init();
     }
 
     @Override
@@ -74,6 +73,11 @@ public class ChartActivity extends AppCompatActivity
     protected void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    private void init() {
+        checkFirstStart();
+        initViews();
     }
 
     private void checkFirstStart() {
@@ -172,7 +176,7 @@ public class ChartActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_chart, menu);
         this.menu = menu;
-        setDateButton();
+//        setDateButton();
 //        MenuItem editEntryDoneButton = menu.findItem(R.id.editEntryDoneButton);
 //        editEntryDoneButton.setVisible(false);
 //        refreshPickDateButton(getChartStartDate(), getChartEndDate());
@@ -241,10 +245,11 @@ public class ChartActivity extends AppCompatActivity
     private void setUpModules() {
         final ModuleTableHelper helper = new ModuleTableHelper(this);
         Observable.just(ModuleContract.MOOD_MODULE_NAME, ModuleContract.BOOL_MODULE_NAME, ModuleContract.NUM_MODULE_NAME, ModuleContract.NOTE_MODULE_NAME)
+                .map(helper::save)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        new Observer<String>() {
+                        new Observer<Long>() {
                             long moodId = -1;
                             @Override
                             public void onCompleted() {
@@ -257,11 +262,10 @@ public class ChartActivity extends AppCompatActivity
                             }
 
                             @Override
-                            public void onNext(String s) {
-                                if (s.equals(ModuleContract.MOOD_MODULE_NAME)) {
-                                    moodId = helper.save(s);
-                                } else {
-                                    helper.save(s);
+                            public void onNext(Long aLong) {
+                                if (moodId != -1) {
+                                    // FIXME: terrible way to do this
+                                    moodId = aLong;
                                 }
                             }
                         });
@@ -273,25 +277,9 @@ public class ChartActivity extends AppCompatActivity
         Observable.range(0, 13)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        new Observer<Integer>() {
-                            @Override
-                            public void onCompleted() {
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                e.printStackTrace();
-                            }
-
-                            @Override
-                            public void onNext(Integer i) {
-                                BoolComponent comp = new BoolComponent(event.id, "MoodComponent_" + String.valueOf(i),0x000000, true);
-                                bHelper.insert(comp);
-                            }
-                        }
-                );
+                .map(i -> new BoolComponent(event.id, "MoodComponent_" + String.valueOf(i),0x000000, true))
+                .doOnNext(bHelper::insert)
+                .subscribe();
     }
 
 //    public void onEvent(ChartEvents.OpenEditEntryEvent event){
@@ -366,12 +354,34 @@ public class ChartActivity extends AppCompatActivity
     }
 
     private void setDateButton() {
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
         Observable.just("start", "end")
                 .subscribeOn(Schedulers.io())
+                .map(s -> {
+                    DateTime result;
+                    if (s.equals("start")) {
+                        if(settings.getBoolean(PreferencesContract.BOOL_CHART_REMEMBER_DATES,false) && settings.contains(PreferencesContract.LONG_CHART_START_DATE)){
+                            long millis = settings.getLong(PreferencesContract.LONG_CHART_START_DATE,0);
+                            if (millis != 0)
+                                result = new DateTime(millis);
+                        }
+                        result = DateTime.now().withDayOfMonth(1);
+                    } else {
+                        if(settings.getBoolean(PreferencesContract.BOOL_CHART_REMEMBER_DATES,false)){
+                            if(settings.contains(PreferencesContract.LONG_CHART_END_DATE)){
+                                long millis = settings.getLong(PreferencesContract.LONG_CHART_END_DATE,0);
+                                if (millis != 0)
+                                    result = new DateTime(millis);
+                            }
+                        }
+                        result = DateTime.now().dayOfMonth().withMaximumValue();
+                    }
+                    return result;
+                })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<String>() {
-                    DateTime start;
-                    DateTime end;
+                .subscribe(new Observer<DateTime>() {
+                    DateTime start = null;
+                    DateTime end = null;
                     @Override
                     public void onCompleted() {
                         EventBus.getDefault().post(new ChartEvents.StartEndDatesLoaded(start, end));
@@ -383,27 +393,15 @@ public class ChartActivity extends AppCompatActivity
                     }
 
                     @Override
-                    public void onNext(String s) {
-                        SharedPreferences settings = getPreferences(MODE_PRIVATE);
-                        if (s.equals("start")) {
-                            if(settings.getBoolean(PreferencesContract.BOOL_CHART_REMEMBER_DATES,false) && settings.contains(PreferencesContract.LONG_CHART_START_DATE)){
-                                long millis = settings.getLong(PreferencesContract.LONG_CHART_START_DATE,0);
-                                if (millis != 0)
-                                     start = new DateTime(millis);
-                            }
-                            start = DateTime.now().withDayOfMonth(1);
+                    public void onNext(DateTime dateTime) {
+                        if (start == null) {
+                            start = dateTime;
                         } else {
-                            if(settings.getBoolean(PreferencesContract.BOOL_CHART_REMEMBER_DATES,false)){
-                                if(settings.contains(PreferencesContract.LONG_CHART_END_DATE)){
-                                    long millis = settings.getLong(PreferencesContract.LONG_CHART_END_DATE,0);
-                                    if (millis != 0)
-                                        end = new DateTime(millis);
-                                }
-                            }
-                            end = DateTime.now().dayOfMonth().withMaximumValue();
+                            end = dateTime;
                         }
                     }
                 });
+
     }
 
 }
