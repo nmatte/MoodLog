@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.nmatte.mood.controllers.SettingsActivity;
 import com.nmatte.mood.database.components.BoolItemTableHelper;
+import com.nmatte.mood.database.entries.ChartEntryTableHelper;
 import com.nmatte.mood.database.modules.ModuleContract;
 import com.nmatte.mood.database.modules.ModuleTableHelper;
 import com.nmatte.mood.models.components.BoolComponent;
@@ -21,6 +22,8 @@ import com.nmatte.mood.reminders.ReminderActivity;
 import com.nmatte.mood.settings.PreferencesContract;
 import com.nmatte.mood.util.TestActivity;
 import com.nmatte.mood.views.chart.CellView;
+import com.nmatte.mood.views.chart.ChartMonthView;
+import com.nmatte.mood.views.chart.LabelView;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -39,7 +42,7 @@ public class ChartActivity extends AppCompatActivity
 {
 
 //    FloatingActionButton faButton;
-//    ChartMonthView monthFragment;
+    ChartMonthView monthFragment;
 //    LinearLayout mainLayout;
     Menu menu;
 
@@ -48,7 +51,7 @@ public class ChartActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
-//        init();
+        init();
     }
 
     @Override
@@ -61,7 +64,7 @@ public class ChartActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-//        refreshFragments();
+        refreshFragments();
     }
 
     @Override
@@ -76,7 +79,7 @@ public class ChartActivity extends AppCompatActivity
     }
 
     private void init() {
-        checkFirstStart();
+//        checkFirstStart();
         initViews();
     }
 
@@ -95,24 +98,38 @@ public class ChartActivity extends AppCompatActivity
     }
 
     private void initViews(){
-//        monthFragment = (ChartMonthView) getFragmentManager().findFragmentById(R.id.chartMainFragment);
+        monthFragment = (ChartMonthView) getFragmentManager().findFragmentById(R.id.chartMainFragment);
 //        mainLayout = (LinearLayout) findViewById(R.id.mainLayout);
-//        initLabelView();
+        initLabelView();
 //        addFabListener();
 //        addScrollViewListener();
     }
 
     private void initLabelView() {
-        ModuleConfig config = new ModuleTableHelper(this).getModules();
-//        LabelView labelView = (LabelView) findViewById(R.id.labelView);
-//        labelView.setConfig(config);
-//        labelView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                startSettingsActivity();
-//                return false;
-//            }
-//        });
+        ModuleTableHelper mHelper = new ModuleTableHelper(this);
+
+        Observable.just(mHelper)
+                .map(ModuleTableHelper::getModules)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ModuleConfig>() {
+                    ModuleConfig config;
+                    @Override
+                    public void onCompleted() {
+                        LabelView labelView = (LabelView) findViewById(R.id.labelView);
+                        labelView.setConfig(config);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(ModuleConfig moduleConfig) {
+                        config = moduleConfig;
+                    }
+                });
     }
 
 //    private void addFabListener() {
@@ -146,13 +163,13 @@ public class ChartActivity extends AppCompatActivity
 //        });
 //    }
 
-//    private void refreshFragments(){
-//        monthFragment.refreshColumns(
-//                new ChartEntryTableHelper(this).getEntryGroup(getChartStartDate(), getChartEndDate()),
-//                new ModuleTableHelper(this).getModules()
-//        );
+    private void refreshFragments(){
+        monthFragment.refreshColumns(
+                new ChartEntryTableHelper(this).getEntryGroup(DateTime.now().withDayOfMonth(1),  DateTime.now().dayOfMonth().withMaximumValue()),
+                new ModuleTableHelper(this).getModules()
+        );
 //        mainLayout.invalidate();
-//    }
+    }
 
     private void refreshPickDateButton(DateTime startDate, DateTime endDate){
         if(endDate.isBefore(startDate)){

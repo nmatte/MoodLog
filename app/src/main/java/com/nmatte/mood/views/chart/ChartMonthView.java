@@ -65,8 +65,10 @@ public class ChartMonthView extends Fragment {
 //            SelectorWrapper wrapper = new SelectorWrapper(getActivity());
 //            wrapper.setOnLongClickListener(getColumnLongClickListener(wrapper.getColumn()));
 //            wrapper.getColumn().refresh(getActivity());
-            horizontalLayout.addView(new SelectorWrapper(getActivity(), adapter.getView(getActivity(), entry)));
+//            horizontalLayout.addView(new SelectorWrapper(getActivity(), adapter.getView(getActivity(), entry)));
+            horizontalLayout.addView(adapter.getView(getActivity(),entry));
         }
+
 
 
         horizontalLayout.invalidate();
@@ -81,7 +83,7 @@ public class ChartMonthView extends Fragment {
         horizontalLayout = (LinearLayout) fragmentLayout.findViewById(R.id.columnLayout);
         horizontalLayout.setClickable(true);
         horizontalLayout.setLongClickable(true);
-        editEntryColumn= (ChartColumn) fragmentLayout.findViewById(R.id.editColumn);
+        editEntryColumn = (ChartColumn) fragmentLayout.findViewById(R.id.editColumn);
         backgroundLayout = (RevealFrameLayout) fragmentLayout.findViewById(R.id.backgroundLayout);
         horizontalScrollView = (HorizontalScrollView) fragmentLayout.findViewById(R.id.horizontalScrollView);
 

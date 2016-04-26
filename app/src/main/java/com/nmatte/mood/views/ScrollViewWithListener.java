@@ -7,7 +7,17 @@ import android.view.View;
 import android.widget.ScrollView;
 
 public class ScrollViewWithListener extends ScrollView {
-    ScrollListener listener;
+    ScrollListener listener = new ScrollListener() {
+        @Override
+        public void onScrollUp() {
+            Log.w("ScrollListener", "ScrollListener not initialized");
+        }
+
+        @Override
+        public void onScrollDown() {
+            Log.w("ScrollListener", "ScrollListener not initialized");
+        }
+    };
 
     public ScrollViewWithListener(Context context, AttributeSet attrs) {
         super(context, attrs);
