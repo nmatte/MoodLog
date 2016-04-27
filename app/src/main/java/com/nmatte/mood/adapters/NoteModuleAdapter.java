@@ -13,6 +13,8 @@ import com.nmatte.mood.views.chart.cells.TextCellViewBuilder;
 
 import java.util.ArrayList;
 
+import rx.Observable;
+
 public class NoteModuleAdapter extends ModuleAdapter {
     NoteModule module;
 
@@ -55,7 +57,7 @@ public class NoteModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    protected ArrayList<View> getEditViews(Context context) {
+    protected Observable<View> getEditViews(Context context, ChartEntry entry) {
 //        ImageCellView cellView = new ImageCellView(context, 0x000000, false);
 //        if (module.get().length() > 0){
 //            cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
@@ -73,6 +75,6 @@ public class NoteModuleAdapter extends ModuleAdapter {
         ArrayList<View> result = new ArrayList<View> ();
 //        result.add(cellView);
 
-        return result;
+        return Observable.from(result);
     }
 }

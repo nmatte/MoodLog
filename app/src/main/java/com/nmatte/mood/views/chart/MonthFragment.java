@@ -23,7 +23,7 @@ import io.codetail.animation.ViewAnimationUtils;
 import io.codetail.widget.RevealFrameLayout;
 import rx.Observable;
 
-public class ChartMonthView extends Fragment {
+public class MonthFragment extends Fragment {
     LinearLayout horizontalLayout;
     RevealFrameLayout backgroundLayout;
     HorizontalScrollView horizontalScrollView;
@@ -73,7 +73,7 @@ public class ChartMonthView extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View fragmentLayout = inflater.inflate(R.layout.fragment_month_view, container);
+        View fragmentLayout = inflater.inflate(R.layout.fragment_month, container);
         horizontalLayout = (LinearLayout) fragmentLayout.findViewById(R.id.columnLayout);
         horizontalLayout.setClickable(true);
         horizontalLayout.setLongClickable(true);

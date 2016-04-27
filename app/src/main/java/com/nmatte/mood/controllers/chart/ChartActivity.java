@@ -28,8 +28,8 @@ import com.nmatte.mood.reminders.ReminderActivity;
 import com.nmatte.mood.settings.PreferencesContract;
 import com.nmatte.mood.util.DateUtils;
 import com.nmatte.mood.util.TestActivity;
-import com.nmatte.mood.views.chart.ChartMonthView;
 import com.nmatte.mood.views.chart.LabelView;
+import com.nmatte.mood.views.chart.MonthFragment;
 import com.nmatte.mood.views.chart.cells.CellView;
 
 import org.joda.time.DateTime;
@@ -50,7 +50,7 @@ public class ChartActivity extends AppCompatActivity
 {
 
 //    FloatingActionButton faButton;
-    ChartMonthView monthFragment;
+    MonthFragment monthFragment;
 //    LinearLayout mainLayout;
     Menu menu;
 
@@ -106,7 +106,7 @@ public class ChartActivity extends AppCompatActivity
     }
 
     private void initViews(){
-        monthFragment = (ChartMonthView) getFragmentManager().findFragmentById(R.id.chartMainFragment);
+        monthFragment = (MonthFragment) getFragmentManager().findFragmentById(R.id.chartMainFragment);
 //        mainLayout = (LinearLayout) findViewById(R.id.mainLayout);
         initLabelView();
 //        addFabListener();

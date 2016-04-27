@@ -55,7 +55,7 @@ public class BoolModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    protected ArrayList<View> getEditViews(Context context) {
+    protected Observable<View> getEditViews(Context context, ChartEntry entry) {
         ArrayList<View> views = new ArrayList<>();
 //
 //        for (final BoolComponent item : module.getItems()) {
@@ -70,6 +70,6 @@ public class BoolModuleAdapter extends ModuleAdapter {
 //        }
 
 
-        return views;
+        return Observable.from(views);
     }
 }

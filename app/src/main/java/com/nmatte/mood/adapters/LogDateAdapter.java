@@ -55,7 +55,7 @@ public class LogDateAdapter extends ModuleAdapter{
     }
 
     @Override
-    protected ArrayList<View> getEditViews(Context context) {
+    protected Observable<View> getEditViews(Context context, ChartEntry entry) {
         ArrayList<View> views = new ArrayList<>();
         TextCellViewBuilder b = new TextCellViewBuilder(context);
 
@@ -67,6 +67,6 @@ public class LogDateAdapter extends ModuleAdapter{
 
         views.add(b.build());
 
-        return views;
+        return Observable.from(views);
     }
 }

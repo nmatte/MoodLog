@@ -21,23 +21,6 @@ public class MoodModuleAdapter extends BoolModuleAdapter {
         this.module = module;
     }
 
-//    private ArrayList<ImageCellView> getCheckboxes(){
-//        ArrayList<ImageCellView> result = new ArrayList<>();
-//        Resources res = context.getResources();
-//        int colorID = (module.isMini()) ? R.array.mood_colors_mini : R.array.mood_colors;
-//        int [] colors = res.getIntArray(colorID);
-//        int factor = (module.isMini()) ? 2 : 1;
-//        int i = 0;
-//        for (int color :
-//                colors) {
-//            ImageCellView newRow = new ImageCellView(context, color);
-//            newRow.setBackground(CellView.Background.NONE);
-//            newRow.setValue(module.get(i));
-//            result.add(newRow);
-//            i+= factor;
-//        }
-//        return result;
-//    }
 
     @Override
     public ArrayList<View> getLabelViews(Context context) {

@@ -14,5 +14,5 @@ abstract public class ModuleAdapter {
 
     public abstract ArrayList<View> getLabelViews(Context context);
     public abstract Observable<View> getReadViews(Context context, ChartEntry entry);
-    abstract protected ArrayList<View> getEditViews(Context context);
+    abstract protected Observable<View> getEditViews(Context context, ChartEntry entry);
 }

@@ -10,6 +10,7 @@ import com.nmatte.mood.moodlog.R;
 public class ReadView extends LinearLayout {
     float lastXtouch;
     float lastYtouch;
+
     OnTouchListener touchListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {

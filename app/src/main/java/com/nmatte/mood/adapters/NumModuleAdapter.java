@@ -56,7 +56,7 @@ public class NumModuleAdapter extends ModuleAdapter{
     }
 
     @Override
-    protected ArrayList<View> getEditViews(Context context) {
+    protected Observable<View> getEditViews(Context context, ChartEntry entry) {
         ArrayList<View> views = new ArrayList<>();
 //
 //        for (final NumComponent numItem : module.getItems()) {
@@ -71,6 +71,6 @@ public class NumModuleAdapter extends ModuleAdapter{
 //
 //        }
 
-        return views;
+        return Observable.from(views);
     }
 }
