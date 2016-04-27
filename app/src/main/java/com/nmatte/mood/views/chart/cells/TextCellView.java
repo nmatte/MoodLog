@@ -22,36 +22,34 @@ public class TextCellView extends CellView {
     protected TextCellView(Context context,
                            String text,
                            int backgroundColor,
-                           TextAlignment hAlignment, TextAlignment vAlignment){
+                           TextAlignment hAlign,
+                           TextAlignment vAlign,
+                           Stroke stroke,
+                           float xOffset){
         super(context,backgroundColor);
-        this.context = context;
-        this.text = text;
-        this.horizontalAlignment = (hAlignment == null)? TextAlignment.LEFT : hAlignment;
-        this.verticalAlignment = (vAlignment == null)? TextAlignment.BOTTOM : vAlignment;
+        this.context             = context;
+        this.text                = text;
+        this.horizontalAlignment = (hAlign == null) ? TextAlignment.LEFT : hAlign;
+        this.verticalAlignment   = (vAlign == null) ? TextAlignment.BOTTOM : vAlign;
+        this.stroke              = stroke;
+        this.leftAlignX          = xOffset;
+
         init();
     }
 
     public TextCellView(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.TextCellView,0,0);
-        this.text = (String) a.getText(R.styleable.TextCellView_text);
-        if (this.text == null)
-            this.text = "";
+
+        String textAttr = (String) a.getText(R.styleable.TextCellView_text);
         String hAlignText = (String) a.getText(R.styleable.TextCellView_horizontal_alignment);
         String vAlignText = (String) a.getText(R.styleable.TextCellView_vertical_alignment);
 
-        if (hAlignText == null)
-            hAlignText = "";
-        if (vAlignText == null)
-            vAlignText = "";
-        // prefer left align
-        this.horizontalAlignment = TextAlignment.LEFT;
-        if (hAlignText.equals("center"))
-            this.horizontalAlignment = TextAlignment.CENTER;
-        this.verticalAlignment = TextAlignment.BOTTOM;
-        if(vAlignText.equals("center"))
-            this.verticalAlignment = TextAlignment.CENTER;
-
+        this.context             = context;
+        this.text                = textAttr == null ? "" : textAttr;
+        this.horizontalAlignment = hAlignText != null && hAlignText.equals("center") ? TextAlignment.CENTER : TextAlignment.LEFT;
+        this.verticalAlignment   = vAlignText != null && vAlignText.equals("center") ? TextAlignment.CENTER: TextAlignment.BOTTOM;
+        this.stroke              = Stroke.DEFAULT;
 
         init();
     }
@@ -62,15 +60,10 @@ public class TextCellView extends CellView {
         textPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
     }
 
-    public void setStroke(Stroke stroke){
-        this.stroke = stroke;
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        //String sampleText = text.length() <= 2 ? "00" : text.length() <= "Irritability".length() ? "Irritability" : text;
         textPaint.setTextSize((super.bottomTransparentBound - super.topTransparentBound) / 2);
         if (text == null)
             text = "";
@@ -88,13 +81,8 @@ public class TextCellView extends CellView {
 
         if (verticalAlignment == TextAlignment.CENTER){
             textY = getHeight() / 2 + textPaint.getTextSize()/2;
-                    //- textPaint.getTextSize();
-            //super.bottomTransparentBound;
-            //super.topTransparentBound;
-
         } else if (verticalAlignment == TextAlignment.BOTTOM){
             textY = (getHeight() * 5 )/ 6;
-            //textY = (float) super.bottomTransparentBound - textPaint.getTextSize();
         }
 
 
@@ -136,10 +124,6 @@ public class TextCellView extends CellView {
         return "";
     }
 
-    public void setLeftAlignX(float offset){
-        leftAlignX = offset;
-    }
-
     public enum TextAlignment {
         LEFT,
         CENTER,
@@ -150,7 +134,4 @@ public class TextCellView extends CellView {
         DEFAULT,
         BOLD
     }
-
-
-
 }
