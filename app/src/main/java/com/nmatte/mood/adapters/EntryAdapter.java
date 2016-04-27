@@ -9,23 +9,42 @@ import com.nmatte.mood.views.chart.columns.ReadView;
 
 import java.util.ArrayList;
 
-public class EntryAdapter {
-    ModuleConfig config;
-    ArrayList<ModuleAdapter> adapters;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
+public class EntryAdapter {
+    ArrayList<ModuleAdapter> adapters;
+    Observable<ModuleAdapter> oAdapters;
     public EntryAdapter(ModuleConfig config) {
-        this.config = config;
         adapters = config.adapters();
+        oAdapters = Observable.from(config.adapters());
     }
 
-    public ReadView getView(Context context, ChartEntry entry) {
+    public ReadView getReadView(Context context, ChartEntry entry) {
         ReadView readView = new ReadView(context);
 
-        for (ModuleAdapter adapter : adapters) {
-            for (View view : adapter.getReadViews(context)) {
-                readView.addView(view);
-            }
-        }
+        oAdapters
+                .flatMap(moduleAdapter -> moduleAdapter.getReadViews(context, entry))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<View>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(View view) {
+                        readView.addView(view);
+                    }
+                });
 
         return readView;
     }

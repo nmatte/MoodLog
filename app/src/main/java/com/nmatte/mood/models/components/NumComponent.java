@@ -27,8 +27,8 @@ public class NumComponent extends LogbookComponent {
         this.defaultNum = defaultNum;
     }
 
-    public NumComponent(String name, int maxNum, int defaultNum){
-        super(name);
+    public NumComponent(long moduleId, String name, int color, boolean isVisible, int maxNum, int defaultNum){
+        super(moduleId, name, color, isVisible);
         this.maxNum = maxNum;
         this.defaultNum = defaultNum;
     }

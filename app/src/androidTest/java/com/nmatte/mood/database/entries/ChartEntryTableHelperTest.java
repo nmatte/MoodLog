@@ -16,14 +16,14 @@ import org.junit.Test;
 
 public class ChartEntryTableHelperTest extends InstrumentationTestCase {
     RenamingDelegatingContext testContext;
-    ChartEntryTableHelper helper;
+    ChartEntryTable helper;
     BoolModule mod;
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
         testContext = new RenamingDelegatingContext(getInstrumentation().getContext(), "test_");
-        helper = new ChartEntryTableHelper(testContext);
+        helper = new ChartEntryTable(testContext);
         String modName = ModuleContract.BOOL_MODULE_NAME;
 
         long modId = new ModuleTableHelper(testContext).save(modName);

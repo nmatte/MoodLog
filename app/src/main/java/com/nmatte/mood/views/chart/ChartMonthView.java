@@ -3,7 +3,6 @@ package com.nmatte.mood.views.chart;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.util.SimpleArrayMap;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,12 +17,11 @@ import com.nmatte.mood.models.modules.ModuleConfig;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.views.chart.columns.ChartColumn;
 
-import org.joda.time.DateTime;
-
 import de.greenrobot.event.EventBus;
 import io.codetail.animation.SupportAnimator;
 import io.codetail.animation.ViewAnimationUtils;
 import io.codetail.widget.RevealFrameLayout;
+import rx.Observable;
 
 public class ChartMonthView extends Fragment {
     LinearLayout horizontalLayout;
@@ -55,19 +53,24 @@ public class ChartMonthView extends Fragment {
      * Refreshes the entries to be shown.
      *
      */
-    public void refreshColumns(SimpleArrayMap<DateTime, ChartEntry> values, ModuleConfig config) {
+    public void refreshColumns(Observable<ChartEntry> entries, ModuleConfig config) {
         horizontalLayout.removeAllViews();
         editEntryColumn.refresh(getActivity());
         EntryAdapter adapter = new EntryAdapter(config);
 
-        for (int i = 0; i < values.size(); i++) {
-            ChartEntry entry = values.valueAt(i);
+//        for (int i = 0; i < values.size(); i++) {
+//            ChartEntry entry = values.valueAt(i);
 //            SelectorWrapper wrapper = new SelectorWrapper(getActivity());
 //            wrapper.setOnLongClickListener(getColumnLongClickListener(wrapper.getColumn()));
 //            wrapper.getColumn().refresh(getActivity());
-//            horizontalLayout.addView(new SelectorWrapper(getActivity(), adapter.getView(getActivity(), entry)));
-            horizontalLayout.addView(adapter.getView(getActivity(),entry));
-        }
+//            horizontalLayout.addView(new SelectorWrapper(getActivity(), adapter.getReadView(getActivity(), entry)));
+//            horizontalLayout.addView(adapter.getReadView(getActivity(),entry));
+//        }
+
+        entries
+                .map(e -> adapter.getReadView(getActivity(),e))
+                .doOnNext(v -> horizontalLayout.addView(v))
+                .subscribe();
 
 
 
@@ -153,7 +156,7 @@ public class ChartMonthView extends Fragment {
     public void onEvent(ChartEvents.CloseEditEntryEvent event){
         try {
             // TODO fix!!
-//            ChartEntryTableHelper.addOrUpdateEntry(getActivity(), editEntryColumn.getEntry());
+//            ChartEntryTable.addOrUpdateEntry(getActivity(), editEntryColumn.getEntry());
 //
 //            openedColumn.setEntry(editEntryColumn.getEntry());
             openedColumn.refresh(getActivity());

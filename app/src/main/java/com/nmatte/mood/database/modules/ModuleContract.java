@@ -13,8 +13,21 @@ public class ModuleContract {
 
 
     public static final String
-        BOOL_MODULE_NAME = "BoolModule",
-        NUM_MODULE_NAME = "NumModule",
-        NOTE_MODULE_NAME = "NoteModule",
-        MOOD_MODULE_NAME = "MoodModule";
+        NOTE_MODULE_NAME = "NoteModule";
+
+    public class Bool {
+        public static final String NAME = "BoolModule";
+        public static final long ID = 1;
+    }
+
+    public class Num {
+        public static final String NAME = "NumModule";
+        public static final long ID = 2;
+    }
+
+    public class Mood {
+        public static final String NAME = "MoodModule";
+        public static final long ID = 3;
+    }
+
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.nmatte.mood.controllers.chart.ChartEvents;
+import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.modules.NoteModule;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.views.chart.ImageCellView;
@@ -36,7 +37,7 @@ public class NoteModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    protected ArrayList<View> getReadViews(Context context) {
+    public rx.Observable<View> getReadViews(Context context, ChartEntry entry) {
         ImageCellView cellView = new ImageCellView(context, false);
         cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
 
@@ -53,7 +54,7 @@ public class NoteModuleAdapter extends ModuleAdapter {
         ArrayList<View> result = new ArrayList<View> ();
         result.add(cellView);
 
-        return result;
+        return rx.Observable.from(result);
     }
 
     @Override

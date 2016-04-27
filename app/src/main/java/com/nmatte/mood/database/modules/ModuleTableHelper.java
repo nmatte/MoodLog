@@ -8,16 +8,12 @@ import android.util.Log;
 
 import com.nmatte.mood.database.components.BoolItemTableHelper;
 import com.nmatte.mood.database.components.NumItemTableHelper;
-import com.nmatte.mood.models.components.BoolComponent;
-import com.nmatte.mood.models.components.NumComponent;
 import com.nmatte.mood.models.modules.BoolModule;
 import com.nmatte.mood.models.modules.ModuleConfig;
 import com.nmatte.mood.models.modules.MoodModule;
 import com.nmatte.mood.models.modules.NoteModule;
 import com.nmatte.mood.models.modules.NumModule;
 import com.nmatte.mood.providers.ModuleProvider;
-
-import java.util.ArrayList;
 
 public class ModuleTableHelper {
     Context context;
@@ -43,6 +39,28 @@ public class ModuleTableHelper {
         return -1;
     }
 
+    public long getId(String name) {
+        String[] projection = new String[] {ModuleContract.MODULE_ID_COLUMN};
+        String selection = ModuleContract.MODULE_NAME_COLUMN + "=?";
+        String[] selectionArgs = new String[] {name};
+        try {
+            Cursor cursor = context.getContentResolver().query(ModuleProvider.BASE_URI, projection, selection, selectionArgs, null);
+
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                int id = cursor.getInt(0);
+                return id;
+            }
+
+                cursor.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
 
 
     public ModuleConfig getModules(){
@@ -62,31 +80,11 @@ public class ModuleTableHelper {
 
             BoolItemTableHelper bHelper = new BoolItemTableHelper(context);
             NumItemTableHelper nHelper = new NumItemTableHelper(context);
-            BoolModule bMod = new BoolModule(-1, ModuleContract.BOOL_MODULE_NAME, false, new ArrayList<BoolComponent>());
-            MoodModule mMod = new MoodModule(-1, ModuleContract.MOOD_MODULE_NAME, false, new ArrayList<BoolComponent>());
-            NumModule numMod = new NumModule(-1, ModuleContract.NUM_MODULE_NAME, false, new ArrayList<NumComponent>());
-            NoteModule noteMod = new NoteModule(-1, ModuleContract.NOTE_MODULE_NAME, false);
-            if (cursor.getCount() > 0) {
-                do {
-                    long id = cursor.getLong(0);
-                    String name = cursor.getString(1);
-                    boolean isVisible = cursor.getInt(2) == 1;
-                    switch (name) {
-                        case ModuleContract.BOOL_MODULE_NAME:
-                            bMod = new BoolModule(id, name, isVisible, bHelper.getByParentId(id));
-                            break;
-                        case ModuleContract.MOOD_MODULE_NAME:
-                            mMod = new MoodModule(id, name, isVisible, bHelper.getByParentId(id));
-                            break;
-                        case ModuleContract.NOTE_MODULE_NAME:
-                            noteMod = new NoteModule(id, name, isVisible);
-                            break;
-                        case ModuleContract.NUM_MODULE_NAME:
-                            numMod = new NumModule(id, name, isVisible, nHelper.getByParentId(id));
-                            break;
-                    }
-                } while (cursor.moveToNext());
-            }
+            BoolModule bMod = new BoolModule(true, bHelper.getByParentId(ModuleContract.Bool.ID));
+            MoodModule mMod = new MoodModule(true, bHelper.getByParentId(ModuleContract.Mood.ID));
+            NumModule numMod = new NumModule(true, nHelper.getByParentId(ModuleContract.Num.ID));
+            NoteModule noteMod = new NoteModule(-1, ModuleContract.NOTE_MODULE_NAME, true);
+
             cursor.close();
             return new ModuleConfig(bMod, mMod, numMod, noteMod);
         } catch (Exception e) {

@@ -22,6 +22,7 @@ public class ReadView extends LinearLayout {
     public ReadView(Context context) {
         super(context);
         this.setBackground(context.getResources().getDrawable(R.drawable.drop_shadow_vertical));
+        this.setOrientation(VERTICAL);
     }
 
 

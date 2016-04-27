@@ -1,10 +1,5 @@
 package com.nmatte.mood.util;
 
-import android.support.v4.util.SimpleArrayMap;
-
-import com.nmatte.mood.models.ChartEntry;
-import com.nmatte.mood.models.modules.ModuleConfig;
-
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -47,14 +42,6 @@ public class DateUtils {
         return date.toString(YEAR_DAY_FORMATTER);
     }
 
-    public static SimpleArrayMap<DateTime, ChartEntry> getEmptyMapInRange(DateTime start, DateTime end, ModuleConfig config) {
-        SimpleArrayMap<DateTime, ChartEntry> result = new SimpleArrayMap<>();
 
-        for (DateTime date : getDatesInRange(start, end)) {
-            result.put(date, config.getBlank(date));
-        }
-
-        return result;
-    }
 
 }

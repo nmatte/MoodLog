@@ -1,9 +1,11 @@
 package com.nmatte.mood.controllers.chart;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.util.SimpleArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -11,15 +13,20 @@ import android.view.MenuItem;
 
 import com.nmatte.mood.controllers.SettingsActivity;
 import com.nmatte.mood.database.components.BoolItemTableHelper;
-import com.nmatte.mood.database.entries.ChartEntryTableHelper;
+import com.nmatte.mood.database.components.NumItemTableHelper;
+import com.nmatte.mood.database.entries.ChartEntryContract;
+import com.nmatte.mood.database.entries.ChartEntryTable;
 import com.nmatte.mood.database.modules.ModuleContract;
 import com.nmatte.mood.database.modules.ModuleTableHelper;
+import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.components.BoolComponent;
+import com.nmatte.mood.models.components.NumComponent;
 import com.nmatte.mood.models.modules.LogDateModule;
 import com.nmatte.mood.models.modules.ModuleConfig;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.reminders.ReminderActivity;
 import com.nmatte.mood.settings.PreferencesContract;
+import com.nmatte.mood.util.DateUtils;
 import com.nmatte.mood.util.TestActivity;
 import com.nmatte.mood.views.chart.CellView;
 import com.nmatte.mood.views.chart.ChartMonthView;
@@ -29,6 +36,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.lang.reflect.Array;
 import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
@@ -79,7 +87,7 @@ public class ChartActivity extends AppCompatActivity
     }
 
     private void init() {
-//        checkFirstStart();
+        this.checkFirstStart();
         initViews();
     }
 
@@ -164,8 +172,23 @@ public class ChartActivity extends AppCompatActivity
 //    }
 
     private void refreshFragments(){
+        DateTime start = DateTime.now().withDayOfMonth(1);
+        DateTime end = DateTime.now().dayOfMonth().withMaximumValue();
+
+        SimpleArrayMap<DateTime, ChartEntry> values = new ChartEntryTable(this).getEntryGroup(start, end);
+
+        Observable<ChartEntry> entries = Observable.from(DateUtils.getDatesInRange(start, end))
+                .map(d -> {
+                    if (values.containsKey(d)) {
+                        return values.get(d);
+                    } else {
+                        ContentValues emptyValues = new ContentValues();
+                        emptyValues.put(ChartEntryContract.ENTRY_DATE_COLUMN, DateUtils.getDateInt(d));
+                        return new ChartEntry(emptyValues);
+                    }
+                });
         monthFragment.refreshColumns(
-                new ChartEntryTableHelper(this).getEntryGroup(DateTime.now().withDayOfMonth(1),  DateTime.now().dayOfMonth().withMaximumValue()),
+                entries,
                 new ModuleTableHelper(this).getModules()
         );
 //        mainLayout.invalidate();
@@ -261,41 +284,41 @@ public class ChartActivity extends AppCompatActivity
 
     private void setUpModules() {
         final ModuleTableHelper helper = new ModuleTableHelper(this);
-        Observable.just(ModuleContract.MOOD_MODULE_NAME, ModuleContract.BOOL_MODULE_NAME, ModuleContract.NUM_MODULE_NAME, ModuleContract.NOTE_MODULE_NAME)
-                .map(helper::save)
+        Observable.just(ModuleContract.Mood.NAME, ModuleContract.Bool.NAME, ModuleContract.Num.NAME, ModuleContract.NOTE_MODULE_NAME)
+                .doOnNext(helper::save)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        new Observer<Long>() {
-                            long moodId = -1;
-                            @Override
-                            public void onCompleted() {
-                                EventBus.getDefault().post(new ChartEvents.PopulateMoodModule(moodId));
-                            }
+                .subscribe();
 
-                            @Override
-                            public void onError(Throwable e) {
-                                e.printStackTrace();
-                            }
-
-                            @Override
-                            public void onNext(Long aLong) {
-                                if (moodId != -1) {
-                                    // FIXME: terrible way to do this
-                                    moodId = aLong;
-                                }
-                            }
-                        });
+        populateMoodModule();
+        populateNumModule();
     }
 
-    public void onEvent(final ChartEvents.PopulateMoodModule event) {
+    private void populateMoodModule() {
+        long id = ModuleContract.Mood.ID;
         final BoolItemTableHelper bHelper = new BoolItemTableHelper(this);
-
-        Observable.range(0, 13)
+        int[] colors = getResources().getIntArray(R.array.mood_colors);
+        Observable.range(0, Array.getLength(colors))
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(i -> new BoolComponent(event.id, "MoodComponent_" + String.valueOf(i),0x000000, true))
+                .map(i -> new BoolComponent(id, "MoodComponent_" + String.valueOf(i),colors[i], true))
                 .doOnNext(bHelper::insert)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+    }
+
+    private void populateNumModule() {
+        long id = ModuleContract.Num.ID;
+        NumComponent[] components = new NumComponent[] {
+          new NumComponent(id, "Anxiety", 0xFFFFFF, true, 3, 0),
+          new NumComponent(id, "Irritability", 0xFFFFFF, true, 3, 0),
+          new NumComponent(id, "Sleep", 0xFFFFFF, true, 24, 0)
+        };
+
+        final NumItemTableHelper nHelper = new NumItemTableHelper(this);
+        Observable.from(components)
+                .subscribeOn(Schedulers.io())
+                .doOnNext(nHelper::insert)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
     }
 
@@ -324,7 +347,7 @@ public class ChartActivity extends AppCompatActivity
 //    public void onEvent(ChartEvents.SaveEndDateDialogEvent event){
 //        boolean foo = event.isRememberDates();
 //        Log.i("Date Range Dialog", "End date chosen: " + event.getEndDate().toString("MM/dd/YYYY"));
-//        monthFragment.refreshColumns(new ChartEntryTableHelper(this).getEntryGroup(getChartStartDate(), getChartEndDate()));
+//        monthFragment.refreshColumns(new ChartEntryTable(this).getEntryGroup(getChartStartDate(), getChartEndDate()));
 //        refreshPickDateButton(event.getStartDate(), event.getEndDate());
 //
 //        SharedPreferences settings = getPreferences(MODE_PRIVATE);
@@ -361,7 +384,7 @@ public class ChartActivity extends AppCompatActivity
 //            faButton.show();
 //        NoteView noteView = (NoteView) findViewById(R.id.entryNoteView);
 //        // TODO
-//        ChartEntryTableHelper.addOrUpdateEntry(this,event.getEntry());
+//        ChartEntryTable.addOrUpdateEntry(this,event.getEntry());
 //        noteView.animateDown();
 //    }
 

@@ -168,7 +168,7 @@ public class CustomizeNumItem extends RelativeLayout {
 
 
         if (numItem == null){
-            numItem = new NumComponent(name, maxNum, defaultNum);
+            numItem = new NumComponent((long) 2, name, maxNum, defaultNum);
             return numItem;
         } else {
             numItem = new NumComponent(numItem.getId(),name,maxNum,defaultNum);

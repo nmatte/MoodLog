@@ -4,14 +4,13 @@ import android.content.ContentValues;
 
 import com.nmatte.mood.adapters.ModuleAdapter;
 import com.nmatte.mood.database.entries.ChartEntryContract;
-import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.components.BoolComponent;
+import com.nmatte.mood.models.components.LogbookComponent;
 import com.nmatte.mood.models.components.NumComponent;
-import com.nmatte.mood.util.DateUtils;
-
-import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+
+import rx.schedulers.Schedulers;
 
 public class ModuleConfig {
     BoolModule boolMod;
@@ -70,10 +69,11 @@ public class ModuleConfig {
     public ArrayList<String> numColumns() {
         ArrayList<String> columns = new ArrayList<>();
 
-        for (NumComponent comp : numMod.getItems()) {
-            columns.add(comp.columnLabel());
-        }
-
+        rx.Observable.from(numMod.getItems())
+                .map(LogbookComponent::columnLabel)
+                .doOnNext(columns::add)
+                .observeOn(Schedulers.computation())
+                .subscribe();
         return columns;
     }
 
@@ -143,11 +143,5 @@ public class ModuleConfig {
         }
 
         return adapters;
-    }
-
-    public ChartEntry getBlank(DateTime date) {
-        ContentValues defaults = getDefaults();
-        defaults.put(dateColumn(), DateUtils.getDateInt(date));
-        return new ChartEntry(defaults);
     }
 }

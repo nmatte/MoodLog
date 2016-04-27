@@ -4,13 +4,19 @@ package com.nmatte.mood.adapters;
 import android.content.Context;
 import android.view.View;
 
+import com.nmatte.mood.database.entries.ChartEntryContract;
+import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.modules.LogDateModule;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.util.DateUtils;
 import com.nmatte.mood.views.chart.TextCellView;
 import com.nmatte.mood.views.chart.TextCellViewBuilder;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
+
+import rx.Observable;
 
 public class LogDateAdapter extends ModuleAdapter{
     LogDateModule module;
@@ -33,11 +39,14 @@ public class LogDateAdapter extends ModuleAdapter{
     }
 
     @Override
-    protected ArrayList<View> getReadViews(Context context) {
+    public Observable<View> getReadViews(Context context, ChartEntry entry) {
         ArrayList<View> views = new ArrayList<>();
         TextCellViewBuilder b = new TextCellViewBuilder(context);
+        int dInt = entry.values().getAsInteger(ChartEntryContract.ENTRY_DATE_COLUMN);
+        DateTime date = DateUtils.fromInt(dInt);
+        String dateString = String.valueOf(date.getDayOfMonth());
         b
-                .setText(String.valueOf(module.getDate().getDayOfMonth()))
+                .setText(dateString)
                 .setHorizontalAlignment(TextCellView.TextAlignment.CENTER);
         if (module.isToday()) {
             b.setStroke(TextCellView.Stroke.BOLD);
@@ -45,7 +54,7 @@ public class LogDateAdapter extends ModuleAdapter{
 
         views.add(b.build());
 
-        return views;
+        return Observable.from(views);
     }
 
     @Override

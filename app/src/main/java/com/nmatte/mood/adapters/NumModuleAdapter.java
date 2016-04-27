@@ -3,12 +3,15 @@ package com.nmatte.mood.adapters;
 import android.content.Context;
 import android.view.View;
 
+import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.components.NumComponent;
 import com.nmatte.mood.models.modules.NumModule;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.views.chart.TextCellViewBuilder;
 
 import java.util.ArrayList;
+
+import rx.Observable;
 
 public class NumModuleAdapter extends ModuleAdapter{
     NumModule module;
@@ -34,7 +37,7 @@ public class NumModuleAdapter extends ModuleAdapter{
     }
 
     @Override
-    protected ArrayList<View> getReadViews(Context context) {
+    public Observable<View> getReadViews(Context context, ChartEntry entry) {
         ArrayList<View> views = new ArrayList<>();
 
 //        for (NumComponent item : module.getItems()) {
@@ -47,7 +50,7 @@ public class NumModuleAdapter extends ModuleAdapter{
 //            views.add(b.build());
 //        }
 
-        return views;
+        return Observable.from(views);
     }
 
     @Override

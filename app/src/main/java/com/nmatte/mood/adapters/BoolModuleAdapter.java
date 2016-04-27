@@ -4,13 +4,17 @@ package com.nmatte.mood.adapters;
 import android.content.Context;
 import android.view.View;
 
+import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.models.modules.BoolModule;
 import com.nmatte.mood.moodlog.R;
+import com.nmatte.mood.views.chart.ImageCellView;
 import com.nmatte.mood.views.chart.TextCellView;
 import com.nmatte.mood.views.chart.TextCellViewBuilder;
 
 import java.util.ArrayList;
+
+import rx.Observable;
 
 public class BoolModuleAdapter extends ModuleAdapter {
     BoolModule module;
@@ -37,19 +41,19 @@ public class BoolModuleAdapter extends ModuleAdapter {
     }
 
     @Override
-    protected ArrayList<View> getReadViews(Context context) {
-        ArrayList<View> views = new ArrayList<>();
-
-//        for (BoolComponent item : module.getItems()) {
-//            ImageCellView imageCellView = new ImageCellView(context, false);
-//            imageCellView.setBackground(CellView.Background.NONE);
-//            imageCellView.setChecked(module.get(item));
-//
-//            views.add(imageCellView);
-//        }
-
-
-        return views;
+    public Observable<View> getReadViews(Context context, ChartEntry entry) {
+        return Observable
+                .from(module.getItems())
+                .map(component -> {
+                    boolean value = false;
+                    if (entry.values().containsKey(component.columnLabel())) {
+                        value = entry.values().getAsBoolean(component.columnLabel());
+                    }
+                    ImageCellView imageCellView = new ImageCellView(context, false);
+                    imageCellView.setBackgroundColor(component.getColor());
+                    imageCellView.setChecked(value);
+                    return imageCellView;
+                });
     }
 
     @Override

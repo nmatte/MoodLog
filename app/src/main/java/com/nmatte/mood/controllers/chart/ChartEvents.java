@@ -25,6 +25,13 @@ public class ChartEvents {
         }
     }
 
+    public static class PopulateNumModule {
+        final long id;
+        public PopulateNumModule(long id) {
+            this.id = id;
+        }
+    }
+
     public static class CloseEditEntryEvent {
     }
 
