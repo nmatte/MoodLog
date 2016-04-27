@@ -11,7 +11,6 @@ import com.nmatte.mood.moodlog.R;
 
 public class TextCellView extends CellView {
     Paint textPaint;
-    Context context;
     String text = "";
     TextAlignment horizontalAlignment;
     TextAlignment verticalAlignment;
@@ -19,15 +18,8 @@ public class TextCellView extends CellView {
     float leftAlignX = 0;
 
 
-    protected TextCellView(Context context,
-                           String text,
-                           int backgroundColor,
-                           TextAlignment hAlign,
-                           TextAlignment vAlign,
-                           Stroke stroke,
-                           float xOffset){
-        super(context,backgroundColor);
-        this.context             = context;
+    protected TextCellView(Context context, String text, int backgroundColor, TextAlignment hAlign, TextAlignment vAlign, Stroke stroke, float xOffset){
+        super(context, backgroundColor);
         this.text                = text;
         this.horizontalAlignment = (hAlign == null) ? TextAlignment.LEFT : hAlign;
         this.verticalAlignment   = (vAlign == null) ? TextAlignment.BOTTOM : vAlign;
@@ -46,7 +38,7 @@ public class TextCellView extends CellView {
         String vAlignText = (String) a.getText(R.styleable.TextCellView_vertical_alignment);
 
         this.context             = context;
-        this.text                = textAttr == null ? "" : textAttr;
+        this.text                = textAttr;
         this.horizontalAlignment = hAlignText != null && hAlignText.equals("center") ? TextAlignment.CENTER : TextAlignment.LEFT;
         this.verticalAlignment   = vAlignText != null && vAlignText.equals("center") ? TextAlignment.CENTER: TextAlignment.BOTTOM;
         this.stroke              = Stroke.DEFAULT;
@@ -65,9 +57,6 @@ public class TextCellView extends CellView {
         super.onDraw(canvas);
 
         textPaint.setTextSize((super.bottomTransparentBound - super.topTransparentBound) / 2);
-        if (text == null)
-            text = "";
-
 
         float textX = 0;
         float textY = 0;
@@ -86,9 +75,9 @@ public class TextCellView extends CellView {
         }
 
 
-        String displayText = text;
-        if (text.length() > 2)
-            displayText = truncate(text);
+        String displayText = getText();
+        if (displayText.length() > 2)
+            displayText = truncate(displayText);
         if (stroke == Stroke.BOLD){
             Typeface current = textPaint.getTypeface();
             textPaint.setTypeface(Typeface.create(current,Typeface.BOLD));
@@ -98,13 +87,10 @@ public class TextCellView extends CellView {
     }
 
     public String getText (){
+        if (this.text == null) {
+            text = "";
+        }
         return text;
-    }
-
-    public TextCellView setText(String newText){
-        this.text = newText;
-        invalidate();
-        return this;
     }
 
     private String truncate (final String text){
