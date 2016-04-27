@@ -5,11 +5,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.moodlog.R;
 
 public class ReadView extends LinearLayout {
     float lastXtouch;
     float lastYtouch;
+    ChartEntry entry;
 
     OnTouchListener touchListener = new OnTouchListener() {
         @Override
@@ -20,8 +22,9 @@ public class ReadView extends LinearLayout {
         }
     };
 
-    public ReadView(Context context) {
+    public ReadView(Context context, ChartEntry entry) {
         super(context);
+        this.entry = entry;
         this.setBackground(context.getResources().getDrawable(R.drawable.drop_shadow_vertical));
         this.setOrientation(VERTICAL);
     }
@@ -41,5 +44,9 @@ public class ReadView extends LinearLayout {
      */
     public float getLastYtouch(){
         return lastYtouch;
+    }
+
+    public ChartEntry getEntry() {
+        return entry;
     }
 }

@@ -23,7 +23,7 @@ public class EntryAdapter {
     }
 
     public ReadView getReadView(Context context, ChartEntry entry) {
-        ReadView readView = new ReadView(context);
+        ReadView readView = new ReadView(context, entry);
 
         oAdapters
                 .flatMap(moduleAdapter -> moduleAdapter.getReadViews(context, entry))
@@ -47,5 +47,12 @@ public class EntryAdapter {
                 });
 
         return readView;
+    }
+
+    public Observable<View> getEditViews(Context context, ChartEntry entry) {
+        return oAdapters
+                .flatMap(moduleAdapter -> moduleAdapter.getEditViews(context, entry))
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

@@ -56,20 +56,17 @@ public class BoolModuleAdapter extends ModuleAdapter {
 
     @Override
     protected Observable<View> getEditViews(Context context, ChartEntry entry) {
-        ArrayList<View> views = new ArrayList<>();
-//
-//        for (final BoolComponent item : module.getItems()) {
-//            ImageCellView cellView = new ImageCellView(context, true);
-//            cellView.setOnChangeListener(new ImageCellView.OnChangeListener() {
-//                @Override
-//                public void onChange(boolean value) {
-//                    module.set(item, value);
-//                }
-//            });
-//            views.add(cellView);
-//        }
+        return Observable.from(module.getItems())
+                .map(component -> {
+                   boolean value = entry.values().containsKey(component.columnLabel())
+                           ? entry.values().getAsBoolean(component.columnLabel())
+                           : false;
 
-
-        return Observable.from(views);
+                    return new ImageCellViewBuilder(context)
+                            .setBackgroundColor(component.getColor())
+                            .setValue(value)
+                            .setListener(newValue -> entry.values().put(component.columnLabel(), newValue))
+                            .build();
+                });
     }
 }

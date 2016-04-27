@@ -16,6 +16,8 @@ import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.modules.ModuleConfig;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.views.chart.columns.ChartColumn;
+import com.nmatte.mood.views.chart.columns.EditView;
+import com.nmatte.mood.views.chart.columns.ReadView;
 
 import de.greenrobot.event.EventBus;
 import io.codetail.animation.SupportAnimator;
@@ -27,10 +29,10 @@ public class MonthFragment extends Fragment {
     LinearLayout horizontalLayout;
     RevealFrameLayout backgroundLayout;
     HorizontalScrollView horizontalScrollView;
-
+    EntryAdapter adapter;
     boolean editEntryViewIsOpen = false;
 
-    ChartColumn editEntryColumn;
+    EditView editEntryColumn;
     ChartColumn openedColumn = null;
 
 
@@ -55,15 +57,16 @@ public class MonthFragment extends Fragment {
      */
     public void refreshColumns(Observable<ChartEntry> entries, ModuleConfig config) {
         horizontalLayout.removeAllViews();
-        editEntryColumn.refresh(getActivity());
-        EntryAdapter adapter = new EntryAdapter(config);
+        adapter = new EntryAdapter(config);
 
         entries
-                .map(e -> adapter.getReadView(getActivity(),e))
-                .doOnNext(v -> horizontalLayout.addView(v))
+                .map(entry -> adapter.getReadView(getActivity(),entry))
+                .doOnNext(view -> {
+                    view.setOnClickListener(this::beginEditEntry);
+                    horizontalLayout.addView(view);
+                })
+                .doOnError(Throwable::printStackTrace)
                 .subscribe();
-
-
 
         horizontalLayout.invalidate();
         horizontalScrollView.invalidate();
@@ -77,50 +80,37 @@ public class MonthFragment extends Fragment {
         horizontalLayout = (LinearLayout) fragmentLayout.findViewById(R.id.columnLayout);
         horizontalLayout.setClickable(true);
         horizontalLayout.setLongClickable(true);
-        editEntryColumn = (ChartColumn) fragmentLayout.findViewById(R.id.editColumn);
+        editEntryColumn = (EditView) fragmentLayout.findViewById(R.id.editColumn);
         backgroundLayout = (RevealFrameLayout) fragmentLayout.findViewById(R.id.backgroundLayout);
         horizontalScrollView = (HorizontalScrollView) fragmentLayout.findViewById(R.id.horizontalScrollView);
 
         return fragmentLayout;
     }
 
-    private View.OnLongClickListener getColumnLongClickListener(final ChartColumn column){
-        return new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-//                boolean isTodayOrEarlier =
-//                        column.getEntry().getLogDate().getDayOfYear() <= DateTime.now().getDayOfYear();
-//                if (!editEntr yViewIsOpen && isTodayOrEarlier)
-//                    openColumn(column);
-                // TODO fix!!!
-                return false;
-            }
-        };
-
-
+    private void beginEditEntry(View view) {
+        if (view.getClass() == ReadView.class) {
+            ReadView readView = (ReadView) view;
+            horizontalScrollView.smoothScrollTo(readView.getLeft(), 0);
+            openEditView(readView.getEntry());
+        }
     }
 
-
-    private View.OnClickListener getClickListener(){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        };
+    private void openEditView(ChartEntry entry) {
+        editEntryColumn.setEntry(adapter, entry);
+        editEntryColumn.setVisibility(View.VISIBLE);
     }
 
     /**
      * Gets the x coordinate of the center of the column.
      * If the left or right side would be clipped by the parent layout,
      * the x should be adjusted to align with parent instead.
-     * @param column The column to find the center of.
+     * @param readView The column to find the center of.
      * @return The center x coordinate of the column.
      */
-    private int getCenterX(ChartColumn column){
+    private int getCenterX(ReadView readView){
         // get absolute position of the column and its parent
         int [] columnArgs = new int [2];
-        column.getLocationOnScreen(columnArgs);
+        readView.getLocationOnScreen(columnArgs);
         int [] layoutArgs = new int[2];
         backgroundLayout.getLocationOnScreen(layoutArgs);
 
@@ -128,7 +118,7 @@ public class MonthFragment extends Fragment {
         // get column's x coord relative to its parent
         int columnRelativeX = columnArgs[0] - layoutArgs[0];
         // now the relative x coord of the column's center
-        int columnCenter = columnRelativeX + (column.getWidth()/2);
+        int columnCenter = columnRelativeX + (readView.getWidth()/2);
 
         // starting from center of original column, subtracting half of the
         // edit view's width from that coordinate gives the x coord for centering it.
@@ -170,16 +160,13 @@ public class MonthFragment extends Fragment {
 
 
 
-    private void openColumn(ChartColumn column){
+    private void openColumn(ReadView readView){
         editEntryViewIsOpen = true;
-        openedColumn = column;
         // // FIXME: 2/20/16 !!!
-//        editEntryColumn.setEntry(column.getEntry());
-        editEntryColumn.refresh(getActivity());
-        editEntryColumn.setX(getCenterX(column));
+        editEntryColumn.setX(getCenterX(readView));
 
-        int cx = (int) column.getLastXtouch();
-        int cy = (int) column.getLastYtouch();
+        int cx = (int) readView.getLastXtouch();
+        int cy = (int) readView.getLastYtouch();
         int finalRadius = Math.max(editEntryColumn.getWidth(), editEntryColumn.getHeight());
         SupportAnimator animator =
                 ViewAnimationUtils.createCircularReveal(editEntryColumn, cx, cy, 0, finalRadius);
@@ -187,16 +174,9 @@ public class MonthFragment extends Fragment {
         editEntryColumn.setVisibility(View.VISIBLE);
         animator.start();
 
-        horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+        horizontalScrollView.setOnTouchListener((v, event) -> true);
         ChartEvents.OpenEditEntryEvent e = new ChartEvents.OpenEditEntryEvent();
-        EventBus.getDefault().post(new ChartEvents.OpenEditEntryEvent());
+        EventBus.getDefault().post(e);
 
     }
-
-
 }

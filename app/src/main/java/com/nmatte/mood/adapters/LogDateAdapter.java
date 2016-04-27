@@ -56,17 +56,18 @@ public class LogDateAdapter extends ModuleAdapter{
 
     @Override
     protected Observable<View> getEditViews(Context context, ChartEntry entry) {
-        ArrayList<View> views = new ArrayList<>();
-        TextCellViewBuilder b = new TextCellViewBuilder(context);
+//        ArrayList<View> views = new ArrayList<>();
+//        TextCellViewBuilder b = new TextCellViewBuilder(context);
+//
+//        String text = module.isToday() ? "Today" : module.getDate().toString(DateUtils.EDIT_ENTRY_FORMATTER);
+//        b
+//                .setText(text)
+//                .setHorizontalAlignment(TextCellView.TextAlignment.CENTER);
+//
+//
+//        views.add(b.build());
 
-        String text = module.isToday() ? "Today" : module.getDate().toString(DateUtils.EDIT_ENTRY_FORMATTER);
-        b
-                .setText(text)
-                .setHorizontalAlignment(TextCellView.TextAlignment.CENTER);
-
-
-        views.add(b.build());
-
-        return Observable.from(views);
+//        return Observable.from(views);
+        return getReadViews(context, entry);
     }
 }
