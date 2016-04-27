@@ -7,9 +7,8 @@ import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.components.NumComponent;
 import com.nmatte.mood.models.modules.NumModule;
 import com.nmatte.mood.moodlog.R;
-import com.nmatte.mood.views.chart.CellView;
-import com.nmatte.mood.views.chart.TextCellView;
-import com.nmatte.mood.views.chart.TextCellViewBuilder;
+import com.nmatte.mood.views.chart.cells.TextCellView;
+import com.nmatte.mood.views.chart.cells.TextCellViewBuilder;
 
 import java.util.ArrayList;
 
@@ -51,7 +50,6 @@ public class NumModuleAdapter extends ModuleAdapter{
                     return new TextCellViewBuilder(context)
                             .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
                             .setHorizontalAlignment(TextCellView.TextAlignment.CENTER)
-                            .setBackground(CellView.Background.NONE)
                             .setText(value)
                             .build();
                 });

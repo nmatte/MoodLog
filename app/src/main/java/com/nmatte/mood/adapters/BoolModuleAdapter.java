@@ -8,9 +8,9 @@ import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.models.modules.BoolModule;
 import com.nmatte.mood.moodlog.R;
-import com.nmatte.mood.views.chart.ImageCellView;
-import com.nmatte.mood.views.chart.TextCellView;
-import com.nmatte.mood.views.chart.TextCellViewBuilder;
+import com.nmatte.mood.views.chart.cells.ImageCellView;
+import com.nmatte.mood.views.chart.cells.TextCellView;
+import com.nmatte.mood.views.chart.cells.TextCellViewBuilder;
 
 import java.util.ArrayList;
 

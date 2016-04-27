@@ -28,9 +28,9 @@ import com.nmatte.mood.reminders.ReminderActivity;
 import com.nmatte.mood.settings.PreferencesContract;
 import com.nmatte.mood.util.DateUtils;
 import com.nmatte.mood.util.TestActivity;
-import com.nmatte.mood.views.chart.CellView;
 import com.nmatte.mood.views.chart.ChartMonthView;
 import com.nmatte.mood.views.chart.LabelView;
+import com.nmatte.mood.views.chart.cells.CellView;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -233,11 +233,11 @@ public class ChartActivity extends AppCompatActivity
             EventBus.getDefault().post(new ChartEvents.OpenStartDateDialogEvent());
         }
         if (id == R.id.largeCells){
-            PreferenceManager
-                    .getDefaultSharedPreferences(this)
-                    .edit()
-                    .putInt(PreferencesContract.CELL_SIZE, CellView.Size.LARGE.sizeCode())
-                    .apply();
+//            PreferenceManager
+//                    .getDefaultSharedPreferences(this)
+//                    .edit()
+//                    .putInt(PreferencesContract.CELL_SIZE, CellView.Size.LARGE.sizeCode())
+//                    .apply();
         }
         if (id == R.id.mediumCells){
             PreferenceManager

@@ -9,8 +9,8 @@ import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.modules.LogDateModule;
 import com.nmatte.mood.moodlog.R;
 import com.nmatte.mood.util.DateUtils;
-import com.nmatte.mood.views.chart.TextCellView;
-import com.nmatte.mood.views.chart.TextCellViewBuilder;
+import com.nmatte.mood.views.chart.cells.TextCellView;
+import com.nmatte.mood.views.chart.cells.TextCellViewBuilder;
 
 import org.joda.time.DateTime;
 
@@ -40,21 +40,18 @@ public class LogDateAdapter extends ModuleAdapter{
 
     @Override
     public Observable<View> getReadViews(Context context, ChartEntry entry) {
-        ArrayList<View> views = new ArrayList<>();
-        TextCellViewBuilder b = new TextCellViewBuilder(context);
+
         int dInt = entry.values().getAsInteger(ChartEntryContract.ENTRY_DATE_COLUMN);
         DateTime date = DateUtils.fromInt(dInt);
+
         String dateString = String.valueOf(date.getDayOfMonth());
-        b
+
+        TextCellViewBuilder b = new TextCellViewBuilder(context)
                 .setText(dateString)
                 .setHorizontalAlignment(TextCellView.TextAlignment.CENTER);
-        if (module.isToday()) {
-            b.setStroke(TextCellView.Stroke.BOLD);
-        }
 
-        views.add(b.build());
 
-        return Observable.from(views);
+        return Observable.just(b.build());
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.nmatte.mood.views.chart;
+package com.nmatte.mood.views.chart.cells;
 
 import android.content.Context;
 
@@ -11,15 +11,9 @@ public class TextCellViewBuilder {
     TextCellView.TextAlignment verticalAlignment;
     float xOffset = 0;
     TextCellView.Stroke stroke;
-    CellView.Background background = CellView.Background.NONE;
 
     public TextCellViewBuilder(Context context) {
          this.context = context;
-    }
-
-    public TextCellViewBuilder setBackground(CellView.Background background) {
-        this.background = background;
-        return this;
     }
 
     public TextCellViewBuilder setText(String text){
@@ -59,15 +53,12 @@ public class TextCellViewBuilder {
     }
 
     public TextCellView build(){
-        if (backgroundColor == -1)
-            backgroundColor = CellView.WHITE;
         TextCellView newCell = new TextCellView(
                 context,
                 text,
                 backgroundColor,
                 horizontalAlignment,
                 verticalAlignment);
-        newCell.setBackground(background);
         if (newCell.horizontalAlignment == TextCellView.TextAlignment.LEFT){
             newCell.setLeftAlignX(xOffset);
         }

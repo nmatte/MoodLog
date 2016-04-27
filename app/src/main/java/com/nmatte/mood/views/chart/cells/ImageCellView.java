@@ -1,4 +1,4 @@
-package com.nmatte.mood.views.chart;
+package com.nmatte.mood.views.chart.cells;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -90,7 +90,7 @@ public class ImageCellView extends CellView {
 
     private void init(){
         this.blackPaint = new Paint();
-        this.blackPaint.setColor(BLACK);
+        this.blackPaint.setColor(context.getResources().getColor(R.color.black));
         this.blackRect = new Rect();
         if (isEnabled){
             setOnClickListener(new OnClickListener() {

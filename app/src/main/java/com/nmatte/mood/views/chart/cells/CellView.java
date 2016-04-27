@@ -1,12 +1,10 @@
-package com.nmatte.mood.views.chart;
+package com.nmatte.mood.views.chart.cells;
 
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.NinePatchDrawable;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.View;
@@ -17,23 +15,14 @@ import com.nmatte.mood.settings.PreferencesContract;
 
 /* base class to draw background and borders */
 public class CellView extends View {
-
-    static final int
-            DEFAULT_BG_ID = R.drawable.drop_shadow3,
-            VERTICAL_SHADOW_BG_ID = R.drawable.drop_shadow_vertical,
-            HORIZONTAL_SHADOW_BG_ID=  R.drawable.drop_shadow_horizontal;
-    static final int WHITE = 0xFFFFFFFF;
-    static final int BLACK = 0xFF000000;
     protected int
             leftTransparentBound = -1,
             rightTransparentBound = -1,
             topTransparentBound = -1,
-            bottomTransparentBound = -1,
-            shadowID = VERTICAL_SHADOW_BG_ID;
+            bottomTransparentBound = -1;
     Paint blackPaint;
     int backgroundColor = -1;
     Context context;
-    Background background = Background.NONE;
     Size size = Size.MEDIUM;
     public CellView(Context context) {
         super(context);
@@ -54,10 +43,6 @@ public class CellView extends View {
         this.backgroundColor = backgroundColor;
     }
 
-    public void setBackground(Background background) {
-        this.background = background;
-    }
-
     private void init(){
         int sizeCode = PreferenceManager
                 .getDefaultSharedPreferences(context)
@@ -65,13 +50,12 @@ public class CellView extends View {
 
         this.size = Size.getSize(sizeCode);
         blackPaint = new Paint();
-        blackPaint.setColor(BLACK);
+        blackPaint.setColor(context.getResources().getColor(R.color.black));
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         Resources res = getResources();
-
 
         int desiredHeight;
         int desiredWidth;
@@ -129,35 +113,13 @@ public class CellView extends View {
 
         // Draw default color (white)
         if (backgroundColor == -1)
-            backgroundColor = WHITE;
+            backgroundColor = context.getResources().getColor(R.color.white);
         canvas.drawColor(backgroundColor);
-
 
         leftTransparentBound = 0;
         rightTransparentBound = getWidth();
         topTransparentBound = 0;
         bottomTransparentBound = getHeight();
-        NinePatchDrawable bg = (NinePatchDrawable) getResources().getDrawable(shadowID);
-
-        if (background != Background.NONE){
-            if (bg != null) {
-                bg.setBounds(0, 0, getWidth(), getHeight());
-                bg.draw(canvas);
-                Rect bounds = bg.getTransparentRegion().getBounds();
-                leftTransparentBound = bounds.left;
-                rightTransparentBound = bounds.right;
-                topTransparentBound = bounds.top;
-
-            }
-        }
-
-
-
-    }
-
-    public void setBg(int id) {
-        this.shadowID = id;
-        invalidate();
     }
 
     @Override
@@ -172,14 +134,6 @@ public class CellView extends View {
         }
         return blackPaint.getTextSize();
     }
-
-
-
-    public enum Background {
-        NONE,
-        VERTICAL
-    }
-
 
     public enum Size {
         MEDIUM(1),

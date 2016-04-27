@@ -1,4 +1,4 @@
-package com.nmatte.mood.views.chart;
+package com.nmatte.mood.views.chart.cells;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -17,8 +17,6 @@ public class TextCellView extends CellView {
     TextAlignment verticalAlignment;
     Stroke stroke;
     float leftAlignX = 0;
-
-
 
 
     protected TextCellView(Context context,
@@ -60,7 +58,7 @@ public class TextCellView extends CellView {
 
     private void init(){
         textPaint = new Paint();
-        textPaint.setColor(BLACK);
+        textPaint.setColor(context.getResources().getColor(R.color.black));
         textPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
     }
 
