@@ -60,30 +60,33 @@ public class TextCellView extends CellView {
 
         float textX = 0;
         float textY = 0;
-        if (horizontalAlignment == TextAlignment.CENTER) {
-            textX = getWidth() / 2 - textPaint.measureText( text) / 2;
-        } else if (horizontalAlignment == TextAlignment.LEFT){
-            textX = (float) super.leftTransparentBound;
-            if (leftAlignX > textX)
-                textX = leftAlignX;
+
+        switch (horizontalAlignment) {
+            case CENTER:
+                textX = getWidth() / 2 - textPaint.measureText( text) / 2;
+                break;
+            case LEFT:
+                textX = (float) super.leftTransparentBound;
+                if (leftAlignX > textX)
+                    textX = leftAlignX;
+                break;
+            default:
+                break;
         }
 
-        if (verticalAlignment == TextAlignment.CENTER){
-            textY = getHeight() / 2 + textPaint.getTextSize()/2;
-        } else if (verticalAlignment == TextAlignment.BOTTOM){
-            textY = (getHeight() * 5 )/ 6;
+        switch (verticalAlignment) {
+            case CENTER:
+                textY = getHeight() / 2 + textPaint.getTextSize()/2;
+                break;
+            case BOTTOM:
+                textY = (getHeight() * 5 )/ 6;
         }
 
-
-        String displayText = getText();
-        if (displayText.length() > 2)
-            displayText = truncate(displayText);
         if (stroke == Stroke.BOLD){
-            Typeface current = textPaint.getTypeface();
-            textPaint.setTypeface(Typeface.create(current,Typeface.BOLD));
+            textPaint.setTypeface(Typeface.create(textPaint.getTypeface(),Typeface.BOLD));
         }
 
-        canvas.drawText(displayText, textX, textY, textPaint);
+        canvas.drawText(truncate(getText()), textX, textY, textPaint);
     }
 
     public String getText (){
@@ -93,21 +96,19 @@ public class TextCellView extends CellView {
         return text;
     }
 
-    private String truncate (final String text){
+    private String truncate(final String text){
         int maxLength = super.rightTransparentBound - super.leftTransparentBound;
 
         if(textPaint.measureText(text) <= maxLength)
             return text;
 
+        String newText = text;
 
-        for (int i = text.length(); i > 0; i--){
-            String resultText = text.substring(0,i);
-            resultText += "...";
-            if (textPaint.measureText(resultText) <= maxLength)
-                return resultText;
+        while(newText.length() > 0 && textPaint.measureText(newText + "...") > maxLength) {
+            newText = newText.substring(0, newText.length() - 1);
         }
 
-        return "";
+        return newText + "...";
     }
 
     public enum TextAlignment {
