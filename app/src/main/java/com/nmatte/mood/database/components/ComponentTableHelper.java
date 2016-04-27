@@ -44,7 +44,7 @@ public class ComponentTableHelper {
     public long insert(NumComponent comp){
         long id = -1;
         try {
-            if (comp.getId() != -1) {
+            if (comp.getId() == -1) {
                 Uri result = context.getContentResolver().insert(NUM_URI, comp.asValues());
                 id = result == null ? -1 : Long.valueOf(result.getLastPathSegment());
 

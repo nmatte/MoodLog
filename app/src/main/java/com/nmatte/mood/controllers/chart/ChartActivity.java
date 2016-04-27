@@ -283,13 +283,6 @@ public class ChartActivity extends AppCompatActivity
     }
 
     private void setUpModules() {
-        final ModuleTableHelper helper = new ModuleTableHelper(this);
-        Observable.just(ModuleContract.Mood.NAME, ModuleContract.Bool.NAME, ModuleContract.Num.NAME, ModuleContract.NOTE_MODULE_NAME)
-                .doOnNext(helper::save)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
-
         populateMoodModule();
         populateNumModule();
     }

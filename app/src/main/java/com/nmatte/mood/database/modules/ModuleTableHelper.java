@@ -1,9 +1,7 @@
 package com.nmatte.mood.database.modules;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.util.Log;
 
 import com.nmatte.mood.database.components.BoolItemTableHelper;
@@ -21,47 +19,6 @@ public class ModuleTableHelper {
     public ModuleTableHelper(Context context) {
         this.context = context;
     }
-
-
-    public long save(String name) {
-        ContentValues values = new ContentValues();
-        try {
-            values.put(ModuleContract.MODULE_VISIBLE_COLUMN, true);
-            values.put(ModuleContract.MODULE_NAME_COLUMN, name);
-            Uri uri = ModuleProvider.BASE_URI;
-            Uri result = context.getContentResolver().insert(uri, values);
-
-            return result == null ? -1 : Long.valueOf(result.getLastPathSegment());
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return -1;
-    }
-
-    public long getId(String name) {
-        String[] projection = new String[] {ModuleContract.MODULE_ID_COLUMN};
-        String selection = ModuleContract.MODULE_NAME_COLUMN + "=?";
-        String[] selectionArgs = new String[] {name};
-        try {
-            Cursor cursor = context.getContentResolver().query(ModuleProvider.BASE_URI, projection, selection, selectionArgs, null);
-
-            if (cursor != null && cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                int id = cursor.getInt(0);
-                return id;
-            }
-
-                cursor.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return -1;
-    }
-
-
 
     public ModuleConfig getModules(){
         String[] projection = new String[] {

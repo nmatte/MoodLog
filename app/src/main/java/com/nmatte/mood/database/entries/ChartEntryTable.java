@@ -16,6 +16,7 @@ import org.joda.time.DateTime;
 
 public class ChartEntryTable {
     Context context;
+
     public ChartEntryTable(Context context) {
         this.context = context;
     }
@@ -63,7 +64,11 @@ public class ChartEntryTable {
     public long save(ChartEntry entry) {
         long id = -1;
 
-        context.getContentResolver().insert(EntryProvider.BASE_URI, entry.values());
+        Uri result = context.getContentResolver().insert(EntryProvider.BASE_URI, entry.values());
+
+        if(result != null) {
+            id = Long.valueOf(result.getLastPathSegment());
+        }
 
         return id;
     }

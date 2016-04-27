@@ -58,15 +58,6 @@ public class ChartMonthView extends Fragment {
         editEntryColumn.refresh(getActivity());
         EntryAdapter adapter = new EntryAdapter(config);
 
-//        for (int i = 0; i < values.size(); i++) {
-//            ChartEntry entry = values.valueAt(i);
-//            SelectorWrapper wrapper = new SelectorWrapper(getActivity());
-//            wrapper.setOnLongClickListener(getColumnLongClickListener(wrapper.getColumn()));
-//            wrapper.getColumn().refresh(getActivity());
-//            horizontalLayout.addView(new SelectorWrapper(getActivity(), adapter.getReadView(getActivity(), entry)));
-//            horizontalLayout.addView(adapter.getReadView(getActivity(),entry));
-//        }
-
         entries
                 .map(e -> adapter.getReadView(getActivity(),e))
                 .doOnNext(v -> horizontalLayout.addView(v))

@@ -6,7 +6,6 @@ import android.test.RenamingDelegatingContext;
 
 import com.nmatte.mood.database.components.BoolItemTableHelper;
 import com.nmatte.mood.database.modules.ModuleContract;
-import com.nmatte.mood.database.modules.ModuleTableHelper;
 import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.components.BoolComponent;
 import com.nmatte.mood.models.modules.BoolModule;
@@ -14,7 +13,7 @@ import com.nmatte.mood.models.modules.BoolModule;
 import org.junit.Test;
 
 
-public class ChartEntryTableHelperTest extends InstrumentationTestCase {
+public class ChartEntryTableTest extends InstrumentationTestCase {
     RenamingDelegatingContext testContext;
     ChartEntryTable helper;
     BoolModule mod;
@@ -24,10 +23,8 @@ public class ChartEntryTableHelperTest extends InstrumentationTestCase {
 
         testContext = new RenamingDelegatingContext(getInstrumentation().getContext(), "test_");
         helper = new ChartEntryTable(testContext);
-        String modName = ModuleContract.BOOL_MODULE_NAME;
 
-        long modId = new ModuleTableHelper(testContext).save(modName);
-
+        long modId = ModuleContract.Bool.ID;
         BoolComponent comp = new BoolComponent("EntryTestComp");
 
         comp.setModuleId(modId);
@@ -35,7 +32,7 @@ public class ChartEntryTableHelperTest extends InstrumentationTestCase {
         bHelper.insert(comp);
 
 
-        mod = new BoolModule(modId, modName, true, bHelper.getByParentId(modId));
+        mod = new BoolModule(true, bHelper.getByParentId(modId));
         assertTrue("module initialized properly", mod.getItems().size() > 0);
     }
 

@@ -28,17 +28,8 @@ public class ModuleTableHelperTest extends AndroidTestCase {
     }
 
     @Test
-    public void testSave() throws Exception {
-        long id = helper.save(ModuleContract.BOOL_MODULE_NAME);
-
-        assertFalse("ModuleTableHelper saves module by name", id == -1);
-    }
-
-    @Test
     public void testGetModules() throws Exception {
-        long id = helper.save(ModuleContract.BOOL_MODULE_NAME);
         BoolComponent comp = new BoolComponent("TestItem");
-        comp.setModuleId(id);
         long compId = new BoolItemTableHelper(testContext).insert(comp);
         comp.setId(compId);
 

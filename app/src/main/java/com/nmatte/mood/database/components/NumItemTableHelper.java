@@ -55,9 +55,37 @@ public class NumItemTableHelper extends ComponentTableHelper {
     }
 
     public ArrayList<NumComponent> getByParentId(long id) {
-        ArrayList<NumComponent> components = new ArrayList<>();
+        ArrayList<NumComponent> numItems = new ArrayList<>();
 
-        return components;
+        try {
+        String selection = ComponentContract.PARENT_MODULE_COLUMN + "= ?";
+
+        String [] args = new String[] {
+                String.valueOf(id)
+        };
+
+        Cursor cursor = context.getContentResolver().query(
+                NUM_URI,
+                columns(),
+                selection,
+                args,
+                ComponentContract.ID_COLUMN);
+        cursor.moveToFirst();
+
+        if(cursor.getCount() > 0){
+            do{
+                NumComponent n = new NumComponent(cursor);
+                numItems.add(n);
+            } while(cursor.moveToNext());
+        }
+            cursor.close();
+            return numItems;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return numItems;
     }
 
     public String[] columns() {

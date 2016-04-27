@@ -17,9 +17,6 @@ public class NumComponent extends LogbookComponent {
         super(id, name);
     }
 
-    public NumComponent(String name){
-        super(name);
-    }
 
     public NumComponent(Long id, String name, int maxNum, int defaultNum){
         super (id,name);

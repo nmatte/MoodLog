@@ -5,6 +5,7 @@ import android.test.RenamingDelegatingContext;
 
 import com.nmatte.mood.models.components.NumComponent;
 
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class NumItemTableHelperTest extends InstrumentationTestCase {
         testContext =
                 new RenamingDelegatingContext(getInstrumentation().getContext(), "test_");
         helper = new NumItemTableHelper(testContext);
-        comp = new NumComponent("TestNum");
+        comp = new NumComponent((long) -1, "TestNum" + DateTime.now().toString("DDDHHmmssSSS"));
     }
 
     @After
