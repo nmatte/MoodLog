@@ -7,6 +7,7 @@ import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.components.NumComponent;
 import com.nmatte.mood.models.modules.NumModule;
 import com.nmatte.mood.moodlog.R;
+import com.nmatte.mood.views.chart.NumPicker;
 import com.nmatte.mood.views.chart.cells.TextCellView;
 import com.nmatte.mood.views.chart.cells.TextCellViewBuilder;
 
@@ -57,20 +58,17 @@ public class NumModuleAdapter extends ModuleAdapter{
 
     @Override
     protected Observable<View> getEditViews(Context context, ChartEntry entry) {
-        ArrayList<View> views = new ArrayList<>();
-//
-//        for (final NumComponent numItem : module.getItems()) {
-//                final CustomNumberPicker numPicker = new CustomNumberPicker(context,numItem);
-//                numPicker.setNumChangeListener(new CustomNumberPicker.NumChangeListener() {
-//                    @Override
-//                    public void onChange(int change) {
-//                        module.set(numItem, change);
-//                    }
-//                });
-//                views.add(numPicker);
-//
-//        }
+        return Observable
+                .from(module.getItems())
+                .map(component -> {
+                    int value = component.getDefaultNum();
 
-        return Observable.from(views);
+                    if (entry.values().containsKey(component.columnLabel())) {
+                        value = entry.values().getAsInteger(component.columnLabel());
+                    }
+
+                    return new NumPicker(context, value, component.getMaxNum(), change -> entry.values().put(component.columnLabel(), change));
+                });
+
     }
 }

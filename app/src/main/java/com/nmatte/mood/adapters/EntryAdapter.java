@@ -52,7 +52,6 @@ public class EntryAdapter {
     public Observable<View> getEditViews(Context context, ChartEntry entry) {
         return oAdapters
                 .flatMap(moduleAdapter -> moduleAdapter.getEditViews(context, entry))
-                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }
