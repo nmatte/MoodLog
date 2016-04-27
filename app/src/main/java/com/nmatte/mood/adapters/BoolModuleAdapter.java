@@ -48,9 +48,9 @@ public class BoolModuleAdapter extends ModuleAdapter {
                     if (entry.values().containsKey(component.columnLabel())) {
                         value = entry.values().getAsBoolean(component.columnLabel());
                     }
-                    ImageCellView imageCellView = new ImageCellView(context, false);
+                    ImageCellView imageCellView = new ImageCellView(context,0x000000 ,false);
                     imageCellView.setBackgroundColor(component.getColor());
-                    imageCellView.setChecked(value);
+                    imageCellView.setValue(value);
                     return imageCellView;
                 });
     }

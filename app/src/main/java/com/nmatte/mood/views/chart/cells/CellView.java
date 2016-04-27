@@ -19,28 +19,26 @@ public class CellView extends View {
             leftTransparentBound = -1,
             rightTransparentBound = -1,
             topTransparentBound = -1,
-            bottomTransparentBound = -1;
-    Paint blackPaint;
-    int backgroundColor = -1;
+            bottomTransparentBound = -1,
+            backgroundColor = -1;
     Context context;
+    Paint blackPaint;
+
     Size size = Size.MEDIUM;
-    public CellView(Context context) {
-        super(context);
-        this.context = context;
-        init();
-    }
 
     public CellView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
+
         init();
     }
 
     public CellView(Context context, int backgroundColor){
         super(context);
         this.context = context;
-        init();
         this.backgroundColor = backgroundColor;
+
+        init();
     }
 
     private void init(){

@@ -38,11 +38,11 @@ public class NoteModuleAdapter extends ModuleAdapter {
 
     @Override
     public rx.Observable<View> getReadViews(Context context, ChartEntry entry) {
-        ImageCellView cellView = new ImageCellView(context, false);
+        ImageCellView cellView = new ImageCellView(context, 0x000000, false);
         cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
 
         if (module.get().length() > 0){
-            cellView.setChecked(true);
+            cellView.setValue(true);
             cellView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -59,7 +59,7 @@ public class NoteModuleAdapter extends ModuleAdapter {
 
     @Override
     protected ArrayList<View> getEditViews(Context context) {
-        ImageCellView cellView = new ImageCellView(context, false);
+        ImageCellView cellView = new ImageCellView(context, 0x000000, false);
         if (module.get().length() > 0){
             cellView.setImageResource(R.drawable.ic_assignment_black_24dp);
         } else {
@@ -71,7 +71,7 @@ public class NoteModuleAdapter extends ModuleAdapter {
                 EventBus.getDefault().post(new ChartEvents.OpenNoteEvent(module));
             }
         });
-        cellView.setChecked(true);
+        cellView.setValue(true);
 
         ArrayList<View> result = new ArrayList<View> ();
         result.add(cellView);

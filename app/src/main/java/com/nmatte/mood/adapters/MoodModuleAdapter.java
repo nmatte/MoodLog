@@ -32,7 +32,7 @@ public class MoodModuleAdapter extends BoolModuleAdapter {
 //                colors) {
 //            ImageCellView newRow = new ImageCellView(context, color);
 //            newRow.setBackground(CellView.Background.NONE);
-//            newRow.setChecked(module.get(i));
+//            newRow.setValue(module.get(i));
 //            result.add(newRow);
 //            i+= factor;
 //        }
