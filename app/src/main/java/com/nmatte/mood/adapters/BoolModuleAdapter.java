@@ -32,8 +32,7 @@ public class BoolModuleAdapter extends ModuleAdapter {
             b
                     .setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width_m))
                     .setText(item.getName())
-                    .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
-                    .build();
+                    .setVerticalAlignment(TextCellView.TextAlignment.CENTER);
             views.add(b.build());
         }
 

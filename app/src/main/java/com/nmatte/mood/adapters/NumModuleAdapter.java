@@ -7,6 +7,8 @@ import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.components.NumComponent;
 import com.nmatte.mood.models.modules.NumModule;
 import com.nmatte.mood.moodlog.R;
+import com.nmatte.mood.views.chart.CellView;
+import com.nmatte.mood.views.chart.TextCellView;
 import com.nmatte.mood.views.chart.TextCellViewBuilder;
 
 import java.util.ArrayList;
@@ -25,10 +27,9 @@ public class NumModuleAdapter extends ModuleAdapter{
         ArrayList<View> views = new ArrayList<>();
 
         for (NumComponent item : module.getItems()) {
-            TextCellViewBuilder b = new TextCellViewBuilder(context);
-            b.setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width_m));
-
-            b.setText(item.getName());
+            TextCellViewBuilder b = new TextCellViewBuilder(context)
+                    .setXoffset(context.getResources().getDimension(R.dimen.chart_cell_width_m))
+                    .setText(item.getName());
             views.add(b.build());
 
         }
@@ -38,19 +39,22 @@ public class NumModuleAdapter extends ModuleAdapter{
 
     @Override
     public Observable<View> getReadViews(Context context, ChartEntry entry) {
-        ArrayList<View> views = new ArrayList<>();
+        return Observable
+                .from(module.getItems())
+                .map(component -> {
+                    String value = "";
 
-//        for (NumComponent item : module.getItems()) {
-//            TextCellViewBuilder b = new TextCellViewBuilder(context)
-//                    .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
-//                    .setHorizontalAlignment(TextCellView.TextAlignment.CENTER)
-//                    .setBackground(CellView.Background.NONE)
-//                    .setText(String.valueOf(module.get(item)));
-//
-//            views.add(b.build());
-//        }
+                    if (entry.values().containsKey(component.columnLabel())) {
+                        value = entry.values().getAsString(component.columnLabel());
+                    }
 
-        return Observable.from(views);
+                    return new TextCellViewBuilder(context)
+                            .setVerticalAlignment(TextCellView.TextAlignment.CENTER)
+                            .setHorizontalAlignment(TextCellView.TextAlignment.CENTER)
+                            .setBackground(CellView.Background.NONE)
+                            .setText(value)
+                            .build();
+                });
     }
 
     @Override
