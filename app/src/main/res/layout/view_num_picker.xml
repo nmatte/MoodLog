@@ -4,27 +4,25 @@
     android:background="@color/white">
 
 
-    <ImageButton
-        style="@style/CustomNumberPicker.MinusButton"
-        android:id="@+id/minusButton"
+
+    <TextView
+        android:id="@+id/textCellView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
+        android:gravity="center"
+        android:text="0"/>
+
+    <ImageButton
+        android:id="@+id/minusButton"
+        style="@style/CustomNumberPicker.MinusButton"
+        android:layout_alignRight="@+id/plusButton"
         android:layout_centerVertical="true"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="0"
-        android:id="@+id/textCellView"
-        android:gravity="center"
-        android:layout_centerInParent="true"/>
-
-
-
     <ImageButton
-        style="@style/CustomNumberPicker.PlusButton"
         android:id="@+id/plusButton"
+        style="@style/CustomNumberPicker.PlusButton"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"/>
-        />
 </RelativeLayout>

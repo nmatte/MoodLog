@@ -3,6 +3,7 @@ package com.nmatte.mood.adapters;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.components.BoolComponent;
@@ -62,11 +63,15 @@ public class BoolModuleAdapter extends ModuleAdapter {
                            ? entry.values().getAsBoolean(component.columnLabel())
                            : false;
 
-                    return new ImageCellViewBuilder(context)
+                    View v = new ImageCellViewBuilder(context)
                             .setBackgroundColor(component.getColor())
                             .setValue(value)
                             .setListener(newValue -> entry.values().put(component.columnLabel(), newValue))
                             .build();
+
+                    v.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                    return v;
                 });
     }
 }

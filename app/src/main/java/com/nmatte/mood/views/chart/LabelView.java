@@ -1,6 +1,7 @@
 package com.nmatte.mood.views.chart;
 
 import android.content.Context;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -38,5 +39,8 @@ public class LabelView extends LinearLayout {
                 }
             }
         }
+
+        ViewCompat.setElevation(this, (float) 30.0);
+//        ViewCompat.setTranslationZ(this, (float) 5.0);
     }
 }

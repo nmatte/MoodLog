@@ -7,7 +7,7 @@ import com.nmatte.mood.models.ChartEntry;
 import com.nmatte.mood.models.components.NumComponent;
 import com.nmatte.mood.models.modules.NumModule;
 import com.nmatte.mood.moodlog.R;
-import com.nmatte.mood.views.chart.NumPicker;
+import com.nmatte.mood.views.chart.NumPickerView;
 import com.nmatte.mood.views.chart.cells.TextCellView;
 import com.nmatte.mood.views.chart.cells.TextCellViewBuilder;
 
@@ -67,7 +67,7 @@ public class NumModuleAdapter extends ModuleAdapter{
                         value = entry.values().getAsInteger(component.columnLabel());
                     }
 
-                    return new NumPicker(context, value, component.getMaxNum(), change -> entry.values().put(component.columnLabel(), change));
+                    return new NumPickerView(context, value, component.getMaxNum(), change -> entry.values().put(component.columnLabel(), change));
                 });
 
     }

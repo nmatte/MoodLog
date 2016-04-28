@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="NumPicker">
+    <declare-styleable name="NumPickerView">
         <attr name = "label" format="string"/>
         <attr name = "defaultNum" format="integer"/>
         <attr name = "max" format="integer"/>

@@ -27,6 +27,8 @@ public class EntryAdapter {
 
         oAdapters
                 .flatMap(moduleAdapter -> moduleAdapter.getReadViews(context, entry))
+                .doOnNext(v -> v.setDuplicateParentStateEnabled(true))
+                .doOnNext(v -> v.setClickable(false))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<View>() {

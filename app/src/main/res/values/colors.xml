@@ -9,4 +9,5 @@
     <color name="black">#000000</color>
     <color name="settings_header">#dadada</color>
     <color name="ucla_gold">#ffe800</color>
+    <color name="transparent_gray">#969e9e9e</color>
 </resources>

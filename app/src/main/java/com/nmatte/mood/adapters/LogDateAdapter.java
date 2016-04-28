@@ -3,6 +3,7 @@ package com.nmatte.mood.adapters;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.nmatte.mood.database.entries.ChartEntryContract;
 import com.nmatte.mood.models.ChartEntry;
@@ -56,6 +57,19 @@ public class LogDateAdapter extends ModuleAdapter{
 
     @Override
     protected Observable<View> getEditViews(Context context, ChartEntry entry) {
-        return getReadViews(context, entry);
+        int dInt = entry.values().getAsInteger(ChartEntryContract.ENTRY_DATE_COLUMN);
+        DateTime date = DateUtils.fromInt(dInt);
+
+        String dateString = String.valueOf(date.getDayOfMonth());
+
+        TextCellViewBuilder b = new TextCellViewBuilder(context)
+                .setText(dateString)
+                .setHorizontalAlignment(TextCellView.TextAlignment.CENTER);
+
+        View view = b.build();
+
+        view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        return Observable.just(view);
     }
 }

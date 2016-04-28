@@ -9,7 +9,7 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.nmatte.mood.moodlog.R;
 
 
-public class NumPicker extends RelativeLayout {
+public class NumPickerView extends RelativeLayout {
     ImageButton minusButton;
     ImageButton plusButton;
     TextView textCellView;
@@ -33,7 +33,7 @@ public class NumPicker extends RelativeLayout {
 //            numChangeListener.onChange(getCurrentNum());
 //    };
 
-    public NumPicker(Context context, int currentNum, int maxNum, NumChangeListener listener){
+    public NumPickerView(Context context, int currentNum, int maxNum, NumChangeListener listener){
         super(context);
 
         this.context = context;
@@ -44,7 +44,7 @@ public class NumPicker extends RelativeLayout {
     }
 
     private void init(){
-        inflate(context, R.layout.view_custom_number_picker, this);
+        inflate(context, R.layout.view_num_picker, this);
 
         minusButton = (ImageButton) findViewById(R.id.minusButton);
         plusButton = (ImageButton) findViewById(R.id.plusButton);

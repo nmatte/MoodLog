@@ -3,6 +3,7 @@ package com.nmatte.mood.views.chart;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -88,16 +89,35 @@ public class MonthFragment extends Fragment {
     }
 
     private void beginEditEntry(View view) {
+        Log.i("WTF", "Not this shit again");
         if (view.getClass() == ReadView.class) {
             ReadView readView = (ReadView) view;
             horizontalScrollView.smoothScrollTo(readView.getLeft(), 0);
+            horizontalScrollView.setOnTouchListener((v, event) -> true);
+
             openEditView(readView.getEntry());
+            int cy = (int) readView.getLastYtouch();
+            animateEditOpen(0, cy);
+
+//            editEntryViewIsOpen = true;
+//            ChartEvents.OpenEditEntryEvent e = new ChartEvents.OpenEditEntryEvent();
+//            EventBus.getDefault().post(e);
         }
+    }
+
+    private void animateEditOpen(int cx, int cy) {
+        int finalRadius = Math.max(editEntryColumn.getWidth(), editEntryColumn.getHeight());
+
+        SupportAnimator animator =
+                ViewAnimationUtils.createCircularReveal(editEntryColumn, cx, cy, 0, finalRadius);
+        animator.setDuration(700);
+
+        editEntryColumn.setVisibility(View.VISIBLE);
+        animator.start();
     }
 
     private void openEditView(ChartEntry entry) {
         editEntryColumn.setEntry(adapter, entry);
-        editEntryColumn.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -156,27 +176,5 @@ public class MonthFragment extends Fragment {
 
     public boolean isEditEntryViewOpen() {
         return editEntryViewIsOpen;
-    }
-
-
-
-    private void openColumn(ReadView readView){
-        editEntryViewIsOpen = true;
-        // // FIXME: 2/20/16 !!!
-        editEntryColumn.setX(getCenterX(readView));
-
-        int cx = (int) readView.getLastXtouch();
-        int cy = (int) readView.getLastYtouch();
-        int finalRadius = Math.max(editEntryColumn.getWidth(), editEntryColumn.getHeight());
-        SupportAnimator animator =
-                ViewAnimationUtils.createCircularReveal(editEntryColumn, cx, cy, 0, finalRadius);
-        animator.setDuration(700);
-        editEntryColumn.setVisibility(View.VISIBLE);
-        animator.start();
-
-        horizontalScrollView.setOnTouchListener((v, event) -> true);
-        ChartEvents.OpenEditEntryEvent e = new ChartEvents.OpenEditEntryEvent();
-        EventBus.getDefault().post(e);
-
     }
 }

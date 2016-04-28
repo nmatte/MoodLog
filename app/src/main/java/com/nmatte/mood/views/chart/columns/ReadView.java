@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.nmatte.mood.models.ChartEntry;
-import com.nmatte.mood.moodlog.R;
 
 public class ReadView extends LinearLayout {
     float lastXtouch;
@@ -25,8 +24,9 @@ public class ReadView extends LinearLayout {
     public ReadView(Context context, ChartEntry entry) {
         super(context);
         this.entry = entry;
-        this.setBackground(context.getResources().getDrawable(R.drawable.drop_shadow_vertical));
+//        this.setBackground(context.getResources().getDrawable(R.drawable.drop_shadow_vertical));
         this.setOrientation(VERTICAL);
+        this.setOnTouchListener(touchListener);
     }
 
 
