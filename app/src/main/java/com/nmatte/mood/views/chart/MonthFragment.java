@@ -3,11 +3,11 @@ package com.nmatte.mood.views.chart;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
@@ -51,6 +51,16 @@ public class MonthFragment extends Fragment {
         super.onDestroy();
     }
 
+    public void subscribeToFab(Observable<Void> obs) {
+        obs.doOnEach(notification -> {
+            if (editEntryViewIsOpen) {
+                editEntryViewIsOpen = true;
+            } else {
+                editEntryViewIsOpen = false;
+            }
+        }).subscribe();
+    }
+
 
     /**
      * Refreshes the entries to be shown.
@@ -68,10 +78,6 @@ public class MonthFragment extends Fragment {
                 })
                 .doOnError(Throwable::printStackTrace)
                 .subscribe();
-
-        horizontalLayout.invalidate();
-        horizontalScrollView.invalidate();
-        backgroundLayout.invalidate();
     }
 
     @Nullable
@@ -89,31 +95,40 @@ public class MonthFragment extends Fragment {
     }
 
     private void beginEditEntry(View view) {
-        Log.i("WTF", "Not this shit again");
         if (view.getClass() == ReadView.class) {
             ReadView readView = (ReadView) view;
-            horizontalScrollView.smoothScrollTo(readView.getLeft(), 0);
-            horizontalScrollView.setOnTouchListener((v, event) -> true);
+            ViewTreeObserver vto = horizontalLayout.getViewTreeObserver();
 
-            openEditView(readView.getEntry());
-            int cy = (int) readView.getLastYtouch();
-            animateEditOpen(0, cy);
+            vto.addOnDrawListener(new ViewTreeObserver.OnDrawListener() {
+                @Override
+                public void onDraw() {
+                    vto.removeOnDrawListener(this);
+                    continueEditEntry(readView);
+                }
+            });
+            horizontalLayout.setPadding(0,0, 1000, 0);
+        }
+    }
 
-//            editEntryViewIsOpen = true;
+    private void continueEditEntry(ReadView readView) {
+        horizontalScrollView.smoothScrollTo(readView.getLeft(), 0);
+        horizontalScrollView.setOnTouchListener((v, event) -> true);
+        openEditView(readView.getEntry());
+        int cy = (int) readView.getLastYtouch();
+        animateEditOpen(0, cy);
+
+        //            editEntryViewIsOpen = true;
 //            ChartEvents.OpenEditEntryEvent e = new ChartEvents.OpenEditEntryEvent();
 //            EventBus.getDefault().post(e);
-        }
     }
 
     private void animateEditOpen(int cx, int cy) {
         int finalRadius = Math.max(editEntryColumn.getWidth(), editEntryColumn.getHeight());
 
-        SupportAnimator animator =
-                ViewAnimationUtils.createCircularReveal(editEntryColumn, cx, cy, 0, finalRadius);
-        animator.setDuration(700);
-
+        SupportAnimator circ = ViewAnimationUtils.createCircularReveal(editEntryColumn, cx, cy, 0, finalRadius);
+        circ.setDuration(700);
         editEntryColumn.setVisibility(View.VISIBLE);
-        animator.start();
+        circ.start();
     }
 
     private void openEditView(ChartEntry entry) {

@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.SimpleArrayMap;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.jakewharton.rxbinding.view.RxView;
 import com.nmatte.mood.controllers.SettingsActivity;
 import com.nmatte.mood.database.components.BoolItemTableHelper;
 import com.nmatte.mood.database.components.NumItemTableHelper;
@@ -37,6 +39,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
@@ -49,7 +52,7 @@ import rx.schedulers.Schedulers;
 public class ChartActivity extends AppCompatActivity
 {
 
-//    FloatingActionButton faButton;
+    FloatingActionButton faButton;
     MonthFragment monthFragment;
 //    LinearLayout mainLayout;
     Menu menu;
@@ -113,6 +116,11 @@ public class ChartActivity extends AppCompatActivity
 //        addScrollViewListener();
     }
 
+    private void initFab() {
+        faButton = (FloatingActionButton) findViewById(R.id.fab);
+        monthFragment.subscribeToFab(RxView.clicks(faButton));
+    }
+
     private void initLabelView() {
         ModuleTableHelper mHelper = new ModuleTableHelper(this);
 
@@ -140,44 +148,16 @@ public class ChartActivity extends AppCompatActivity
                 });
     }
 
-//    private void addFabListener() {
-//        faButton = (FloatingActionButton) findViewById(R.id.fabDone);
-//
-//        faButton.hide();
-//        faButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                faButton.hide();
-//                EventBus.getDefault().post(new ChartEvents.CloseEditEntryEvent());
-//            }
-//        });
-//    }
-
-//    private void addScrollViewListener() {
-//        // FIXME: 9/8/15 fix erratic show/hide behavior
-//        final ScrollViewWithListener scroll = (ScrollViewWithListener) findViewById(R.id.scrollView);
-//        scroll.setScrollListener(new ScrollViewWithListener.ScrollListener() {
-//            @Override
-//            public void onScrollUp() {
-//                if (!faButton.isShown() && monthFragment.isEditEntryViewOpen())
-//                    faButton.show();
-//            }
-//
-//            @Override
-//            public void onScrollDown() {
-//                if (faButton.isShown())
-//                    faButton.hide();
-//            }
-//        });
-//    }
-
     private void refreshFragments(){
-        DateTime start = DateTime.now().withDayOfMonth(1);
+        DateTime start = DateTime.now().withDayOfMonth(15);
         DateTime end = DateTime.now().dayOfMonth().withMaximumValue();
 
         SimpleArrayMap<DateTime, ChartEntry> values = new ChartEntryTable(this).getEntryGroup(start, end);
-
-        Observable<ChartEntry> entries = Observable.from(DateUtils.getDatesInRange(start, end))
+        ArrayList<DateTime> dates = DateUtils.getDatesInRange(start, end);
+        // FIXME: dates list sometimes doesn't contain last date
+        Log.i("ChartActivity", "Processing total number of dates: " + dates.size());
+        Observable<ChartEntry> entries = Observable.from(dates)
+                .doOnNext(d -> Log.i("ChartActivity", "Processing date " + d))
                 .map(d -> {
                     if (values.containsKey(d)) {
                         return values.get(d);
@@ -314,72 +294,6 @@ public class ChartActivity extends AppCompatActivity
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
     }
-
-//    public void onEvent(ChartEvents.OpenEditEntryEvent event){
-//        faButton.show();
-//    }
-//
-//    public void onEvent(ChartEvents.OpenStartDateDialogEvent event){
-//        DialogFragment d = new DateRangeDialog();
-//        Bundle args = new Bundle();
-//        args.putBoolean(DateRangeDialog.BOOL_IS_START_PICKER, true);
-//        d.setArguments(args);
-//        d.show(getFragmentManager(), "foo");
-//    }
-//
-//    public void onEvent(ChartEvents.OpenEndDateDialogEvent event){
-//        DialogFragment dialog = new DateRangeDialog();
-//        Bundle args = new Bundle();
-//        args.putBoolean(DateRangeDialog.BOOL_IS_START_PICKER,false);
-//        args.putLong(DateRangeDialog.LONG_START_DATE_VALUE, event.getDate().getMillis());
-//        Log.i("Date Range Dialog", "Start date chosen: " + event.getDate().toString("MM/dd/YYYY"));
-//        dialog.setArguments(args);
-//        dialog.show(getFragmentManager(), "bar");
-//    }
-
-//    public void onEvent(ChartEvents.SaveEndDateDialogEvent event){
-//        boolean foo = event.isRememberDates();
-//        Log.i("Date Range Dialog", "End date chosen: " + event.getEndDate().toString("MM/dd/YYYY"));
-//        monthFragment.refreshColumns(new ChartEntryTable(this).getEntryGroup(getChartStartDate(), getChartEndDate()));
-//        refreshPickDateButton(event.getStartDate(), event.getEndDate());
-//
-//        SharedPreferences settings = getPreferences(MODE_PRIVATE);
-//        if (event.isRememberDates()){
-//            settings
-//                    .edit()
-//                    .putBoolean(PreferencesContract.BOOL_CHART_REMEMBER_DATES,event.isRememberDates())
-//                    .putLong(PreferencesContract.LONG_CHART_START_DATE,event.getStartDate().getMillis())
-//                    .putLong(PreferencesContract.LONG_CHART_END_DATE,event.getEndDate().getMillis())
-//                    .apply();
-//        } else{
-//            settings
-//                    .edit()
-//                    .putBoolean(PreferencesContract.BOOL_CHART_REMEMBER_DATES,event.isRememberDates())
-//                    .apply();
-//        }
-//    }
-
-//    public void onEvent(ChartEvents.OpenNoteEvent event){
-//        NoteView noteView = (NoteView) findViewById(R.id.entryNoteView);
-//        noteView.setEntry(event.getEntry());
-//        noteView.setVisibility(View.VISIBLE);
-//        if (faButton.isShown())
-//            faButton.hide();
-//        if (monthFragment.isEditEntryViewOpen())
-//            noteView.setMode(ChartColumn.Mode.ENTRY_EDIT);
-//        else
-//            noteView.setMode(ChartColumn.Mode.ENTRY_READ);
-//        noteView.animateUp();
-//    }
-
-//    public void onEvent(ChartEvents.CloseNoteEvent event){
-//        if(monthFragment.isEditEntryViewOpen())
-//            faButton.show();
-//        NoteView noteView = (NoteView) findViewById(R.id.entryNoteView);
-//        // TODO
-//        ChartEntryTable.addOrUpdateEntry(this,event.getEntry());
-//        noteView.animateDown();
-//    }
 
     public void onEvent(ChartEvents.StartEndDatesLoaded event) {
         Log.i("refreshPickDateButton", "refreshing dates");
